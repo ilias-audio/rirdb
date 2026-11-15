@@ -3,7 +3,11 @@ id: ct_audiolink
 name: CT-AudioLink Room Impulse Responses
 year: 2016
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["894181"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
 content: 24 omnidirectional RIRs (WAV) at several source and receiver positions in cultural-heritage buildings of
   Thrace, Greece, including a museum, a church, a mosque and the Imaret of Komotini.
 expected:

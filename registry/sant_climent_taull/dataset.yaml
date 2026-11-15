@@ -3,7 +3,11 @@ id: sant_climent_taull
 name: Model of Sant Climent de Taüll
 year: 2019
 type: hybrid
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["3558319"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma", "9": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: 12 measured B-format RIRs (3 sources x 4 receivers) in the Romanesque church of Sant Climent de Taüll,
   Catalonia, plus 96 ODEON-simulated binaural and 2nd-order Ambisonic IRs of two model states.
 expected:

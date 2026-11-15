@@ -3,7 +3,11 @@ id: airchive
 name: AIRCHIVE IR library
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["23091674"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(excitation|raw)/", "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
 content: 24 sine-sweep and balloon IRs (each mono and XY stereo, 48 kHz) from the Salzburg Cathedral crypt, a disused
   railway tunnel and the Schloss Frohnburg entrance hall, with photos and acoustic parameters.
 fs_hz:

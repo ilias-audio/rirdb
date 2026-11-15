@@ -1,0 +1,16 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Nikolauskapelle_Source3_Results_20260205.xlsx	https://zenodo.org/api/records/23312556/files/Nikolauskapelle_Source3_Results_20260205.xlsx/content	83453	md5	b25ec131e929feb9fdb39d15948a8db4	zenodo:23312556	2026-11-15T20:37:49Z	-
+source_receiver_distances.csv	https://zenodo.org/api/records/23312556/files/source_receiver_distances.csv/content	1208	md5	935b7303af3e90d5f7db7ac69c199488	zenodo:23312556	2026-11-15T20:37:49Z	-
+positions.csv	https://zenodo.org/api/records/23312556/files/positions.csv/content	1222	md5	2c6b6c82d6f12ce69143b7880fe14c55	zenodo:23312556	2026-11-15T20:37:49Z	-
+materials.csv	https://zenodo.org/api/records/23312556/files/materials.csv/content	1039	md5	e9eda0b4c69835cc675f43eeb83d0edc	zenodo:23312556	2026-11-15T20:37:49Z	-
+README.md	https://zenodo.org/api/records/23312556/files/README.md/content	12292	md5	8e58e17dd925adcf902b7bfd7c19e77e	zenodo:23312556	2026-11-15T20:37:49Z	-
+impulse_responses.zip	https://zenodo.org/api/records/23312556/files/impulse_responses.zip/content	271472748	md5	6d20fffe4ab0c3e0ce85d7774232487f	zenodo:23312556	2026-11-15T20:37:49Z	impulse_responses
+decayfitnet_simulations.csv	https://zenodo.org/api/records/23312556/files/decayfitnet_simulations.csv/content	113194	md5	872e0f1a27bdbea66509c9ac7d749a9a	zenodo:23312556	2026-11-15T20:37:49Z	-
+LICENSE.txt	https://zenodo.org/api/records/23312556/files/LICENSE.txt/content	780	md5	06bb1b725870d4d801a31334aad5925b	zenodo:23312556	2026-11-15T20:37:49Z	-
+directional_multi_positions.csv	https://zenodo.org/api/records/23312556/files/directional_multi_positions.csv/content	5276	md5	f34720fa687f7a980ec4eb8c3fae3633	zenodo:23312556	2026-11-15T20:37:49Z	-
+Nikolauskapelle_Source1_Results_20260205.xlsx	https://zenodo.org/api/records/23312556/files/Nikolauskapelle_Source1_Results_20260205.xlsx/content	285205	md5	0cea3a34c91a4d2b3ca99a372b69682e	zenodo:23312556	2026-11-15T20:37:49Z	-
+Nikolauskapelle-Source2_Results_20260205.xlsx	https://zenodo.org/api/records/23312556/files/Nikolauskapelle-Source2_Results_20260205.xlsx/content	159269	md5	d70a6aa9fb75955d1edf99dfaab8d530	zenodo:23312556	2026-11-15T20:37:49Z	-
+simulation_parameters.csv	https://zenodo.org/api/records/23312556/files/simulation_parameters.csv/content	367805	md5	7874eb912ed8c88612f53f3a95fa187e	zenodo:23312556	2026-11-15T20:37:49Z	-
+decayfitnet_all_positions.csv	https://zenodo.org/api/records/23312556/files/decayfitnet_all_positions.csv/content	21514	md5	518028d61d44bc22a4b0f8b2693cc972	zenodo:23312556	2026-11-15T20:37:49Z	-
+bayesian_all_positions.csv	https://zenodo.org/api/records/23312556/files/bayesian_all_positions.csv/content	14758	md5	627db7cae253eda847c6f52129ed89d4	zenodo:23312556	2026-11-15T20:37:49Z	-
+simulated_impulse_responses.zip	https://zenodo.org/api/records/23312556/files/simulated_impulse_responses.zip/content	155183594	md5	fea476d43369675c8829c63a0457f851	zenodo:23312556	2026-11-15T20:37:49Z	simulated_impulse_responses

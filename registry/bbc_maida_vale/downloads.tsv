@@ -1,0 +1,6 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+MV5 Readme.pdf	https://zenodo.org/api/records/10020866/files/MV5%20Readme.pdf/content	621009	md5	5bd5659b21ac4b8ad757cf4d05da9a6e	zenodo:10020866	2026-11-15T20:37:49Z	-
+MV4 Readme.pdf	https://zenodo.org/api/records/10020866/files/MV4%20Readme.pdf/content	541662	md5	630301a48890a41ae4fd4164780310f0	zenodo:10020866	2026-11-15T20:37:49Z	-
+MV4.zip	https://zenodo.org/api/records/10020866/files/MV4.zip/content	3387010363	md5	e89819ed33827a15851a852c5cdd0665	zenodo:10020866	2026-11-15T20:37:49Z	MV4
+MV5.zip	https://zenodo.org/api/records/10020866/files/MV5.zip/content	542577716	md5	b5cdc058b59c980d61df36649b3b54be	zenodo:10020866	2026-11-15T20:37:49Z	MV5
+Maida Vale Database V2 - Release Notes.pdf	https://zenodo.org/api/records/10020866/files/Maida%20Vale%20Database%20V2%20-%20Release%20Notes.pdf/content	35040	md5	725cf991478e070d3ee9131805456f20	zenodo:10020866	2026-11-15T20:37:49Z	-

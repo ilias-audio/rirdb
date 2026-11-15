@@ -144,3 +144,20 @@ def test_ndarray_crop(tmp_path):
     assert len(recs) == 6 and {r.n_samples for r in recs} == {250}
     x, fs = ad.load(recs[4].locator, tmp_path)
     np.testing.assert_array_equal(x, a[1, 1, :250][None, :])
+
+
+def test_wav_tree_room_from_a_folder_and_tokens_from_file_names(tmp_path):
+    """The options scripts/onboard/guess.py writes: room_level, condition_level, tokens."""
+    import soundfile as sf
+    for rel in ("HallA/RIRs/curtains open/S1_R2.wav", "HallA/RIRs/curtains shut/Src2-Mic3.wav",
+                "HallB/RIRs/curtains open/KU100 LS 16-2.wav", "HallB/RIRs/curtains open/Room3.wav"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(str(tmp_path / rel), np.zeros(100), 8000)
+    ds = SimpleNamespace(id="toy", ir_kinds=["room"], adapter=SimpleNamespace(
+        name="wav_tree", params={"room_level": 0, "condition_level": 2, "tokens": True}))
+    recs = {r.local_key: r for r in get_adapter("wav_tree").iter_records(ds, tmp_path)}
+    got = {k: (r.room_key, r.condition_key, r.src_key, r.rcv_key) for k, r in recs.items()}
+    assert got["HallA/RIRs/curtains open/S1_R2.wav"] == ("halla", "curtains open", "S1", "R2")
+    assert got["HallA/RIRs/curtains shut/Src2-Mic3.wav"] == ("halla", "curtains shut", "Src2", "Mic3")
+    assert got["HallB/RIRs/curtains open/KU100 LS 16-2.wav"][2] == "LS16"
+    assert got["HallB/RIRs/curtains open/Room3.wav"][2:] == (None, None)     # "Room3" is not a receiver token

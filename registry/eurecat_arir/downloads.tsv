@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+StAndrews_Castle.zip	https://zenodo.org/api/records/1417727/files/StAndrews_Castle.zip/content	34593864	md5	aee564b92e7f1ceb52eb6d73f2870f9b	zenodo:1417727	2026-11-15T20:37:49Z	StAndrews_Castle
+Fundacio_Miro.zip	https://zenodo.org/api/records/1417727/files/Fundacio_Miro.zip/content	70988190	md5	79d41d0707b47e90cce643edecb5be1f	zenodo:1417727	2026-11-15T20:37:49Z	Fundacio_Miro
+Alte_Pinakotheke.zip	https://zenodo.org/api/records/1417727/files/Alte_Pinakotheke.zip/content	873584856	md5	cdf4a06a3d91863c48c05e47150d7765	zenodo:1417727	2026-11-15T20:37:49Z	Alte_Pinakotheke

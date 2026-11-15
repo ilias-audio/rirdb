@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+asc26_synthetic_rirs.zip	https://zenodo.org/api/records/21771185/files/asc26_synthetic_rirs.zip/content	176908730	md5	8a52325fe6a33bb4f552bb88928bbbec	zenodo:21771185	2026-11-15T20:37:49Z	.
+ASC-26_dataset_datasheet.pdf	https://zenodo.org/api/records/21771185/files/ASC-26_dataset_datasheet.pdf/content	140908	md5	efa46994df111e473643e96135e744be	zenodo:21771185	2026-11-15T20:37:49Z	-

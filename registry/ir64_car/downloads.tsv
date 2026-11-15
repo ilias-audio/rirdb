@@ -1,0 +1,2 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+dataset.zip	https://zenodo.org/api/records/15168578/files/dataset.zip/content	24084281	md5	3bcfd0f9512fbebeca24291b1fef79aa	zenodo:15168578	2026-11-15T20:37:49Z	.

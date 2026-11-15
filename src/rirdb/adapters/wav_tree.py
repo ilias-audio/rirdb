@@ -17,6 +17,11 @@ Registry parameters (adapter.params), all optional:
   channels:    only index files with these channel counts, e.g. [1, 2]
   reference_roles: {n_channels: role or "mean"} analysed reference per channel count
   preferred_regex: relpaths matching it are the preferred representation (others kept, not preferred)
+  room_level:  the folder of the path that names the space (0 = the first folder): for a reader written by
+               scripts/onboard/guess.py, where a folder names the room and no pattern is needed
+  condition_level: the folder that names the condition (a state of the room)
+  tokens:      true: take the source and receiver from the file name where the pattern gives none, as written
+               S2, Src2, LS2, Spk2 (source) and R5, Rcv5, Mic5, M5, Pos5, P5 (receiver)
 """
 
 from __future__ import annotations
@@ -33,6 +38,15 @@ from rirdb.adapters.base import IRRecord, slug
 DEFAULT_EXCLUDE = r"(^|/)(__MACOSX|\._)|/\.DS_Store$"
 DEFAULT_ROLES = {1: ["omni"], 2: ["SL", "SR"], 4: ["W", "X", "Y", "Z"]}
 DEFAULT_FORMATS = {1: "mono_omni", 2: "stereo", 4: "foa_fuma"}
+# File-name tokens for `tokens: true`: a letter code not glued to a word before it, then a number.
+SRC_TOKEN = re.compile(r"(?<![a-z])(?:src|source|spk|speaker|ls|s)[ _-]?(\d+)(?![0-9])", re.I)
+RCV_TOKEN = re.compile(r"(?<![a-z])(?:rcv|rec|receiver|mic|pos|position|r|m|p)[ _-]?(\d+)(?![0-9])", re.I)
+
+
+def token(rx: re.Pattern, stem: str) -> str | None:
+    """The first token of a file name, as written without separators: "LS 16" -> "LS16"."""
+    m = rx.search(stem)
+    return re.sub(r"[ _-]", "", m.group(0)) if m else None
 
 
 class WavTreeAdapter:
@@ -40,7 +54,8 @@ class WavTreeAdapter:
         p = dataset.adapter.params
         exclude = re.compile(p.get("exclude", DEFAULT_EXCLUDE))
         pattern = re.compile(p["pattern"]) if p.get("pattern") else None
-        room_from = p.get("room_from") or ("pattern" if pattern is not None and "room" in pattern.groupindex else "file")
+        room_from = p.get("room_from") or ("pattern" if pattern is not None and "room" in pattern.groupindex
+                                           else "level" if p.get("room_level") is not None else "file")
         roles_map = {int(k): v for k, v in (p.get("roles") or {}).items()} or DEFAULT_ROLES
         fmt_map = {int(k): v for k, v in (p.get("channel_formats") or {}).items()}
         kinds = [(re.compile(rx), kind) for rx, kind in (p.get("ir_kind_from_regex") or {}).items()]
@@ -65,6 +80,9 @@ class WavTreeAdapter:
                 room = Path(rel).parent.name
             elif room_from == "dataset":
                 room = dataset.id
+            elif room_from == "level":
+                folders = Path(rel).parts[:-1]
+                room = folders[p["room_level"]] if p["room_level"] < len(folders) else p.get("room_default") or dataset.id
             else:
                 room = stem
             n_ch = info.channels
@@ -81,6 +99,12 @@ class WavTreeAdapter:
             elif cat_from == "grandparent":
                 category = Path(rel).parent.parent.name
             kind = next((k for rx, k in kinds if rx.search(rel)), default_kind)
+            cond, src, rcv = g.get("cond"), g.get("src"), g.get("rcv")
+            folders = Path(rel).parts[:-1]
+            if cond is None and p.get("condition_level") is not None and p["condition_level"] < len(folders):
+                cond = folders[p["condition_level"]]
+            if p.get("tokens"):
+                src, rcv = src or token(SRC_TOKEN, Path(rel).stem), rcv or token(RCV_TOKEN, Path(rel).stem)
             yield IRRecord(
                 dataset_id=dataset.id,
                 local_key=rel,
@@ -90,9 +114,9 @@ class WavTreeAdapter:
                 fs=int(info.samplerate),
                 n_samples=int(info.frames),
                 locator={"relpath": rel, "container": "audio"},
-                condition_key=g.get("cond"),
-                src_key=g.get("src"),
-                rcv_key=g.get("rcv"),
+                condition_key=cond,
+                src_key=src,
+                rcv_key=rcv,
                 sh_norm=p.get("sh_norm") if fmt.startswith("foa") else None,
                 orientation_known=bool(p.get("orientation_known", True)),
                 room_label=g.get("label") or room,

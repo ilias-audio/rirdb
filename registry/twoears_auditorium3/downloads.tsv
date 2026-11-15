@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+QU_KEMAR_Auditorium3.sofa	https://zenodo.org/api/records/160749/files/QU_KEMAR_Auditorium3.sofa/content	343297893	md5	f5d47d69287334cef1737d88f68f7ba0	zenodo:160749	2026-11-15T20:37:49Z	-
+measurement_setup_sketch.pdf	https://zenodo.org/api/records/160749/files/measurement_setup_sketch.pdf/content	42097	md5	7679e16a2999ae8aaa302d91a89d5df2	zenodo:160749	2026-11-15T20:37:49Z	-
+measurement_setup_photo.jpg	https://zenodo.org/api/records/160749/files/measurement_setup_photo.jpg/content	128755	md5	d7ccd1274726a17a3d51763ae7b66a9f	zenodo:160749	2026-11-15T20:37:49Z	-

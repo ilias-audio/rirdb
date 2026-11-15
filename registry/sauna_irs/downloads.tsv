@@ -1,0 +1,6 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+sauna_photo.png	https://zenodo.org/api/records/14851522/files/sauna_photo.png/content	1614655	md5	24b5eb1aad334382b98787ecbb6ba6e2	zenodo:14851522	2026-11-15T20:37:49Z	-
+sauna.png	https://zenodo.org/api/records/14851522/files/sauna.png/content	152489	md5	68eeab37cb24beaa809fd4d9d3caf97c	zenodo:14851522	2026-11-15T20:37:49Z	-
+Temperature_humidity_sauna_30_03_2023_upload.xlsx	https://zenodo.org/api/records/14851522/files/Temperature_humidity_sauna_30_03_2023_upload.xlsx/content	619618	md5	3fac9a4f4246780c6131e2a12688751d	zenodo:14851522	2026-11-15T20:37:49Z	-
+IRs_02_2025.zip	https://zenodo.org/api/records/14851522/files/IRs_02_2025.zip/content	1499950327	md5	0820e13a24ac38c9f51e976fdd57cc95	zenodo:14851522	2026-11-15T20:37:49Z	IRs_02_2025
+1s_IRs_02_2025.zip	https://zenodo.org/api/records/14851522/files/1s_IRs_02_2025.zip/content	178732936	md5	85f56b416c41dbd3be340b4b390f1e41	zenodo:14851522	2026-11-15T20:37:49Z	1s_IRs_02_2025

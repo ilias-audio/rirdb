@@ -3,7 +3,11 @@ id: scream_sdn
 name: Higher-order SDN RIRs (SCReAM, DAFx 2022)
 year: 2022
 type: simulated
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15691239"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(Speech|Stimuli)/", "room_level": 2}}   # guessed by scripts/onboard/guess.py; see the review
 content: 30 simulated mono RIRs of three shoebox rooms (small, medium, large), each made with eight Scattering Delay
   Network variants plus image-method and CATT-Acoustic references, with listening-test stimuli.
 fs_hz:

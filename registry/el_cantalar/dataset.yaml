@@ -3,7 +3,11 @@ id: el_cantalar
 name: La Escena (El Cantalar) balloon IRs
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["18913642"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
 content: Balloon-burst IRs (one WAV plus Room EQ Wizard project files), raw audio, reflection-delay tables and images
   from La Escena, an open-air Bronze Age rock site at El Cantalar, Alicante, Spain.
 fs_hz:

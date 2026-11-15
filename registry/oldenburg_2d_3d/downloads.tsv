@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+IRs.zip	https://zenodo.org/api/records/10037482/files/IRs.zip/content	117411046	md5	ecc5e2aed937e92af8e0ab591edcf819	zenodo:10037482	2026-11-15T20:37:49Z	IRs
+scenes.zip	https://zenodo.org/api/records/10037482/files/scenes.zip/content	1004924471	md5	a8c3ee4e961451afb4e940f1c7831038	zenodo:10037482	2026-11-15T20:37:49Z	scenes

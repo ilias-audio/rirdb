@@ -3,7 +3,11 @@ id: goethehaeuschen
 name: O'er all the Hilltops is Loud Now (Goethehäuschen)
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15013522"]}
+adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
 content: Spatial RIRs from a 7-microphone array at 57 positions in and outside the Goethehäuschen, a small historic
   wooden cabin on Kickelhahn mountain in Ilmenau, with 8 fixed loudspeakers; SOFA files.
 expected:

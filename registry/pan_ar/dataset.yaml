@@ -3,7 +3,11 @@ id: pan_ar
 name: PAN-AR
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["17831025"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(Ambient_noise)/", "room_level": 0, "condition_level": 1, "channel_formats": {"8": "array_raw", "9": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: Second-order Ambisonic SRIRs (Core Sound OctoMic), ambient noise and 360-degree photos from a printer room,
   a meeting room, a classroom and an underground car park, by the University of Milan.
 fs_hz:

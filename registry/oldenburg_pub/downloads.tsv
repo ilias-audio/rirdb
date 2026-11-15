@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Pub.zip	https://zenodo.org/api/records/5886987/files/Pub.zip/content	379241399	md5	9fc1cdff6ceb0247485a7e1d021bc427	zenodo:5886987	2026-11-15T20:37:49Z	.
+Pub Environment Description Document v0.6.pdf	https://zenodo.org/api/records/5886987/files/Pub%20Environment%20Description%20Document%20v0.6.pdf/content	1124414	md5	884fa38829e518ebf4fabf4a089189b3	zenodo:5886987	2026-11-15T20:37:49Z	-

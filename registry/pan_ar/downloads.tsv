@@ -1,0 +1,9 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+3_Classroom.zip	https://zenodo.org/api/records/17831025/files/3_Classroom.zip/content	1162959957	md5	ddf565fa4eaa2ee6abbddb18c598d13f	zenodo:17831025	2026-11-15T20:37:49Z	3_Classroom
+README.md	https://zenodo.org/api/records/17831025/files/README.md/content	7612	md5	ceae392fd987a2f83078ec1f7b7101a2	zenodo:17831025	2026-11-15T20:37:49Z	-
+2_MeetingRoom.zip	https://zenodo.org/api/records/17831025/files/2_MeetingRoom.zip/content	1152876869	md5	3bd39c3dbafea9a28cd4107666b2c768	zenodo:17831025	2026-11-15T20:37:49Z	2_MeetingRoom
+IRs.csv	https://zenodo.org/api/records/17831025/files/IRs.csv/content	3262	md5	fc8c478ddcca491c2d5027331f441c56	zenodo:17831025	2026-11-15T20:37:49Z	-
+4_UndergroundParking.zip	https://zenodo.org/api/records/17831025/files/4_UndergroundParking.zip/content	1176816047	md5	f4b41ededd42cf8f6be8bb610eeadf1b	zenodo:17831025	2026-11-15T20:37:49Z	4_UndergroundParking
+Poster_AM2024.pdf	https://zenodo.org/api/records/17831025/files/Poster_AM2024.pdf/content	6874760	md5	51cbf22a81159046ee44eccbe229b1e3	zenodo:17831025	2026-11-15T20:37:49Z	-
+Ambient_noise.csv	https://zenodo.org/api/records/17831025/files/Ambient_noise.csv/content	356	md5	f1d028c2c17b1b275609776d168c235c	zenodo:17831025	2026-11-15T20:37:49Z	-
+1_PrinterRoom.zip	https://zenodo.org/api/records/17831025/files/1_PrinterRoom.zip/content	1149998970	md5	d99a1957112227caad1af5481dcadaaf	zenodo:17831025	2026-11-15T20:37:49Z	1_PrinterRoom

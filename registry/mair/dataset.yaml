@@ -3,7 +3,11 @@ id: mair
 name: MAIR (Microphone Array Impulse Response) library
 year: 2017
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["2639677"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "channel_formats": {"2": "binaural"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: Impulse responses from 13 stage loudspeakers in St Paul's concert hall, Huddersfield, captured with 39
   microphone setups (stereo pairs to 9-channel 3D arrays, dummy head, FOA), plus an 8-speaker 360° layout.
 fs_hz:

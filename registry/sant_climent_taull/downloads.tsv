@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Auralisations.zip	https://zenodo.org/api/records/3558319/files/Auralisations.zip/content	915253926	md5	4f649a641361b194d562669c95a131c7	zenodo:3558319	2026-11-15T20:37:49Z	Auralisations
+ImpulseResponses.zip	https://zenodo.org/api/records/3558319/files/ImpulseResponses.zip/content	1432132748	md5	ed8c1b11e7c34314a088f0002049e829	zenodo:3558319	2026-11-15T20:37:49Z	ImpulseResponses

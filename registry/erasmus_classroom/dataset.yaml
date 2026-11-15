@@ -3,7 +3,11 @@ id: erasmus_classroom
 name: Virtual Classroom Environment (Erasmus MC)
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # tier A, onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15178235"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(Babble\\ noise\\ recording)/", "room_from": "dataset", "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: 13 first-order Ambisonic (FuMa B-format) RIRs measured in an unoccupied Dutch primary-school classroom,
   shared with babble-noise recordings, photos and a 3D model of the room for hearing research in VR.
 expected:

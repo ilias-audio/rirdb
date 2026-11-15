@@ -1,0 +1,8 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+upstairs maual rating.csv	https://zenodo.org/api/records/15013522/files/upstairs%20maual%20rating.csv/content	31233	md5	920850299079eb388c043612b0d8bba8	zenodo:15013522	2026-11-15T20:37:49Z	-
+measuremenr arrangement.pdf	https://zenodo.org/api/records/15013522/files/measuremenr%20arrangement.pdf/content	5022627	md5	78b1d57d3c693d5fe6d622eb0a5c91cf	zenodo:15013522	2026-11-15T20:37:49Z	-
+stairway.zip	https://zenodo.org/api/records/15013522/files/stairway.zip/content	95573354	md5	0524a5086a7d00956a84318bc75e357e	zenodo:15013522	2026-11-15T20:37:49Z	stairway
+downstairs.zip	https://zenodo.org/api/records/15013522/files/downstairs.zip/content	835719442	md5	a50f2bc8b54a8e1d1306bc9c6799fe18	zenodo:15013522	2026-11-15T20:37:49Z	downstairs
+upstairs.zip	https://zenodo.org/api/records/15013522/files/upstairs.zip/content	1126992103	md5	2974f64a88cd8301960d3f7a004333cf	zenodo:15013522	2026-11-15T20:37:49Z	upstairs
+pictures.zip	https://zenodo.org/api/records/15013522/files/pictures.zip/content	265145608	md5	ebd1e57c751cfedbdbb9051d79439eee	zenodo:15013522	2026-11-15T20:37:49Z	pictures
+outside.zip	https://zenodo.org/api/records/15013522/files/outside.zip/content	19045948	md5	d2480808b43addcccbdf49372529ac33	zenodo:15013522	2026-11-15T20:37:49Z	outside
