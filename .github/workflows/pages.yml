@@ -1,15 +1,15 @@
 # The website, on GitHub Pages: https://ilias-audio.github.io/rirdb/
 #
-# Built here, from the release tables alone (`rirdb dev site`, src/rirdb/site.py): every push to main and
-# every new release rebuilds it. Nothing is committed and no database is needed.
+# Built here, from the release tables alone (`rirdb dev site`, src/rirdb/site.py): every push to main rebuilds it.
+# A new tables release reaches the site through its lock commit on main (publish the tables first, then push).
+# Not on `release`: GitHub deploys to Pages only from main, so a run started by a release tag is refused.
+# Nothing is committed and no database is needed.
 # One-time setup (done): Settings -> Pages -> Source: GitHub Actions.
 name: pages
 
 on:
   push:
     branches: [main]
-  release:
-    types: [published]
   workflow_dispatch:
 
 permissions:
