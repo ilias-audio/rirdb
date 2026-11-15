@@ -28,7 +28,3 @@ web_check:
   caveats:
   - Each of the 17 SOFA files holds 100 head orientations in 3.6 degree steps (1,700 BRIRs); rirdb analyses the
     frontal orientation only.
-  - rirdb's per-IR index (the ir_kind column that rirdb query returns) still files these 17 IRs as outdoor (a keyword
-    rule matched "field" in Huddersfield), so until the index is rebuilt they are missing from the clean measured
-    rooms, the corpus-wide room counts and the CLAP map; this page counts them as rooms. The space is a concert
-    hall, as the Spaces table shows.

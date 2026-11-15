@@ -29,7 +29,7 @@ import yaml
 
 from rirdb import paths
 from rirdb.fetch import sha256_of
-from rirdb.registry import Dataset, License, get_dataset, load_registry
+from rirdb.registry import AVAIL_FIELDS, Dataset, License, WebCheck, get_dataset, load_registry
 from rirdb.rooms import KIND_CATEGORIES, categorize, curated_spaces
 
 HERE = Path(__file__).parent
@@ -84,7 +84,8 @@ def space_facts(d: Dataset, index: pd.DataFrame) -> pd.DataFrame:
     if d.space_type:
         out["space_type"] = d.space_type
     cur = curated_spaces(d.id).set_index("space") if not curated_spaces(d.id).empty else pd.DataFrame()
-    for col in ("label", "space_type", "ir_kind", "volume_m3", "same_as", "licence", "redistribute", "licence_note"):
+    for col in ("label", "space_type", "ir_kind", "volume_m3", "dims_m", "note", "same_as", "licence", "redistribute",
+                "licence_note"):
         given = slug.map(cur[col]) if col in cur else pd.Series("", index=out.index)
         given = given.fillna("")
         out[col] = given.where(given != "", out[col] if col in out else "")
@@ -401,6 +402,19 @@ def mark_duplicates(irs: pd.DataFrame, year: dict[str, int | None]) -> pd.Series
     return dup.where(dup != irs["ir_id"], "")
 
 
+def what_it_is(d: Dataset) -> dict:
+    """What the registry says about a dataset in words, for the site and `rirdb info`: its description, who
+    published it, where, and what its authors provide about the rooms (room_info: yes, partial, no; empty if not
+    checked). The caveats are one item per line."""
+    w = d.web_check or WebCheck()
+    return {"description": " ".join((w.content or d.content).split()), "institution": w.institution or "",
+            "country": w.country or "", "host": w.host or "", "size_stated": w.size or "",
+            "file_formats": w.file_formats or "", "formats_stated": ", ".join(w.families),
+            "facts_checked_on": w.checked or "",
+            **{f"provides_{f}": getattr(d.room_info, f) or "" for f in AVAIL_FIELDS},
+            "provides_where": d.room_info.where or "", "caveats": "\n".join(" ".join(c.split()) for c in w.caveats)}
+
+
 def datasets_table(registry: list[Dataset], built: dict[str, dict]) -> pd.DataFrame:
     rows = []
     for d in registry:
@@ -421,6 +435,7 @@ def datasets_table(registry: list[Dataset], built: dict[str, dict]) -> pd.DataFr
             "use_research": u.research, "use_commercial": u.commercial, "use_training": u.training,
             "redistribute": u.redistribute, "citation_keys": "", "homepage": d.homepage or "", "doi": d.doi or "",
             "paper_title": d.paper.title if d.paper else "", "paper_url": d.paper.url if d.paper else "",
+            **what_it_is(d),
             "reader": d.adapter.name or "", "reader_settings": json.dumps(d.adapter.params or {}, sort_keys=True) if b else "",
             "pinned_version": pinned_version(d.id), "analyser": ANALYSER if b else "",
             "cap": d.cap, "n_irs_stated": d.expected.n_irs,

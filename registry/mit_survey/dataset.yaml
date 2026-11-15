@@ -37,6 +37,3 @@ web_check:
   - The archive holds 270 IRs; the paper reports 271.
   - Mono at 32 kHz; each place is described only by its file name.
   - 'No licence anywhere: ask the McDermott lab before reusing or redistributing.'
-  - rirdb's per-IR index (the ir_kind column that rirdb query returns) still files the Park Street subway station
-    IR as outdoor (a keyword rule matched "park"), so until the index is rebuilt it is missing from the clean measured
-    rooms and the corpus-wide room counts; this page counts it as a room.

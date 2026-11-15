@@ -28,6 +28,4 @@ web_check:
     free of charge and with the licence text; never sell them.
   caveats:
   - Modelled (synthetic) reverbs, some named after real halls, plus speaker-cabinet responses; no room information.
-    rirdb's per-IR index (the ir_kind column that rirdb query returns) still gives 37 of them the kind room and
-    1 outdoor, from the file names, until it is rebuilt; this page uses the corrected kind.
   - Free to use in music, including commercially; redistribute only the complete, unaltered set.

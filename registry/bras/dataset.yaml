@@ -6,7 +6,7 @@ type: measured
 ir_kinds: [room]
 capture_formats: [mono_omni, binaural]
 fs_hz: [44100]
-content: Measured RIRs and BRIRs (SOFA + wav) of 11 reference scenes (4 complex rooms CR1-CR4 and simple scenes RS1-RS7) plus RS8 (2026), each with geometry, boundary conditions and source/receiver descriptions.
+content: Measured RIRs and BRIRs (SOFA and WAV) of four complex rooms (CR1 to CR4), each with its geometry, boundary conditions and source and receiver descriptions, as a benchmark for room-acoustic simulation. The authors also publish eight simple scenes (RS1 to RS8) for single effects such as one reflection or a diffraction; RIRDB reads the four rooms.
 expected: {note: "12 scenes"}
 room_info: {dimensions: "yes", geometry: "yes", materials: "yes", positions: "yes", images: "yes", where: "Documentation.pdf and AllMaterials.pdf; scene geometry and boundary conditions in the BRAS record (simulation benchmark)"}
 license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
@@ -19,7 +19,7 @@ adapter:
   name: wav_tree
   # complex rooms CR1-CR4 only; RS1-RS8 are single-reflection/diffraction scenes (not rooms)
   params:
-    pattern: '1_scene_descriptions-(?P<room>CR\d)/.*/(?P<cond>RIRs|BRIRs)/wav/(?P<label>[^/]+)\.wav$'
+    pattern: '1_scene_descriptions-(?P<room>CR\d)/.*/(?:RIRs|BRIRs)/wav/[^/]+\.wav$'
     channels: [1, 2]
     roles: {1: [omni], 2: [L, R]}
     channel_formats: {1: mono_omni, 2: binaural}

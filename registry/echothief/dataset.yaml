@@ -1,7 +1,7 @@
 # Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
 id: echothief
 name: EchoThief impulse response library
-type: production
+type: measured   # real spaces, recorded on site; published as a library for music production
 ir_kinds: [room, outdoor]
 capture_formats: [stereo]
 fs_hz: [44100]

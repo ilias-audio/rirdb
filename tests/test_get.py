@@ -16,7 +16,7 @@ from rirdb import client
 from rirdb.cli import app, parse_size
 from rirdb.deliver import ambix, audio_hash
 from rirdb.fetch import sha256_of
-from rirdb.select import Query, draw, matching, weights
+from rirdb.select import Query, draw, matching, weights, t30_range
 from tests.toy import DUPLICATE, TOY_FILES
 
 pytestmark = pytest.mark.xdist_group("toy")
@@ -138,3 +138,21 @@ def test_bibtex_text_is_escaped():
 
     assert latex("Room & Hall_1 {x}") == r"Room \& Hall\_1 \{x\}"
     assert url_text("https://a.org/x%20y#z") == r"https://a.org/x\%20y\#z"
+
+
+def test_space_type_t30_and_provides_filters():
+    irs = pd.DataFrame({"ir_id": list("abcd"), "space": ["s1", "s2", "s3", "s4"], "format": "mono", "is_primary": True,
+                        "origin": "measured", "grade": "A", "dataset": ["d1", "d1", "d2", "d2"],
+                        "space_type": ["concert_hall", "worship", "domestic", "concert_hall"],
+                        "rt_mid": [1.8, 2.6, 0.4, np.nan]})
+    datasets = pd.DataFrame({"dataset": ["d1", "d2"], "provides_positions": ["yes", "partial"],
+                             "provides_geometry": ["no", "yes"]})
+    ids = lambda **kw: matching(irs, Query(**kw), datasets)["ir_id"].tolist()
+    assert ids(space_type=["concert_hall", "worship"]) == ["a", "b", "d"]
+    assert ids(t30="1.25-2.5") == ["a"] and ids(t30="2.5-") == ["b"]          # no rt_mid: never kept
+    assert ids(provides=["positions"]) == ["a", "b", "c", "d"]                  # yes or partly
+    assert ids(provides=["positions", "geometry"]) == ["c", "d"]                # all of them
+    assert t30_range("0-0.315") == (0.0, 0.315)
+    for bad in ("1.2", "2-1", "a-b"):
+        with pytest.raises(ValueError, match="not a range"):
+            t30_range(bad)

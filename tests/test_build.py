@@ -73,3 +73,18 @@ def test_no_noise_floor_is_no_defect():
                       "v1_clipped": False, "v1_nonfinite": False, "v1_all_zero": False, "v1_quantized_tail": False,
                       "dc_offset_db": -120.0, "peak_to_noise_db": [np.inf, 20.0, np.nan]})
     assert defects(m, pd.Series(["mono"] * 3))["defect_high_noise_floor"].tolist() == [False, True, pd.NA]
+
+
+def test_what_it_is_comes_from_the_registry():
+    """The datasets table carries the registry's words: description, provider, what the authors provide, caveats."""
+    from rirdb.build import what_it_is
+    from rirdb.registry import Dataset
+
+    d = Dataset.model_validate({
+        "id": "x", "name": "X", "type": "measured", "status": "catalogued", "content": "Two  rooms,\n measured.",
+        "license": {"spdx": "CC-BY-4.0"}, "room_info": {"positions": "yes", "volume": "no", "where": "paper, section 2"},
+        "web_check": {"institution": "Somewhere", "country": "UK", "caveats": ["One.", "Two\n lines."]}})
+    w = what_it_is(d)
+    assert w["description"] == "Two rooms, measured." and w["institution"] == "Somewhere" and w["country"] == "UK"
+    assert (w["provides_positions"], w["provides_volume"], w["provides_geometry"]) == ("yes", "no", "")
+    assert w["provides_where"] == "paper, section 2" and w["caveats"] == "One.\nTwo lines."

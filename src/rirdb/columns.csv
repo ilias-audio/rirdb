@@ -109,6 +109,8 @@ spaces,label,string,,,,,always,the dataset gives no readable name,"The name of t
 spaces,space_type,string,,anechoic|circulation|concert_hall|device|domestic|hospitality_retail|industrial|laboratory|large_structure|lecture_classroom|office_meeting|outdoor|public_interior|scale_model|sports_leisure|stairwell|studio_booth|theatre_auditorium|transport_hub|tunnel_underpass|underground|vehicle|virtual|worship|unknown,,,always,never empty,The kind of space (as irs.space_type),registry
 spaces,origin,string,,measured|simulated|device,,,always,never empty,How its IRs came to exist (as irs.origin),registry
 spaces,volume_m3,float,m3,,0,10000000,always,the dataset does not state the volume,Volume of the space,registry
+spaces,dims_m,string,m,,,,always,the dataset does not state the size,"The size of the space as stated, length x width x height",registry
+spaces,note,string,,,,,always,none,A note on the space,registry
 spaces,licence,string,,,,,always,never empty,"The licence of the space's IRs: its own, else the dataset's",registry
 spaces,redistribute,string,,yes|unaltered_only|no|unknown,,,always,never empty,May its audio be passed on to others? Read from licences.csv,build
 spaces,attribution,string,,,,,always,the licence asks for no attribution line of its own,"The attribution line the licence asks for, as written by the authors",registry
@@ -131,6 +133,24 @@ datasets,homepage,string,,,,,always,none known,The dataset's landing page,regist
 datasets,doi,string,,,,,always,the dataset has no DOI,The dataset's DOI,registry
 datasets,paper_title,string,,,,,the authors describe the dataset in a paper,no paper is recorded,"The title of the paper that describes the dataset (references.bib cites it)",registry
 datasets,paper_url,string,,,,,the authors describe the dataset in a paper,no paper is recorded,The link to that paper,registry
+datasets,description,string,,,,,always,never empty,"What the dataset holds, in one or two sentences",registry
+datasets,institution,string,,,,,always,not recorded,The institution or group that published it,registry
+datasets,country,string,,,,,always,not recorded,The country of that institution,registry
+datasets,host,string,,,,,always,not recorded,"Where the files are hosted: a repository or a website",registry
+datasets,size_stated,string,,,,,always,not recorded,"The download size as the authors' pages state it, in words",registry
+datasets,file_formats,string,,,,,always,not recorded,"The file formats as published, in words",registry
+datasets,formats_stated,string,,,,,always,not recorded,"The formats the authors' pages name, comma-separated: mono, stereo, binaural, ambisonic, array",registry
+datasets,facts_checked_on,string,,,,,always,not checked,"The date the authors' pages were last read for these facts (YYYY-MM-DD)",registry
+datasets,provides_dimensions,string,,yes|partial|no,,,always,not checked,"Whether the authors publish the size of the rooms (partial: some rooms, or approximate)",registry
+datasets,provides_volume,string,,yes|partial|no,,,always,not checked,Whether the authors state the volume of the rooms,registry
+datasets,provides_geometry,string,,yes|partial|no,,,always,not checked,"Whether the authors publish a 3D model, CAD drawings or plans",registry
+datasets,provides_materials,string,,yes|partial|no,,,always,not checked,Whether the authors publish the surface materials or their absorption,registry
+datasets,provides_positions,string,,yes|partial|no,,,always,not checked,Whether the authors publish source and receiver coordinates,registry
+datasets,provides_images,string,,yes|partial|no,,,always,not checked,"Whether the authors publish photos, panoramas or layout drawings",registry
+datasets,provides_reference_acoustics,string,,yes|partial|no,,,always,not checked,"Whether the authors publish their own room values (T60, ISO 3382)",registry
+datasets,provides_conditions,string,,yes|partial|no,,,always,not checked,"Whether the authors vary the room on purpose (panels, furniture, absorbers, doors) and say how",registry
+datasets,provides_where,string,,,,,always,not recorded,"Where to find what the authors provide: files, or sections of the paper",registry
+datasets,caveats,string,,,,,always,none recorded,"What to know before downloading, one item per line",registry
 datasets,reader,string,,,,,the dataset is pinned,not pinned yet,The reader that lists its IRs,registry
 datasets,reader_settings,string,,,,,the dataset is measured,not measured yet,"The reader's settings, as JSON ({} when it has none). With readers.<dataset>, what get needs to cut one IR out of a published file",registry
 datasets,pinned_version,string,,,,,the dataset is pinned,not pinned yet,The version of the files that is pinned,pin
@@ -139,7 +159,7 @@ datasets,cap,int,,,1,,always,every IR is measured (no sample),"IRs measured per 
 datasets,n_irs_stated,int,,,0,,always,the authors state no count,Number of IRs the authors state,registry
 datasets,n_irs_found,int,,,0,,the dataset is indexed,not indexed yet,Number of IRs found in the pinned files,build
 datasets,n_irs,int,,,0,,the dataset is indexed,not indexed yet,Number of rows in irs,build
-datasets,known_issues,string,,,,,always,none recorded,The known issues from the findings log,registry
+datasets,known_issues,string,,,,,always,none recorded,What to know about the dataset: its notes in the registry,registry
 datasets,reference_check,string,,checked|published_not_checked|none_published,,,always,never empty,Whether our values were compared with values the authors publish,build
 datasets,reference_median_ratio,float,,,0,10,reference_check is checked,not checked,Median ratio of our value to the published one,build
 downloads,dataset,string,,,,,always,never empty,The dataset id,pin

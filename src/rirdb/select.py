@@ -31,6 +31,7 @@ ORIGINS = ["measured", "simulated", "device"]
 BALANCES = ["none", "space", "dataset", "t30"]
 CHANNELS_OUT = {"mono": 1, "stereo": 2, "binaural": 2}   # ambisonic: as published (4 for first order)
 T30_BINS = np.geomspace(0.1, 10, 21)                     # --balance t30: 20 bins of rt_mid, equal in log time
+PROVIDES = ["dimensions", "volume", "geometry", "materials", "positions", "images", "reference_acoustics", "conditions"]
 
 
 @dataclass
@@ -46,6 +47,9 @@ class Query:
     n: int | None = None           # draw this many (all when None)
     balance: str = "none"
     seed: int = 0
+    space_type: list[str] = field(default_factory=list)   # any of these room types
+    t30: str | None = None                                 # rt_mid from MIN up to MAX seconds, "1.2-2.5"; "2.5-": no top
+    provides: list[str] = field(default_factory=list)     # the authors provide all of these (yes or partly)
 
     def check(self, datasets: pd.DataFrame) -> None:
         for name, value, allowed in (("use", self.use, [None, *USES]), ("format", self.format, [None, *FORMATS]),
@@ -58,10 +62,18 @@ class Query:
             raise ValueError(f"no dataset {', '.join(unknown)} in release {client.version()} (`rirdb search` lists them)")
         if self.n is not None and self.n < 1:
             raise ValueError("n must be at least 1")
+        bad = sorted(set(self.space_type) - set(allowed_values("irs", "space_type")))
+        if bad:
+            raise ValueError(f"space type {', '.join(bad)} is not one of {', '.join(allowed_values('irs', 'space_type'))}")
+        bad = sorted(set(self.provides) - set(PROVIDES))
+        if bad:
+            raise ValueError(f"provides {', '.join(bad)} is not one of {', '.join(PROVIDES)}")
+        if self.t30 is not None:
+            t30_range(self.t30)
 
 
-def matching(irs: pd.DataFrame, q: Query) -> pd.DataFrame:
-    """The rows of irs that the query keeps."""
+def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) -> pd.DataFrame:
+    """The rows of irs that the query keeps. `datasets` (the datasets table) is needed only for `provides`."""
     keep = pd.Series(True, index=irs.index)
     if q.dataset:
         keep &= irs["dataset"].isin(q.dataset)
@@ -74,6 +86,18 @@ def matching(irs: pd.DataFrame, q: Query) -> pd.DataFrame:
         keep &= irs["origin"].eq(q.origin)
     if q.grade != "any":
         keep &= irs["grade"].isin(GRADES[:GRADES.index(q.grade) + 1])
+    if q.space_type:
+        keep &= irs["space_type"].isin(q.space_type)
+    if q.t30:
+        lo, hi = t30_range(q.t30)
+        rt = irs["rt_mid"]
+        keep &= rt.notna() & (rt >= lo) & (rt < hi if hi is not None else True)
+    if q.provides:
+        ds = client.table("datasets") if datasets is None else datasets
+        ok = pd.Series(True, index=ds.index)
+        for p in q.provides:
+            ok &= ds[f"provides_{p}"].isin(["yes", "partial"])
+        keep &= irs["dataset"].isin(ds.loc[ok, "dataset"])
     if q.format == "mono":                       # last: "has a mono row" among the rows the other filters keep
         has_mono = irs.loc[keep & irs["format"].eq("mono"), "space"].unique()
         keep &= irs["format"].eq("mono") | (irs["format"].eq("ambisonic") & ~irs["space"].isin(has_mono))
@@ -82,6 +106,27 @@ def matching(irs: pd.DataFrame, q: Query) -> pd.DataFrame:
     else:
         keep &= irs["is_primary"].astype(bool)
     return irs[keep]
+
+
+def t30_range(text: str) -> tuple[float, float | None]:
+    """"1.2-2.5" -> (1.2, 2.5); "2.5-" -> (2.5, None): rt_mid from the first number up to, not including, the second."""
+    lo, sep, hi = text.partition("-")
+    try:
+        out = (float(lo), float(hi) if hi.strip() else None)
+    except ValueError:
+        out = None
+    if not sep or out is None or (out[1] is not None and out[1] <= out[0]):
+        raise ValueError(f"t30 {text!r} is not a range in seconds such as 1.2-2.5 (or 2.5- for no upper limit)")
+    return out
+
+
+def allowed_values(table: str, column: str) -> list[str]:
+    """The allowed values of a column, from columns.csv."""
+    import csv
+
+    with open(Path(__file__).with_name("columns.csv"), newline="") as f:
+        row = next(r for r in csv.DictReader(f) if r["table"] == table and r["name"] == column)
+    return row["allowed"].split("|")
 
 
 def weights(rows: pd.DataFrame, balance: str) -> pd.Series:
@@ -166,13 +211,15 @@ class Selection:
 def select(use: str | None = None, format: str | None = None, origin: str = "any", grade: str = "any",
            dataset: list[str] | str | None = None, exclude_dataset: list[str] | str | None = None,
            include_unknown: bool = False, fs: int | None = None, n: int | None = None, balance: str = "none",
-           seed: int = 0) -> Selection:
+           seed: int = 0, space_type: list[str] | str | None = None, t30: str | None = None,
+           provides: list[str] | str | None = None) -> Selection:
     """The IRs of the release that match, one row each, drawn to n with a balance (Python's `rirdb get`)."""
     as_list = lambda v: [v] if isinstance(v, str) else list(v or [])
     q = Query(use, format, origin, grade, as_list(dataset), as_list(exclude_dataset), include_unknown, fs,
-              n, balance, seed)
-    q.check(client.table("datasets"))
-    return Selection(q, draw(matching(client.table("irs"), q), q).reset_index(drop=True))
+              n, balance, seed, as_list(space_type), t30, as_list(provides))
+    datasets = client.table("datasets")
+    q.check(datasets)
+    return Selection(q, draw(matching(client.table("irs"), q, datasets), q).reset_index(drop=True))
 
 
 

@@ -7,8 +7,7 @@ ir_kinds: [room]
 capture_formats: [mono_omni, binaural]
 status: active
 content: Simulated RIRs plus adult and child dummy-head BRIRs for 5 representative shoebox school and preschool
-  rooms, derived from measurements in 27 rooms in Aachen; with position schematics and SketchUp models (one zip,
-  all fetched).
+  rooms, derived from measurements in 27 rooms in Aachen; with position schematics and SketchUp models.
 fs_hz: [44100]
 expected:
   n_irs: 120
@@ -69,4 +68,6 @@ web_check:
   caveats:
   - The IRs are simulated in shoebox models of 5 representative rooms, not measured in the 27 surveyed schools.
   - SketchUp models are included for only 3 of the 5 rooms.
-  - Sample rate and simulation software are not stated on the record page.
+  - The record page does not name the simulation software. The files are 44.1 kHz.
+  - "In the published zip the folders RIR and A-BRIR are swapped: A-BRIR holds the mono RIRs and RIR the adult-head
+    BRIRs (checked on the audio)."

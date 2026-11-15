@@ -1,8 +1,9 @@
 """The numbers the website shows, all computed from the release tables.
 
-  search_data(irs, spaces)   the spaces and the IR counts behind the search on the datasets and spaces pages
-  acoustics(rows)            per dataset: the distributions drawn on its page (T30, T30 per octave, DRR, C50)
-  metadata(rows, own)        per dataset: which metadata it fills, and for what share of its IRs
+  search_data(irs, spaces, datasets)  what the datasets and rooms pages search (written once, as search-data.js)
+  acoustics(rows)                     per dataset: the distributions drawn on its page
+  labels(rows)                        per dataset: which per-IR labels it fills, and for how many IRs
+  space_bands(rows)                   per room: the median T30 in each octave
 
 The axes are the same for every dataset, so two pages can be compared at a glance.
 """
@@ -12,7 +13,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from rirdb.select import GRADES, USES
+from rirdb.select import GRADES, PROVIDES, USES, dataset_download_bytes, size_text
+from rirdb.site.words import kind_of, room_label
 
 # T30 bins: the R10 preferred numbers (ten per decade, equal in log time), 0.05 to 25 s.
 # A value outside counts in the first or last bin.
@@ -22,9 +24,6 @@ T30_EDGES = [0.05, 0.063, 0.08, 0.1, 0.125, 0.16, 0.2, 0.25, 0.315, 0.4, 0.5, 0.
 DB_EDGES = list(range(-20, 32, 2))
 # The octaves drawn on a dataset page (the tables also hold 31.5 Hz and 16 kHz, rarely valid).
 BANDS = [63, 125, 250, 500, 1000, 2000, 4000, 8000]
-SEARCH_FORMATS = ["mono", "stereo", "binaural", "ambisonic"]   # the formats `rirdb search --format` takes
-OCTAVE_NAMES = {31: "31.5 Hz", 63: "63 Hz", 125: "125 Hz", 250: "250 Hz", 500: "500 Hz", 1000: "1 kHz", 2000: "2 kHz",
-                4000: "4 kHz", 8000: "8 kHz", 16000: "16 kHz"}
 
 
 def bin_index(values: pd.Series, edges: list[float]) -> pd.Series:
@@ -48,38 +47,77 @@ def five_numbers(values: pd.Series) -> dict | None:
     return {"p5": q[0], "p25": q[1], "p50": q[2], "p75": q[3], "p95": q[4], "n": len(v)}
 
 
-# ------------------------------------------------------------------------------------- the search
+def primary(irs: pd.DataFrame) -> pd.DataFrame:
+    """One layout per space (a space published in two layouts counts once), as `rirdb search` counts."""
+    return irs[irs["is_primary"].astype(bool)]
 
-def search_data(irs: pd.DataFrame, spaces: pd.DataFrame) -> dict:
-    """What the search on the datasets and spaces pages filters, small enough to sit in the page.
 
-    `spaces`: one entry per space (its dataset, name, type, origin, volume, and medians over its primary rows).
-    `counts`: how many IRs share one space, format, grade, T30 bin and licence uses. A filter keeps or drops
-    whole count rows, so the page can add up the IRs and spaces a query keeps, as `rirdb search` does:
-    without a format, primary rows only; with `mono`, mono rows and the W channel of an Ambisonic row where the
-    space has no mono row. (The command line decides "has no mono row" after the other filters; the page decides
-    it on the whole table. The two differ only for a space whose mono rows another filter removes.)
+def num(x, digits: int = 2):
+    return None if x is None or pd.isna(x) else round(float(x), digits)
+
+
+def text(x) -> str:
+    """A cell as text; a missing value is an empty string."""
+    return "" if x is None or (isinstance(x, float) and pd.isna(x)) else str(x)
+
+
+# ------------------------------------------------------------------------------------------- the search
+
+def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame) -> dict:
+    """What the datasets and rooms pages search, in one object (site.js reads it).
+
+    `datasets`: all of them, measured or not, with what a card shows and what the dataset-level filters read.
+    `spaces`: one entry per room of the measured datasets.
+    `counts`: how many IRs share one room, format, grade, T30 bin and licence uses. A filter keeps or drops whole
+    count rows, so the page adds up the IRs a query keeps as `rirdb search` does: without a format, primary rows
+    only; with `mono`, mono rows and the W channel of an Ambisonic row where the room has no mono row. (The command
+    line decides "has no mono row" after the other filters, the page on the whole table; the two differ only for a
+    room whose mono rows another filter removes.)
     """
+    ds = datasets.sort_values("name", key=lambda s: s.str.lower()).reset_index(drop=True)
+    d_index = {d: i for i, d in enumerate(ds["dataset"])}
     sp = spaces[spaces["n_irs"] > 0].sort_values(["dataset", "space"]).reset_index(drop=True)
-    index = {s: i for i, s in enumerate(sp["space"])}
-    rows = irs[irs["space"].isin(index)]
-    primary = rows[rows["is_primary"].astype(bool)]
-    medians = primary.groupby("space")[["rt_mid", "drr_db"]].median()
-    formats = rows.groupby("space")["format"].agg(lambda f: sorted(set(f)))
+    s_index = {s: i for i, s in enumerate(sp["space"])}
+    rows = irs[irs["space"].isin(s_index)]
+    prim = primary(rows)
+    medians = prim.groupby("space")[["rt_mid", "drr_db"]].median()
+    space_formats = rows.groupby("space")["format"].agg(lambda f: sorted(set(f)))
     has_mono = set(rows.loc[rows["format"].eq("mono"), "space"])
+    room_words = (sp["label"].fillna("") + " " + sp["space_type"]).groupby(sp["dataset"]).agg(" ".join)
 
-    def num(x, digits=2):
-        return None if pd.isna(x) else round(float(x), digits)
+    def card(d) -> dict:
+        i = d["dataset"]
+        mine, mine_p = rows[rows["dataset"] == i], prim[prim["dataset"] == i]
+        measured = d["status"] == "measured"
+        formats = sorted(mine["format"].unique()) if measured else \
+            [f.strip() for f in (d["formats_stated"] or "").split(",") if f.strip()]
+        size, unknown = dataset_download_bytes(i) if measured else (0, 0)
+        words = " ".join(str(x) for x in (d["name"], i, d["description"], d["institution"], d["country"], d["host"],
+                                         d["file_formats"], room_words.get(i, "")) if x)
+        return {
+            "id": i, "name": d["name"], "year": None if pd.isna(d["year"]) else int(d["year"]),
+            "by": ", ".join(x for x in (d["institution"], d["country"]) if x), "status": d["status"],
+            "origin": d["origin"], "description": d["description"], "licence": d["licence"],
+            "uses": {u: d[c] for u, c in USES.items()}, "formats": formats,
+            "provides": [p for p in PROVIDES if d[f"provides_{p}"] in ("yes", "partial")],
+            "size": size_text(size, unknown) if measured else (d["size_stated"] or ""),
+            "n": int(len(mine_p)), "rooms": int(mine_p["space"].nunique()),
+            "t30": histogram(mine_p["rt_mid"], T30_EDGES) if measured else [],
+            "t30_median": num(mine_p["rt_mid"].median()) if measured else None,
+            "grades": {g: int(n) for g, n in mine["grade"].replace("", "none").value_counts().items()},
+            "text": words.lower(),
+        }
 
     space_list = [{
-        "id": s["space"], "dataset": s["dataset"], "label": s["label"] or s["space"].split("/", 1)[1],
-        "type": s["space_type"], "origin": s["origin"], "volume": num(s["volume_m3"], 1),
+        "id": s["space"], "d": d_index[s["dataset"]], "label": room_label(s["label"], s["space"]),
+        "type": s["space_type"], "origin": s["origin"], "kind": kind_of(s["space_type"], s["origin"]),
+        "volume": num(s["volume_m3"], 0), "dims": text(s.get("dims_m")),
         "t30": num(medians["rt_mid"].get(s["space"])), "drr": num(medians["drr_db"].get(s["space"]), 1),
-        "formats": formats.get(s["space"], []), "licence": s["licence"], "n": int(s["n_irs"]),
+        "formats": space_formats.get(s["space"], []), "same_as": text(s["same_as"]),
     } for _, s in sp.iterrows()]
 
     keyed = pd.DataFrame({
-        "space": rows["space"].map(index),
+        "space": rows["space"].map(s_index),
         "format": rows["format"],
         "grade": rows["grade"].fillna("").replace("", "-"),
         "t30": bin_index(rows["rt_mid"], T30_EDGES),
@@ -89,53 +127,24 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame) -> dict:
     })
     counts = keyed.groupby(list(keyed.columns), sort=True).size().reset_index(name="n")
     return {
-        "t30_edges": T30_EDGES, "grades": GRADES, "formats": SEARCH_FORMATS, "uses": list(USES),
-        "columns": list(counts.columns), "counts": counts.to_numpy().tolist(), "spaces": space_list,
+        "t30_edges": T30_EDGES, "grades": GRADES, "columns": list(counts.columns),
+        "counts": counts.to_numpy().tolist(), "spaces": space_list,
+        "datasets": [card(d) for _, d in ds.iterrows()],
     }
 
 
-# ------------------------------------------------------------------------------------- one dataset
+# ------------------------------------------------------------------------------------------- one dataset
 
 def acoustics(rows: pd.DataFrame) -> dict:
-    """The distributions drawn on a dataset page, over its primary rows (a space in two layouts counts once)."""
+    """The distributions drawn on a dataset page, over its primary rows."""
     return {
-        "t30": histogram(rows["rt_mid"], T30_EDGES),
-        "t30_n": int(rows["rt_mid"].notna().sum()),
+        "t30": histogram(rows["rt_mid"], T30_EDGES), "t30_n": int(rows["rt_mid"].notna().sum()),
         "bands": {b: five_numbers(rows[f"t30_{b}"]) for b in BANDS},
-        "drr": histogram(rows["drr_db"], DB_EDGES),
-        "drr_n": int(rows["drr_db"].notna().sum()),
-        "c50": histogram(rows["c50_mid"], DB_EDGES),
-        "c50_n": int(rows["c50_mid"].notna().sum()),
+        "drr": histogram(rows["drr_db"], DB_EDGES), "drr_n": int(rows["drr_db"].notna().sum()),
+        "c50": histogram(rows["c50_mid"], DB_EDGES), "c50_n": int(rows["c50_mid"].notna().sum()),
         "ranges": {c: five_numbers(rows[c]) for c in ("rt_mid", "edt_mid", "drr_db", "c50_mid", "sti",
                                                       "distance_m", "volume_m3")},
     }
-
-
-# What the metadata panel lists: (group, what it is, the columns that must all be filled for an IR to count).
-METADATA = [
-    ("Positions and room", "source position", ["src_x", "src_y", "src_z"]),
-    ("Positions and room", "receiver position", ["rcv_x", "rcv_y", "rcv_z"]),
-    ("Positions and room", "source-receiver distance", ["distance_m"]),
-    ("Positions and room", "room volume", ["volume_m3"]),
-    ("Setup", "condition (state of the room)", ["condition"]),
-    ("Setup", "source label", ["source"]),
-    ("Setup", "receiver label", ["receiver"]),
-    ("Room values", "T30 / T20 (rt_mid)", ["rt_mid"]),
-    ("Room values", "T30 over the whole band", ["rt_broadband"]),
-    ("Room values", "EDT", ["edt_mid"]),
-    ("Room values", "DRR", ["drr_db"]),
-    ("Room values", "C50 and C80", ["c50_mid", "c80_mid"]),
-    ("Room values", "D50 and centre time", ["d50_mid", "ts_mid"]),
-    ("Room values", "STI", ["sti"]),
-    ("Room values", "bass and treble ratio", ["bass_ratio", "treble_ratio"]),
-    ("Room values", "mixing time", ["mixing_time_ms"]),
-    ("Room values", "early IACC (binaural)", ["iacc_early"]),
-    ("Room values", "lateral fraction", ["lateral_fraction"]),
-    *[("T30 per octave", OCTAVE_NAMES[b], [f"t30_{b}"]) for b in [31, *BANDS, 16000]],
-    ("Signal", "usable top frequency", ["usable_top_hz"]),
-    ("Signal", "effective bit depth", ["effective_bits"]),
-    ("Signal", "peak-to-noise ratio", ["peak_to_noise_db"]),
-]
 
 
 def filled(rows: pd.DataFrame, col: str) -> pd.Series:
@@ -144,22 +153,39 @@ def filled(rows: pd.DataFrame, col: str) -> pd.Series:
     return v.notna() & v.astype(str).ne("")
 
 
-def metadata(rows: pd.DataFrame, own: pd.DataFrame | None) -> list[dict]:
-    """For each entry of METADATA, and for each of the dataset's own fields (source_meta), the IRs that have it."""
+# The per-IR labels a dataset may fill: (what it is, the columns that must all be filled).
+LABELS = [("room condition", ["condition"]), ("source name", ["source"]), ("receiver name", ["receiver"]),
+          ("source position", ["src_x", "src_y", "src_z"]), ("receiver position", ["rcv_x", "rcv_y", "rcv_z"]),
+          ("source-receiver distance", ["distance_m"]), ("room volume", ["volume_m3"])]
+
+
+def labels(rows: pd.DataFrame) -> list[tuple[str, int, int]]:
+    """For each per-IR label: (what it is, IRs that have it, IRs)."""
     out = []
-    for group, label, cols in METADATA:
+    for what, cols in LABELS:
         have = pd.Series(True, index=rows.index)
         for c in cols:
             have &= filled(rows, c)
-        out.append({"group": group, "label": label, "columns": cols, "n": int(have.sum()), "of": len(rows)})
-    if own is not None and len(own):
-        mine = own[own["ir_id"].isin(rows["ir_id"])]
-        for c in own.columns.drop("ir_id"):
-            out.append({"group": "The dataset's own fields", "label": c, "columns": [],
-                        "n": int(filled(mine, c).sum()), "of": len(rows)})
+        out.append((what, int(have.sum()), len(rows)))
+    return out
+
+
+def own_fields(own: pd.DataFrame | None, ids: pd.Series) -> list[tuple[str, int, list[str]]]:
+    """The dataset's own per-IR fields (source_meta): (name, distinct values, up to three examples).
+    Container boilerplate (the SOFA convention's name) is left out."""
+    if own is None or own.empty:
+        return []
+    mine = own[own["ir_id"].isin(ids)]
+    out = []
+    for c in mine.columns.drop("ir_id"):
+        if c == "sofa_conventions":
+            continue
+        v = mine[c][filled(mine, c)].astype(str)
+        if not v.empty:
+            out.append((c, int(v.nunique()), list(dict.fromkeys(v))[:3]))
     return out
 
 
 def space_bands(rows: pd.DataFrame) -> pd.DataFrame:
-    """Median T30 per octave for each space (primary rows), for the small curve in the spaces table."""
+    """Median T30 per octave for each space (primary rows), for the small curve in the rooms list."""
     return rows.groupby("space")[[f"t30_{b}" for b in BANDS]].median()

@@ -1,8 +1,8 @@
 """The charts of the website, as SVG written in Python: no chart library, and they show without JavaScript.
 
-Every mark has a <title>, which the browser shows on hover (site.js turns it into a nicer tooltip), and every
-chart sits next to a table of its numbers. Colours come from style.css (classes mark, wash, grid, axis), so
-they follow the light or dark theme.
+Every mark carries a <title>, shown on hover and keyboard focus (site.js turns it into a tooltip). Colours come
+from style.css (classes bar, outline, grid, axis, k-room ...), so they follow the light or dark theme. Every chart
+of a dataset page uses the same axes on every page, so two datasets compare at a glance.
 """
 
 from __future__ import annotations
@@ -10,71 +10,63 @@ from __future__ import annotations
 import math
 from html import escape
 
-W, H = 400, 190                   # the drawing's own units; it scales to the width of its box (about 1:1 on a
-                                  # desktop, so the 11 px labels stay readable on a phone too)
-LEFT, RIGHT, TOP, BOTTOM = 44, 8, 10, 30
+W, H = 420, 190                   # the drawing's own units; it scales to its box (about 1:1 on a desktop)
+LEFT, RIGHT, TOP, BOTTOM = 40, 10, 16, 34
 
 
-def _svg(body: str, label: str, w: int = W, h: int = H) -> str:
-    return (f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(label)}" '
-            f'preserveAspectRatio="xMidYMid meet">{body}</svg>')
+def _svg(body: str, label: str, w: int = W, h: int = H, cls: str = "chart") -> str:
+    return f'<svg class="{cls}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(label)}">{body}</svg>'
 
 
-def _column(x: float, y: float, w: float, base: float) -> str:
-    """A column from the baseline up to y: square at the baseline, 4 px rounded at the top (data end)."""
-    r = min(4.0, w / 2, max(base - y, 0) / 2)
-    return (f"M{x:.1f},{base:.1f}V{y + r:.1f}Q{x:.1f},{y:.1f} {x + r:.1f},{y:.1f}H{x + w - r:.1f}"
-            f"Q{x + w:.1f},{y:.1f} {x + w:.1f},{y + r:.1f}V{base:.1f}Z")
+def _log_x(lo: float, hi: float, x0: float, width: float):
+    return lambda v: x0 + width * math.log(min(max(v, lo), hi) / lo) / math.log(hi / lo)
 
 
-def _nice_max(n: int) -> int:
-    """The top of a count axis: 1, 2 or 5 times a power of ten, at or above n."""
-    if n <= 5:
-        return max(n, 1)
-    p = 10 ** math.floor(math.log10(n))
-    return next(m * p for m in (1, 2, 5, 10) if m * p >= n)
-
-
-def _count(n: float) -> str:
-    return f"{n / 1000:g}K" if n >= 10000 else f"{n:,.0f}"
-
-
-def histogram(counts: list[int], edges: list[float], unit: str, label: str, ticks: list[float],
-              log: bool = False, fmt=lambda v: f"{v:g}") -> str:
-    """Columns of counts over bins of equal width on the axis (equal in log time when `log`)."""
-    n_bins = len(counts)
-    plot_w, base = W - LEFT - RIGHT, H - BOTTOM
-    top = _nice_max(max(counts) if counts else 0)
+def histogram(counts: list[int], corpus: list[int], edges: list[float], *, unit: str, axis: str, label: str,
+              ticks: list[float], log: bool = False, fmt=lambda v: f"{v:g}", median: float | None = None) -> str:
+    """The share of a dataset's IRs in each bin (columns), over the share of the whole collection (grey outline).
+    Bins are equal on the axis (equal in log time when `log`); the end bins hold everything beyond them."""
+    n_bins, plot_w, base = len(counts), W - LEFT - RIGHT, H - BOTTOM
+    total, ctotal = sum(counts) or 1, sum(corpus) or 1
+    share, cshare = [n / total for n in counts], [n / ctotal for n in corpus]
+    top = max(max(share), max(cshare)) * 1.1 or 1
     step = plot_w / n_bins
-    pos = (lambda v: LEFT + plot_w * (math.log(v / edges[0]) / math.log(edges[-1] / edges[0]))) if log else \
-          (lambda v: LEFT + plot_w * (v - edges[0]) / (edges[-1] - edges[0]))
+    y = lambda v: base - (base - TOP) * v / top
+    x = _log_x(edges[0], edges[-1], LEFT, plot_w) if log else \
+        (lambda v: LEFT + plot_w * (v - edges[0]) / (edges[-1] - edges[0]))
+    grid = max(5, int(top * 100 // 2 // 5 * 5))                   # a round percentage near half the top
     parts = []
-    for frac in (0, 0.5, 1):                                    # count gridlines: 0, half, top
-        y = base - frac * (base - TOP)
-        parts.append(f'<line class="grid" x1="{LEFT}" x2="{W - RIGHT}" y1="{y:.1f}" y2="{y:.1f}"/>'
-                     f'<text class="tick" x="{LEFT - 6}" y="{y + 4:.1f}" text-anchor="end">{_count(frac * top)}</text>')
+    for p in (grid, 2 * grid):
+        if p / 100 < top:
+            parts.append(f'<line class="grid" x1="{LEFT}" x2="{W - RIGHT}" y1="{y(p / 100):.1f}" y2="{y(p / 100):.1f}"/>'
+                         f'<text x="{LEFT - 6}" y="{y(p / 100) + 4:.1f}" text-anchor="end">{p} %</text>')
     for t in ticks:
-        x = pos(t)
-        parts.append(f'<text class="tick" x="{x:.1f}" y="{base + 16}" text-anchor="middle">{escape(fmt(t))}</text>')
-    parts.append(f'<text class="tick" x="{W - RIGHT}" y="{H - 2}" text-anchor="end">{escape(unit)}</text>')
-    w = min(24.0, step - 2)                                     # 2 px of air between neighbours
-    for i, n in enumerate(counts):
+        parts.append(f'<text x="{x(t):.1f}" y="{base + 15}" text-anchor="middle">{escape(fmt(t))}</text>')
+    parts.append(f'<text x="{W - RIGHT}" y="{H - 3}" text-anchor="end">{escape(axis)}</text>')
+    bw = min(24.0, step - 2)
+    for i, (n, v) in enumerate(zip(counts, share)):
         lo, hi = edges[i], edges[i + 1]
-        first, last = i == 0, i == n_bins - 1
-        span = (f"below {fmt(hi)}" if first else f"{fmt(lo)} or more" if last else f"{fmt(lo)} to {fmt(hi)}")
-        tip = f"{n:,} IRs: {span} {unit}"
-        x = LEFT + i * step + (step - w) / 2
-        mark = f'<path class="mark" d="{_column(x, base - (base - TOP) * n / top, w, base)}"/>' if n else ""
-        parts.append(f'<g class="hit" tabindex="0"><title>{escape(tip)}</title>'
-                     f'<rect class="target" x="{LEFT + i * step:.1f}" y="{TOP}" width="{step:.1f}" '
-                     f'height="{base - TOP}"/>{mark}</g>')
+        span = f"below {fmt(hi)}" if i == 0 else f"{fmt(lo)} or more" if i == n_bins - 1 else f"{fmt(lo)} to {fmt(hi)}"
+        tip = f"{n:,} IRs ({v:.0%}) {span} {unit}; whole collection {cshare[i]:.0%}"
+        bar = (f'<rect class="bar" x="{LEFT + i * step + (step - bw) / 2:.1f}" y="{y(v):.1f}" width="{bw:.1f}" '
+               f'height="{base - y(v):.1f}" rx="2"/>') if n else ""
+        parts.append(f'<g class="hit" tabindex="0"><title>{escape(tip)}</title><rect class="target" '
+                     f'x="{LEFT + i * step:.1f}" y="{TOP}" width="{step:.1f}" height="{base - TOP}"/>{bar}</g>')
+    path = f"M{LEFT},{base}" + "".join(f"V{y(v):.1f}H{LEFT + (i + 1) * step:.1f}" for i, v in enumerate(cshare))
+    parts.append(f'<path class="outline" d="{path}V{base}"/>')
+    if median is not None:
+        mx = x(median)
+        anchor, dx = ("end", -5) if mx > LEFT + plot_w * 0.72 else ("start", 5)
+        parts.append(f'<line class="median" x1="{mx:.1f}" x2="{mx:.1f}" y1="{TOP - 6}" y2="{base}"/>'
+                     f'<text class="label" x="{mx + dx:.1f}" y="{TOP + 2}" text-anchor="{anchor}">median '
+                     f'{escape(fmt(round(median, 2)))} {escape(unit)}</text>')
     parts.append(f'<line class="axis" x1="{LEFT}" x2="{W - RIGHT}" y1="{base}" y2="{base}"/>')
     return _svg("".join(parts), label)
 
 
-def band_boxes(stats: dict[int, dict | None], label: str, lo: float = 0.05, hi: float = 25) -> str:
-    """One box per octave on a log time axis: the box spans the 25th to 75th percentile, the line through it
-    is the median, the whiskers reach the 5th and 95th percentile."""
+def band_boxes(stats: dict[int, dict | None], names: list[str], label: str, lo: float = 0.05, hi: float = 25) -> str:
+    """One box per octave on a log time axis: the box spans the middle half of the IRs, the line across it is the
+    median, the whiskers reach the 5th and 95th percentiles."""
     bands = list(stats)
     plot_w, base = W - LEFT - RIGHT, H - BOTTOM
     step = plot_w / len(bands)
@@ -82,83 +74,85 @@ def band_boxes(stats: dict[int, dict | None], label: str, lo: float = 0.05, hi: 
     parts = []
     for t in (0.1, 0.3, 1, 3, 10):
         parts.append(f'<line class="grid" x1="{LEFT}" x2="{W - RIGHT}" y1="{y(t):.1f}" y2="{y(t):.1f}"/>'
-                     f'<text class="tick" x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">{t:g} s</text>')
-    w = min(24.0, step - 2)
-    for i, b in enumerate(bands):
+                     f'<text x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">{t:g} s</text>')
+    bw = min(22.0, step - 10)
+    for i, (b, name) in enumerate(zip(bands, names)):
         cx = LEFT + (i + 0.5) * step
-        name = f"{b:g} Hz" if b < 1000 else f"{b / 1000:g} kHz"
-        parts.append(f'<text class="tick" x="{cx:.1f}" y="{base + 16}" text-anchor="middle">{name}</text>')
+        parts.append(f'<text x="{cx:.1f}" y="{base + 15}" text-anchor="middle">{escape(name)}</text>')
         s = stats[b]
         if not s:
-            parts.append(f'<g class="hit" tabindex="0"><title>{name}: no valid T30</title>'
-                         f'<rect class="target" x="{cx - step / 2:.1f}" y="{TOP}" width="{step:.1f}" '
-                         f'height="{base - TOP}"/></g>')
+            parts.append(f'<g class="hit" tabindex="0"><title>{escape(name)}: no valid T30</title><rect class="target" '
+                         f'x="{cx - step / 2:.1f}" y="{TOP}" width="{step:.1f}" height="{base - TOP}"/></g>')
             continue
-        tip = (f"{name}: median {s['p50']:.2f} s, half of the IRs between {s['p25']:.2f} and {s['p75']:.2f} s, "
-               f"90 % between {s['p5']:.2f} and {s['p95']:.2f} s ({s['n']:,} IRs with a valid T30)")
-        box_top, box_bottom = y(s["p75"]), y(s["p25"])
+        tip = (f"{name}: median {s['p50']:.2f} s; half of the IRs between {s['p25']:.2f} and {s['p75']:.2f} s; "
+               f"90 % between {s['p5']:.2f} and {s['p95']:.2f} s ({s['n']:,} IRs)")
         parts.append(
             f'<g class="hit" tabindex="0"><title>{escape(tip)}</title>'
             f'<rect class="target" x="{cx - step / 2:.1f}" y="{TOP}" width="{step:.1f}" height="{base - TOP}"/>'
             f'<line class="whisker" x1="{cx:.1f}" x2="{cx:.1f}" y1="{y(s["p95"]):.1f}" y2="{y(s["p5"]):.1f}"/>'
-            f'<rect class="mark" x="{cx - w / 2:.1f}" y="{box_top:.1f}" width="{w:.1f}" '
-            f'height="{max(box_bottom - box_top, 2):.1f}" rx="3"/>'
-            f'<line class="median" x1="{cx - w / 2:.1f}" x2="{cx + w / 2:.1f}" y1="{y(s["p50"]):.1f}" '
+            f'<rect class="bar" x="{cx - bw / 2:.1f}" y="{y(s["p75"]):.1f}" width="{bw:.1f}" '
+            f'height="{max(y(s["p25"]) - y(s["p75"]), 2):.1f}" rx="2"/>'
+            f'<line class="mid" x1="{cx - bw / 2:.1f}" x2="{cx + bw / 2:.1f}" y1="{y(s["p50"]):.1f}" '
             f'y2="{y(s["p50"]):.1f}"/></g>')
-    parts.append(f'<line class="axis" x1="{LEFT}" x2="{W - RIGHT}" y1="{base}" y2="{base}"/>')
+    parts.append(f'<text x="{W - RIGHT}" y="{H - 3}" text-anchor="end">octave band</text>'
+                 f'<line class="axis" x1="{LEFT}" x2="{W - RIGHT}" y1="{base}" y2="{base}"/>')
     return _svg("".join(parts), label)
 
 
 def band_curve(values: list[float | None], names: list[str], lo: float = 0.1, hi: float = 10) -> str:
-    """A small line of the median T30 per octave of one space, on a fixed log axis (0.1 to 10 s), so the curves
-    of two spaces compare. A missing octave breaks the line."""
-    w, h, pad = 96, 24, 3
+    """A small line of a room's median T30 per octave, on a fixed log axis (0.1 to 10 s, the faint line at 1 s), so
+    the curves of two rooms compare. A missing octave breaks the line."""
+    w, h, pad = 110, 30, 3
     x = lambda i: pad + (w - 2 * pad) * i / (len(values) - 1)
     y = lambda v: h - pad - (h - 2 * pad) * math.log(min(max(v, lo), hi) / lo) / math.log(hi / lo)
-    segments, current = [], []
+    runs, run = [], []
     for i, v in enumerate(values):
         if v is None:
-            if current:
-                segments.append(current)
-            current = []
+            runs, run = (runs + [run] if run else runs), []
         else:
-            current.append(f"{x(i):.1f},{y(v):.1f}")
-    if current:
-        segments.append(current)
-    if not segments:
+            run.append((x(i), y(v)))
+    runs += [run] if run else []
+    if not runs:
         return ""
-    lines = "".join(f'<polyline class="line" points="{" ".join(s)}"/>' if len(s) > 1 else
-                    f'<circle class="dot" cx="{s[0].split(",")[0]}" cy="{s[0].split(",")[1]}" r="2"/>'
-                    for s in segments)
+    marks = "".join(f'<polyline class="line" points="{" ".join(f"{a:.1f},{b:.1f}" for a, b in r)}"/>' if len(r) > 1
+                    else f'<circle class="dot" cx="{r[0][0]:.1f}" cy="{r[0][1]:.1f}" r="2"/>' for r in runs)
     tip = ", ".join(f"{n} {v:.2f} s" for n, v in zip(names, values) if v is not None)
-    return (f'<svg class="curve" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" '
-            f'aria-label="median T30 per octave: {escape(tip)}"><title>Median T30: {escape(tip)}</title>'
-            f'<line class="grid" x1="{pad}" x2="{w - pad}" y1="{y(1):.1f}" y2="{y(1):.1f}"/>{lines}</svg>')
+    return (f'<svg class="curve" viewBox="0 0 {w} {h}" role="img" aria-label="Median T30 per octave: {escape(tip)}">'
+            f'<title>Median T30: {escape(tip)}</title><line class="grid" x1="{pad}" x2="{w - pad}" y1="{y(1):.1f}" '
+            f'y2="{y(1):.1f}"/>{marks}</svg>')
 
 
-def scatter(points: list[dict], label: str, x_lo: float = 0.05, x_hi: float = 25, y_lo: float = -40,
-            y_hi: float = 40) -> str:
-    """The spaces page: one dot per space, median T30 (log) against median DRR. Each dot has data-i, the space's
-    index in the page's data, so site.js can hide the dots a filter removes."""
-    w, h = 960, 400                                             # wider and taller: 900 dots, a page wide
+def scatter(points: list[dict], label: str, w: int = 960, h: int = 420, x_lo: float = 0.05, x_hi: float = 25,
+            y_lo: float = -40, y_hi: float = 40) -> str:
+    """One dot per room at its median T30 (log) and median DRR, coloured by kind (class k-<kind>); simulated rooms
+    are hollow. Each dot links to its row on the dataset page and has data-i, its index in the search data, so
+    site.js can dim the dots a filter leaves out. Values beyond an axis sit on its edge."""
     plot_w, base = w - LEFT - RIGHT, h - BOTTOM
-    x = lambda v: LEFT + plot_w * math.log(min(max(v, x_lo), x_hi) / x_lo) / math.log(x_hi / x_lo)
+    x = _log_x(x_lo, x_hi, LEFT, plot_w)
     y = lambda v: base - (base - TOP) * (min(max(v, y_lo), y_hi) - y_lo) / (y_hi - y_lo)
     parts = []
-    for t in (-40, -30, -20, -10, 0, 10, 20, 30, 40):
-        parts.append(f'<line class="grid" x1="{LEFT}" x2="{w - RIGHT}" y1="{y(t):.1f}" y2="{y(t):.1f}"/>'
-                     f'<text class="tick" x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">{t:+d} dB</text>'
-                     if t else
-                     f'<line class="axis" x1="{LEFT}" x2="{w - RIGHT}" y1="{y(t):.1f}" y2="{y(t):.1f}"/>'
-                     f'<text class="tick" x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">0 dB</text>')
+    for t in range(int(y_lo), int(y_hi) + 1, 10):
+        tick = "0" if t == 0 else f"{t:+d}"
+        parts.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{w - RIGHT}" y1="{y(t):.1f}" '
+                     f'y2="{y(t):.1f}"/><text x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">{tick}</text>')
     for t in (0.1, 0.3, 1, 3, 10):
         parts.append(f'<line class="grid" x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{TOP}" y2="{base}"/>'
-                     f'<text class="tick" x="{x(t):.1f}" y="{base + 16}" text-anchor="middle">{t:g} s</text>')
-    parts.append(f'<text class="tick" x="{w - RIGHT}" y="{h - 2}" text-anchor="end">median T30</text>')
+                     f'<text x="{x(t):.1f}" y="{base + 15}" text-anchor="middle">{t:g} s</text>')
+    parts.append(f'<text x="{w - RIGHT}" y="{h - 3}" text-anchor="end">reverberation time T30, median of the room</text>'
+                 f'<text x="{LEFT}" y="{TOP - 5}">DRR, dB</text>')
     for p in points:
-        tip = f"{p['label']} ({p['dataset']}): T30 {p['t30']:.2f} s, DRR {p['drr']:+.1f} dB, {p['n']:,} IRs"
-        cx, cy = x(p["t30"]), y(p["drr"])                     # a 9 px hit area around a 3.5 px dot
-        parts.append(f'<a href="{escape(p["href"])}" class="pt" data-i="{p["i"]}"><title>{escape(tip)}</title>'
-                     f'<circle class="target" cx="{cx:.1f}" cy="{cy:.1f}" r="9"/>'
-                     f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="3.5"/></a>')
-    return _svg("".join(parts), label, w, h)
+        cx, cy = x(p["t30"]), y(p["drr"])
+        parts.append(f'<a href="{escape(p["href"])}" class="pt k-{p["kind"]}" data-i="{p["i"]}">'
+                     f'<title>{escape(p["tip"])}</title><circle class="target" cx="{cx:.1f}" cy="{cy:.1f}" r="9"/>'
+                     f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="3.6"/></a>')
+    return _svg("".join(parts), label, w, h, cls="chart scatter")
+
+
+def mini_hist(counts: list[int]) -> str:
+    """The small T30 histogram of a result card (the same bins as the dataset page)."""
+    if not counts or not sum(counts):
+        return ""
+    top, step = max(counts), 170 / len(counts)
+    bars = "".join(f'<rect x="{i * step + 0.5:.1f}" y="{30 - 28 * n / top:.1f}" width="{step - 1:.1f}" '
+                   f'height="{28 * n / top:.1f}"/>' for i, n in enumerate(counts) if n)
+    return f'<svg class="mini" viewBox="0 0 170 30" aria-hidden="true">{bars}</svg>'

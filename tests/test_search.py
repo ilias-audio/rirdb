@@ -59,3 +59,12 @@ def test_small_helpers():
     import pandas as pd
     assert licences_text(pd.Series(["A", "B", "A"])) == "A, B"
     assert licences_text(pd.Series(["A", "B", "C"])) == "3 licences, one per space"
+
+
+def test_space_type_t30_and_provides_on_the_command_line(user):
+    out = CliRunner().invoke(app, ["search", "--t30", "1.0-1.5"]).output
+    assert out.startswith("3 IRs")                                   # the hall: three primary rows at 1.2 s
+    out = CliRunner().invoke(app, ["search", "--provides", "geometry"]).output
+    assert out.startswith("0 IRs")                                   # the toy dataset's authors provide nothing
+    bad = CliRunner().invoke(app, ["search", "--space-type", "spaceship"])
+    assert bad.exit_code != 0 and "spaceship" in str(bad.exception)
