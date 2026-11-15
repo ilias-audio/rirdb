@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: hearing_anything_anywhere
+name: Hearing Anything Anywhere dataset
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni, binaural]
+fs_hz: [48000]
+content: About 3,000 RIRs (mono and binaural) and music recordings at the same positions in 4 real rooms (classroom, dampened room, hallway, complex room) in 14 configurations (DiffRIR).
+expected: {n_irs: 3006, n_rooms: 4, note: "3,006 microphone-speaker pairs in the base subsets, plus rotation, translation and panel subsets (checked 2026-10-13)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes, note: "Zenodo record: CC BY 4.0 (checked 2026-10-13). The music clips come from the Free Music Archive under their own licences."}
+access: open
+source: {kind: zenodo, records: ["11195833"]}
+homepage: https://github.com/maswang32/hearinganythinganywhere
+paper: {title: "Hearing Anything Anywhere", url: "https://arxiv.org/abs/2406.07532"}
+doi: 10.5281/zenodo.11195833
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Stanford University
+  country: USA

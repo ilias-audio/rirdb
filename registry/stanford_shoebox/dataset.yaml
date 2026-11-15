@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: stanford_shoebox
+name: Shoe-box room IR generation comparison (Stanford)
+year: 2025
+type: hybrid
+status: catalogued
+content: Measured (balloon pop, sine sweep) and synthesised IRs of a 6.1 x 12.2 x 6.1 m racquetball court at Stanford,
+  from image method, ODEON ray tracing, SDN, FEM, modal and Sabine-NED models, for a method comparison.
+fs_hz:
+- 44100
+- 48000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'yes'
+  positions: 'yes'
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/15739328
+doi: 10.5281/zenodo.15739328
+web_check:
+  checked: '2026-10-14'
+  found_as: Comparison of IR generation methods for a simple shoe-box room
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 196 MB
+  file_formats: ZIP of WAV files (plus MATLAB scripts and PDFs)
+  institution: Stanford University (CCRMA) and University of Surrey
+  country: USA
+  evidence_urls:
+  - https://zenodo.org/records/15739328
+  - https://zenodo.org/api/records/15739328
+  - https://zenodo.org/records/15739328/preview/Impulse%20Responses.zip
+  - https://ccrma.stanford.edu/~lloyd/VirtualAcoustics/Recording.html
+  - https://ccrma.stanford.edu/~lloyd/VirtualAcoustics/Synthesis.html
+  - https://api.semanticscholar.org/graph/v1/paper/DOI:10.3390/acoustics7030056?fields=title,abstract,year,venue,openAccessPdf,externalIds
+  confidence: medium
+  caveats:
+  - One 196 MB zip mixing raw and equalised IR variants, MATLAB scripts and listening-test stimuli; Dictionary.txt
+    and a source-receiver PDF explain the layout.
+  - Single room (a Stanford racquetball court); recordings are 48 kHz while several simulations are 44.1 kHz.
+  - 'The record gives no IR count or channel layout; the measurements used a 4-capsule Core Sound TetraMic. Paper:
+    Acoustics 7(3):56, 2025.'

@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: freesound_korg_d888
+name: Korg D888 Reverbs (jesterdyne, Freesound)
+year: 2011
+type: production
+status: catalogued
+content: 7 stereo 44.1 kHz IRs (Room, Studio, Cathedral, Club, Garage, Hall, Arena) of the built-in reverb of a
+  Korg D888 multitrack recorder. These are hardware presets, not real spaces.
+fs_hz:
+- 44100
+expected:
+  n_irs: 7
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC0-1.0
+homepage: https://freesound.org/people/jesterdyne/packs/8103/
+web_check:
+  checked: '2026-10-14'
+  found_as: Freesound – Korg D888 Reverbs pack (jesterdyne)
+  availability: free_registration
+  families:
+  - stereo
+  host: Freesound
+  file_formats: WAV (16-bit)
+  institution: Freesound user jesterdyne
+  country: Unknown
+  evidence_urls:
+  - https://freesound.org/people/jesterdyne/packs/8103/
+  - https://freesound.org/people/jesterdyne/sounds/129414/
+  - https://freesound.org/people/jesterdyne/sounds/129408/
+  - https://freesound.org/people/jesterdyne/
+  confidence: high
+  caveats:
+  - Downloading needs a free Freesound account.
+  - These capture a recorder's built-in reverb presets, not real rooms. The 'Room' IR is only 0.88 s long.

@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_highres_srirs
+name: High-resolution SRIRs for different room configurations
+year: 2024
+type: measured
+status: catalogued
+content: Robot-measured spatial RIRs on a 25 cm grid in an ITU-R BS.1116 listening room at TU Ilmenau, with reflective
+  walls added in 9 configurations; open mic array, 5 loudspeakers, SOFA files.
+expected:
+  n_irs: 18535
+  n_rooms: 1
+room_info:
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/10450779
+doi: 10.5281/zenodo.10450779
+web_check:
+  checked: '2026-10-14'
+  found_as: TU Ilmenau high spatial resolution SRIR dataset for different acoustic room configurations
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 86.9 GB
+  file_formats: SOFA (SingleRoomSRIR 1.0) in ZIP; JPG images
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/10450779
+  - https://zenodo.org/api/records/10450779
+  - https://zenodo.org/records/10450779/files/HL08W.zip?download=1
+  confidence: high
+  caveats:
+  - 'Very large: nine ZIPs of 4.4-11 GB each, about 87 GB in total.'
+  - Only one preselected SRIR per loudspeaker and position is included; the full recordings are available from the
+    authors on request.
+  - The record does not state the sampling rate or the number of microphones in the array.

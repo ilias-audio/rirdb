@@ -1,0 +1,40 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuburo
+name: TuBuRo (64-channel loudspeaker array RIRs and BRIRs)
+year: 2015
+type: measured
+status: catalogued
+content: RIRs of a 64-loudspeaker square array in the University of Rostock Audio Lab at 3 receiver positions x
+  4 absorber set-ups, plus KEMAR BRIRs (head ±80° in 2° steps) for 7 combinations, as SOFA.
+expected:
+  n_rooms: 1
+room_info:
+  positions: partial
+  images: 'yes'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://depositonce.tu-berlin.de/items/20da15a0-6ef9-4939-8f5d-5d5a1971fe60
+doi: 10.14279/depositonce-87.6
+web_check:
+  checked: '2026-10-14'
+  found_as: 'TuBuRo: single-channel and binaural RIRs of a 64-channel loudspeaker array for different room configurations'
+  availability: open
+  families:
+  - mono
+  - binaural
+  host: DepositOnce
+  size: 13.3 GB (RIRs.zip alone 139 MB)
+  file_formats: SOFA (in ZIP archives), PDF documentation, setup pictures (ZIP)
+  institution: University of Rostock (Institute of Communications Engineering) / TU Berlin
+  country: Germany
+  evidence_urls:
+  - https://depositonce.tu-berlin.de/items/20da15a0-6ef9-4939-8f5d-5d5a1971fe60/full
+  - https://api-depositonce.tu-berlin.de/server/api/core/bundles/f484c88a-70d4-4307-9717-5f1d5eb1294c/bitstreams
+  - https://sofacoustics.org/data/database/tuburo/
+  confidence: high
+  caveats:
+  - BRIRs.zip is very large (13.16 GB). The single-channel RIRs.zip is 139 MB.
+  - The same SOFA files (12 RIR and 7 BRIR files) are also mirrored one by one on sofacoustics.org.
+  - One room (the Audio Lab) with four absorber configurations. The record does not state the total IR count or
+    the sampling rate.

@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: s3a
+name: S3A room impulse responses (Surrey)
+year: 2015
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural, array_raw, foa_fuma]
+content: RIRs and BRIRs recorded in several rooms at the University of Surrey (S3A programme) with two dummy heads and arrays.
+license: {spdx: LicenseRef-S3A-academic, redistribute_audio: no, note: "Academic use only; registered users; must not be redistributed."}
+access: registration
+source: {kind: manual, instructions: "Register at http://cvssp.org/data/s3a/ and place the downloaded files in $RIRDB_ROOT/raw/_inbox/s3a/, then `sbatch jobs/download.sh fetch/adopt_manual.sh s3a`."}
+homepage: http://cvssp.org/data/s3a/
+doi: 10.15126/surreydata.00808465
+status: manual
+web_check:
+  checked: '2026-10-14'
+  institution: University of Surrey (CVSSP)
+  country: UK
+  host: University of Surrey (registration)
+  availability: free_registration
+  licence_note: Free for academic purposes with a citation, for registered users only; the files must not be redistributed.

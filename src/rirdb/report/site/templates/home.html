@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# Home: index.html. Context from pages_docs.render_home(). #}
+
+{% block head %}
+<style>
+.home-hero { padding-bottom: clamp(12px, 2.5vw, 24px); }
+.home-hero h1 { max-width: 20ch; }
+.home-hero .lede { max-width: 60ch; }
+.home-search { max-width: 720px; }
+.home-search input { min-width: 0; }
+.home-tiles { margin-top: clamp(16px, 3vw, 28px); }
+.home-tiles .tile dd { font-size: clamp(1.4rem, 2.4vw, 1.9rem); }
+.quick { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 10px; }
+.home .linkcards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 205px), 1fr)); }
+.quick a { display: flex; flex-direction: column; gap: 2px; height: 100%; padding: 11px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); text-decoration: none; color: var(--ink); }
+.quick a:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.quick b { color: var(--accent); font-weight: 700; }
+.quick span { font-size: .88rem; color: var(--ink-2); }
+.more-cat { margin: 12px 0 0; font-size: .92rem; color: var(--ink-2); max-width: 70ch; }
+.found { list-style: none; margin: 0 0 1em; padding: 0; display: grid; gap: 12px; counter-reset: found; }
+.found li { counter-increment: found; display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 2px 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; }
+.found li::before { content: counter(found); font: 800 1.3rem/1.2 var(--font-display); color: var(--accent); }
+.found .who { font-weight: 700; }
+.found p { margin: 2px 0 0; color: var(--ink-2); overflow-wrap: anywhere; }
+.found .sec { font: 600 .72rem/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-left: 6px; }
+.built { color: var(--muted); font-size: .9rem; margin: 0; }
+.home .section h2 { margin-bottom: .35em; }
+.home .section .sub-lede { color: var(--ink-2); margin: 0 0 1.1em; max-width: 70ch; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="home">
+<div class="hero home-hero"><div class="wrap">
+  <h1>Room impulse response datasets, checked</h1>
+  <p class="lede">{{ lede }}</p>
+  <form class="search-hero home-search" action="{{ root }}datasets/index.html" method="get" role="search">
+    <label for="home-q" class="sr-only">Search the {{ num.n_all | int }} datasets</label>
+    <input id="home-q" type="search" name="q" placeholder="Search {{ num.n_all | int }} datasets" autocomplete="off">
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <dl class="tiles home-tiles">
+    <div class="tile"><dt>datasets catalogued: {{ num.n_registry | int }} in the registry and {{ num.n_survey | int }} found on the web</dt><dd>{{ num.n_all | int }}</dd></div>
+    <div class="tile"><dt>datasets in the rirdb registry, each with a fetch script</dt><dd>{{ num.n_registry | int }}</dd></div>
+    <div class="tile"><dt>datasets analysed, IR by IR</dt><dd>{{ num.n_analysed | int }}</dd></div>
+    <div class="tile"><dt>IRs analysed, of {{ num.n_irs_indexed | int }} indexed</dt><dd>{{ num.n_irs_analysed | int }}</dd></div>
+    <div class="tile"><dt>spaces indexed: rooms, halls, outdoor sites</dt><dd>{{ num.n_spaces | int }}</dd></div>
+    <div class="tile"><dt>to download: the checksum-pinned files of {{ num.n_lock_ds | int }} datasets{% if num.not_counted %}, not counting {{ num.not_counted }}{% endif %}</dt><dd>{{ num.download_bytes | bytes }}</dd></div>
+  </dl>
+</div></div>
+
+<section class="section" aria-labelledby="start-h"><div class="wrap">
+  <h2 id="start-h">Start from what you need</h2>
+  <p class="sub-lede">Each link opens a page or a pre-filtered table. The tables have more filters: format family, licence class, availability, decay time.</p>
+  <ul class="quick">
+    <li><a href="{{ root }}datasets/index.html?q=binaural"><b>Binaural IRs</b><span>Datasets that mention binaural capture or BRIRs.</span></a></li>
+    <li><a href="{{ root }}datasets/index.html?q=ambisonic"><b>Ambisonic and spherical-array IRs</b><span>B-format, AmbiX, Eigenmike and other spatial captures.</span></a></li>
+    <li><a href="{{ root }}spaces/index.html?q=concert"><b>Concert halls</b><span>Every indexed concert hall, with its decay time and clarity.</span></a></li>
+    <li><a href="{{ root }}spaces/index.html?q=worship"><b>Churches and other places of worship</b><span>Long, diffuse decays from the spaces table.</span></a></li>
+    <li><a href="{{ root }}spaces/index.html?q=outdoors"><b>Outdoor spaces</b><span>Streets, parks, courtyards and other open-air sites.</span></a></li>
+    <li><a href="{{ root }}datasets/index.html?q=plate"><b>Plate reverbs and production libraries</b><span>IR libraries made for music production.</span></a></li>
+    <li><a href="{{ root }}methods/index.html#training-use"><b>Allowed for ML training</b><span>What “allowed” means here, and how to filter for it.</span></a></li>
+    <li><a href="{{ root }}analysis/quality.html"><b>The cleanest IRs</b><span>Grades, quality flags and duplicates, dataset by dataset.</span></a></li>
+    <li><a href="{{ root }}get/index.html"><b>Download with checksums</b><span>One fetch script per dataset, checked file by file.</span></a></li>
+  </ul>
+  <p class="more-cat">The spaces table holds the {{ num.n_analysed | int }} analysed datasets only. Datasets not analysed yet are in the catalogue: <a href="{{ root }}datasets/index.html?q=concert">concert halls</a>, <a href="{{ root }}datasets/index.html?q=church">churches</a>, <a href="{{ root }}datasets/index.html?q=outdoor">outdoor sites</a>.</p>
+</div></section>
+
+<section class="section" aria-labelledby="sections-h"><div class="wrap">
+  <h2 id="sections-h">Everything on this site</h2>
+  <div class="linkcards">
+    <a class="linkcard" href="{{ root }}datasets/index.html"><h3>Datasets</h3><p>All {{ num.n_all | int }} datasets in one table: what each holds, its licence and where to get it.</p></a>
+    <a class="linkcard" href="{{ root }}spaces/index.html"><h3>Spaces</h3><p>{{ num.n_spaces | int }} indexed rooms, halls and outdoor sites, with median T30, EDT, C80 and DRR.</p></a>
+    <a class="linkcard" href="{{ root }}analysis/index.html"><h3>Analysis</h3><p>Distributions, grades, validation and the CLAP map for the {{ num.n_analysed | int }} analysed datasets.</p></a>
+    <a class="linkcard" href="{{ root }}get/index.html"><h3>Get the data</h3><p>A fetch script for each of the {{ num.n_registry | int }} registry datasets, checked against checksums for the {{ num.n_lock_ds | int }} with a lock file.</p></a>
+    <a class="linkcard" href="{{ root }}methods/index.html"><h3>Methods</h3><p>How rirdb downloads, checks and analyses the IRs, and what each parameter, flag and grade means.</p></a>
+    <a class="linkcard" href="{{ root }}methods/findings.html"><h3>Findings</h3><p>Problems found in the upstream data and licences, with evidence and how they are handled.</p></a>
+    <a class="linkcard" href="{{ root }}guide/index.html"><h3>Field Guide</h3><p>The Reverb Dataset Field Guide: every dataset in plain language, on one page.</p></a>
+    <a class="linkcard" href="{{ root }}overview/index.html"><h3>Interactive overview</h3><p>Explore the corpus distributions and the CLAP map{% if clap_n %} of {{ clap_n | int }} IRs{% endif %}, in the browser.</p></a>
+    <a class="linkcard" href="{{ root }}downloads/index.html"><h3>Data files</h3><p>The catalogue, spaces, per-dataset analysis, locks, manifests and per-IR metrics as CSV, JSON and Parquet.</p></a>
+    <a class="linkcard" href="{{ root }}about/index.html"><h3>About</h3><p>Who made rirdb, how to cite it and how to add a dataset or a correction.</p></a>
+  </div>
+</div></section>
+
+{% if picks %}
+<section class="section" aria-labelledby="found-h"><div class="wrap">
+  <h2 id="found-h">What we found</h2>
+  <p class="sub-lede">Downloading and checking every file exposed problems the dataset pages do not mention. Five of them:</p>
+  <ol class="found">
+    {% for r in picks %}
+    <li><div><span class="who">{{ r.subject_html }}</span><span class="sec">{{ "licence" if r.section == "licence" else "data" }}</span><p>{{ r.cells[0] }}{{ r.end }}</p></div></li>
+    {% endfor %}
+  </ol>
+  <p><a href="{{ root }}methods/findings.html">All {{ n_findings | int }} dataset findings, with evidence and handling</a></p>
+</div></section>
+{% endif %}
+
+<section class="section" aria-label="Build"><div class="wrap">
+  <p class="built">Last built {{ generated }}{% if data.git %} from commit <code>{{ data.git }}</code>{% endif %}, analyzer {{ data.analyzer_version }}.{% if data.survey_date %} Licences, hosts and availability checked on the web on {{ data.survey_date }}.{% endif %} No audio is hosted here: every link goes to the original source, and each dataset keeps its own licence.</p>
+</div></section>
+</div>
+{% endblock %}

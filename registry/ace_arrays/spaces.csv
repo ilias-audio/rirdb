@@ -1,0 +1,8 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+building-lobby,,,,,,ace/building-lobby,,,,,
+lecture-room-1,,,,,,ace/lecture-room-1,,,,,
+lecture-room-2,,,,,,ace/lecture-room-2,,,,,
+meeting-room-1,,,,,,ace/meeting-room-1,,,,,
+meeting-room-2,,,,,,ace/meeting-room-2,,,,,
+office-1,,,,,,ace/office-1,,,,,
+office-2,,,,,,ace/office-2,,,,,

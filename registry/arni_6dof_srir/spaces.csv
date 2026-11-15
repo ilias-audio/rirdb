@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+arni-6dof-srir,Arni variable-acoustics room (Aalto),laboratory,room,201.9,8.9 x 6.3 x 3.6,arni/arni,,,,Readme_Arni_em32.pdf: rectangular; approx. 200 m3,

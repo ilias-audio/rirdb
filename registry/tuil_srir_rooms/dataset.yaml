@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_srir_rooms
+name: TU Ilmenau SRIR dataset in different rooms
+year: 2022
+type: measured
+status: catalogued
+content: 'Spatial RIRs measured with a self-built SDM microphone array in 15 TU Ilmenau rooms (6 seminar rooms,
+  6 offices, 3 lecture halls): 42 .mat measurements, with 360° photos and floor plans.'
+expected:
+  n_irs: 42
+  n_rooms: 15
+room_info:
+  geometry: partial
+  images: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/6541444
+doi: 10.5281/zenodo.6541444
+web_check:
+  checked: '2026-10-14'
+  found_as: TU Ilmenau SRIR dataset in different rooms including visualization (Klein et al.)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 996 MB
+  file_formats: MATLAB .mat in one ZIP; JPG 360° images; PNG floor plans
+  institution: TU Ilmenau; Fraunhofer IDMT
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/6541444
+  - https://zenodo.org/api/records/6541444
+  - https://zenodo.org/records/6541444/preview/srir_dataset_tu_ilmenau_v1.0.zip
+  - https://zenodo.org/records/6541444/files/srir_dataset_tu_ilmenau_v1.0.zip?download=1
+  confidence: high
+  caveats:
+  - Zenodo does not state the sample rate; array geometry files are inside the zip (info/sdm array).
+  - IR count is the number of .mat files in Zenodo's preview of the zip; the authors give no total.
+  - Single 996 MB zip.

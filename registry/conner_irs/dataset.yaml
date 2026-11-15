@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: conner_irs
+name: Conner's Impulse Response Library
+year: 2022
+type: production
+status: catalogued
+content: 'Hobbyist library of 738 IRs (v2.0.0): rooms, enclosed spaces, outdoor sites, plate, spring and hardware
+  reverbs, plus instrument, object, speaker and synthesized IRs, captured with claps, pops and sweeps.'
+expected:
+  n_irs: 738
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: MIT
+  note: MIT licence (copyright 2022 Conner); the README adds that the author wants no attribution requirement and
+    allows commercial use, though the MIT text asks that its notice stay with copies.
+homepage: https://github.com/itsmusician/IR-Library
+web_check:
+  checked: '2026-10-14'
+  found_as: Conner's Impulse Response Library (itsmusician/IR-Library)
+  availability: open
+  families:
+  - stereo
+  host: GitHub
+  size: about 1 GB uncompressed
+  file_formats: WAV
+  institution: Independent (Conner, GitHub user itsmusician)
+  country: USA
+  evidence_urls:
+  - https://github.com/itsmusician/IR-Library
+  - https://raw.githubusercontent.com/itsmusician/IR-Library/main/README.md
+  - https://raw.githubusercontent.com/itsmusician/IR-Library/main/License.md
+  - https://raw.githubusercontent.com/itsmusician/IR-Library/main/Changelog.md
+  - https://github.com/itsmusician/IR-Library/releases
+  - https://github.com/itsmusician/IR-Library/tree/main/Rooms
+  - https://github.com/itsmusician
+  confidence: high
+  caveats:
+  - 'The author calls it ''more creative than scientific'': no sample rates, positions or room details are documented.'
+  - Many IRs are not of spaces (instruments, objects, speakers, utility, synthesized), so filter by folder.
+  - Some sets were contributed by others (e.g. Menorcan Spanish Civil War bunkers, a University of Central Florida
+    atrium) under the same MIT terms.

@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ir64_car
+name: IR64-CAR
+year: 2025
+type: measured
+status: catalogued
+content: 64-channel IRs from an Eigenmike em64 at the centre of a parked Peugeot 208's cabin, with one loudspeaker
+  outside the car at 8 azimuths (every 45 degrees); 8 WAV files at 48 kHz/24-bit, trimmed to 1 s.
+fs_hz:
+- 48000
+expected:
+  n_irs: 8
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/15168578
+doi: 10.5281/zenodo.15168578
+web_check:
+  checked: '2026-10-14'
+  found_as: 'IR64-CAR: IRs captured with a spherical microphone array for automotive research'
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 24 MB
+  file_formats: 64-channel WAV (48 kHz, 24-bit) in one ZIP, README.txt
+  institution: Not stated on the record (it acknowledges IFIC, CSIC-UV, and Comunitat Valenciana resources)
+  country: Spain
+  evidence_urls:
+  - https://zenodo.org/records/15168578
+  - https://zenodo.org/api/records/15168578
+  - https://zenodo.org/records/15168578/preview/dataset.zip
+  - https://investigacion.ujaen.es/documentos/67f62fbfc9d0c3013599a965
+  confidence: high
+  caveats:
+  - The loudspeaker was outside the car, so the IRs capture sound entering the cabin from outside, not talkers inside
+    it.
+  - The files hold raw 64-capsule signals. No Ambisonic-encoded version is listed.
+  - The record lists no author affiliations.

@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: myriad
+name: MYRiAD
+year: 2023
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural, array_raw]
+fs_hz: [44100]
+content: '1214 RIRs from two rooms (SONORA lab, RT 2.1 s; Alamire Interactive Lab, RT 0.5 s) with in-ear/behind-ear dummy-head mics, circular arrays and distributed mics (V2 "econ" archive: all RIRs + coordinates, without the long recordings).'
+expected: {n_irs: 1214, n_rooms: 2}
+room_info: {positions: "yes", reference_acoustics: "partial", where: "RT per room in the description; AIL.csv, SAL.csv (loudspeaker and microphone coordinates)"}
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["7389996"], include: ["MYRiAD_V2_econ.zip"]}
+adapter:
+  name: wav_tree
+  # audio/<AIL|SAL>/<source position>/[<pose>/]<microphone>_RIR.wav (one mono file per mic)
+  params: {pattern: 'audio/(?P<room>AIL|SAL)/(?P<src>[^/]+)/(?:(?P<cond>P\d)/)?(?P<rcv>[^/]+)_RIR\.wav$'}
+keep_archive: false
+wave: 2
+# version 2.0 (7389996) is the one fetched; 7322755 is version 1.0; the concept DOI for both is 10.5281/zenodo.7322754
+homepage: https://zenodo.org/records/7389996
+paper: {title: "MYRiAD: a multi-array room acoustic database", url: "https://doi.org/10.1186/s13636-023-00284-9"}
+doi: 10.5281/zenodo.7389996
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: KU Leuven
+  country: Belgium
+  caveats:
+  - Version 2 adds a 200 MB archive with only the IRs, next to the 31 GB full release.

@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# Methods: methods/index.html. Context from pages_docs.render_methods(). #}
+
+{% block head %}
+<style>
+.mt-body { min-width: 0; }
+.mt-body > .section:first-of-type { border-top: 0; padding-top: 4px; }
+.mt-body h3 { margin-top: 1.8em; }
+.mt-body h2 + h3, .mt-body h2 + p + h3 { margin-top: .6em; }
+.side-nav ol ol { border-left: 0; margin: 0 0 4px 10px; }
+.side-nav ol ol a { font-size: .84rem; padding-block: 2px; color: var(--muted); }
+.mt-tiles { margin: 0 0 1em; }
+.mt-tiles .tile dd.mono { font: 600 clamp(1rem, 1.8vw, 1.3rem)/1.2 var(--font-mono); }
+.flow { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; margin: 0 0 18px; padding: 0; }
+.flow li { display: flex; align-items: center; gap: 4px; }
+.flow li + li::before { content: ""; width: 14px; height: 1.5px; background: var(--rule-strong); display: inline-block; margin-right: 2px; }
+.flow a { display: inline-block; padding: 4px 11px; border-radius: 999px; border: 1px solid var(--rule-strong); background: var(--surface); color: var(--ink); text-decoration: none; font-size: .9rem; }
+.flow a:hover { border-color: var(--accent); color: var(--accent); }
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 0 0 1em; display: grid; gap: 12px; }
+.steps > li { counter-increment: step; display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 2px 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; }
+.steps > li::before { content: counter(step); grid-row: 1 / span 4; font: 800 1.5rem/1 var(--font-display); color: var(--accent); }
+.steps > li > * { grid-column: 2; }    /* every child in the text column, however many command lines a step has */
+.steps h3 { margin: 0 0 2px; font-size: 1.05rem; }
+.steps p { margin: 0 0 6px; }
+.steps .count { color: var(--ink); font-weight: 700; font-size: .95rem; }
+.steps .io { font-size: .86rem; color: var(--ink-2); margin: 0; overflow-wrap: anywhere; }
+.steps .io code { font-size: .82rem; }
+@media (max-width: 560px) {
+  .flow { display: none; }
+  .steps > li { grid-template-columns: minmax(0, 1fr); }
+  .steps > li::before { grid-row: auto; font-size: 1.1rem; }
+  .steps > li > * { grid-column: 1; }
+}
+.md > p, .md > ul, .md > ol, .md > h3, .md > h4 { max-width: 76ch; }
+.md li + li { margin-top: .45em; }
+.md ol, .md ul { padding-left: 1.4em; }
+.md .tbl-wrap { margin: .4em 0 1.2em; }
+.md .tbl code { overflow-wrap: anywhere; }
+.mt-body .code pre { padding-right: 66px; }
+@media (max-width: 640px) { .mt-body .code pre { padding-top: 36px; } }
+.md .tbl td { min-width: 9em; }
+.md h3 { scroll-margin-top: 76px; }
+.doc-src { font-size: .9rem; color: var(--muted); max-width: 76ch; }
+.gl-tbl td:first-child, .gl-tbl th[scope="row"] { white-space: nowrap; }
+.gl-tbl th[scope="row"] { font-weight: 700; text-align: left; }
+.gl-tbl .info { min-width: 16em; }
+.gl-tbl code { overflow-wrap: anywhere; }
+.gl-tbl td:nth-child(2) > code:only-child { white-space: nowrap; overflow-wrap: normal; }
+.grp-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 1.2em 0 .4em; }
+.grp-head h4 { margin: 0; }
+.grp-head p { margin: 0; color: var(--ink-2); font-size: .92rem; }
+.fields { display: grid; grid-template-columns: minmax(9em, max-content) minmax(0, 1fr); gap: 10px 20px; margin: 0 0 1em; max-width: 92ch; }
+.fields dt { font-family: var(--font-mono); font-weight: 600; font-size: .9rem; scroll-margin-top: 80px; }
+.fields dt:target, .fields dt:target + dd { background: var(--accent-wash); }
+.fields dd { margin: 0; }
+@media (max-width: 620px) { .fields { grid-template-columns: minmax(0, 1fr); gap: 2px; } .fields dd { margin-bottom: 10px; } }
+.vocab { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 4px 18px; list-style: none; margin: 0 0 1em; padding: 0; font-size: .92rem; }
+.vocab code { margin-right: 6px; }
+.chart.solo { max-width: 680px; }
+pre.cfg { max-height: 520px; overflow: auto; background: var(--sunk); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; font-size: .8rem; line-height: 1.45; margin: 0; }
+.na { color: var(--muted); font-size: .82rem; }
+.tbl tbody tr:last-child th { border-bottom: 0; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}index.html">rirdb</a> / Methods</p>
+  <h1>Methods</h1>
+  <p class="lede">How rirdb gets from a list of datasets to the numbers on this site: download with checksums, one index of every IR, an ISO 3382 analysis with explicit validity rules, a signal audit and a CLAP map. Below the pipeline is the analyzer's decision record and a glossary of every parameter, flag, grade and field.</p>
+  <dl class="tiles mt-tiles">
+    <div class="tile"><dt>analyzer version</dt><dd>{{ data.analyzer_version }}</dd></div>
+    {% if cfg %}<div class="tile"><dt>configuration sha256 (first 16 hex digits)</dt><dd class="mono">{{ cfg.sha }}</dd></div>{% endif %}
+    <div class="tile"><dt>IRs analysed, from {{ num.n_analysed | int }} datasets</dt><dd>{{ num.n_irs_analysed | int }}</dd></div>
+    <div class="tile"><dt>IRs in the clean measured rooms subset</dt><dd>{{ num.n_clean | int }}</dd></div>
+  </dl>
+</div></div>
+
+<div class="wrap with-side">
+  <nav class="side-nav" aria-label="On this page">
+    <ol>
+      <li><a href="#pipeline">From registry to report</a></li>
+      <li><a href="#analyzer">The analyzer</a>
+        {% if doc_toc %}<ol>{% for lvl, t, hid in doc_toc if lvl == 3 %}<li><a href="#{{ hid }}">{{ t }}</a></li>{% endfor %}</ol>{% endif %}
+      </li>
+      <li><a href="#glossary">Glossary</a>
+        <ol>
+          <li><a href="#params">Parameters</a></li>
+          <li><a href="#flags">Quality flags</a></li>
+          <li><a href="#grades">Grades</a></li>
+          <li><a href="#subsets">Subsets</a></li>
+          <li><a href="#fields">Index fields</a></li>
+          <li><a href="#vocab">Kinds and formats</a></li>
+          <li><a href="#query">Querying</a></li>
+        </ol>
+      </li>
+      <li><a href="#config">Configuration</a></li>
+      <li><a href="{{ root }}methods/findings.html">Dataset findings</a></li>
+    </ol>
+  </nav>
+  <div class="mt-body">
+    <ul class="toc-m" aria-label="On this page">
+      <li><a href="#pipeline">Pipeline</a></li><li><a href="#analyzer">Analyzer</a></li><li><a href="#params">Parameters</a></li>
+      <li><a href="#flags">Flags</a></li><li><a href="#grades">Grades</a></li><li><a href="#subsets">Subsets</a></li>
+      <li><a href="#fields">Fields</a></li><li><a href="#config">Configuration</a></li><li><a href="{{ root }}methods/findings.html">Findings</a></li>
+    </ul>
+
+    <section class="section" aria-labelledby="pipeline">
+      <h2 id="pipeline">From registry to report</h2>
+      <p>Each step is a command run on QMUL's Apocrita cluster: the <code>rirdb</code> commands inside a SLURM job (<code>sbatch jobs/quick_cpu.sh pixi run rirdb …</code>), the download script as a SLURM job of its own, and the analysis and audit scripts by submitting SLURM arrays. Each step writes files the next one reads, and the small ones are committed to the repository, so every number on this site can be traced back to a file.</p>
+      <ol class="flow" aria-label="Pipeline steps">
+        {% for s in steps %}<li><a href="#{{ s.id }}">{{ s.name }}</a></li>{% endfor %}
+      </ol>
+      <ol class="steps">
+        {% for s in steps %}
+        <li id="{{ s.id }}">
+          <h3>{{ s.name }}</h3>
+          <p>{{ s.what }}</p>
+          {% if s.count %}<p class="count">{{ s.count }}</p>{% endif %}
+          {% for io in s.io %}
+          <p class="io">{% if io.cmd %}<code>{{ io.cmd }}</code> {% endif %}{{ io.verb }} {% for o, u in io.out %}{% if u %}<a href="{{ u }}"><code>{{ o }}</code></a>{% else %}<code>{{ o }}</code>{% endif %}{{ ", " if not loop.last }}{% endfor %}{{ io.tail }}.</p>
+          {% endfor %}
+        </li>
+        {% endfor %}
+      </ol>
+      <p class="small muted">Paths under <code>$RIRDB_ROOT</code> live outside git, because they are large; everything else is in the <a href="{{ REPO_URL }}">repository</a>. How to run the steps yourself: <a href="{{ root }}get/index.html">Get the data</a>.</p>
+    </section>
+
+    <section class="section" aria-labelledby="analyzer">
+      <h2 id="analyzer">The analyzer</h2>
+      <p class="doc-src">This section is the analyzer's decision record, <a href="{{ doc_url }}">docs/decisions/analyzer-v1.md</a>{% if doc_meta.get("date") %} (dated {{ doc_meta.date }}{% if doc_meta.get("status") %}, status {{ doc_meta.status }}{% endif %}){% endif %}, rendered as it is in the repository: the libraries, the decisions and the evidence behind them, the validation tests, the known limitations and the amendments made after the first runs.</p>
+      {% if doc_html %}
+      <div class="md">{{ doc_html }}</div>
+      {% else %}
+      <p class="callout warn">The decision record was not found when this page was built. It is in the repository at docs/decisions/analyzer-v1.md.</p>
+      {% endif %}
+    </section>
+
+    <section class="section" aria-labelledby="glossary">
+      <h2 id="glossary">Glossary</h2>
+      <p>Every term the dataset and analysis pages use. Column names are those of the per-IR views of <code>rirdb dev query</code>. The <a href="{{ root }}downloads/index.html#schema-metrics">metrics snapshots</a> keep a subset of them: <code>duration_raw_s</code>, for one, is not in them, and their <code>duration_s</code> is the length analysed, after the onset is cut.</p>
+
+      <h3 id="params">Acoustic parameters</h3>
+      <p>Single numbers ending in <code>_mid</code> are the mean of the 500 Hz and 1 kHz octave values when both are valid. Every decay time, clarity and definition value also exists per octave band from 63 Hz to 8 kHz and broadband (<code>t30_500</code>, <code>c80_bb</code>, …), each with its validity flag.</p>
+      <div class="tbl-wrap">
+        <table class="tbl gl-tbl">
+          <thead><tr><th scope="col">Parameter</th><th scope="col">Column</th><th scope="col">Unit</th><th scope="col">What it is</th></tr></thead>
+          <tbody>
+          {% for p in data.params %}
+            <tr><th scope="row">{{ p.label }}</th><td><code>{{ p.key }}</code></td><td>{{ p.unit or "–" }}</td><td class="info">{{ p.info }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if data.params | selectattr("key", "equalto", "onset_ms") | list %}<p class="small muted"><code>onset_ms</code> is the site's name for the pre-delay in milliseconds; the per-IR tables store it as <code>onset_s</code>, in seconds.</p>{% endif %}
+
+      <h3 id="flags">Quality flags</h3>
+      <p>Each flag is a true or false column on every analysed IR. Only the content flags remove an IR from the clean measured rooms subset; the others are kept so you can filter on them when they matter. The counts are over all {{ n_flagged_over | int }} analysed IRs, summed from the per-dataset analysis files.</p>
+      {% for g in groups %}
+      <div class="grp-head"><h4 id="flags-{{ g.key }}">{{ g.label }} flags</h4><p>{{ g.text }}</p></div>
+      <div class="tbl-wrap">
+        <table class="tbl gl-tbl">
+          <thead><tr><th scope="col">Flag</th><th scope="col">Column</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Share</th><th scope="col">What it means</th></tr></thead>
+          <tbody>
+          {% for f in g.flags %}
+            <tr><th scope="row">{{ f.label }}</th><td><code>{{ f.flag }}</code></td><td class="n">{{ f.n | int }}</td><td class="n">{% if f.share is none %}<span class="na">–</span>{% elif f.share == 0 %}0&nbsp;%{% elif f.share < 0.0005 %}&lt;0.1&nbsp;%{% else %}{{ f.share | pct(1) }}{% endif %}</td><td class="info">{{ f.info }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+      <p class="small muted">Shares per dataset, and which flags cluster where: <a href="{{ root }}analysis/quality.html">Quality across datasets</a>.</p>
+
+      <h3 id="grades">Grades</h3>
+      <p>Each analysed IR gets one grade from the octave bands in which its decay times are valid. Validity needs enough decay range above the noise floor: 20 dB for EDT, 35 dB for T20 and 45 dB for T30.</p>
+      {% if grade_chart %}
+      {{ m.chart("Grades of all " ~ (num.n_irs_analysed | int) ~ " analysed IRs", grade_chart, sub="Share of IRs per grade; the table below gives the counts", cls="solo") }}
+      {% endif %}
+      <div class="tbl-wrap">
+        <table class="tbl gl-tbl">
+          <thead><tr><th scope="col">Grade</th><th scope="col">Definition</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Share</th></tr></thead>
+          <tbody>
+          {% for g in grade_rows %}
+            <tr><th scope="row">{{ m.grade(g.g) }}</th><td class="info">{{ g.text[:1] | upper }}{{ g.text[1:] }}.</td><td class="n">{{ g.n | int }}</td><td class="n">{% if g.share is not none %}{{ g.share | pct(1) }}{% else %}–{% endif %}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="subsets">Subsets</h3>
+      <p>The corpus statistics use nested subsets. Each one keeps part of the one above it. The clean measured rooms subset is the default for anything that describes real rooms: it keeps one representation per position, drops exact duplicates and drops IRs with content flags.</p>
+      <div class="tbl-wrap">
+        <table class="tbl gl-tbl">
+          <thead><tr><th scope="col">Subset</th><th scope="col">Definition</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Spaces</th><th scope="col" class="n">Datasets</th></tr></thead>
+          <tbody>
+          {% for s in subsets.rows %}
+            <tr><th scope="row">{{ s.label }}</th><td class="info">{% if s.sql %}<code style="white-space:normal">{{ s.sql }}</code>{% else %}–{% endif %}</td><td class="n">{{ s.n_irs | int }}</td><td class="n">{{ s.n_rooms | int }}</td><td class="n">{{ s.n_datasets | int }}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">Definitions as SQL over the per-IR <code>corpus_dedup</code> view; analysis without error is also required.{% if subsets.generated %} Counts from reports/overview/overview.json, built {{ subsets.generated }}.{% endif %} The corpus distributions are shown per IR and per space (the median of each space), because the dense single-room datasets dominate per-IR counts.</p>
+
+      <h3 id="fields">Index fields</h3>
+      <p>The fields that decide which IRs to use. They are columns of the <code>rirdb dev query</code> views (<code>corpus</code> by default; <code>dup_of</code> only in <code>corpus_dedup</code> and <code>clean_rooms</code>). The metrics snapshots have all of them except <code>dup_of</code> and <code>edc_mode_&lt;band&gt;</code>, and of the validity flags only <code>valid_t30_&lt;band&gt;</code>.</p>
+      <dl class="fields">
+        {% for fid, k, v in fields %}
+        <dt id="{{ fid }}">{{ k }}</dt><dd>{{ v }}</dd>
+        {% endfor %}
+      </dl>
+      <p class="small">In the <a href="{{ root }}datasets/index.html">catalogue</a>, the ML training column reads each licence in full: allowed without conditions, allowed with conditions (non-commercial use only, or under the same licence), not allowed, or not stated (ask the authors, or unclear). Use its filter to keep only what your use allows.</p>
+
+      <h3 id="vocab">Kinds of IR and capture formats</h3>
+      <div class="cols-2">
+        <div>
+          <h4>Kinds of IR (<code>ir_kind</code>)</h4>
+          <ul class="vocab">{% for k, l in kinds %}<li><code>{{ k }}</code>{{ l }}</li>{% endfor %}</ul>
+        </div>
+        <div>
+          <h4>Capture formats (<code>capture_format</code>)</h4>
+          <ul class="vocab">{% for k, l in formats %}<li><code>{{ k }}</code>{{ l }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+
+      <h3 id="query">Querying the tables</h3>
+      <p><code>rirdb dev query</code> runs SQL predicates over the per-IR views (DuckDB over the Parquet tables). The default view is <code>corpus</code>; <code>--view corpus_dedup</code> adds <code>dup_of</code>, and <code>--view clean_rooms</code> is the clean measured rooms subset. It prints at most 50 rows unless <code>--limit</code> says otherwise; <code>--limit 0</code> returns every row. Examples (more in the <a href="{{ readme_url }}">README</a>); the third lists every exact duplicate copy with the record it copies:</p>
+      {{ m.code(example_queries, "q-ex") }}
+      <p class="small muted">Without the pipeline, most of these columns are in the per-IR metrics snapshots: see <a href="{{ root }}downloads/index.html">Data files</a> for loading them with pandas or DuckDB. The snapshots have no <code>dup_of</code>, so they still hold the {{ num.n_duplicates | int }} exact duplicate copies{% if num.dup_by_ds %} ({{ num.dup_by_ds }}){% endif %}.</p>
+    </section>
+
+    <section class="section" aria-labelledby="config">
+      <h2 id="config">Configuration</h2>
+      <p>Analyzer {{ data.analyzer_version }}. Every setting lives in one file{% if cfg %}, <a href="{{ cfg.url }}">configs/analyzer_v1.yaml</a> (sha256 starting <code>{{ cfg.sha }}</code> at this build){% endif %}. Each metrics row stores the analyzer version, the first 16 hex digits of the sha256 of the configuration it was computed with (<code>config_sha256</code>), the pyrato and pyfar versions and the git commit, so a change of settings is always visible in the data.</p>
+      {% if cfg %}
+      <details class="box">
+        <summary>Show configs/analyzer_v1.yaml</summary>
+        <pre class="cfg">{{ cfg.text }}</pre>
+      </details>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}

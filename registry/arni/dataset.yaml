@@ -1,0 +1,33 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: arni
+name: Arni variable-acoustics room
+year: 2022
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 132,037 RIRs measured using 5342 configurations of 55 acoustic panels in the variable acoustics laboratory Arni at Aalto Acoustics Lab (5 mics, 5 IRs per combination).
+expected: {n_irs: 132037, n_rooms: 1, note: "5342 panel configurations"}
+room_info: {dimensions: "yes", volume: "yes", positions: "partial", images: "yes", conditions: "yes", where: "8.9 x 6.3 x 3.6 m (Arni em32 readme); combinations_setup.csv (5,342 panel configurations); Arni_layout.jpg"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["6985104"]}
+adapter:
+  name: wav_tree
+  # IR_numClosed_<n>_numComb_<c>_mic_<m>_sweep_<s>.wav: first sweep only (the others repeat the same configuration)
+  params: {pattern: 'IR_(?P<cond>numClosed_\d+_numComb_\d+)_mic_(?P<rcv>\d)_sweep_1\.wav$', room_from: pattern,
+           room_default: arni}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/6985104
+paper: {title: "Calibrating the Sabine and Eyring formulas", url: "https://asa.scitation.org/doi/full/10.1121/10.0013575"}
+doi: 10.5281/zenodo.6985104
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Aalto University
+  country: Finland
+  caveats:
+  - 'The publishers count 132,037 files: up to five repeats (sweeps) of each of 26,710 measurements (5,342 panel
+    configurations x 5 microphones). rirdb indexes sweep 1 of each; 489 measurements have no sweep 1 file (all of
+    96 configurations, part of 4 more) and are not indexed yet.'
+  - Sweep residue in a few files.

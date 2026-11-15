@@ -1,0 +1,50 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: morevox_free_pack
+name: MoReVoX Free Pack (IR libraries)
+year: 2025
+type: production
+status: catalogued
+content: 'Free reverb IR packs from sound-design brand MoReVoX (Sabino Cannone): captures of classic studio hardware
+  reverbs and analog chains, plus real spaces (a Tuscan studio complex, Madrid Metro), in a 4 GB bundle.'
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: No licence or EULA text on the free-pack, IR, download or terms pages; the terms page covers only purchases
+    and refunds.
+homepage: https://www.morevox.com/web/freebbie.html
+web_check:
+  checked: '2026-10-14'
+  found_as: MoreVox free IR packs
+  availability: free_registration
+  families:
+  - mono
+  - stereo
+  - array
+  host: Company website
+  size: 4 GB
+  file_formats: Not stated (single free-pack download)
+  institution: MoReVoX (Sabino Cannone)
+  country: Italy
+  evidence_urls:
+  - https://www.morevox.com/web/freebbie.html
+  - https://www.morevox.com/web/---download-page.html
+  - https://www.morevox.com/web/irs.html
+  - https://www.morevox.com/web/---terms---conditions.html
+  - https://www.morevox.com/web/contacts.html
+  - https://rekkerd.org/morevox-launches-free-pack-2026-with-500mb-new-content/
+  - https://rekkerd.org/morevox-releases-groville/
+  - https://github.com/IsaakCode/freeaudio/blob/master/best_free_impulse_responses.md
+  confidence: medium
+  caveats:
+  - The IRs come inside the 4 GB 'Free Pack 2026' with non-IR samples, loops and instruments; a name and e-mail
+    form must be filled in
+  - No licence or terms of use found on the site
+  - File formats, sample rates and IR counts per pack are not stated; some real-space packs come in mono, stereo
+    and surround 4.0/5.0

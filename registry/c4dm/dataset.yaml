@@ -1,0 +1,35 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: c4dm
+name: C4DM RIR database
+year: 2010
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 468 mono or Ambisonic B-format RIRs recorded in 3 large environments (Great Hall, Octagon, a classroom) at Queen Mary University of London; omni files fetched.
+expected: {n_irs: 468, n_rooms: 3}
+room_info: {positions: "partial", where: "receiver grid indices in the file names (xNNyNN); grid spacing in the accompanying paper"}
+license: {spdx: CC-BY-NC-SA-4.0, url: "http://isophonics.net/content/room-impulse-response-data-set", redistribute_audio: yes, note: "The LICENSE file in each of the three zips (dated 2020-08-28, the same file in all three; read 2026-11-06) gives the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International licence, with attribution to the Centre for Digital Music, Queen Mary University of London. The isophonics.net page names the licence without a version."}
+access: open
+source:
+  kind: http
+  urls:
+    - http://isophonics.net/files/irs/greathallOmni.zip
+    - http://isophonics.net/files/irs/octagonOmni.zip
+    - http://isophonics.net/files/irs/classroomOmni.zip
+adapter:
+  name: wav_tree
+  params: {pattern: '(?P<room>[a-z]+)Omni/Omni/(?P<rcv>[^/]+)\.wav$'}
+wave: 1
+homepage: http://isophonics.net/content/room-impulse-response-data-set
+paper: {title: "Database of Omnidirectional and B-Format Impulse Responses", url: "https://ieeexplore.ieee.org/document/5496083"}
+status: active
+notes: "The research group holds a fuller copy: 2,344 files (1.35 GB) laid out as <room>/{Omni,W,X,Y,Z}/, so the B-format channels are there too. rirdb uses its 468 Omni files in place, matched by sha256 to the files of the public zips (paths <room>Omni/Omni/... in the manifest); the three LICENSE files come from the zips."
+web_check:
+  checked: '2026-10-14'
+  institution: Queen Mary University of London (C4DM)
+  country: UK
+  host: Isophonics website (QMUL)
+  caveats:
+  - The files are 2 s long for a 2.4 s hall, so the decays end before the noise floor.
+  - 96 kHz files with content up to about 22 kHz.
+  - Steady hum or tones in 187 of 468 IRs.

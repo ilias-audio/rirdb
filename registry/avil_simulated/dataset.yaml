@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: avil_simulated
+name: AVIL simulated IR database and scene constructor (DTU)
+year: 2017
+type: simulated
+status: catalogued
+content: Simulated impulse responses for low-, mid- and high-reverberation environments, rendered for DTU's Audiovisual
+  Immersion Lab and stored as SOFA files, with a MATLAB scene constructor (COCOHA project).
+expected:
+  n_rooms: 3
+room_info:
+  positions: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/10834971
+doi: 10.5281/zenodo.10834971
+web_check:
+  checked: '2026-10-14'
+  found_as: Simulated IRs and scene constructor for the DTU Audio-Visual Immersion Lab (COCOHA)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 4.55 GB
+  file_formats: ZIP containing SOFA IR files and MATLAB code; PDF description
+  institution: Technical University of Denmark (DTU)
+  country: Denmark
+  evidence_urls:
+  - https://zenodo.org/api/records/10834971
+  - https://zenodo.org/records/10834971
+  - https://zenodo.org/api/records/10834971/files/wp1_sceneconstructor.zip/content
+  confidence: high
+  caveats:
+  - IRs are rendered for DTU's loudspeaker lab (AVIL) as SOFA files; the scene constructor needs MATLAB and the
+    SOFA API.
+  - Everything comes in one 4.55 GB ZIP.
+  - Uploaded to Zenodo in March 2024, although the record gives 3 April 2017 as its publication date.

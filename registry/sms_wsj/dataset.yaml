@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sms_wsj
+name: SMS-WSJ RIRs
+year: 2019
+type: simulated
+status: catalogued
+content: Simulated 6-microphone circular-array RIRs for 35,875 random shoebox rooms (about 8x6x3 m, T60 0.2-0.5
+  s, 4 source positions each), made with a port of Habets' RIR generator at 8 kHz.
+fs_hz:
+- 8000
+expected:
+  n_irs: 861000
+  n_rooms: 35875
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/3517889
+doi: 10.5281/zenodo.3517889
+web_check:
+  checked: '2026-10-14'
+  found_as: SMS-WSJ simulated multichannel RIRs (Paderborn)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 50.8 GB
+  file_formats: WAV (64-bit float, 6-channel, one file per source) in a 5-part split tar.gz
+  institution: Paderborn University
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/3517889
+  - https://raw.githubusercontent.com/fgnt/sms_wsj/master/README.md
+  - https://raw.githubusercontent.com/fgnt/sms_wsj/master/Makefile
+  - https://raw.githubusercontent.com/fgnt/sms_wsj/master/sms_wsj/database/create_rirs.py
+  - https://arxiv.org/abs/1910.13934
+  - https://github.com/fgnt/sms_wsj
+  confidence: high
+  caveats:
+  - Five split archive parts (about 51 GB) must be joined before unpacking; 52.6 GiB once unpacked.
+  - IR count worked out from the authors' generation script (35,875 rooms x 4 sources x 6 mics); the script and
+    the 52.6 GiB size agree.
+  - 8 kHz, 1.024 s IRs for speech separation; room sizes, positions and decay times come in the JSON built by the
+    GitHub tools.

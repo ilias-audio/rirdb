@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: grap
+name: GRAP
+year: 2018
+type: simulated
+status: catalogued
+content: 35 virtual rooms (some modelled on real venues) simulated in RAVEN; each has one source and two receivers
+  with a mono RIR and 360 BRIRs (1° head turns), plus 3D models, materials and listening-test scores.
+fs_hz:
+- 44100
+expected:
+  n_irs: 70
+  n_rooms: 35
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: 'yes'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  note: The documentation asks anyone wanting commercial use to contact the authors.
+homepage: https://depositonce.tu-berlin.de/handle/11303/7843.4
+doi: 10.14279/depositonce-7003.4
+web_check:
+  checked: '2026-10-14'
+  found_as: 'GRAP: A Ground Truth on Room Acoustical Analysis and Perception'
+  availability: open
+  families:
+  - mono
+  - binaural
+  host: DepositOnce
+  size: 1.49 GB
+  file_formats: FLAC and CSV in a RAR archive; SketchUp (.skp) room models with CSV absorption/scattering data
+  institution: TU Berlin (Audio Communication Group); RWTH Aachen (Institute of Technical Acoustics)
+  country: Germany
+  evidence_urls:
+  - https://depositonce.tu-berlin.de/items/bc297d68-9361-4257-9454-d72e4a35cdc0/full
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/bc297d68-9361-4257-9454-d72e4a35cdc0
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/bc297d68-9361-4257-9454-d72e4a35cdc0/bundles?embed=bitstreams&size=50
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/f2321cee-aefa-4ae7-9398-f84ab587571a/content
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/1248860b-2c3f-4218-affe-25018b8f01fc/content
+  confidence: high
+  caveats:
+  - 'Simulated, not measured: rooms based on real venues do not exactly match their measured acoustics.'
+  - One 1.49 GB RAR archive; audio is 44.1 kHz FLAC. Version 4 (2020) fixed wrong BRIRs for room 33.
+  - Non-commercial licence; commercial users must contact the authors.

@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: hybridreverb2
+name: HybridReverb2 IR database
+year: 2011
+type: simulated
+ir_kinds: [room]
+capture_formats: [stereo, binaural]
+content: 118 presets (472 FLAC files) of 7 virtual shoebox rooms (bathroom to church) from hybrid room-acoustic simulation, made for the HybridReverb2 convolution reverb at Ruhr-Universitat Bochum.
+expected: {n_irs: 118, n_rooms: 7, note: "118 presets of 4 channels (checked 2026-10-13)"}
+fs_hz: [48000]
+license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: github, records: ["jpcima/HybridReverb2-impulse-response-database@master"]}
+wave: 4
+homepage: https://github.com/jpcima/HybridReverb2-impulse-response-database
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Ruhr-Universitat Bochum
+  country: Germany
+  host: GitHub (community copy)

@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: datares
+name: DataRES
+year: 2025
+type: measured
+status: catalogued
+content: RIRs measured in rooms with an active reverberation enhancement system (GLivelab Helsinki and Tampere,
+  ImmersiveLab, Otala), split into stage, system-microphone, loudspeaker and audience paths.
+expected:
+  n_rooms: 4
+room_info:
+  geometry: partial
+  positions: 'yes'
+  images: partial
+license:
+  spdx: CC-BY-NC-SA-2.0
+  note: Zenodo lists CC BY-NC-SA 2.0 for every version, while Aalto's research portal lists CC BY-NC-SA 4.0; both
+    are non-commercial share-alike.
+homepage: https://zenodo.org/records/15737243
+doi: 10.5281/zenodo.15165523
+web_check:
+  checked: '2026-10-14'
+  found_as: 'DataRES: dataset for research on Reverberation Enhancement Systems'
+  availability: open
+  families:
+  - mono
+  - array
+  - binaural
+  host: Zenodo
+  size: 4.4 GB
+  file_formats: WAV in ZIP; JSON metadata; PDF, JPEG and PNG plans and photos
+  institution: Aalto University; University of York; L-Acoustics; FAU Erlangen-Nürnberg
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/api/records/15737243
+  - https://zenodo.org/api/records/15732773
+  - https://zenodo.org/records/15737243/preview/DataRES.zip
+  - https://research.aalto.fi/fi/datasets/datares-dataset-for-research-on-reverberation-enhancement-systems/
+  - https://eprints.whiterose.ac.uk/id/eprint/232170
+  - https://github.com/GianMarcoDeBortoli/PyRES
+  - https://raw.githubusercontent.com/GianMarcoDeBortoli/PyRES/HEAD/PyRES/dataset_api.py
+  confidence: medium
+  caveats:
+  - 'Non-commercial share-alike: Zenodo says CC BY-NC-SA 2.0, Aalto''s research portal says 4.0.'
+  - One 4.4 GB ZIP with 13 room or configuration folders (e.g. ImmersiveLab_T1-T3, Otala_C1/P1/T1), described in
+    JSON files inside.
+  - Sampling rate and IR counts are only in the JSON files; the MIT-licensed PyRES library loads the data.

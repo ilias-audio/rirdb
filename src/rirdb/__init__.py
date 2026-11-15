@@ -1,10 +1,3 @@
-"""RIRDB: find and explore room impulse response datasets (placeholder release)."""
+"""rirdb: find room impulse responses across public datasets, and get them as one folder."""
 
-__version__ = "0.0.1"
-
-
-def main() -> None:
-    print(
-        f"rirdb {__version__} is a placeholder: the tool is under development.\n"
-        "Follow https://github.com/ilias-audio/rirdb for the first release."
-    )
+__version__ = "0.9.0"      # the one home of the version (pyproject.toml reads it)

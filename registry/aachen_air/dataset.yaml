@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: aachen_air
+name: Aachen Impulse Response (AIR) database
+year: 2009
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural, stereo, array_raw]
+content: Binaural RIRs measured with a dummy head in 12 rooms (booth, office, meeting room, lecture rooms, stairway, corridor, kitchen, bathroom and the Aula Carolina church), plus mobile-phone mock-up and stereo records (release 1.4, full-bandwidth .mat files).
+expected: {n_irs: 107, n_rooms: 12, note: "release 1.4: 214 single-ear .mat files = 107 L/R records (binaural + phone mock-up); the paper counts 344"}
+room_info: {positions: "partial", where: "air_info in each .mat: room, source distance, azimuth, dummy head on/off"}
+license: {spdx: MIT, url: "https://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/aachen-impulse-response-database/", redistribute_audio: yes, note: "MIT licence file in the archive (AIR_1_4/license.txt, (c) 2011 RWTH Aachen IND): keep the copyright and permission notice."}
+access: open
+source: {kind: http, urls: ["https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/air_database_release_1_4.zip"]}
+adapter: {name: air_mat}
+wave: 1
+homepage: http://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/aachen-impulse-response-database/
+paper: {title: "A Binaural Room Impulse Response Database for the Evaluation of Dereverberation Algorithms", url: "https://ieeexplore.ieee.org/abstract/document/5201259"}
+status: active
+notes: "The institute website www.iks.rwth-aachen.de refused connections on 2026-11-06 (ports 80 and 443, several tries from the QMUL network), so the homepage and the download URL may not answer. The Wayback Machine holds the same release 1.4 zip, byte for byte (its sha256 matches the lock): https://web.archive.org/web/20230505000219id_/http://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/air_database_release_1_4.zip and a copy of the homepage: https://web.archive.org/web/20261020192806/http://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/aachen-impulse-response-database/"
+web_check:
+  checked: '2026-10-14'
+  institution: RWTH Aachen University
+  country: Germany
+  host: Institute website (RWTH Aachen)
+  caveats:
+  - 'Dataset lists often cite 344 IRs; release 1.4 holds 107 two-channel records in 214 single-ear files: 67 binaural
+    (dummy head), 17 with two microphones and no dummy head, and 23 from a mobile-phone mock-up.'
+  - 'MIT licence: keep the copyright notice.'
+  - The institute website refused connections on 6 November 2026; the Wayback Machine holds the same release 1.4
+    zip (see the registry note).

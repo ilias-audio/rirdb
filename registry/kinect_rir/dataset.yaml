@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: kinect_rir
+name: Kinect RIR
+year: 2019
+type: simulated
+status: catalogued
+content: Simulated 4-channel RIRs for a Kinect-like linear microphone array in random rooms (3-9 m sides, RT60 0.3-1
+  s) at 16 kHz, used to build the Kinect-WSJ reverberant two-speaker mixtures (Inria Nancy).
+fs_hz:
+- 16000
+room_info:
+  positions: 'yes'
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-1.0
+  note: Zenodo stores the generic 'cc-by' licence id and displays it as Creative Commons Attribution 1.0 Generic.
+homepage: https://zenodo.org/records/3520737
+doi: 10.5281/zenodo.3520737
+web_check:
+  checked: '2026-10-14'
+  found_as: Kinect RIR (for simulating CHiME-5-like data)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 7.4 GB
+  file_formats: tar.gz (companion code reads plain-text RIR arrays listed in YAML files)
+  institution: Inria Nancy / LORIA (Université de Lorraine, CNRS)
+  country: France
+  evidence_urls:
+  - https://zenodo.org/records/3520737
+  - https://zenodo.org/api/records/3520737
+  - https://github.com/sunits/Reverberated_WSJ_2MIX
+  - https://raw.githubusercontent.com/sunits/Reverberated_WSJ_2MIX/master/create_corrupted_speech.sh
+  - https://raw.githubusercontent.com/sunits/Reverberated_WSJ_2MIX/master/config.py
+  - https://raw.githubusercontent.com/sunits/Reverberated_WSJ_2MIX/master/wsj_utils.py
+  - https://ar5iv.labs.arxiv.org/html/1910.11114
+  confidence: medium
+  caveats:
+  - Single 7.4 GB tar.gz; the Zenodo record has a one-line description and no file listing.
+  - Details (simulated with RIR-Generator, 16 kHz, 3-9 m rooms, RT60 0.3-1 s, 4-mic Kinect-like array) come from
+    the Kinect-WSJ code and the EUSIPCO 2020 paper (arXiv:1910.11114).
+  - Companion code reads mic and source positions from list.yaml files inside the archive; IR and room counts are
+    not stated.

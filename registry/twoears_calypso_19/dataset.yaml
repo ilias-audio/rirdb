@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: twoears_calypso_19
+name: 'Two!Ears KEMAR BRIRs: Calypso 19-loudspeaker array'
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR BRIRs for each of 19 loudspeakers in a linear array (about 15 cm apart) in TU Berlin's Calypso studio
+  room, head turned -90° to 90° in 1° steps, repeated with AKG K601 headphones worn.
+expected:
+  n_rooms: 1
+room_info:
+  volume: partial
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-SA-4.0
+  note: Zenodo lists CC BY-SA 4.0 while the Two!Ears database documentation lists CC BY-SA 3.0 for the same files;
+    both are share-alike licences that allow commercial use.
+homepage: https://zenodo.org/records/160754
+doi: 10.5281/zenodo.160754
+web_check:
+  checked: '2026-10-14'
+  found_as: Two!Ears KEMAR BRIRs of a 19-channel linear loudspeaker array (TU Berlin Calypso)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 2.05 GB
+  file_formats: SOFA (plus PDF setup sketch and JPG photo)
+  institution: TU Ilmenau (Two!Ears project); measured at TU Berlin
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/160754
+  - https://zenodo.org/api/records/160754
+  - https://zenodo.org/api/records/160754/files/QU_KEMAR_Calypso_loudspeaker_array.sofa/content
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  confidence: high
+  caveats:
+  - 'Large: two SOFA files of about 1 GB each (without and with AKG K601 headphones on the dummy head).'
+  - 'Licence: Zenodo says CC BY-SA 4.0 but the Two!Ears documentation says CC BY-SA 3.0.'
+  - Room volume (83 m³) and RT60 (0.17 s at 1 kHz) appear only in the Two!Ears docs, under the same room's 5.0-surround
+    BRIR set; the sampling rate is not stated.

@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: isobel
+name: ISOBEL Sound Field Dataset
+year: 2021
+type: measured
+status: catalogued
+content: 23,174 measured single-channel RIRs on 32x32 horizontal grids (1 to 1.9 m high) covering four rooms in
+  Denmark, two sources per room, plus ISO 3382-2 reverberation-time measurements.
+fs_hz:
+- 48000
+expected:
+  n_irs: 23174
+  n_rooms: 4
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: partial
+  positions: partial
+  images: partial
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/4501339
+doi: 10.5281/zenodo.4501339
+web_check:
+  checked: '2026-10-14'
+  found_as: ISOBEL Sound Field Dataset
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 39.2 GB
+  file_formats: MAT (.mat, double) in one ZIP
+  institution: Aalborg University and Bang & Olufsen (ISOBEL project)
+  country: Denmark
+  evidence_urls:
+  - https://zenodo.org/api/records/4501339
+  - https://zenodo.org/records/4501339/files/ISOBEL_SF_Dataset.zip?download=1
+  - https://arxiv.org/abs/2102.06455
+  - https://ar5iv.labs.arxiv.org/html/2102.06455
+  - https://vbn.aau.dk/da/publications/deep-sound-field-reconstruction-in-real-rooms-introducing-the-iso
+  confidence: high
+  caveats:
+  - One 39 GB ZIP; the IRs are MATLAB .mat files (double precision, 48 kHz).
+  - Grids are horizontal planes at 1 to 1.9 m height, made for low-frequency sound-field reconstruction.
+  - Room details are in measurement reports inside the ZIP; Room B comes from an earlier study (Lluis et al., JASA
+    2020).

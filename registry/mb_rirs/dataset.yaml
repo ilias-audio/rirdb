@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mb_rirs
+name: MB-RIRs Dataset 1.0
+year: 2025
+type: simulated
+status: catalogued
+content: '59,964 simulated mono shoebox RIRs at 48 kHz (image-source method, MASP library) with frequency-dependent
+  absorption, each in its own random room, in two versions: plain, and with speech-source and left-ear directivity.'
+fs_hz:
+- 48000
+expected:
+  n_irs: 59964
+  n_rooms: 59964
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'yes'
+  materials: partial
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC0-1.0
+homepage: https://zenodo.org/records/15773093
+doi: 10.5281/zenodo.15773093
+web_check:
+  checked: '2026-10-14'
+  found_as: MB-RIRs Dataset 1.0 (Eurecat)
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 13.8 GB
+  file_formats: WAV in split .tar.gz parts; CSV metadata (meta.csv)
+  institution: Eurecat (Fundació Eurecat)
+  country: Spain
+  evidence_urls:
+  - https://zenodo.org/records/15773093
+  - https://zenodo.org/api/records/15773093
+  - https://zenodo.org/records/15773093/files/README.md
+  - https://zenodo.org/records/15773093/files/meta.csv
+  - https://github.com/enricguso/guso_waspaa25
+  - https://arxiv.org/abs/2507.09750
+  confidence: high
+  caveats:
+  - About 13.8 GB of split .tar.gz parts that must be joined before extracting (the README gives the commands).
+  - Both versions use the same 59,964 set-ups; the directivity version uses only the left ear of a KU100 dummy head,
+    so it is still mono.
+  - meta.csv gives each room's size, overall and per-band RT60 and positions, with a train/val/test split (41,974
+    / 8,993 / 8,997).

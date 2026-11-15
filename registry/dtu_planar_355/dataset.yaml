@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dtu_planar_355
+name: Planar RIR Dataset - ACT, DTU Electro (b. 355 r. 008)
+year: 2023
+type: measured
+status: catalogued
+content: 1,800 RIRs on a 30 × 30 grid covering 80 × 80 cm, measured with a robot-moved microphone in DTU's 'sound
+  field control' room (6.1 × 5.8 × 3.1 m) for two loudspeakers; 48 kHz, HDF5.
+fs_hz:
+- 48000
+expected:
+  n_irs: 1800
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://data.dtu.dk/articles/dataset/Planar_Room_Impulse_Response_Dataset_-_ACT_DTU_Electro_b_355_r_008_/21740453
+doi: 10.11583/DTU.21740453.v2
+web_check:
+  checked: '2026-10-14'
+  found_as: DTU Planar Room Impulse Response Dataset (b.355 r.008)
+  availability: open
+  families:
+  - mono
+  host: DTU Data (figshare)
+  size: 431 MB (207 MB + 224 MB in two records)
+  file_formats: HDF5 (HEIC photos, PDF layout drawings, Markdown readme)
+  institution: Technical University of Denmark (Acoustic Technology group, DTU Electro)
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/21740453
+  - https://api.figshare.com/v2/articles/21740645
+  - https://ndownloader.figshare.com/files/40789763
+  - https://ndownloader.figshare.com/files/40790246
+  - https://ndownloader.figshare.com/files/38572208
+  - https://doi.org/10.11583/DTU.21740453.v2
+  confidence: high
+  caveats:
+  - The second loudspeaker (Odeon Omni) is a separate DTU Data record, DOI 10.11583/DTU.21740645.
+  - Sweeps covered only 32 Hz-12 kHz (source 1) and 63 Hz-8.3 kHz (source 2), so the IRs are band-limited.
+  - The README.md in the first record is a copy of the second record's and describes the Odeon source.

@@ -1,0 +1,59 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: soundspaces
+name: SoundSpaces 1.0 pre-rendered RIRs
+year: 2020
+type: simulated
+status: catalogued
+content: Simulated binaural RIRs (plus ambisonic for Matterport3D) pre-rendered with path tracing on grids in 103
+  3D-scanned indoor scenes (18 Replica, 85 Matterport3D) for audio-visual navigation research.
+fs_hz:
+- 16000
+- 44100
+expected:
+  n_rooms: 103
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: partial
+  positions: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-research-only
+  statements:
+  - licence: CC-BY-4.0
+    where: SoundSpaces README
+  - licence: CC-BY-NC-SA-3.0
+    where: Matterport3D Terms of Use, for the Matterport3D-derived data
+  - licence: LicenseRef-research-only
+    where: Replica Dataset Research Terms, for the Replica-derived data
+  note: The README says SoundSpaces is CC BY 4.0, but data derived from Matterport3D falls under the Matterport3D
+    Terms of Use and CC BY-NC-SA 3.0 US, and Replica-derived data under the Replica Dataset Research Terms (non-commercial
+    research or education only).
+homepage: https://github.com/facebookresearch/sound-spaces
+web_check:
+  checked: '2026-10-14'
+  found_as: SoundSpaces 1.0 pre-rendered RIRs (Replica and Matterport3D)
+  availability: open
+  families:
+  - binaural
+  - ambisonic
+  host: Company website
+  size: 867 GiB partial binaural set; full sets up to 3.6 TB
+  file_formats: WAV in TAR archives
+  institution: Facebook AI Research / Facebook Reality Labs (Meta) with UT Austin and UIUC
+  country: USA
+  evidence_urls:
+  - https://github.com/facebookresearch/sound-spaces
+  - https://github.com/facebookresearch/sound-spaces/blob/main/soundspaces/README.md
+  - https://raw.githubusercontent.com/facebookresearch/sound-spaces/main/README.md
+  - https://raw.githubusercontent.com/facebookresearch/sound-spaces/main/LICENSE
+  - http://dl.fbaipublicfiles.com/SoundSpaces/binaural_rirs.tar
+  - https://ar5iv.labs.arxiv.org/html/1912.11474
+  - https://github.com/facebookresearch/Replica-Dataset/blob/main/LICENSE
+  confidence: high
+  caveats:
+  - 'Very large: the partial binaural set is one 867 GiB (931 GB) tar; full ambisonic Matterport3D set is 3.6 TB.'
+  - Repo is CC BY 4.0, but RIRs derived from Matterport3D or Replica scenes fall under their non-commercial terms.
+  - Repository archived since Nov 2024; scene meshes come separately from Replica and Matterport3D; SoundSpaces
+    2.0 renders differ.

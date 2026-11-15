@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: scream_sdn
+name: Higher-order SDN RIRs (SCReAM, DAFx 2022)
+year: 2022
+type: simulated
+status: catalogued
+content: 30 simulated mono RIRs of three shoebox rooms (small, medium, large), each made with eight Scattering Delay
+  Network variants plus image-method and CATT-Acoustic references, with listening-test stimuli.
+fs_hz:
+- 44100
+expected:
+  n_irs: 30
+  n_rooms: 3
+room_info:
+  geometry: partial
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC0-1.0
+homepage: https://zenodo.org/records/15691239
+doi: 10.5281/zenodo.15691239
+web_check:
+  checked: '2026-10-14'
+  found_as: SCReAM-Surrey DAFx2022 RIRs (higher-order Scattering Delay Networks)
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 67.6 MB
+  file_formats: WAV (64-bit float)
+  institution: University of Surrey (SCReAM project)
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/records/15691239
+  - https://zenodo.org/api/records/15691239
+  - https://github.com/SCReAM-Surrey/DAFx2022-RIRs-and-Stimuli
+  - https://raw.githubusercontent.com/SCReAM-Surrey/DAFx2022-RIRs-and-Stimuli/main/LICENSE
+  - https://dafx.de/paper-archive/details/4ILTCKyQZa67NR3kd3mXHw
+  confidence: high
+  caveats:
+  - 'Small set for comparing reverberation algorithms: 3 rooms x 10 methods.'
+  - Zenodo lists it as software (a GitHub release archive); the same files have been on GitHub since 2022.
+  - Also contains 90 listening-test stimuli (guitar, gunshot, speech) per room and method.

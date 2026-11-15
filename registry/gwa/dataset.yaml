@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: gwa
+name: GWA - Geometric-Wave Acoustic dataset
+year: 2022
+type: simulated
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 2M+ synthetic RIRs in 6.8K professionally designed 3D houses, geometric ray tracing calibrated with FDTD wave simulation below the crossover.
+expected: {n_irs: 2000000, n_rooms: 18968, note: "over 2 million RIRs in 18,968 furnished rooms of 6,813 3D-FRONT houses"}
+license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "GitHub README: dataset CC BY-NC 4.0, code CC BY 4.0; the 3D-FRONT models fall under their own licence agreement (checked 2026-10-13)."}
+access: open
+source: {kind: manual, instructions: "Direct HTTP download, no registration: https://obj.umiacs.umd.edu/gamma-datasets/GWA_Dataset.zip (524 GB) or GWA_Dataset_small.zip (15.4 GB); needs permanent storage."}
+wave: 4
+homepage: https://gamma.umd.edu/pro/sound/gwa/
+paper: {title: "GWA: A Large High-Quality Acoustic Dataset for Audio Processing", url: "https://arxiv.org/abs/2204.01787"}
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: University of Maryland (GAMMA)
+  country: USA
+  host: University of Maryland server

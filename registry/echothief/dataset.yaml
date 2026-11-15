@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: echothief
+name: EchoThief impulse response library
+type: production
+ir_kinds: [room, outdoor]
+capture_formats: [stereo]
+fs_hz: [44100]
+content: More than a hundred real-world spaces sampled around North America (caves, tunnels, stairwells, glaciers, bridges, ...), from SDSU Music Recording Technology.
+expected: {n_irs: 115, n_rooms: 115}
+adapter:
+  name: wav_tree
+  params:
+    pattern: 'EchoThiefImpulseResponseLibrary/(?P<cat>[^/]+)/(?P<label>[^/]+)\.wav$'
+    room_from: file
+    category_from: parent
+    ir_kind_from_regex: {'/Nature/': outdoor}
+room_info: {dimensions: "no", volume: "no", geometry: "no", materials: "no", positions: "no", images: "partial", reference_acoustics: "no", conditions: "no", where: "IR files only; photos of many of the places, and their locations, on the EchoThief website"}
+license:
+  spdx: LicenseRef-EchoThief
+  url: https://www.echothief.com/downloads/
+  redistribute_audio: "no"
+  training_use: prohibited
+  note: "EchoThief License.pdf (in the archive): use to create derivative artistic work (e.g. convolution reverb); any other use by agreement with the author; not authorized for training AI."
+access: open
+source: {kind: http, urls: ["https://www.echothief.com/wp-content/uploads/2024/07/EchoThiefImpulseResponseLibrary.zip"]}
+wave: 0
+homepage: https://www.echothief.com/
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: San Diego State University (Chris Warren)
+  country: USA
+  host: Project website
+  licence_note: 'EchoThief licence (PDF in the archive): use the IRs to create derivative artistic work such as
+    convolution reverb; any other use by agreement with the author; not authorised for training AI.'
+  caveats:
+  - Allowed for artistic work such as convolution reverb; training AI models is not allowed.
+  - 'Edited for music use: most files end before the noise floor, and a quarter end before the decay does.'

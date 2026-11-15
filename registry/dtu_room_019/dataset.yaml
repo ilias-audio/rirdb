@@ -1,0 +1,54 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dtu_room_019
+name: RIR Dataset - ACT, DTU Electro (019)
+year: 2024
+type: measured
+status: catalogued
+content: '2,772 RIRs in a furnished, partly absorptive classroom at DTU (room 019): a robot arm moved one microphone
+  over spheres and lines for each of two loudspeaker positions; 48 kHz, 5 s IRs in HDF5.'
+fs_hz:
+- 48000
+expected:
+  n_irs: 2772
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-NC-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: DTU Data record
+  - licence: CC-BY-NC-4.0
+    where: Readme.html shipped with the dataset
+  note: The DTU Data record states CC BY 4.0, but the Readme.html shipped with the dataset states CC BY-NC 4.0;
+    treat it as non-commercial until the authors clarify.
+homepage: https://data.dtu.dk/articles/dataset/Room_Impulse_Response_Dataset_-_ACT_DTU_Electro_019_/25867705
+doi: 10.11583/DTU.25867705.v1
+web_check:
+  checked: '2026-10-14'
+  found_as: 'DTU ACT Room Impulse Response Dataset: classroom 019'
+  availability: open
+  families:
+  - mono
+  host: DTU Data (figshare)
+  size: 15.1 GB
+  file_formats: HDF5 inside ZIP (JPG photos, HTML readme)
+  institution: Technical University of Denmark (Acoustic Technology group, DTU Electro)
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/25867705
+  - https://ndownloader.figshare.com/files/46457326
+  - https://ndownloader.figshare.com/files/46457350
+  - https://doi.org/10.11583/DTU.25867705.v1
+  confidence: high
+  caveats:
+  - 'Licence conflict: the record says CC BY 4.0, the included Readme.html says CC BY-NC 4.0.'
+  - Two ZIP files of about 7.5 GB each (about 15 GB in total).
+  - Each HDF5 file also holds the raw sweep recordings, background noise and SNR.

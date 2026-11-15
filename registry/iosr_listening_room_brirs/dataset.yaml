@@ -1,0 +1,27 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: iosr_listening_room_brirs
+name: IoSR listening room multichannel BRIRs
+year: 2017
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural]
+content: BRIRs of an ITU-R BS.1116 listening room for 24 loudspeakers in the 22.2 layout, at head angles 0-360 deg in 2.5 deg steps.
+room_info: {dimensions: "yes", volume: "yes", positions: "partial", where: "IoSR_ListeningRoom_BRIR.pdf (7.35 x 5.70 x 2.50 m); head azimuth per file"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: github, records: ["IoSR-Surrey/IoSR_ListeningRoom_BRIRs@master"]}
+adapter:
+  name: mat_array
+  # brir[65536, 2 ears, 24 loudspeakers] per head angle (0-357.5 deg in 2.5 deg): frontal angle only
+  params: {glob: "**/angle_0.0.mat", var: brir, time_axis: 0, channel_axis: 1, record_axis: 2,
+           roles: [L, R], capture_format: binaural, fs: 48000, room_default: iosr-listening-room,
+           record_prefix: spk}
+wave: 1
+homepage: https://github.com/IoSR-Surrey/IoSR_ListeningRoom_BRIRs
+doi: 10.15126/surreydata.00813511
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of Surrey (IoSR)
+  country: UK
+  host: GitHub (Git LFS)

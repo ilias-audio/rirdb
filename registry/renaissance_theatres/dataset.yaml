@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: renaissance_theatres
+name: 'Italian Renaissance Theatres: measurements and simulations'
+year: 2014
+type: hybrid
+status: catalogued
+content: Measured mono IRs at listening positions and one AB-stereo IR in each of three Italian Renaissance theatres
+  (Vicenza, Parma, Sabbioneta), plus simulated IRs with audience, CAD models and an anechoic recording.
+expected:
+  n_rooms: 3
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  conditions: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: The record has no rights statement; its only licence file is the depositor's agreement with DepositOnce,
+    which gives users no reuse rights.
+homepage: https://depositonce.tu-berlin.de/handle/11303/189.2
+doi: 10.14279/depositonce-32.2
+web_check:
+  checked: '2026-10-14'
+  found_as: Room Acoustical Measurements and Simulations of Italian Renaissance Theatres
+  availability: open
+  families:
+  - mono
+  - stereo
+  host: DepositOnce
+  size: 136 MB
+  file_formats: ZIP (IR file format not stated on the record); CAD models in DXF and SKP
+  institution: TU Berlin (Audio Communication Group)
+  country: Italy
+  evidence_urls:
+  - https://depositonce.tu-berlin.de/items/1cc5c6a6-fae7-4bdf-b5bb-23e3c0b14496/full
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/1cc5c6a6-fae7-4bdf-b5bb-23e3c0b14496
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/1cc5c6a6-fae7-4bdf-b5bb-23e3c0b14496/bundles?embed=bitstreams&size=50
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/88de8572-8efa-4235-bf4a-d4ce21d51d4b/content
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/645bf405-9981-4ea6-9132-4d3b7715843c/content
+  confidence: medium
+  caveats:
+  - No reuse licence stated; ask the authors before redistributing.
+  - Sample rate, file format and IR count are not given on the record; only the 136 MB ZIP shows them.
+  - Mixes measured IRs with simulated IRs for the occupied condition.

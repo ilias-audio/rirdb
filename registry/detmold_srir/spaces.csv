@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+brahmssaal,Brahmssaal (Detmold; chamber music hall),concert_hall,room,750,,,,,,MainDocumentation_v02.pdf: approx. 750 m3 shoebox,
+konzerthaus,Konzerthaus (Detmold; concert hall),concert_hall,room,4600,,,,,,MainDocumentation_v02.pdf: approx. 4600 m3,
+sommertheater,Sommertheater (Detmold; theatre),theatre_auditorium,room,2700,,,,,,MainDocumentation_v02.pdf: approx. 2700 m3; stage incl. fly tower approx. 650 m3,

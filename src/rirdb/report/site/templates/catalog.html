@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block head %}
+<style>
+.wrap.wide { max-width: 1560px; padding-inline: clamp(12px, 2.4vw, 32px); }
+.cat-intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; margin-top: 28px; }
+@media (max-width: 900px) { .cat-intro { grid-template-columns: minmax(0, 1fr); } }
+.cat-intro h2 { font-size: 1.2rem; margin-bottom: .5em; }
+.cat-intro ul { margin: 0; padding-left: 1.1em; font-size: .96rem; }
+.cat-intro li + li { margin-top: .4em; }
+.cls-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.cls-list li { display: grid; grid-template-columns: 12px 10.5em minmax(0, 1fr); gap: 2px 8px; align-items: baseline; font-size: .88rem; }
+.cls-list span.t { color: var(--ink-2); }
+@media (max-width: 560px) { .cls-list li { grid-template-columns: 12px minmax(0, 1fr); } .cls-list span.t { grid-column: 2; } }
+.sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; flex: none; }
+.rtkey { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: .86rem; color: var(--ink-2); margin-top: 6px; }
+.rtkey svg { width: 150px; height: 26px; flex: none; }
+.rtkey text { font: 10px var(--font-body); fill: var(--muted); }
+
+/* filters: one row on wide screens, two columns on phones */
+.filters .fld select { max-width: 132px; }
+.filters .fld input[type="search"] { width: min(200px, 80vw); }
+@media (max-width: 640px) {
+  .filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .filters .fld:first-child { grid-column: 1 / -1; }
+  .filters .fld input[type="search"] { width: 100%; }
+  .filters .fld select { max-width: none; width: 100%; }
+}
+.cat-tools { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; justify-content: space-between; margin: 0 0 8px; }
+.cat-tools .count { margin: 0; font-weight: 700; }
+.cat-tools .dl { font-size: .9rem; display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; }
+
+/* the table: compact enough to show every column at 1280 px */
+#cat { font-size: .84rem; }
+#cat th, #cat td { padding: 6px 6px; }
+#cat thead th { font-size: .78rem; }
+#cat td.c-name { min-width: 180px; max-width: 210px; }
+#cat td.c-type { min-width: 72px; max-width: 96px; }
+#cat td.c-fs { min-width: 60px; max-width: 82px; }
+#cat td.c-lic { min-width: 120px; max-width: 140px; overflow-wrap: anywhere; }
+#cat .pills { gap: 3px; flex-direction: column; align-items: flex-start; }
+#cat .pill { font-size: .74rem; padding: 1px 7px; }
+#cat .lic-cls { display: flex; align-items: center; gap: 6px; font-size: .76rem; color: var(--ink-2); margin-top: 3px; white-space: nowrap; }
+.perm { display: flex; align-items: center; gap: 5px; font-size: .78rem; line-height: 1.25; white-space: nowrap; color: var(--ink-2); }
+.perm + .perm { margin-top: 2px; }
+.perm svg { width: 14px; height: 14px; flex: none; }
+.perm.yes svg { color: var(--yes-fill); } .perm.part svg { color: var(--part-fill); } .perm.no svg { color: var(--no-fill); } .perm.unk svg { color: var(--unk-fill); }
+#cat .badge { font-size: .76rem; padding: 2px 7px 2px 4px; }
+#cat .badge svg { width: 13px; height: 13px; }
+#cat td.c-st { white-space: nowrap; }
+#cat td.c-rt { white-space: nowrap; }
+#cat td.c-rt .rng { display: block; width: 84px; } /* the shared .rng width (120 px) would override range_mini(w=84) */
+#cat td.c-rt .v { font-variant-numeric: tabular-nums; }
+#cat .kind-t20 { font-size: .7rem; color: var(--muted); margin-left: 4px; }
+.tbl-wrap.cat-wrap { max-height: min(80vh, 1000px); position: relative; } /* contains the sr-only spans, which are absolutely positioned */
+@media (min-width: 760px) {
+  #cat th:first-child, #cat td:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; box-shadow: 1px 0 0 var(--rule); }
+  #cat thead th:first-child { z-index: 3; }
+  #cat tbody tr:hover td:first-child { background: color-mix(in srgb, var(--sunk) 60%, var(--surface)); }
+}
+@media (max-width: 759px) { #cat td.c-name { min-width: 170px; } }
+.notes { font-size: .9rem; color: var(--ink-2); max-width: 92ch; margin-top: 12px; }
+.notes p { margin: 0 0 .7em; }
+</style>
+{% endblock %}
+{% block main %}
+{% call m.head("All datasets", "Every public room impulse response dataset we know of, in one table: what it holds, what its licence lets you do, how to get it and, for the datasets rirdb has analysed, how reverberant it is. Follow a name for the full record.", Markup('<a href="' ~ root ~ 'index.html">' ~ SITE_NAME ~ '</a> / Datasets')) %}
+<dl class="tiles">
+  <div class="tile"><dt>datasets catalogued</dt><dd>{{ counts.all | int }}</dd></div>
+  <div class="tile"><dt>in the rirdb registry, with fetch scripts</dt><dd>{{ counts.registry | int }}</dd></div>
+  <div class="tile"><dt>analysed by rirdb, IR by IR</dt><dd>{{ counts.analysed | int }}</dd></div>
+  <div class="tile"><dt>open download, no account needed</dt><dd>{{ counts.open | int }}</dd></div>
+  <div class="tile"><dt>allow ML training without conditions ({{ counts.ml_cond | int }} more with conditions)</dt><dd>{{ counts.ml | int }}</dd></div>
+</dl>
+<div class="cat-intro">
+  <div class="prose">
+    <h2>How to read this table</h2>
+    <ul>
+      <li><b>{{ counts.registry | int }}</b> datasets are in the rirdb registry, each with a fetch script. The {{ counts.locked | int }} that rirdb has fetched also have a lock file listing the exact files and their checksums. The other <b>{{ counts.survey | int }}</b> were found on the web; their facts were checked on {{ survey_date or "the survey date" }}.</li>
+      <li><b>What you may do</b> reads the licence in three answers: use in products, ML training, sharing the audio. A tick is yes, a bar is yes with conditions, a cross is no, a question mark means the terms do not say. Hover an answer for the full sentence. This is a reading, not legal advice.</li>
+      <li><b>Median T30</b> (analysed datasets only) is the reverberation time at 500 Hz and 1 kHz over the IRs of real spaces. Where fewer than half of them allow a T30, the T30-or-T20 value is shown and marked T20.{% for name, w in t30_over %} {{ name }} has no IRs of real spaces: its value is over its {{ w }} IRs, marked {{ w }}.{% endfor %}
+        <span class="rtkey"><svg viewBox="0 0 150 26" role="img" aria-label="Key: the bar spans the 10th to 90th percentile on a log scale from 0.1 to 10 s; the dot is the median"><rect x="4" y="5" width="142" height="4" rx="2" style="fill:var(--sunk)"/><rect x="50" y="4" width="46" height="6" rx="3" style="fill:var(--series-1);opacity:.45"/><circle cx="66" cy="7" r="4" style="fill:var(--series-1);stroke:var(--surface);stroke-width:1.5"/><text x="4" y="23">0.1 s</text><text x="75" y="23" text-anchor="middle">1 s</text><text x="146" y="23" text-anchor="end">10 s</text></svg><span>Bar: 10th to 90th percentile, log scale. Dot: median.</span></span></li>
+    </ul>
+  </div>
+  <div>
+    <h2>Licence classes</h2>
+    <ul class="cls-list">
+      {% for c in classes %}<li><span class="sw" style="background:var({{ c.color }})"></span><b>{{ c.label }}</b><span class="t">{{ c.text }}</span></li>{% endfor %}
+    </ul>
+  </div>
+</div>
+{% endcall %}
+
+<section class="section" aria-labelledby="tbl-h">
+  <div class="wrap wide">
+    <h2 id="tbl-h" class="sr-only">Dataset table</h2>
+    <form class="filters" role="search" aria-label="Filter the datasets" onsubmit="return false">
+      <label class="fld"><span>Search</span><input type="search" data-filter="#cat" placeholder="Name, place, country…" aria-controls="cat"></label>
+      <label class="fld"><span>Type</span><select data-filter="#cat" data-key="type"><option value="">Any</option>{% for k, l, n in filt.type %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endfor %}</select></label>
+      <label class="fld"><span>Captured as</span><select data-filter="#cat" data-key="fam"><option value="">Any</option>{% for k, l, n in filt.fam %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endfor %}</select></label>
+      <label class="fld"><span>Licence class</span><select data-filter="#cat" data-key="lic"><option value="">Any</option>{% for k, l, n in filt.lic %}{% if n %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endif %}{% endfor %}</select></label>
+      <label class="fld"><span>ML training</span><select data-filter="#cat" data-key="ml"><option value="">Any</option>{% for k, l, n in filt.ml %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endfor %}</select></label>
+      <label class="fld"><span>Availability</span><select data-filter="#cat" data-key="avail"><option value="">Any</option>{% for k, l, n in filt.avail %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endfor %}</select></label>
+      <label class="fld"><span>rirdb status</span><select data-filter="#cat" data-key="st"><option value="">Any</option>{% for k, l, n in filt.st %}<option value="{{ k }}">{{ l }} ({{ n }})</option>{% endfor %}</select></label>
+      <button class="btn-ghost" type="button" id="cat-reset">Clear filters</button>
+    </form>
+    <div class="cat-tools">
+      <p class="count" data-count-for="#cat" aria-live="polite">{{ rows | length }} rows</p>
+      <p class="dl"><span class="muted">The whole table as data:</span> <a href="{{ root }}data/catalog.csv">catalog.csv</a> <a href="{{ root }}data/catalog.json">catalog.json</a></p>
+    </div>
+    <div class="tbl-wrap tall cat-wrap">
+      <table class="tbl" id="cat">
+        <caption class="sr-only">All {{ rows | length }} datasets, newest first. Column headers sort the table.</caption>
+        <thead><tr>
+          <th scope="col" data-sort="text">Dataset</th>
+          <th scope="col" class="n" data-sort="num">Year</th>
+          <th scope="col" data-sort="text">Type</th>
+          <th scope="col" data-sort="text">Captured as</th>
+          <th scope="col" class="n" data-sort="num">IRs</th>
+          <th scope="col" class="n" data-sort="num">Spaces</th>
+          <th scope="col" data-sort="num">Sample rate</th>
+          <th scope="col" data-sort="text">Licence</th>
+          <th scope="col" data-sort="num">You may</th>
+          <th scope="col" data-sort="text">Availability</th>
+          <th scope="col" data-sort="num">rirdb</th>
+          <th scope="col" data-sort="num">Median T30</th>
+        </tr></thead>
+<tbody>
+{% for d in rows %}
+<tr data-search="{{ d._search }}" data-type="{{ d.f_type }}" data-fam="{{ d.fams | join(',') }}" data-lic="{{ d.licence.cls }}" data-ml="{{ d.f_ml }}" data-avail="{{ d.avail_group }}" data-st="{{ d.f_st }}">
+<td class="name c-name" data-v="{{ d.name | lower }}"><a href="{{ root }}{{ d.url }}">{{ d.name }}</a>{% if d.origin %}<span class="sub">{{ d.origin }}</span>{% endif %}</td>
+<td class="n" data-v="{{ d.year or 0 }}">{{ d.year or "–" }}</td>
+<td class="c-type">{{ d.type_label }}</td>
+<td data-v="{{ d.fam_short | join(' ') }}">{% if d.fams %}<div class="pills">{% for f in d.fam_short %}<span class="pill">{{ f }}</span>{% endfor %}</div>{% else %}<span class="muted" title="Not stated">–</span>{% endif %}</td>
+<td class="n" data-v="{{ d.n_irs if d.n_irs is not none else -1 }}">{% if d.n_irs is not none %}{{ d.n_irs | int }}{% else %}<span class="muted" title="Not stated">–</span>{% endif %}</td>
+<td class="n" data-v="{{ d.n_spaces if d.n_spaces is not none else -1 }}">{% if d.n_spaces is not none %}{{ d.n_spaces | int }}{% else %}<span class="muted" title="Not stated">–</span>{% endif %}</td>
+<td class="c-fs" data-v="{{ d.fs | max if d.fs else -1 }}">{% if d.fs_text %}{{ d.fs_text }}{% else %}<span class="muted" title="Not stated">–</span>{% endif %}</td>
+<td class="c-lic" data-v="{{ d.licence.label | lower }}">{{ d.licence.label }}<span class="lic-cls"><span class="sw" style="background:var({{ d.cls.color }})"></span>{{ d.cls.label }}</span></td>
+<td data-v="{{ d.perm_score }}">{% for p in d.perms %}<span class="perm {{ p.cls }}" data-tip="{{ p.full }}"><svg aria-hidden="true"><use href="#i-{{ p.cls }}"/></svg><span aria-hidden="true">{{ p.short }}</span><span class="sr-only">{{ p.full }}</span></span>{% endfor %}</td>
+<td data-v="{{ d.avail_group }} {{ d.avail_label }}" data-tip="{{ d.avail_label }}: {{ d.avail_text }}">{{ m.yn(d.avail_badge, d.avail_short) }}</td>
+<td class="c-st" data-v="{{ {'analysed': 0, 'registry': 1, 'survey': 2}[d.rirdb_status] }}">{% if d.rirdb_status == "analysed" %}<span class="pill accent">Analysed</span>{% elif d.rirdb_status == "registry" %}<span class="pill">Registry</span><span class="sub">not analysed</span>{% else %}<span class="muted">Surveyed</span>{% if d.twin %}<span class="sub"><a href="{{ root }}{{ d.twin.url }}">also in registry</a></span>{% endif %}{% endif %}</td>
+<td class="c-rt" data-v="{{ d.t30.p50 if d.t30 else -1 }}">{% if d.t30 %}{{ d.t30_html }}<span class="v">{{ d.t30.p50 | num(2) }} s</span>{% if d.t30.kind == "T20" %}<span class="kind-t20">T20</span>{% endif %}{% if d.t30_over %}<span class="kind-t20" data-tip="Over its {{ d.t30_over }} IRs: it has no IRs of real spaces">{{ d.t30_over }}</span>{% endif %}{% elif d.analysed %}<span class="muted small" data-tip="Analysed, but no valid T30 or T20 at 500 Hz and 1 kHz: files too short, or no IRs of real spaces">no value</span>{% else %}<span class="muted">–</span>{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <p><b>How the counts are made.</b> For datasets rirdb has indexed, IRs and spaces are counted in the index. An IR record is one source position heard at one receiver position: the channels of a binaural or Ambisonic capture count once, while dense single-microphone grids count every microphone. A space is a room, hall or outdoor site as its dataset names it.{% if shown_published %} Where the index holds only part of a release, the published count is shown instead ({{ shown_published | join(", ") }}).{% endif %} For the other datasets the counts are those the authors publish; {{ (counts.all - counts.irs_stated) | int }} datasets publish no IR count, shown as a dash. Sample rates are those found in the files for indexed datasets, otherwise those published.</p>
+      <p><b>Availability</b> groups the download route: open download; registration, request or manual download; or a broken link or an archived copy only. <b>rirdb</b>: analysed datasets have per-IR quality checks and acoustic parameters. Registry datasets that are not analysed are fetched but not yet indexed, simulated or deferred, or need a manual or registered download; each of their pages says which. Surveyed datasets are catalogued from their web pages only.{% if twins %} Surveyed records that describe a dataset the registry also holds, in whole or in part, link to its registry entry and are counted in both groups ({{ twins | join(", ") }}).{% endif %}</p>
+      <p><b>Captured as</b> groups capture formats into five families: mono, stereo, binaural, Ambisonic or spherical array (including raw Eigenmike and tetrahedral capsules), and other microphone arrays.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var b = document.getElementById("cat-reset");
+  if (!b) return;
+  b.addEventListener("click", function () {
+    var ctrls = document.querySelectorAll('[data-filter="#cat"]');
+    Array.prototype.forEach.call(ctrls, function (c) { c.value = ""; });
+    if (ctrls.length) ctrls[0].dispatchEvent(new Event("input", { bubbles: true }));
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: drr_scaled_brirs
+name: DRR-scaled individual BRIRs
+year: 2016
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural]
+content: Individual binaural room impulse responses with the direct-to-reverberant ratio scaled in steps (listening-test material).
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["61072"]}
+wave: 1
+homepage: https://zenodo.org/records/61072
+doi: 10.5281/zenodo.61072
+status: broken
+notes: "Zenodo file BRIRs_DRR-scaled.zip (md5 matches the record) is truncated upstream: 386 MB present (386,164,988 bytes), the zip directory references ~1.4 GB (checked 2026-09-30 with unzip, 7z and Python zipfile). Report to the authors."
+web_check:
+  checked: '2026-10-14'
+  institution: TU Ilmenau
+  country: Germany
+  caveats:
+  - The Zenodo archive is truncated (about 386 MB of roughly 1.4 GB) and cannot be extracted.

@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: incar_mcvampire
+name: In-Car McVAMPIRE
+year: 2024
+type: measured
+status: catalogued
+content: IRs measured in a minivan from a mouth simulator at 8 seats and 11 orientations, and from the 6 built-in
+  car loudspeakers, to 14 overhead microphones; includes driving-noise recordings at 0-150 km/h.
+expected:
+  n_irs: 94
+  n_rooms: 1
+room_info:
+  geometry: partial
+  positions: partial
+  images: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/12806684
+doi: 10.5281/zenodo.12806684
+web_check:
+  checked: '2026-10-14'
+  found_as: 'In-Car McVAMPIRE: in-car multichannel varying mouth position IR dataset'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 256 MB
+  file_formats: WAV in one ZIP (94 IR files, 14 driving-noise files); MAT and PNG geometry; PDF documentation
+  institution: Cerence GmbH
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/12806684
+  - https://zenodo.org/api/records/12806684
+  - https://zenodo.org/records/12806684/preview/In-Car_McVAMPIRE_V1.0.zip
+  - https://zenodo.org/api/records/12818781
+  - https://arxiv.org/html/2509.15702
+  confidence: high
+  caveats:
+  - Sampling rate and IR length are not given on the record; a documentation PDF is inside the ZIP.
+  - A later paper by the same authors reports a reverberation time of about 90 ms for this minivan, so the IRs are
+    short.
+  - The companion Anechoic McVAMPIRE set (same microphone layout, anechoic room) is a separate record.

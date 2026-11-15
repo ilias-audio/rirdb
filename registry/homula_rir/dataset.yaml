@@ -1,0 +1,34 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: homula_rir
+name: HOMULA-RIR
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw, sma_raw]
+content: Seminar-room RIRs from a 64-microphone ULA (eStick) near 2 Genelec 8020 speakers, and higher-order microphones (Voyage Spatial Mic) at 25 attendee positions (teleconferencing scenario).
+expected: {n_rooms: 1}
+room_info: {positions: "yes", where: "pos-R*-HOM*.csv"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["10479726"]}
+adapter:
+  name: wav_tree
+  # hom/row<r>/rir-S<s>-R<r>-HOM<h>.wav (8-capsule arrays, order-0 mean) and ula/rir[-_]S<s>-ULA.wav (64 ch)
+  params:
+    pattern: 'rir[-_](?P<src>S\d)-(?P<rcv>[^/]+)\.wav$'
+    room_from: pattern
+    room_default: polimi-seminar-room
+    roles: {8: [c1, c2, c3, c4, c5, c6, c7, c8]}
+    channel_formats: {8: sma_raw, 64: array_raw}
+    reference_roles: {8: mean, 64: ch32}
+wave: 2
+homepage: https://github.com/polimi-ispl/homula-rir
+paper: {title: "HOMULA-RIR: A Room Impulse Response Dataset for Teleconferencing and Spatial Audio Applications", url: "https://doi.org/10.1109/ICASSPW62465.2024.10626753"}
+doi: 10.5281/zenodo.10479726
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Politecnico di Milano
+  country: Italy
+  caveats:
+  - A second version (2025, Zenodo 15053008) changes the archive contents; this guide indexes version 1.

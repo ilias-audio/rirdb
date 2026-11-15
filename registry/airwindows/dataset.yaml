@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: airwindows
+name: Airwindows Impulses
+year: 2007
+type: production
+status: catalogued
+content: '19 free reverb IRs for convolution reverbs: synthetic rooms, a Concertgebouw-style hall, plates and prime-number
+  reverbs, plus spaces made from explosions, naval guns, thunder and a Space Shuttle launch.'
+expected:
+  n_irs: 19
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: The page says only 'They are free.' It gives no terms for use or redistribution.
+homepage: https://www.airwindows.com/airwindows-impulses/
+web_check:
+  checked: '2026-10-14'
+  found_as: Airwindows Impulses
+  availability: open
+  families:
+  - stereo
+  host: Company website
+  size: 19.3 MB
+  file_formats: ZIP archive of IR files (format not stated)
+  institution: Airwindows (Chris Johnson)
+  country: Unknown
+  evidence_urls:
+  - https://www.airwindows.com/airwindows-impulses/
+  - https://www.airwindows.com/wp-content/uploads/2014/08/AirwindowsImpulses.zip
+  confidence: high
+  caveats:
+  - Most of these are synthetic or processed IRs, not measured rooms.
+  - The page lists 19 named IRs but states no sample rate or channel count. Only 'Hangar' is said to be stereo.
+  - There is no formal licence.

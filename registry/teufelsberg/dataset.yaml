@@ -1,0 +1,50 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: teufelsberg
+name: Balance Mastering Teufelsberg IRs
+year: 2015
+type: production
+status: catalogued
+content: Six stereo reverb impulse responses of the main listening tower at the former NSA compound on Teufelsberg,
+  Berlin, made by Balance Mastering; a copy survives as 44.1 kHz/24-bit WAV on the Internet Archive.
+fs_hz:
+- 44100
+expected:
+  n_irs: 6
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-custom
+  note: A readme in the item says 'Feel free to distribute but please link back' to the now-defunct Balance Mastering
+    page. No formal licence is given.
+homepage: https://archive.org/details/teufelsberg-impulse-responses-01
+web_check:
+  checked: '2026-10-14'
+  found_as: Balance Mastering Teufelsberg impulse responses
+  availability: archived
+  families:
+  - stereo
+  host: Internet Archive
+  size: 12 MB (6 WAV files)
+  file_formats: WAV (stereo, 24-bit PCM), plus FLAC/MP3 copies made by the Internet Archive
+  institution: Balance Mastering
+  country: Germany
+  evidence_urls:
+  - https://archive.org/details/teufelsberg-impulse-responses-01
+  - https://archive.org/metadata/teufelsberg-impulse-responses-01
+  - https://archive.org/download/teufelsberg-impulse-responses-01/Please%20link%20back%20to%20Balance%20Mastering.txt
+  - https://archive.org/download/teufelsberg-impulse-responses-01/balance-mastering-teufelsberg-IR-01-44100-24bit.wav
+  - https://rekkerd.org/?p=56702
+  - https://sonicstate.com/news/2015/01/09/reverberation-from-the-cold-war-/
+  confidence: high
+  caveats:
+  - The original website is gone (its domain now redirects elsewhere). A third party uploaded this copy to the Internet
+    Archive in 2025.
+  - Only 44.1 kHz/24-bit versions survive here; the 2015 release was 96 kHz/24-bit.
+  - No formal licence. A readme says 'feel free to distribute' but asks for a link back to Balance Mastering.

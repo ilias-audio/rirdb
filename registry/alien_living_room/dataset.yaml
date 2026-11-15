@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: alien_living_room
+name: A.LI.EN living-room IR dataset
+year: 2023
+type: measured
+status: catalogued
+content: Raw IRs measured at five positions in a TU Ilmenau living room with a KEMAR dummy head (BRIRs every 4°),
+  an omni mic, a 7-mic SDM array and an Eigenmike, with 360° photos; MATLAB .mat files.
+expected:
+  n_rooms: 1
+room_info:
+  geometry: partial
+  positions: partial
+  images: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  note: Only meta.json states a licence, as 'CC BY-NC-SA' without a version (4.0 assumed); the README states none.
+homepage: https://resdata.tu-ilmenau.de/public/ei/emt/a_li_en/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'A.LI.EN: audiovisual dataset of acoustical IRs in a living room'
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  - array
+  host: University repository
+  size: 2.6 GB
+  file_formats: MATLAB .mat (raw, unprocessed) in one ZIP; JPG 360° photos; room plan
+  institution: TU Ilmenau (Electronic Media Technology group)
+  country: Germany
+  evidence_urls:
+  - https://resdata.tu-ilmenau.de/public/ei/emt/a_li_en/
+  - https://resdata.tu-ilmenau.de/public/ei/emt/a_li_en/meta.json
+  - https://resdata.tu-ilmenau.de/public/ei/emt/a_li_en/README.md
+  - https://resdata.tu-ilmenau.de/public/ei/emt/a_li_en/data.zip
+  - https://www.tu-ilmenau.de/en/university/departments/department-of-electrical-engineering-and-information-technology/profile/institutes-and-groups/electronic-media-technology-group/team/tatiana-surdu
+  confidence: medium
+  caveats:
+  - Raw, unprocessed measurements in MATLAB .mat files; the README does not state the sample rate.
+  - No DOI; hosted as a single 2.6 GB zip on a TU Ilmenau server.
+  - Licence version not stated (meta.json says CC BY-NC-SA).

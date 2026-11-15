@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: haw_sound_lab
+name: Room Impulse Dataset HAW Sound Lab
+year: 2025
+type: measured
+status: catalogued
+content: 'Mono (Schoeps MK2) and binaural (Neumann KU 100) RIRs of the loudspeakers in two rooms of the HAW Hamburg
+  Sound Lab: a mixing control room with 3 speaker pairs and a spatial-audio room with a 33-speaker dome.'
+expected:
+  n_irs: 228
+  n_rooms: 2
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/17296511
+doi: 10.5281/zenodo.17296511
+web_check:
+  checked: '2026-10-14'
+  found_as: Room Impulse Dataset HAW Sound Lab (Hamburg)
+  availability: open
+  families:
+  - mono
+  - binaural
+  host: Zenodo
+  size: 24.6 MB (A1.zip 23.3 MB, R1.zip 1.4 MB)
+  file_formats: WAV (mono; binaural ears stored as separate files)
+  institution: HAW Hamburg (Hamburg University of Applied Sciences), Sound Lab
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/17296511
+  - https://zenodo.org/api/records/17296511
+  - https://zenodo.org/records/17296511/files/readme.txt
+  - https://zenodo.org/records/17296511/preview/A1.zip
+  - https://zenodo.org/records/17296511/preview/R1.zip
+  confidence: high
+  caveats:
+  - Binaural IRs come as separate mono WAV files per ear (name ending -1 = left, -2 = right); 310 WAV files make
+    up 228 source-receiver pairs.
+  - 'Sparse documentation: no room dimensions, positions or explanation of the ''Preset'' folders.'
+  - ZIPs contain macOS clutter (__MACOSX, .DS_Store).

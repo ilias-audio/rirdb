@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: otimp
+name: OTIMP
+year: 2019
+type: measured
+status: catalogued
+content: IRs from 29 loudspeakers on a sphere to a pair of behind-the-ear hearing aids worn by 46 individuals (people
+  and mannequins) in a mildly reverberant listening room; raw and calibrated MATLAB files.
+expected:
+  n_rooms: 1
+room_info:
+  positions: partial
+  images: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/5040465
+doi: 10.5281/zenodo.5040465
+web_check:
+  checked: '2026-10-14'
+  found_as: 'OTIMP: Oticon-Imperial hearing aid impulse response database'
+  availability: open
+  families:
+  - binaural
+  - array
+  host: Zenodo
+  size: 11.1 GB
+  file_formats: MATLAB .mat per subject, CSV metadata, PDF layout docs (four ZIPs)
+  institution: Imperial College London and Oticon A/S
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/api/records/5040465
+  - https://zenodo.org/api/records/2660782
+  - https://zenodo.org/records/5040465/preview/00_raw.zip
+  - https://zenodo.org/records/5040465/preview/02_default_calibrated.zip
+  - https://vbn.aau.dk/en/publications/personalized-signal-independent-beamforming-for-binaural-hearing-
+  - https://spiral.imperial.ac.uk/entities/publication/44736464-271f-481a-b0ec-85e20006139b
+  - https://github.com/ImperialCollegeLondon/sap-oticon-hearing-aid-impulse-responses
+  confidence: medium
+  caveats:
+  - Four ZIPs totalling about 11.1 GB; the calibrated set alone is 2.4 GB.
+  - Aimed at personal hearing-aid transfer functions; the room is only described as mildly reverberant.
+  - The record does not say where the listening room is (Imperial College London and Oticon collaboration).

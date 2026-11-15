@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: operarir
+name: OperaRIR
+year: 2023
+type: measured
+status: catalogued
+content: 210 spatial impulse responses measured with an Eigenmike at 97 parterre seats from two stage loudspeakers
+  in the main auditorium of the Finnish National Opera and Ballet, Helsinki, as em32 and 4th-order Ambisonic files.
+fs_hz:
+- 48000
+expected:
+  n_irs: 210
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/8096639
+doi: 10.5281/zenodo.8096639
+web_check:
+  checked: '2026-10-14'
+  found_as: OperaRIR (Finnish National Opera and Ballet)
+  availability: open
+  families:
+  - ambisonic
+  - array
+  host: Zenodo
+  size: 23.2 GB
+  file_formats: WAV in ZIP (32-channel em32 signals and 25-channel 4th-order Ambisonic ACN/SN3D); MAT layout file;
+    PDF plan
+  institution: Tampere University and STMS-IRCAM (Sorbonne Université, CNRS)
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/records/8096639
+  - https://zenodo.org/api/records/8096639
+  - https://dael.euracoustics.org/confs/fa2023/data/articles/000833.pdf
+  confidence: high
+  caveats:
+  - 'Very large: about 23 GB in total (em32 archive 12.8 GB, Ambisonic archive 7.9 GB).'
+  - The left-stage source was measured with a 50 Hz-16 kHz sweep (the centre source up to 20 kHz).
+  - Measured with an empty stage, raised curtain and no audience; late tails contain background noise.

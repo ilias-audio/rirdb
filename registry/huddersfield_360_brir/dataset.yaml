@@ -1,0 +1,34 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: huddersfield_360_brir
+name: Huddersfield 360-degree BRIR database (6DoF)
+year: 2019
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural]
+content: 360-degree BRIRs (3.6 deg resolution, Neumann KU100, SOFA) captured in a reverberant concert hall at the University of Huddersfield for 6DoF perception research.
+expected: {n_rooms: 1, note: "17 SOFA files (the record text says 13 receiver positions), each with 100 head orientations in 3.6 deg steps: 1,700 BRIRs; rirdb indexes the frontal orientation only, one record per file"}
+room_info: {positions: "yes", where: "SOFA source and listener positions"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["2641166"]}
+adapter:
+  name: sofa
+  # SimpleFreeFieldHRIR [100 head orientations, 2 ears, 5 s] per position: frontal orientation only
+  params: {glob: "**/Binaural/SOFA/*.sofa", pattern: '(?P<rcv>[A-Z]\d+m)\.sofa$', roles: [L, R],
+           capture_format: binaural, m_select: [0], room_from: dataset}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/2641166
+doi: 10.5281/zenodo.2641166
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of Huddersfield
+  country: UK
+  caveats:
+  - Each of the 17 SOFA files holds 100 head orientations in 3.6 degree steps (1,700 BRIRs); rirdb analyses the
+    frontal orientation only.
+  - rirdb's per-IR index (the ir_kind column that rirdb query returns) still files these 17 IRs as outdoor (a keyword
+    rule matched "field" in Huddersfield), so until the index is rebuilt they are missing from the clean measured
+    rooms, the corpus-wide room counts and the CLAP map; this page counts them as rooms. The space is a concert
+    hall, as the Spaces table shows.

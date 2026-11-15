@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: odeon_irs
+name: ODEON impulse response downloads
+type: measured
+status: catalogued
+content: 'Example IRs from the ODEON room-acoustics software makers: DTU Auditorium 21 (measured 2013), Hagia Sophia
+  (measured; modelled in the CAHRISMA project) and a B-format outdoor corridor flutter echo (Zoom H3-VR).'
+expected:
+  n_rooms: 3
+room_info:
+  geometry: partial
+  images: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: The download page states no terms of use, and the site's Terms and Conditions page covers only software
+    sales.
+homepage: https://odeon.dk/downloads/impulse-responses/
+web_check:
+  checked: '2026-10-14'
+  found_as: ODEON downloadable impulse responses
+  availability: open
+  families:
+  - ambisonic
+  host: Company website
+  file_formats: ZIP (the corridor ZIP also holds an ODEON model of the space)
+  institution: Odeon A/S (Auditorium 21 at the Technical University of Denmark)
+  country: Denmark, Turkey
+  evidence_urls:
+  - https://odeon.dk/downloads/impulse-responses/
+  - https://web.archive.org/web/20171129112740/http://odeon.dk/downloads/impulse-responses/
+  - https://web.archive.org/cdx/search/cdx?url=odeon.dk/download/ImpulseResponses/*
+  - https://odeon.dk/terms-and-conditions/
+  confidence: medium
+  caveats:
+  - No licence or terms of use are given for the IR files.
+  - Channel format and sample rate are not stated for the Auditorium 21 and Hagia Sophia sets; only the corridor
+    is described as B-format.
+  - The site blocked our automated link check, so we did not test-download the ZIP files. The corridor link is under
+    an unusual /wp-admin/ path.

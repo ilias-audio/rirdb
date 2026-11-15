@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: surir
+name: SuRIR
+year: 2026
+type: measured
+status: catalogued
+content: 15,360 RIRs (6 microphones, 2 loudspeakers, 48 kHz SOFA) measured repeatedly, seconds apart, in a furnished
+  living room and an unfurnished room with three people standing or sitting, still or moving, plus a mannequin.
+fs_hz:
+- 48000
+expected:
+  n_irs: 15360
+  n_rooms: 2
+room_info:
+  positions: partial
+  images: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/21494888
+doi: 10.5281/zenodo.21494888
+web_check:
+  checked: '2026-10-14'
+  found_as: 'SuRIR: successively measured RIRs for localizing silent humans'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 2.2 GB
+  file_formats: SOFA (SingleRoomSRIR), PDF floor plans
+  institution: International Audio Laboratories Erlangen; Fraunhofer IIS; Trinity College Dublin
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/21494888
+  - https://zenodo.org/api/records/21494888
+  - https://cris.fau.de/publications/341322765
+  - https://www.audiolabs-erlangen.de/fau/assistant/lawrence/Localization
+  confidence: high
+  caveats:
+  - People were in the room during the measurements, so small differences between repeated RIRs are intended.
+  - Room sizes are not given on the record; PDF floor plans show the loudspeaker, microphone and participant positions.
+  - 64 separate SOFA files of about 32-36 MB each (about 2.2 GB in total).

@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: meshgrid3d
+name: 3D Meshgrid RIR dataset (raw, 48 kHz)
+year: 2026
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+fs_hz: [48000]
+content: Raw RIRs on a 2 cm 3D grid (48 x 51 x 26 positions) for 4 loudspeakers, 2 s TSP excitation, 48 kHz (Part 0; the 16 kHz Part I is not fetched).
+expected: {n_irs: 254592, n_rooms: 1, note: "48*51*26 positions x 4 loudspeakers"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", where: "HDF5 attributes (room size, mic_array_pos, sp_pos)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["19656813"]}
+adapter:
+  name: ndarray
+  # rir[63648 grid points, 4800 samples] per loudspeaker, fs in a root attribute
+  params: {glob: "Raw_A_ir_48k_sp*.h5", container: h5, array: rir, time_axis: 1, record_axes: [0],
+           fs_attr: "@fs", pattern: 'Raw_A_ir_48k_(?P<src>sp\d)\.h5$', room_default: meshgrid-room-a}
+wave: 3
+analysis: {scope: subsample_v1}
+cap: 500
+homepage: https://zenodo.org/records/19656813
+doi: 10.5281/zenodo.19656813
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of Electro-Communications, Tokyo
+  country: Japan
+  caveats:
+  - The files are 0.1 s long, so only early parameters can be measured.

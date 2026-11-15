@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: hifi_harp
+name: HiFi-HARP (FOA release)
+year: 2025
+type: simulated
+status: catalogued
+content: Over 100,000 simulated 7th-order Ambisonic RIRs (FDTD below 900 Hz, ray tracing above) in about 2,000 furnished
+  3D-FRONT rooms. Hugging Face hosts 4-channel FOA WAVs at 16 kHz and a 7th-order validation set.
+fs_hz:
+- 16000
+expected:
+  n_irs: 100000
+  n_rooms: 2000
+room_info:
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: CC BY 4.0 is stated only on the Hugging Face card. The GitHub repo has no licence file, and the CC BY-NC-ND
+    4.0 on arXiv covers the paper, not the data.
+homepage: https://huggingface.co/datasets/whojavumusic/hifi_harp
+web_check:
+  checked: '2026-10-14'
+  found_as: HiFi-HARP (FOA release)
+  availability: open
+  families:
+  - ambisonic
+  host: Hugging Face
+  size: 13.3 GB
+  file_formats: WAV (4-channel FOA, ACN) in ZIP; 7th-order validation set as tar.gz
+  institution: Leibniz University Hannover (Institut für Kommunikationstechnik)
+  country: Germany
+  evidence_urls:
+  - https://huggingface.co/datasets/whojavumusic/hifi_harp
+  - https://huggingface.co/api/datasets/whojavumusic/hifi_harp
+  - https://huggingface.co/api/datasets/whojavumusic/hifi_harp/commits/main
+  - https://github.com/whojavumusic/hifi-harp
+  - https://arxiv.org/abs/2510.21257
+  - https://arxiv.org/html/2510.21257
+  confidence: high
+  caveats:
+  - The card describes a first-order (4-channel, 16 kHz) release. A 7th-order validation archive (8.1 GB) was added
+    in January 2026, but the full 7th-order training set is not hosted.
+  - The 100,000+ RIRs and about 2,000 rooms (5 sources x 10 receivers per room) are the paper's figures. The card
+    gives no count for this release.
+  - The card describes no room or position metadata files.

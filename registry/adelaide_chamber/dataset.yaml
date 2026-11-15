@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: adelaide_chamber
+name: Adelaide reverberation chamber RIRs on a 50 cm grid
+year: 2026
+type: measured
+status: catalogued
+content: 63 room impulse responses measured with an ambisonic microphone on a mobile robot at 50 cm grid points
+  in Adelaide University's reverberation chamber, plus the raw A-format and B-format sweep recordings.
+fs_hz:
+- 48000
+expected:
+  n_irs: 63
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://adelaide.figshare.com/articles/media/Raw_A-format_ambisonic_recording_converted_B-format_10-s_exponential_sine_sweep_and_63_extracted_spatial_room-impuse_responses_RIRs_from_the_reverberation_chamber_of_Adelaide_University/32109118
+doi: 10.25909/32109118
+web_check:
+  checked: '2026-10-14'
+  found_as: 'Adelaide University reverberation chamber: 63 spatial RIRs on a 50 cm grid'
+  availability: open
+  families:
+  - mono
+  - ambisonic
+  host: figshare (Adelaide University)
+  size: 2.6 GB (the 63 RIRs alone about 136 MB)
+  file_formats: WAV (63 single-channel 24-bit RIRs; raw A-format and 4-channel B-format sweep recordings; the sweep),
+    PNG grid diagram
+  institution: Adelaide University, Acoustics and Vibration Lab
+  country: Australia
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/32109118
+  - https://doi.org/10.25909/32109118
+  - https://ndownloader.figshare.com/files/64576797
+  - https://ndownloader.figshare.com/files/64576650
+  confidence: high
+  caveats:
+  - The 63 RIR files are single-channel 24-bit WAVs (15 s each); the 4-channel ambisonic data come only as one long
+    sweep recording you would have to process yourself.
+  - No room dimensions, coordinate file or acoustic parameters, only a grid diagram; the stated usable band is 62
+    Hz to 17 kHz.
+  - The raw A-format and B-format recordings are about 1.2 GB each.

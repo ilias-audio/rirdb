@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: iot_srir
+name: IOT-SRIR
+year: 2026
+type: measured
+status: catalogued
+content: Spatial RIRs from a 7-microphone array at 43 positions running from an indoor hallway through an open door
+  to an outdoor walkway at TU Ilmenau's Kirchhoffbau, with 3 loudspeakers; SOFA files.
+expected:
+  n_rooms: 2
+room_info:
+  dimensions: partial
+  volume: 'yes'
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/14992858
+doi: 10.5281/zenodo.14992858
+web_check:
+  checked: '2026-10-14'
+  found_as: 'IOT-SRIR: SRIRs across an indoor-outdoor transition'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 1.8 GB
+  file_formats: SOFA 2.1 (AES69-2022) in ZIP; PDF floor plan and loudspeaker report; photos (ZIP)
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/14992858
+  - https://zenodo.org/api/records/14992858
+  - https://zenodo.org/records/14992858/files/TUIL-Kirchhoff-West-Indoor-Outdoor-2024.zip?download=1
+  confidence: high
+  caveats:
+  - 'The IR count is not stated: 43 receiver positions, each measured twice, with 2 fixed loudspeakers and 1 moving
+    with the receiver.'
+  - The sampling rate is not stated on the record.

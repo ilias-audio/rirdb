@@ -1,0 +1,53 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_eigenmike_kemar
+name: Eigenmike DRIRs and KEMAR BRIRs in a small conference room
+year: 2019
+type: measured
+status: catalogued
+content: KEMAR BRIRs (5° steps), 32-channel Eigenmike DRIRs and omni RIRs at 5 listening positions in a 182 m³ conference
+  room, loudspeaker 2.5 m away facing the listener or turned away, plus 360° photos.
+fs_hz:
+- 44100
+- 48000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/2593714
+doi: 10.5281/zenodo.2593714
+web_check:
+  checked: '2026-10-14'
+  found_as: Eigenmike DRIRs, KEMAR 45BA BRIRs, RIRs and 360° pictures at five positions of a small conference room
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  host: Zenodo
+  size: 840 MB (of which 522 MB is 360° images)
+  file_formats: SOFA and MAT (in ZIP archives), 360° images (ZIP), PNG illustrations
+  institution: TU Ilmenau; University of Oldenburg
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/2593714
+  - https://zenodo.org/api/records/2593714
+  - https://zenodo.org/api/records/2593714/files/BRIR_SOFAfiles.zip/content
+  - https://pub.dega-akustik.de/DAGA_2019/data/articles/000344.pdf
+  - https://zenodo.org/api/records/163617
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  confidence: high
+  caveats:
+  - IRs are cut to 1 s and high-pass filtered at 60 Hz; BRIRs are 44.1 kHz, Eigenmike DRIRs and omni RIRs 48 kHz.
+  - Room size (10.3 x 5.8 x 3.1 m), volume, octave-band T60 and a floor plan are in the DAGA 2019 paper, not on
+    the Zenodo page.
+  - The BRIRs seem to come from the same measurement as Neidhardt's BRIR-only Zenodo record 163617 (same room, 5
+    positions); this release adds Eigenmike DRIRs, omni RIRs and 360° images.

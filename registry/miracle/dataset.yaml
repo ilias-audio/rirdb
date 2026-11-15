@@ -1,0 +1,36 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: miracle
+name: MIRACLE
+year: 2023
+type: measured
+ir_kinds: [anechoic]
+capture_formats: [array_raw]
+content: 856,128 single-channel IRs across 4 scenarios with a planar 64-channel microphone array; 64 x 64 source grids at two distances, a dense 33 x 33 grid, and a reflective-panel case.
+expected: {n_irs: 856128, n_rooms: 1, note: "4 scenarios"}
+room_info: {volume: "yes", positions: "yes", conditions: "yes", where: "MIRACLE preprint: TU Berlin anechoic chamber (830 m3); source grids in the HDF5; reflective-panel scenario"}
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: depositonce, records: ["b079fd1c-999f-42cb-afd2-bcd34de6180b"]}
+adapter:
+  name: ndarray
+  # data/impulse_response[source, 64 mics, 1024 samples]: one record per source position x mic
+  params: {glob: "[ADR][12].h5", container: h5, array: data/impulse_response, time_axis: 2,
+           record_axes: [0, 1], fs_dataset: metadata/sampling_rate, pattern: '(?P<cond>[ADR]\d)\.h5$',
+           room_default: miracle-lab, ir_kind: anechoic}
+wave: 3
+analysis: {scope: subsample_v1}
+cap: 500
+homepage: https://depositonce.tu-berlin.de/items/b079fd1c-999f-42cb-afd2-bcd34de6180b
+doi: 10.14279/depositonce-18318
+paper: {title: "MIRACLE - Microphone Array Impulse Response Dataset for Acoustic Learning", url: "https://doi.org/10.1186/s13636-024-00352-8"}
+status: active
+notes: "IRs are 1,024 samples at 32 kHz (32 ms), measured in the anechoic chamber of TU Berlin (830 m3; MIRACLE preprint): direct sound only, plus the reflective-panel scenario (probe 2026-09-30). Indexed with positions (ir_kind anechoic); decay metrics are not meaningful, so only the subsample is analysed."
+web_check:
+  checked: '2026-10-14'
+  institution: TU Berlin
+  country: Germany
+  host: DepositOnce (TU Berlin)
+  caveats:
+  - 'Measured in an anechoic chamber: 32 ms files that hold the direct sound (and, in one scenario, a panel reflection);
+    no reverberation.'
+  - A newer version (v4, 2024) corrects the positions; this guide indexes v1.

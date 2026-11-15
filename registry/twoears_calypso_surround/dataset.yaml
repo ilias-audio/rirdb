@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: twoears_calypso_surround
+name: Calypso 5.0 surround BRIRs (Two!Ears)
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR dummy-head BRIRs of a 5.0 surround loudspeaker setup at 9 listening positions in TU Berlin's Calypso
+  listening room (83 m³), with head rotation over ±90° in 1° steps; SOFA files.
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/160761
+doi: 10.5281/zenodo.160761
+web_check:
+  checked: '2026-10-14'
+  found_as: Two!Ears BRIRs of a 5.0 surround setup for different listening positions (TU Berlin Calypso)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 4.9 GB
+  file_formats: SOFA (.sofa); PDF and JPEG documentation in doc.zip
+  institution: TU Ilmenau (Two!Ears project, Hagen Wierstorf); measured at TU Berlin
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/160761
+  - https://zenodo.org/api/records/49691
+  - https://zenodo.org/records/160761/preview/doc.zip
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  confidence: high
+  caveats:
+  - 'Large: about 4.9 GB in all; nine per-position SOFA files (about 0.26 GB each) plus a 2.3 GB file that repeats
+    all positions in one.'
+  - Sampling rate is not stated on the record or in the Two!Ears documentation.
+  - Replaces the earlier Zenodo record 49691, which lacks the repeat measurement with the larger Genelec 8250A loudspeakers.

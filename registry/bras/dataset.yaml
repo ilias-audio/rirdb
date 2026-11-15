@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: bras
+name: BRAS - Benchmark for Room Acoustical Simulation
+year: 2020
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni, binaural]
+fs_hz: [44100]
+content: Measured RIRs and BRIRs (SOFA + wav) of 11 reference scenes (4 complex rooms CR1-CR4 and simple scenes RS1-RS7) plus RS8 (2026), each with geometry, boundary conditions and source/receiver descriptions.
+expected: {note: "12 scenes"}
+room_info: {dimensions: "yes", geometry: "yes", materials: "yes", positions: "yes", images: "yes", where: "Documentation.pdf and AllMaterials.pdf; scene geometry and boundary conditions in the BRAS record (simulation benchmark)"}
+license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
+access: open
+source:
+  kind: depositonce
+  records: ["38410727-febb-4769-8002-9c710ba393c4", "326fed8c-636a-47f2-977d-b4fd6a0ce771"]
+  include: ["Documentation.pdf", "1_scene_descriptions-*.zip", "1_Scene_descriptions.zip", "3_surface_descriptions.zip", "3_Surface_descriptions.zip", "4_additional_data.zip"]
+adapter:
+  name: wav_tree
+  # complex rooms CR1-CR4 only; RS1-RS8 are single-reflection/diffraction scenes (not rooms)
+  params:
+    pattern: '1_scene_descriptions-(?P<room>CR\d)/.*/(?P<cond>RIRs|BRIRs)/wav/(?P<label>[^/]+)\.wav$'
+    channels: [1, 2]
+    roles: {1: [omni], 2: [L, R]}
+    channel_formats: {1: mono_omni, 2: binaural}
+    preferred_regex: '/RIRs/wav/'
+wave: 1
+homepage: https://depositonce.tu-berlin.de/items/38410727-febb-4769-8002-9c710ba393c4
+doi: 10.14279/depositonce-6726.3
+paper: {title: "A benchmark for room acoustical simulation. Concept and database", url: "https://www.sciencedirect.com/science/article/abs/pii/S0003682X20309725"}
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: TU Berlin, with RWTH Aachen
+  country: Germany
+  host: DepositOnce (TU Berlin)
+  caveats:
+  - Comes with geometry, surface properties and source and receiver descriptions, as a benchmark for room-acoustic
+    simulation.

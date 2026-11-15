@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rwth_em64
+name: RWTH IKS Lab Eigenmike em64 IR Database
+year: 2025
+type: measured
+status: catalogued
+content: 'Eigenmike em64 (64-channel spherical microphone array) RIRs in RWTH Aachen''s IKS|Lab listening room:
+  36 loudspeakers x 63 array positions on a 3-level grid, 48 kHz, 1 s long; MATLAB files.'
+fs_hz:
+- 48000
+expected:
+  n_irs: 2268
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/15093935
+doi: 10.5281/zenodo.15093935
+web_check:
+  checked: '2026-10-14'
+  found_as: RWTH IKS Lab Eigenmike em64 Impulse Response Database
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 26.4 GB
+  file_formats: MATLAB .mat in ZIP; PDF documentation
+  institution: RWTH Aachen University (IKS and IHTA)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/15093935
+  - https://zenodo.org/records/15093935/files/LICENSE.txt
+  - https://zenodo.org/records/15093935/files/documentation.pdf
+  - https://zenodo.org/records/15093935/preview/IR_000.zip
+  - https://www.iks.rwth-aachen.de/publikationen/publications-detail//chatzimoustafa25a/
+  confidence: high
+  caveats:
+  - 'Very large: the full set is one 26 GB ZIP; IR_000.zip (0.4 GB) holds a single array position with all 36 loudspeakers.'
+  - The authors count 145,152 single-channel RIRs (2,268 loudspeaker-position pairs x 64 microphone capsules).
+  - The PDF documentation misstates the ceiling loudspeaker distances; corrected values are on the Zenodo page.

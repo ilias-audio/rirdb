@@ -1,0 +1,40 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sweet_area
+name: Sweet Area Impulse Response Database
+year: 2024
+type: measured
+status: catalogued
+content: KU 100 BRIRs and Eigenmike em32 IRs (raw and HOA) of a 42-loudspeaker setup, measured by robot arm at 121
+  positions around the sweet spot of the Immersive Media Lab, Leibniz University Hannover.
+expected:
+  n_rooms: 1
+room_info:
+  positions: 'yes'
+  images: 'no'
+license:
+  spdx: CC-BY-SA-4.0
+homepage: https://zenodo.org/records/13982751
+doi: 10.5281/zenodo.13982751
+web_check:
+  checked: '2026-10-14'
+  found_as: Sweet Area Impulse Response Database (Leibniz University Hannover)
+  availability: open
+  families:
+  - binaural
+  - array
+  - ambisonic
+  host: Zenodo
+  file_formats: MAT (ITA-Toolbox itaAudio structs) in ZIP; speakerPositions.mat
+  institution: Leibniz University Hannover (Institute of Communications Technology)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/13982751
+  - https://zenodo.org/api/records/13982751
+  - https://zenodo.org/records/13982751/preview/KU%20100%20IRs.zip
+  - https://zenodo.org/records/13982751/preview/em32%20IRs.zip
+  confidence: high
+  caveats:
+  - Files are MATLAB .mat structs holding ITA-Toolbox itaAudio objects; the authors say a SOFA version is planned.
+  - The em32 archive is about 31 GB (KU 100 archive 2.5 GB).
+  - Sampling rate and IR count are not stated; each archive holds 121 measurement positions (5 circles of 0.15-0.75
+    m radius plus one extra point).

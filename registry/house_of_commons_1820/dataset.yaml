@@ -1,0 +1,53 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: house_of_commons_1820
+name: House of Commons Acoustic Reconstruction 1820-34
+year: 2023
+type: hybrid
+status: catalogued
+content: Measured RIRs (B-format and W-channel files) and auralisations from five UK spaces in Oxford, Westminster
+  and York, plus ODEON and CATT models and simulated IRs of the 1820-34 House of Commons chamber.
+fs_hz:
+- 48000
+expected:
+  n_irs: 84
+  n_rooms: 6
+room_info:
+  dimensions: partial
+  geometry: partial
+  materials: partial
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/7560885
+doi: 10.5281/zenodo.7560885
+web_check:
+  checked: '2026-10-14'
+  found_as: House of Commons – Acoustic Reconstruction 1820-34 (IRs and models)
+  availability: open
+  families:
+  - mono
+  - ambisonic
+  host: Zenodo
+  size: 130 MB
+  file_formats: WAV in one ZIP per space; ODEON and CATT model files
+  institution: University of York (AudioLab and Department of History)
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/records/7560885
+  - https://zenodo.org/api/records/7560885
+  - https://zenodo.org/records/7560885/preview/Convocation%20House.zip
+  - https://zenodo.org/records/7560885/preview/Holywell%20Music%20Room.zip
+  - https://zenodo.org/records/7560885/preview/Guildhall.zip
+  - https://zenodo.org/records/7560885/preview/ODEON.zip
+  - https://zenodo.org/records/7560885/preview/CATT.zip
+  - https://eprints.whiterose.ac.uk/id/eprint/196681/
+  - https://webfiles.york.ac.uk/OPENAIR/IRs/york-guildhall-council-chamber/b-format/
+  confidence: high
+  caveats:
+  - The 12 York Guildhall Council Chamber positions are also in OpenAIR (at 96 kHz); the Oxford and Westminster
+    spaces and the simulations are only here.
+  - IR count is from the archive listings (62 measured source-receiver pairs in five spaces, 11 ODEON and 11 CATT
+    receivers); the record states no count, and only the Guildhall files are labelled 48 kHz.
+  - Files mix IRs with auralisations and model files; Divinity School has a single position.

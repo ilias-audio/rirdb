@@ -1,0 +1,524 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# One registry dataset: d/<id>.html. Context from pages_dataset.page_context(). #}
+
+{% block head %}
+<style>
+.ds-pills { list-style: none; margin: 0 0 1.2em; padding: 0; }
+.ds-pills .pill { white-space: normal; }
+.ds-tiles { margin: 0 0 1.2em; }
+.ds-tiles dd.tile-sm { font-size: 1.08rem; line-height: 1.3; }
+.ds-body { min-width: 0; overflow-wrap: break-word; }
+.page-head .lede { overflow-wrap: break-word; }
+.ds-body .tbl tbody tr:last-child th { border-bottom: 0; }
+.ds-body .tbl td .sub.kind { font-style: italic; }
+.ds-body > .section:first-of-type { border-top: 0; padding-top: 4px; }
+.ds-body h3 { margin-top: 1.7em; }
+.ds-body h3:first-child, .ds-body .cols-2 h3:first-child { margin-top: 0; }
+.ds-body h4 { margin-top: .2em; }
+.ptbl tbody th { min-width: 14em; }
+.ri-grid { list-style: none; padding: 0; margin: 0 0 1em; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 8px; }
+.ri-grid li { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.ri-label { font-size: .92rem; color: var(--ink-2); }
+.perm-list { list-style: none; padding: 0; margin: 0 0 .8em; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.perm-list .badge { white-space: normal; }
+.tbl.lock td { vertical-align: top; }
+.tbl.lock .file { overflow-wrap: anywhere; min-width: 12em; }
+.tbl.lock .ckc { min-width: 17em; }
+.tbl.lock code.ck { word-break: break-all; background: none; padding: 0; font-size: .8rem; }
+.copy-sm { font-size: .74rem; padding: 1px 7px; margin-left: 4px; vertical-align: 1px; }
+.algo { font: 600 .72rem/1.2 var(--font-mono); color: var(--muted); text-transform: uppercase; margin-right: 4px; }
+.findings { display: grid; gap: 12px; margin: 0 0 1.2em; }
+.finding p { margin: 0 0 .5em; }
+.finding .eyebrow { margin-bottom: .4em; letter-spacing: .03em; text-transform: none; font-size: .78rem; }
+.finding .facts { font-size: .9rem; }
+.strip-row { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); gap: 8px; align-items: end; margin-bottom: 10px; }
+.strip-row > span { font-weight: 700; font-size: .86rem; padding-bottom: 7px; }
+.strip-row + .strip-row .strip-head { display: none; }
+.ds-body .callout > p:first-child { margin-top: 0; }
+.vtbl tbody th { font-weight: 400; white-space: nowrap; }
+.vtbl tr.grp > * { border-top: 1px solid var(--rule-strong); }
+.cite-box { position: relative; background: var(--sunk); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 74px 12px 14px; margin: 0 0 1em; }
+.cite-box p { margin: 0; overflow-wrap: anywhere; font-size: .95rem; }
+.cite-box .copy { position: absolute; top: 8px; right: 8px; font-size: .78rem; padding: 3px 8px; }
+.chart.solo { max-width: 560px; }
+.flag-cols { columns: 2 340px; column-gap: clamp(20px, 3vw, 36px); }
+.flag-cols > figure { break-inside: avoid; display: inline-block; width: 100%; }
+.ptbl th .sub { display: block; color: var(--muted); font-size: .8rem; font-weight: 400; max-width: 52ch; margin-top: 2px; }
+.ds-body .code pre { padding-right: 66px; }
+@media (max-width: 640px) { .ds-body .code pre { padding-top: 36px; } }
+.contents-facts { margin-bottom: 1.2em; }
+.ptbl td.r { min-width: 130px; }
+.lic-src { white-space: normal; }
+/* the spaces table with a Licence column (OpenAIR) is too wide for the content column unless the categories wrap */
+.ds-body #spaces-tbl td.cat { min-width: 6em; }
+.flag-defs { margin: .6em 0 0; font-size: .86rem; }
+.flag-defs dt { font-weight: 700; color: var(--ink); }
+.flag-defs dd { margin: 0 0 .5em; color: var(--ink-2); }
+.score { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px 12px; margin: 10px 0 0; font-size: .9rem; }
+.score dt { color: var(--muted); }
+.score dd { margin: 0; }
+.q-title { font: 700 .95rem/1.35 var(--font-body); margin: 1.2em 0 .4em; }
+.fetch-card .actions { margin-bottom: .8em; }
+.store-card code.path { overflow-wrap: anywhere; }
+.linklist { padding-left: 1.2em; }
+.linklist li + li { margin-top: .35em; }
+.sp-t20 { font: 600 .7rem/1 var(--font-mono); color: var(--muted); margin-left: 3px; }
+</style>
+{% endblock %}
+
+{% block main %}
+{% set g = get %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}datasets/index.html">Datasets</a> / {{ type_label }}</p>
+  <h1>{{ ds.name }}</h1>
+  <p class="lede">{{ ds.content }}</p>
+  <ul class="pills ds-pills" aria-label="Key facts">
+    {% for cls, text, tip in head.pills %}<li class="pill {{ cls }}"{% if tip %} title="{{ tip }}"{% endif %}>{{ text }}</li>{% endfor %}
+  </ul>
+  <dl class="tiles ds-tiles">
+    {% for t in head.tiles %}<div class="tile"><dt>{{ t.label }}</dt><dd{% if t.get("small") %} class="tile-sm"{% endif %}>{{ t.value }}</dd></div>{% endfor %}
+  </dl>
+  <div class="actions">
+    <a class="btn" href="{{ root }}get/{{ ds.id }}.sh" download><svg aria-hidden="true" width="16" height="16"><use href="#i-dl"/></svg>Fetch script</a>
+    <a class="btn-ghost" href="#get">Where and how to get it</a>
+    {% if an %}<a class="btn-ghost" href="#analysis">Analysis</a>{% endif %}
+    {% if ds.homepage %}{{ m.ext(ds.homepage, "Dataset homepage") }}{% endif %}
+  </div>
+</div></div>
+
+<div class="wrap with-side">
+<nav class="side-nav" aria-label="On this page"><ol>
+  {% for k, label in toc %}<li><a href="#{{ k }}">{{ label }}</a></li>{% endfor %}
+</ol></nav>
+<div class="ds-body">
+<ul class="toc-m" aria-label="Sections of this page">
+  {% for k, label in toc %}<li><a href="#{{ k }}">{{ label }}</a></li>{% endfor %}
+</ul>
+
+{# ================================================================ get #}
+<section class="section" id="get" aria-labelledby="get-h">
+  <h2 id="get-h">Get the data</h2>
+  {% if g.callout %}
+  <div class="callout {{ g.callout[0] }}"><p><strong>{{ g.callout[1] }}</strong> {{ g.callout[2] }}</p></div>
+  {% endif %}
+  <div class="cols-2">
+    <div>
+      <dl class="facts">
+        {% for k, v in g.facts %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}
+        {% for label, vals in g.selection %}<dt>{{ label }}</dt><dd>{% for v in vals %}<code>{{ v }}</code>{% if not loop.last %} {% endif %}{% endfor %}</dd>{% endfor %}
+      </dl>
+    </div>
+    <div>
+      <div class="card fetch-card">
+        <h3>Download with a script</h3>
+        <p class="small">{{ g.script_text }}</p>
+        <div class="actions">
+          <a class="btn" href="{{ root }}get/{{ ds.id }}.sh" download><svg aria-hidden="true" width="16" height="16"><use href="#i-dl"/></svg>get/{{ ds.id }}.sh</a>
+          <a class="btn-ghost" href="{{ root }}get/index.html#script">How the scripts work</a>
+        </div>
+      </div>
+      {% if g.storage %}
+      <div class="card tight store-card" style="margin-top:14px">
+        <h3>Copy at QMUL (Apocrita)</h3>
+        <p class="small" style="margin:0 0 .5em">{{ g.storage_text }}</p>
+        <p style="margin:0 0 .5em"><code class="path" id="apocrita-path">{{ g.storage.path }}</code><button class="btn-ghost copy-sm" type="button" data-copy="#apocrita-path" aria-label="Copy the Apocrita path">Copy</button></p>
+        <p class="small muted" style="margin:0">{% if g.storage.n_files %}{{ g.storage.n_files | int }} files, {{ g.storage.bytes | bytes }}{% endif %}{% if g.storage.get("verified_on") %}; every file verified on {{ g.storage.verified_on }}{% endif %}.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% if g.can_pipeline %}
+  <p class="q-title">With the rirdb pipeline</p>
+  <p class="small">On a SLURM cluster, from a clone of the {{ m.ext(REPO_URL, "repository") }}: resumable, and checked against {% if g.has_lock %}every checksum in the lock{% else %}the checksums recorded in a new lock file on the first run{% endif %}.</p>
+  {{ m.code(g.pipeline, "pipeline-cmd") }}
+  {% endif %}
+
+  {% if g.has_lock %}
+  <h3 id="files">Files and checksums</h3>
+  <p>{{ g.lock_n | int }} file{{ "s" if g.lock_n != 1 else "" }} in the lock{% if g.lock_resolved %}, resolved on {{ g.lock_resolved }}{% endif %}. {% if g.lock_note %}{{ g.lock_note }}{% endif %}</p>
+  {% macro lockrows(rows) %}
+    {% for r in rows %}
+    <tr>
+      <td class="file">{{ r.relpath }}{% if r.url %}<span class="sub">{{ m.ext(r.url, "direct link") }}</span>{% elif r.where %}<span class="sub">{{ r.where }}</span>{% endif %}</td>
+      <td class="n" data-v="{{ r.size if r.size is not none else -1 }}">{{ r.size | bytes if r.size is not none else "–" }}</td>
+      <td class="ckc">{% if r.checksum %}<span class="algo">{{ r.algo }}</span><code class="ck" id="ck-{{ r.i }}">{{ r.checksum }}</code><button class="btn-ghost copy-sm" type="button" data-copy="#ck-{{ r.i }}" aria-label="Copy the {{ r.algo }} checksum of {{ r.relpath }}">Copy</button>{% elif r.algo == "manifest" %}<span class="muted small">per-file sha256 in the manifest</span>{% else %}<span class="muted">–</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  {% endmacro %}
+  <div class="tbl-wrap"><table class="tbl lock">
+    <caption class="sr-only">Files in the lock: name, size and checksum</caption>
+    <thead><tr><th scope="col" data-sort="text">File</th><th scope="col" class="n" data-sort="num">Size</th><th scope="col">Checksum</th></tr></thead>
+    <tbody>{{ lockrows(g.lock_rows) }}</tbody>
+  </table></div>
+  {% if g.lock_rest %}
+  <details class="box"><summary>Show {{ "the next" if g.lock_more else "the other" }} {{ g.lock_rest | length | int }} files</summary>
+    <div class="tbl-wrap tall"><table class="tbl lock">
+      <caption class="sr-only">More files in the lock</caption>
+      <thead><tr><th scope="col" data-sort="text">File</th><th scope="col" class="n" data-sort="num">Size</th><th scope="col">Checksum</th></tr></thead>
+      <tbody>{{ lockrows(g.lock_rest) }}</tbody>
+    </table></div>
+  </details>
+  {% endif %}
+  {% if g.lock_more %}<p class="small">The other {{ g.lock_more | int }} files are listed in the lock file below, with their sizes and checksums.</p>{% endif %}
+  {% endif %}
+  {% if has_lock_file or has_manifest_file %}
+  <div class="actions">
+    {% if has_lock_file %}<a class="btn-ghost" href="{{ root }}data/locks/{{ ds.id }}.lock.tsv"><svg aria-hidden="true" width="14" height="14"><use href="#i-dl"/></svg>Lock file (TSV)</a>{% endif %}
+    {% if has_manifest_file %}<a class="btn-ghost" href="{{ root }}data/manifests/{{ ds.id }}.files.tsv.gz"><svg aria-hidden="true" width="14" height="14"><use href="#i-dl"/></svg>File manifest (TSV, gzip)</a>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if g.manifest %}
+  <h3 id="extracted">After extraction</h3>
+  <p>{{ g.manifest.n_files | int }} files, {{ g.manifest.bytes | bytes }}{% if g.breakdown %}: {{ g.breakdown }}{% endif %}. The manifest lists every file with its size and sha256, so a copy can be checked file by file.</p>
+  {% if g.top_dirs and g.top_dirs | length > 1 %}
+  <details class="box"><summary>Top-level folders ({{ g.top_dirs | length }}{% if g.manifest.n_top_dirs and g.manifest.n_top_dirs > g.top_dirs | length %} largest of {{ g.manifest.n_top_dirs | int }}{% endif %})</summary>
+    <div class="tbl-wrap{% if g.top_dirs | length > 20 %} tall{% endif %}"><table class="tbl">
+      <caption class="sr-only">Top-level folders after extraction</caption>
+      <thead><tr><th scope="col" data-sort="text">Folder</th><th scope="col" class="n" data-sort="num">Files</th><th scope="col" class="n" data-sort="num">Size</th></tr></thead>
+      <tbody>{% for t in g.top_dirs %}<tr><td class="break">{{ t.name }}</td><td class="n">{{ t.n_files | int }}</td><td class="n" data-v="{{ t.bytes }}">{{ t.bytes | bytes }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+  </details>
+  {% endif %}
+  {% endif %}
+</section>
+
+{# ================================================================ licence #}
+<section class="section" id="licence" aria-labelledby="licence-h">
+  <h2 id="licence-h">Licence and use</h2>
+  <div class="cols-2">
+    <dl class="facts">
+      <dt>Licence</dt><dd>{{ lic.label }}</dd>
+      {% if lic.spdx %}<dt>SPDX identifier</dt><dd><code>{{ lic.spdx }}</code>{% if lic.spdx_url %} · {{ m.ext(lic.spdx_url, "licence text") }}{% endif %}</dd>{% endif %}
+      {% if lic.url %}<dt>{{ lic.url_label }}</dt><dd>{{ m.ext(lic.url) }}</dd>{% endif %}
+      <dt>Licence type</dt><dd><strong>{{ lic.cls_label }}.</strong> {{ lic.cls_text }}</dd>
+    </dl>
+    <div>
+      <h3>In plain words</h3>
+      <ul class="perm-list">{% for v, t in lic.perms %}<li>{{ m.yn(v, t) }}</li>{% endfor %}</ul>
+      <p class="small muted">A plain-language reading of the terms, not legal advice. <a href="{{ root }}guide/index.html#licences">What the licence types mean</a>.</p>
+    </div>
+  </div>
+  {% if lic.survey_note %}<div class="callout"><p>{{ lic.survey_note }}</p></div>{% endif %}
+  {% if lic.note %}<p><strong>Registry note.</strong> {{ lic.note }}</p>{% endif %}
+  {% if lic.split %}
+  <h3>Licence per space and per IR</h3>
+  <p class="small">The licence differs within this dataset. Filter on <code>license_spdx</code> per IR rather than on the dataset.</p>
+  <div class="tbl-wrap" style="max-width:640px"><table class="tbl">
+    <caption class="sr-only">Licences of the indexed spaces and IRs</caption>
+    <thead><tr><th scope="col">Licence <span class="muted">(SPDX)</span></th><th scope="col" class="n">Spaces</th><th scope="col" class="n">Analysed IRs</th></tr></thead>
+    <tbody>{% for r in lic.split %}<tr><td>{{ r.label }}<span class="sub mono">{{ r.spdx }}</span></td><td class="n">{{ r.spaces | int }}</td><td class="n">{{ r.irs | int }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% endif %}
+  {% if lic.registry_split %}
+  <p class="small">The registry's per-space licence table (<a href="{{ repo_blob('registry/' ~ ds.id ~ '/spaces.csv') }}">registry/{{ ds.id }}/spaces.csv</a>, from the archived pages) lists {% for k, n in lic.registry_split %}{{ n | int }} {{ k }}{% if not loop.last %}, {% endif %}{% endfor %}.{% if spaces and spaces.lic_file and spaces.show_licence %} The <a href="#spaces">spaces table</a> links each space's licence to the archived page it comes from.{% endif %}</p>
+  {% endif %}
+  {% if lic.training_ir %}
+  <p class="small">ML training per analysed IR, read from each IR's licence: {% for k, n in lic.training_ir %}{{ n | int }} {{ k }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>
+  {% endif %}
+</section>
+
+{# ================================================================ rooms #}
+<section class="section" id="rooms" aria-labelledby="rooms-h">
+  <h2 id="rooms-h">Room information published</h2>
+  <p>What the authors publish about their spaces, as checked for the registry.{% if not rooms.checked %} This dataset has not been checked yet.{% endif %}</p>
+  {% if rooms.checked %}
+  <ul class="ri-grid">
+    {% for label, v, word in rooms.fields %}<li><span class="ri-label">{{ label }}</span>{{ m.yn(v or "unknown", word) }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  {% if rooms.where %}<p><strong>Where to find it:</strong> {{ rooms.where }}</p>{% endif %}
+</section>
+
+{# ================================================================ contents #}
+<section class="section" id="contents" aria-labelledby="contents-h">
+  <h2 id="contents-h">Contents</h2>
+  {% if not contents.indexed %}<p class="callout">Not indexed by rirdb yet: the facts below come from the registry.</p>{% endif %}
+  {% if contents.expected %}<p>{{ contents.expected }}{% if contents.expected_note %} <span class="muted">Note: {{ contents.expected_note }}.</span>{% endif %}</p>{% endif %}
+  <div>
+    <dl class="facts contents-facts">{% for k, v in contents.facts %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}</dl>
+    {% if contents.cat_chart %}
+    {{ m.chart("Analysed IRs per space category", contents.cat_chart, sub="Categories assigned per space by rirdb", cls="solo") }}
+    {% endif %}
+  </div>
+</section>
+
+{# ================================================================ analysis #}
+<section class="section" id="analysis" aria-labelledby="analysis-h">
+  <h2 id="analysis-h">Analysis</h2>
+  {% if an %}
+  <p>{{ an.scope }} {{ an.n_stats | int }} of them are used for the statistics below: one representation per measured position, exact duplicates removed, analysed without error.{% if an.left_out %} {{ an.left_out }}{% endif %}{% if an.n_errors %} {{ an.n_errors | int }} could not be analysed (see the end of this section).{% endif %} <a href="{{ root }}methods/index.html">Methods</a>.</p>
+  {% if an.subsampled %}<p class="callout">This dataset is dense, so only a subsample is analysed. The distributions describe the subsample; spaces and conditions are all covered.</p>{% endif %}
+  {% if an.anechoic %}<p class="callout warn">These are anechoic IRs: direct sound only, so decay parameters (T30, EDT, clarity) are not defined and every IR is grade D. Bandwidth, file length and pre-delay are still measured.</p>{% endif %}
+  <dl class="tiles" style="margin-bottom:1.4em">
+    <div class="tile"><dt>IRs analysed</dt><dd>{{ an.n_analysed | int }}</dd></div>
+    <div class="tile"><dt>Used for statistics</dt><dd>{{ an.n_stats | int }}</dd></div>
+    {% if not an.anechoic and an.valid_t30 is not none %}<div class="tile"><dt>{{ an.valid_t30_label }}</dt><dd>{{ an.valid_t30 | pct }}</dd></div>{% endif %}
+    <div class="tile"><dt>Analysis errors</dt><dd>{{ an.n_errors | int }}</dd></div>
+  </dl>
+
+  {% if an.grade_bar %}
+  <h3 id="grades">Grades</h3>
+  <div class="cols-2">
+    {{ m.chart("Grades of the " ~ (an.n_graded | int) ~ " analysed IRs", an.grade_bar, sub="Share of IRs per grade") }}
+    <dl class="facts small">{% for k, t in an.grade_text %}<dt>{{ m.grade(k) }} <span class="sr-only">Grade {{ k }}</span></dt><dd>{{ t }}: {{ an.grades[k] | int }} IR{{ "" if an.grades[k] == 1 else "s" }}</dd>{% endfor %}</dl>
+  </div>
+  {% endif %}
+
+  {% if an.params %}
+  <h3 id="parameters">Parameters</h3>
+  <p class="small">{% if an.param_note %}{{ an.param_note }} "Mid"{% else %}Over the IRs used for statistics; "mid"{% endif %} values average the 500 Hz and 1 kHz octaves, decay values count only where they are valid. The bar spans 10–90&nbsp;% and the dot marks the median.</p>
+  <div class="tbl-wrap"><table class="tbl ptbl">
+    <caption class="sr-only">Parameter percentiles over this dataset's IRs</caption>
+    <thead><tr><th scope="col">Parameter</th><th scope="col">Unit</th><th scope="col" class="n">10&nbsp;%</th><th scope="col" class="n">Median</th><th scope="col" class="n">90&nbsp;%</th><th scope="col" class="n">IRs</th><th scope="col">Range</th></tr></thead>
+    <tbody>
+    {% for p in an.params %}
+      <tr><th scope="row" style="font-weight:700">{{ p.label }}{% if p.info %}<span class="sub" style="font-weight:400">{{ p.info }}</span>{% endif %}</th>
+        <td>{{ p.unit }}</td><td class="n">{{ p.p10_s }}</td><td class="n"><strong>{{ p.p50_s }}</strong></td><td class="n">{{ p.p90_s }}</td>
+        <td class="n">{{ p.n | int }}</td><td class="r">{% if p.rng %}{{ p.rng }}<span class="sub">{{ p.axis }}</span>{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% endif %}
+
+  {% if an.hists %}
+  <h3 id="distributions">Distributions against the corpus</h3>
+  <p class="small">Bars: share of this dataset's IRs in each bin. Outline: the corpus, one median per space (clean measured rooms; every space for peak-to-noise and bandwidth), so a dataset with many positions in one room does not dominate it. Hover a bar for its values.{% if an.left_room %} {{ an.left_room }}; peak-to-noise and bandwidth include them.{% endif %}</p>
+  <div class="cols-2">
+    {% for h in an.hists %}{{ m.chart(h.title, h.svg, sub=h.sub, caption=h.info, table=h.table) }}{% endfor %}
+  </div>
+  {% endif %}
+
+  {% if an.bands %}
+  <h3 id="bands">Per octave band</h3>
+  <p class="small">Valid values only{% if an.left_room %}, over the {{ an.n_space | int }} IRs of real spaces ({{ an.left_room }}){% endif %}. The ring marks the corpus median for the band (median over clean measured rooms of each room's median).</p>
+  <div class="cols-2">
+    {% for b in an.bands %}{{ m.chart(b.title, b.svg, table=b.table) }}{% endfor %}
+  </div>
+  {% endif %}
+
+  {% if an.strips %}
+  <h3 id="validity">Where decay times are valid</h3>
+  <figure class="chart">
+    <p class="chart-title">Share of the {% if an.left_room %}{{ an.n_space | int }} IRs of real spaces{% else %}IRs{% endif %} used for statistics with a valid value, in per cent, per octave band (Hz)</p>
+    <p class="chart-sub">{% if an.left_room %}{{ an.left_room }}. {% endif %}A decay time is valid when the decay range it needs stays clear of the noise floor (ISO 3382). A stronger blue is a larger share. BB: broadband.</p>
+    {% for s in an.strips %}<div class="strip-row"><span>{{ s.label }}</span><div>{{ s.html }}</div></div>{% endfor %}
+  </figure>
+  {% endif %}
+
+  <h3 id="flags">Quality flags</h3>
+  <p class="small">Share of the {{ an.n_analysed | int }} analysed IRs that raise each flag. Flags describe the IRs; only the content flags take an IR out of the clean-rooms view. <a href="{{ root }}analysis/quality.html">Quality across the corpus</a>.</p>
+  {% if an.flag_groups %}
+  <div class="flag-cols">
+    {% for fg in an.flag_groups %}
+    <figure class="chart">
+      <p class="chart-title">{{ fg.label }}</p>
+      <p class="chart-sub">{{ fg.text }}</p>
+      {{ fg.svg }}
+      <dl class="flag-defs">{% for label, info, flag in fg.defs %}<dt>{{ label }}</dt><dd>{{ info }} <code>{{ flag }}</code></dd>{% endfor %}</dl>
+    </figure>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>None of the {{ an.n_flags | int }} flags fires on this dataset.</p>
+  {% endif %}
+  {% if an.flags_zero and an.flag_groups %}<p class="small">At 0&nbsp;%: {{ an.flags_zero | join(", ") }}.</p>{% endif %}
+
+  <h3 id="signal">Bandwidth, noise floor and duplicates</h3>
+  <dl class="facts">
+    {% for k, v in an.notes %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}
+    <dt>Exact duplicates</dt>
+    <dd>{% if an.dups.n_in_groups %}{{ an.dups.n_in_groups | int }} IRs fall in {{ an.dups.n_groups | int }} group{{ "s" if an.dups.n_groups != 1 else "" }} of identical audio (same decoded samples); {{ an.dups.n_copies | int }} extra cop{{ "ies are" if an.dups.n_copies != 1 else "y is" }} left out of the statistics.{% if an.dups.n_cross %} {{ an.dups.n_cross | int }} share their audio with {% for c in an.dups.cross %}{% if c.href %}<a href="{{ c.href }}">{{ c.id }}</a>{% else %}{{ c.id }}{% endif %} ({{ c.n | int }}){% if not loop.last %}, {% endif %}{% endfor %}.{% endif %} List: {{ m.ext(repo_blob("reports/corpus/duplicates.csv"), "reports/corpus/duplicates.csv") }}.{% else %}None: no two IRs have the same decoded samples.{% endif %}</dd>
+  </dl>
+
+  {% if an.n_errors %}
+  <h3 id="errors">Analysis errors</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <caption class="sr-only">Analysis errors by message</caption>
+    <thead><tr><th scope="col">Message</th><th scope="col" class="n">IRs</th></tr></thead>
+    <tbody>{% for msg, n in an.errors.items() %}<tr><td class="break"><code>{{ msg }}</code></td><td class="n">{{ n | int }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% endif %}
+
+  {% else %}
+  <div class="callout warn">
+    <p><strong>No analysis for this dataset.</strong> {{ no_analysis }}</p>
+  </div>
+  <p>Everything needed to fetch it is under <a href="#get">Get the data</a>{% if issues %}, and what is known about it under <a href="#issues">Known issues</a>{% endif %}. For the analysis of the other datasets see <a href="{{ root }}analysis/index.html">Analysis</a>.</p>
+  {% endif %}
+</section>
+
+{# ================================================================ spaces #}
+{% if spaces %}
+{% set sp = spaces.rows %}
+<section class="section" id="spaces" aria-labelledby="spaces-h">
+  <h2 id="spaces-h">Spaces</h2>
+  <p>{{ sp | length | int }} space{{ "s" if sp | length != 1 else "" }} indexed{% if spaces.kind %}, all of kind "{{ spaces.kind }}"{% endif %}{% if spaces.licence %}; licence of every space: {{ spaces.licence }}{% endif %}.{% if spaces.show_t %} Acoustic values are medians over each space's clean IRs (measured, one per position, no duplicates, no content flags), at 500 Hz–1 kHz{% if spaces.any_fallback %}; the reverberation time is T30 where at least half of them allow it, otherwise T20 (marked){% endif %}{% if spaces.any_t_any %}. A space without clean measured IRs shows the median T30 over all its IRs (marked "all"), and no other values{% endif %}.{% endif %}{% if spaces.lic_file and spaces.show_licence %} Each licence links to the archived page it was read from ({{ m.ext(repo_blob(spaces.lic_file), spaces.lic_file) }}).{% endif %} <a href="{{ root }}spaces/index.html">All spaces of every dataset</a>.</p>
+  {% if sp | length > 12 %}
+  <div class="filters">
+    <label class="fld">Filter these spaces<input type="search" data-filter="#spaces-tbl" placeholder="Name, category{% if spaces.show_licence %}, licence{% endif %}"></label>
+    <span class="count" data-count-for="#spaces-tbl"></span>
+  </div>
+  {% endif %}
+  <div class="tbl-wrap{% if sp | length > 30 %} tall{% endif %}"><table class="tbl" id="spaces-tbl">
+    <caption class="sr-only">Spaces of {{ ds.name }}</caption>
+    <thead><tr>
+      <th scope="col" data-sort="text">Space</th><th scope="col" data-sort="text">Category</th>
+      {% if spaces.show_volume %}<th scope="col" class="n" data-sort="num">Volume (m³)</th>{% endif %}
+      <th scope="col" class="n" data-sort="num">IRs</th>
+      {% if spaces.show_clean %}<th scope="col" class="n" data-sort="num" title="Clean IRs: measured, one per position, no duplicates, no content flags">Clean</th>{% endif %}
+      {% if spaces.show_t %}<th scope="col" class="n" data-sort="num">T30 (s)</th>{% endif %}
+      {% if spaces.show_edt %}<th scope="col" class="n" data-sort="num">EDT (s)</th>{% endif %}
+      {% if spaces.show_c80 %}<th scope="col" class="n" data-sort="num">C80 (dB)</th>{% endif %}
+      {% if spaces.show_drr %}<th scope="col" class="n" data-sort="num">DRR (dB)</th>{% endif %}
+      {% if spaces.show_licence %}<th scope="col" data-sort="text">Licence</th>{% endif %}
+    </tr></thead>
+    <tbody>
+    {% for s in sp %}
+      <tr>
+        <td class="name" style="min-width:12em">{{ s.room_label or s.room_key or s.room_id }}{% if s.key_sub %}<span class="sub mono">{{ s.key_sub }}</span>{% endif %}{% if s.sub %}<span class="sub">{{ s.sub }}</span>{% endif %}</td>
+        <td class="{{ 'cat' if spaces.show_licence else 'nowrap' }}">{{ s.category_label }}{% if s.kind_sub %}<span class="sub kind">{{ s.kind_sub }}</span>{% endif %}</td>
+        {% if spaces.show_volume %}<td class="n" data-v="{{ s.volume_m3 if s.volume_m3 is not none else '' }}">{{ s.volume_m3 | num(0) }}</td>{% endif %}
+        <td class="n">{{ s.n_irs | int }}</td>
+        {% if spaces.show_clean %}<td class="n">{{ s.n_clean | int }}</td>{% endif %}
+        {% if spaces.show_t %}<td class="n" data-v="{{ s.t_room if s.t_room is not none else '' }}">{{ s.t_s }}{% if s.t_fallback %}<span class="sp-t20" title="T20: fewer than half of the clean IRs allow T30">T20</span>{% elif s.t_any %}<span class="sp-t20" title="Median T30 over all IRs of the space: it has no clean measured IRs">all</span>{% endif %}</td>{% endif %}
+        {% if spaces.show_edt %}<td class="n" data-v="{{ s.edt if s.edt is not none else '' }}">{{ s.edt_s }}</td>{% endif %}
+        {% if spaces.show_c80 %}<td class="n" data-v="{{ s.c80 if s.c80 is not none else '' }}">{{ s.c80_s }}</td>{% endif %}
+        {% if spaces.show_drr %}<td class="n" data-v="{{ s.drr if s.drr is not none else '' }}">{{ s.drr_s }}</td>{% endif %}
+        {% if spaces.show_licence %}<td class="nowrap"{% if s.lic_note or s.licence %} title="{{ s.lic_note or s.licence }}"{% endif %}>{% if s.lic_source and not s.lic_reg_label %}<a href="{{ s.lic_source }}">{{ s.licence_label or "–" }}</a>{% else %}{{ s.licence_label or "–" }}{% endif %}{% if s.lic_reg_label %}<span class="sub lic-src">archived page: {% if s.lic_source %}<a href="{{ s.lic_source }}">{{ s.lic_reg_label }}</a>{% else %}{{ s.lic_reg_label }}{% endif %}</span>{% endif %}</td>{% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endif %}
+
+{# ================================================================ CLAP map #}
+{% if map %}
+<section class="section" id="map" aria-labelledby="map-h">
+  <h2 id="map-h">Where it sits on the CLAP map</h2>
+  <p>The CLAP map places IRs by how a pretrained audio model ({{ map.model }}) hears them: once for the IR itself, and once for what it does to dry recordings. Grey: the corpus ({{ map.n_map | int }} IRs, at most {{ map.cap | int }} per dataset). Blue: this dataset. Distances and scores use the full embedding; the flat picture is only a guide.</p>
+  <div class="cols-2">
+    {% for s in map.signals %}
+    <figure class="chart">
+      <p class="chart-title">{{ s.label }}</p>
+      <p class="chart-sub">{{ s.n | int }} IRs of this dataset on the map</p>
+      {{ s.svg }}
+      {{ charts.legend([("s1", "This dataset"), ("--other", "Rest of the corpus")]) }}
+      {% if s.score %}
+      {% if s.score.get("n") %}<p class="small muted" style="margin:8px 0 0">Scored over the {{ s.score.n | int }} clean measured room IRs among them.</p>{% endif %}
+      <dl class="score">
+        <dt>Realism</dt><dd>{{ s.score.realism | pct }} <span class="muted small">(median of {{ s.n_ds | int }} datasets: {{ s.med.realism | pct }})</span></dd>
+        <dt>Coverage, IRs</dt><dd>{{ s.score.coverage_ir | pct(1) }} <span class="muted small">(median {{ s.med.coverage_ir | pct(1) }})</span></dd>
+        <dt>Coverage, rooms</dt><dd>{{ s.score.coverage_room | pct }} <span class="muted small">(median {{ s.med.coverage_room | pct }})</span></dd>
+      </dl>
+      {% else %}
+      <p class="small muted" style="margin-top:8px">No realism or coverage score: only datasets with clean measured room IRs in the map sample are scored.</p>
+      {% endif %}
+    </figure>
+    {% endfor %}
+  </div>
+  <p class="small"><strong>Realism</strong> is the share of this dataset's clean room IRs that fall inside the neighbourhood of at least one clean measured room IR from another dataset. <strong>Coverage</strong> is the share of the other datasets' clean room IRs (and of their rooms) that have at least one IR of this dataset inside their neighbourhood. A neighbourhood is the distance from a reference IR to its {{ map.k | int }}th-nearest neighbour from other datasets, since CLAP groups IRs by their recording chain.</p>
+  <p class="actions"><a class="btn-ghost" href="{{ root }}overview/index.html">Interactive corpus overview</a><a class="btn-ghost" href="{{ root }}analysis/map.html">About the map</a></p>
+</section>
+{% endif %}
+
+{# ================================================================ validation #}
+{% if val %}
+<section class="section" id="validation" aria-labelledby="validation-h">
+  <h2 id="validation-h">Validation against published values</h2>
+  <p>The authors publish reference values: {{ val.source }}. rirdb's values are compared with them per {{ val.unit }}{% if val.n_spaces %}, over {{ val.n_spaces | int }} spaces{% endif %}. A ratio of 1 or a difference of 0 is perfect agreement.</p>
+  <div class="tbl-wrap"><table class="tbl vtbl">
+    <caption class="sr-only">Agreement with the published values, per parameter and octave band</caption>
+    <thead><tr><th scope="col">Parameter and measure</th>{% for h in val.heads %}<th scope="col" class="n">{{ h }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for r in val.rows %}<tr{% if loop.index0 and val.rows[loop.index0 - 1].m != r.m %} class="grp"{% endif %}><th scope="row">{{ r.label }}</th>{% for v in r.vals %}<td class="n">{{ v }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+  </table></div>
+  {% if val.charts %}
+  <div class="cols-2">{% for c in val.charts %}{{ m.chart(c.title, c.svg, sub=c.sub) }}{% endfor %}</div>
+  {% endif %}
+  <p><a href="{{ root }}analysis/validation.html">All validation results</a></p>
+</section>
+{% endif %}
+
+{# ================================================================ known issues #}
+{% if issues %}
+<section class="section" id="issues" aria-labelledby="issues-h">
+  <h2 id="issues-h">Known issues</h2>
+  {% if issues.caveats %}
+  <h3>Before you use it</h3>
+  <ul class="prose">{% for c in issues.caveats %}<li>{{ c }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if issues.notes %}<div class="callout"><p><strong>Registry note.</strong> {{ issues.notes }}</p></div>{% endif %}
+  {% for title, rows in (("What the data audit found", issues.data), ("Licence findings", issues.licence)) %}
+  {% if rows %}
+  <h3>{{ title }}</h3>
+  <div class="findings">
+    {% for f in rows %}
+    <article class="card tight finding">
+      {% if f.subject %}<p class="eyebrow">{{ f.subject }}</p>{% endif %}
+      <p>{{ f.finding }}</p>
+      {% if f.evidence or f.handling %}
+      <dl class="facts">
+        {% if f.evidence %}<dt>Evidence</dt><dd>{{ f.evidence }}</dd>{% endif %}
+        {% if f.handling %}<dt>How rirdb handles it</dt><dd>{{ f.handling }}</dd>{% endif %}
+      </dl>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endfor %}
+  <p><a href="{{ root }}methods/findings.html">Findings for every dataset</a></p>
+</section>
+{% endif %}
+
+{# ================================================================ use #}
+<section class="section" id="use" aria-labelledby="use-h">
+  <h2 id="use-h">Use it with rirdb</h2>
+  <p><code>rirdb dev query</code> runs SQL conditions over the per-IR metrics (DuckDB over Parquet). Activate the environment first with <code>eval "$(pixi shell-hook)"</code>; on a SLURM cluster run it inside a job ({{ m.ext(repo_blob("docs/hpc.md"), "docs/hpc.md") }}).</p>
+  {% for title, code in use.queries %}
+  <p class="q-title">{{ title }}</p>
+  {{ m.code(code, "query-" ~ loop.index) }}
+  {% endfor %}
+  <h3>Files</h3>
+  <ul class="linklist">
+    {% if use.snapshot %}<li>{{ m.ext(use.snapshot, "Per-IR core metrics, flags and grades (Parquet snapshot in the repository)") }}</li>{% endif %}
+    {% if use.card %}<li>{{ m.ext(use.card, "Dataset card (Markdown)") }} <span class="muted">(its parameters cover every analysed IR, duplicates and non-preferred representations included, so they can differ from this page)</span></li>{% endif %}
+    <li><a href="{{ root }}data/ds/{{ ds.id }}.json">Everything on this page, as JSON</a></li>
+    {% if has_lock_file %}<li><a href="{{ root }}data/locks/{{ ds.id }}.lock.tsv">Lock file: every download URL, size and checksum (TSV)</a></li>{% endif %}
+  </ul>
+  {% if use.snapshot_py %}
+  <p class="q-title">Read the snapshot in Python</p>
+  {{ m.code(use.snapshot_py, "snapshot-py") }}
+  {% endif %}
+</section>
+
+{# ================================================================ probe #}
+{% if probe %}
+<section class="section" id="probe" aria-labelledby="probe-h">
+  <h2 id="probe-h">Probe output</h2>
+  <p>What <code>rirdb dev probe</code> found in the extracted files: the folder tree, file types and audio headers ({{ m.ext(repo_blob("registry/probes/" ~ ds.id ~ ".txt"), "registry/probes/" ~ ds.id ~ ".txt") }}).</p>
+  <details class="box"><summary>Show the probe output ({{ probe.splitlines() | length | int }} lines)</summary>
+    <pre class="probe">{{ probe }}</pre>
+  </details>
+</section>
+{% endif %}
+
+{# ================================================================ cite #}
+<section class="section" id="cite" aria-labelledby="cite-h">
+  <h2 id="cite-h">Cite</h2>
+  <p>Cite the dataset authors{% if cite.paper %} and their paper{% endif %}, and name the licence.</p>
+  <dl class="facts">
+    {% if cite.paper %}<dt>Paper</dt><dd>{% if cite.paper.get("url") %}{{ m.ext(cite.paper.url, cite.paper.title) }}{% else %}{{ cite.paper.title }}{% endif %}</dd>{% endif %}
+    {% if cite.doi %}<dt>{{ "Paper DOI" if cite.doi_is_paper else ("Dataset DOIs" if cite.more_dois else "Dataset DOI") }}</dt><dd>{{ m.ext(cite.doi | doi_url, cite.doi) }}{% for d in cite.more_dois %}<br>{{ m.ext(d | doi_url, d) }}{% endfor %}</dd>{% endif %}
+    {% if cite.asks %}<dt>Registry note</dt><dd>{{ cite.asks }}</dd>{% endif %}
+    {% if cite.homepage %}<dt>Homepage</dt><dd class="break">{{ m.ext(cite.homepage) }}</dd>{% endif %}
+  </dl>
+  <div class="cite-box"><p id="cite-line">{{ cite.line }}</p><button class="btn-ghost copy" type="button" data-copy="#cite-line">Copy</button></div>
+  <p class="small">If you use rirdb's analysis or this catalogue, please cite rirdb too: <a href="{{ root }}about/index.html">About, citing and contributing</a>.</p>
+</section>
+
+</div>
+</div>
+{% endblock %}

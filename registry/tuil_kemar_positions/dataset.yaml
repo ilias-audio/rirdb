@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_kemar_positions
+name: KEMAR BRIRs at several positions and head orientations
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR BRIRs at 25 points of a 0.5 m grid in an unnamed reverberant room, for two loudspeakers 1 m from
+  the grid, with the head turned 360° in 5° steps at every point; SOFA files.
+expected:
+  n_irs: 3600
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/206860
+doi: 10.5281/zenodo.206860
+web_check:
+  checked: '2026-10-14'
+  found_as: KEMAR BRIRs at several positions and head orientations in a real room
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 4.3 GB
+  file_formats: SOFA (50 files) in one ZIP, with a README
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/206860
+  - https://zenodo.org/api/records/206860
+  - https://zenodo.org/records/206860/preview/BRIRs_from_a_room.zip
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 4.0).
+  - The record does not name the room or give its size, reverberation time or the sampling rate; it points to a
+    2016 TU Ilmenau master's thesis.
+  - 'IR count derived from the stated design: 25 positions x 2 sources x 72 head angles.'

@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: l3das_rirs
+name: L3DAS RIRs (L3DAS21/L3DAS22)
+year: 2023
+type: measured
+status: catalogued
+content: First-order Ambisonic (B-format) RIRs from 252 loudspeaker positions to two Ambisonic microphones in a
+  furnished office of about 6 x 5 x 3 m, used to build the L3DAS21 and L3DAS22 challenge datasets.
+expected:
+  n_irs: 504
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: partial
+  materials: partial
+  positions: partial
+  images: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://www.l3das.com/icassp2022/dataset.html
+web_check:
+  checked: '2026-10-14'
+  found_as: L3DAS21/L3DAS22 measured Ambisonic RIRs
+  availability: open
+  families:
+  - ambisonic
+  host: Challenge website (l3das.com)
+  size: 14.1 MB
+  file_formats: ZIP (file format inside not documented)
+  institution: Sapienza University of Rome (L3DAS team)
+  country: Italy
+  evidence_urls:
+  - https://www.l3das.com/icassp2022/dataset.html
+  - https://www.l3das.com/assets/file/L3DAS_RIRs.zip
+  - https://arxiv.org/abs/2202.10372
+  - https://arxiv.org/pdf/2202.10372
+  confidence: medium
+  caveats:
+  - One office room only, with two first-order Ambisonic microphones 20 cm apart.
+  - Sampling rate and file layout inside the 14 MB ZIP are not documented.
+  - IR count is worked out as 252 positions x 2 microphones; users are asked to cite the L3DAS22 paper.

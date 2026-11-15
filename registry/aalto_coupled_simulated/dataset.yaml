@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: aalto_coupled_simulated
+name: Simulated RIRs in three coupled rooms (Aalto)
+year: 2024
+type: simulated
+status: catalogued
+content: Spatial RIRs simulated with Treble (wave-based below about 750 Hz, geometrical above) on a 0.3 m receiver
+  grid across three coupled rooms of different absorption, with common-slope decay analysis results.
+expected:
+  n_rooms: 3
+room_info:
+  dimensions: partial
+  geometry: partial
+  materials: 'yes'
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/13338346
+doi: 10.5281/zenodo.13338346
+web_check:
+  checked: '2026-10-14'
+  found_as: Dataset of simulated room impulse responses in three coupled rooms (Treble; Aalto)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 7.5 GB (srirs.mat 7.46 GB + 14.8 MB analysis ZIP)
+  file_formats: MAT (srirs.mat); MAT analysis results; PDF geometry plan
+  institution: Aalto University, Department of Information and Communications Engineering
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/records/13338346
+  - https://zenodo.org/api/records/13338346
+  - https://research.aalto.fi/en/datasets/dataset-of-simulated-room-impulse-responses-in-three-coupled-room/
+  - https://zenodo.org/records/13338346/preview/Common_Slope_Analysis_Results.zip
+  confidence: medium
+  caveats:
+  - All IRs sit in one 7.5 GB MATLAB file (srirs.mat).
+  - The record does not state the sample rate, the number of receivers or the spatial format/order of the SRIRs.
+  - 'Simulated only: wave-based below about 750 Hz, geometrical acoustics above.'

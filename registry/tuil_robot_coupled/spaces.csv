@@ -1,0 +1,9 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+helmholtzbau-h3522-line-01,TU Ilmenau office H3522 to hallway: line 1 (coupled),office_meeting,room,,,,,,,robot line; sources in the office,
+helmholtzbau-h3522-line-02,TU Ilmenau office H3522 to hallway: line 2 (coupled),office_meeting,room,,,tuil_robot_coupled/helmholtzbau-h3522-line-01,,,,robot line; sources in the office,
+helmholtzbau-h3522-line-03,TU Ilmenau office H3522 to hallway: line 3 (coupled),office_meeting,room,,,tuil_robot_coupled/helmholtzbau-h3522-line-01,,,,robot line; sources in the office,
+helmholtzbau-h3522-line-04,TU Ilmenau office H3522 to hallway: line 4 (coupled),office_meeting,room,,,tuil_robot_coupled/helmholtzbau-h3522-line-01,,,,robot line; sources in the office,
+helmholtzbau-og2-hm-hs,TU Ilmenau Helmholtzbau OG2: hallway route HM-HS (coupled hallway and staircase),circulation,room,,,,,,,robot grid; SOFA DatabaseName TUIL-AR-GRID-M-HBOG2_23,
+helmholtzbau-og2-sml-ssl-ssu,TU Ilmenau Helmholtzbau OG2: staircase route SML-SSL-SSU (coupled),stairwell,room,,,tuil_robot_coupled/helmholtzbau-og2-hm-hs,,,,robot grid,
+helmholtzbau-og2-smu-sml-hm,TU Ilmenau Helmholtzbau OG2: staircase route SMU-SML-HM (coupled with hallway),stairwell,room,,,tuil_robot_coupled/helmholtzbau-og2-hm-hs,,,,robot grid,
+helmholtzbau-og2-ssu-ssl-hs,TU Ilmenau Helmholtzbau OG2: staircase route SSU-SSL-HS (coupled with hallway),stairwell,room,,,tuil_robot_coupled/helmholtzbau-og2-hm-hs,,,,robot grid,

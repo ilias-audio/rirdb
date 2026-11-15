@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: surrey_real_room_brirs
+name: Surrey real-room BRIRs
+year: 2010
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural]
+content: BRIRs captured with a head-and-torso simulator in 4 real rooms of the University of Surrey at 37 azimuths.
+expected: {n_rooms: 4}
+room_info: {positions: "partial", images: "yes", where: "Room_A-D.pdf drawings; BRIR_measurements.pdf; source azimuth per file"}
+license: {spdx: MIT, redistribute_audio: yes}
+access: open
+source: {kind: github, records: ["IoSR-Surrey/RealRoomBRIRs@master"]}
+adapter:
+  name: sofa
+  params:
+    groups:
+      - {glob: "**/UniS_Room_*_BRIR_48k.sofa", pattern: 'UniS_(?P<room>Room_[A-D])_BRIR_48k\.sofa$',
+         roles: [L, R], capture_format: binaural}
+      - {glob: "**/UniS_Anechoic_BRIR_48k.sofa", pattern: 'UniS_(?P<room>Anechoic)_BRIR_48k\.sofa$',
+         roles: [L, R], capture_format: binaural, ir_kind: anechoic}
+wave: 1
+homepage: https://github.com/IoSR-Surrey/RealRoomBRIRs
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of Surrey (IoSR)
+  country: UK
+  host: GitHub
+  caveats:
+  - Includes an anechoic reference set; the rooms are named A to D only.

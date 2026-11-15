@@ -1,0 +1,36 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_room_geometry
+name: (RIR) Dataset for Neural Room Geometry Estimation
+year: 2025
+type: simulated
+status: catalogued
+content: 50,000 simulated RIRs made with the RIR Generator tool at TU Ilmenau for training models that estimate
+  room dimensions from audio on embedded devices; one 785 MB ZIP of WAV files with little documentation.
+expected:
+  n_irs: 50000
+room_info:
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/14901307
+doi: 10.5281/zenodo.14901307
+web_check:
+  checked: '2026-10-14'
+  found_as: (RIR) Dataset for Neural Room Geometry Estimation (TU Ilmenau)
+  availability: open
+  host: Zenodo
+  size: 785 MB
+  file_formats: WAV in ZIP
+  institution: Technische Universität Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/14901307
+  - https://zenodo.org/api/records/14901307
+  - https://zenodo.org/records/14901307/preview/rir_dataset_part1%202.zip
+  confidence: medium
+  caveats:
+  - The record gives no sampling rate, room sizes or source/receiver positions, and Zenodo's (truncated) preview
+    of the ZIP shows only WAV files, no labels.
+  - The only file is 'rir_dataset_part1 2.zip'; the record does not say whether it holds all 50,000 RIRs.
+  - No paper or code is linked.

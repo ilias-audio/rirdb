@@ -1,0 +1,52 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: robocop_srirs
+name: RoboCoP Sparse SRIRs
+year: 2026
+type: measured
+status: catalogued
+content: Spatial RIRs from 60 loudspeaker positions to one 7-mic SDM array (Earthworks M30 plus six capsules) in
+  room RTK6 at TU Ilmenau, made for a robot co-presence study; SOFA files plus IFC/OBJ room geometry.
+expected:
+  n_irs: 60
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: 'yes'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: >-
+    CC BY 4.0, as the Zenodo record publishes it (kept by Ilias, 15 Nov 2026). The SOFA file header still says
+    "No license provided, ask the author for permission", the default text of the sofar library; the
+    question is in docs/plans/questions-for-authors.md.
+homepage: https://zenodo.org/records/20391764
+doi: 10.5281/zenodo.20391764
+web_check:
+  checked: '2026-10-14'
+  found_as: RoboCoP spatial room impulse responses (TU Ilmenau / OVGU Magdeburg)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 542 MB
+  file_formats: SOFA (SingleRoomSRIR files in a ZIP plus one SingleRoomMIMOSRIR file); IFC/OBJ geometry; PDF floor
+    plan
+  institution: TU Ilmenau; Otto-von-Guericke-Universität Magdeburg
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/20391764
+  - https://zenodo.org/records/20391764/preview/RoboCoP_Sparse.zip
+  - https://pub.dega-akustik.de/DAGA_2026/konferenz-1678.html
+  - https://pub.dega-akustik.de/DAGA_2026/files/upload/paper/375.pdf
+  - https://zenodo.org/records/20391764/files/RoboCoP_Sparse.sofa
+  confidence: high
+  caveats:
+  - 'Licence conflict: Zenodo says CC BY 4.0, but the SOFA header says no licence is provided and to ask the authors.'
+  - One receiver position only; Zenodo's ZIP preview lists 55 per-position files although the record describes 60
+    source positions.
+  - Sampling rate not stated; the paper smooths responses across neighbouring positions, and the record does not
+    say whether the files are raw or smoothed.

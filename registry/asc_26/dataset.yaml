@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: asc_26
+name: ASC-26
+year: 2026
+type: simulated
+status: catalogued
+content: 5,000 simulated mono RIRs at 16 kHz (pyroomacoustics image-source method plus ray tracing) balanced across
+  10 room types, from office to cathedral and outdoor forest, each labelled with RT60, EDT, C80, D50, Ts and DRR.
+fs_hz:
+- 16000
+expected:
+  n_irs: 5000
+  n_rooms: 5000
+room_info:
+  images: 'no'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/21771185
+doi: 10.5281/zenodo.21771185
+web_check:
+  checked: '2026-10-14'
+  found_as: 'ASC-26: synthetic RIR dataset for room-type classification'
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 177 MB
+  file_formats: WAV (16-bit PCM, peak-normalised) in ZIP; CSV labels (features.csv, manifest.csv); PDF datasheet
+  institution: Uppsala University
+  country: Sweden
+  evidence_urls:
+  - https://zenodo.org/records/21771185
+  - https://zenodo.org/api/records/21771185
+  - https://zenodo.org/records/21771185/preview/asc26_synthetic_rirs.zip
+  confidence: high
+  caveats:
+  - All 10 room types, including the outdoor patio and forest, come from the pyroomacoustics room simulator; nothing
+    is measured.
+  - Files are peak-normalised, so absolute levels are lost; the record page gives no room sizes or parameter ranges
+    (a PDF datasheet is included).
+  - New single-author release (August 2026) with no linked paper or code.

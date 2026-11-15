@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: brudex
+name: BRUDEX
+year: 2023
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural, array_raw]
+content: Binaural RIRs with uniformly distributed external microphones (RIR archive only; speech/noise recordings not fetched).
+room_info: {positions: "partial", conditions: "yes", where: "Setup_Database.pdf, README.txt; 3 acoustic conditions"}
+license: {spdx: MIT, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["8340195"], include: ["rir.zip", "README.txt", "LICENSE", "Setup_Database.pdf", "pythonScripts.zip", "matlabScripts.zip"]}
+adapter:
+  name: ndarray
+  # run-averaged files: data[42 ch, 96000]: 4 hearing-aid mics, in-ear L/R, 36 distributed omni mics (E1-E36)
+  params: {glob: "rir/rir/rev_*/RIR_av_*.mat", container: h5, array: data, time_axis: 1, record_axes: [0],
+           fs_dataset: fs, pattern: 'RIR_av_(?P<cond>low|medium|high)_DOA_(?P<src>-?\d+)deg\.mat$',
+           room_default: brudex-lab}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/8340195
+doi: 10.5281/zenodo.8340195
+status: active
+notes: "Each RIR_av_*.mat file holds 42 channels: the first 6 are the four hearing-aid microphones and the two in-ear microphones of a KEMAR dummy head, the other 36 the external omni microphones E1-E36 (README.txt). rirdb currently indexes all 42 as omni records, so 216 of the 1,512 records (6 channels x 36 files) are head-mounted microphones counted in the omni statistics and the clean-rooms view until the adapter gives them their own roles and the dataset is re-indexed and re-analysed."
+web_check:
+  checked: '2026-10-14'
+  institution: University of Oldenburg
+  country: Germany
+  caveats:
+  - Every IR is 2 s long with a Hann fade-out.

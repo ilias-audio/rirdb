@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: lexicon_224xl_little_devil
+name: Little Devil Studios Lexicon 224XL IRs
+year: 2015
+type: production
+status: catalogued
+content: True-stereo IRs of a hardware Lexicon 224XL reverb (halls, rooms, chambers, plates) recorded at 24-bit/96
+  kHz by Little Devil Studios in 2015, plus presets for Waves IR-1, Avid Space and Reverberate.
+fs_hz:
+- 96000
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://littledevilstudios.com.au/2015/03/lexicon-224xl-impulse-response-library/
+web_check:
+  checked: '2026-10-14'
+  found_as: Little Devil Studios – Lexicon 224XL impulse response library
+  availability: open
+  families:
+  - stereo
+  host: Dropbox (linked from Little Devil Studios website)
+  size: about 133 MB (four true-stereo WAV zips)
+  file_formats: WAV (24-bit, 96 kHz, true stereo) in ZIPs; also preset bundles for Waves IR-1, Avid Space and LiquidSonics
+    Reverberate
+  institution: Little Devil Studios
+  country: Australia
+  evidence_urls:
+  - https://littledevilstudios.com.au/2015/03/lexicon-224xl-impulse-response-library/
+  - http://bit.ly/1G8NkfU
+  - http://bit.ly/1CjHXsO
+  - http://bit.ly/1LQizkx
+  - http://bit.ly/1C61OKr
+  confidence: high
+  caveats:
+  - These are hardware reverb presets, not real spaces. The number of IRs is not stated.
+  - No licence is stated. Downloads go through bit.ly links to Dropbox, and the four true-stereo WAV zips resolved
+    today.
+  - The author notes that convolution misses the unit's chorusing and some near-infinite decays.

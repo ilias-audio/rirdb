@@ -1,4 +1,11 @@
-dist/
 __pycache__/
+*.py[oc]
+build/
+dist/
 *.egg-info/
 .venv/
+.pixi/*
+!.pixi/config.toml
+qlogs/*
+.env
+rirdb-out/

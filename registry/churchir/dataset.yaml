@@ -1,0 +1,32 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: churchir
+name: ChurchIR
+year: 2025
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: Multichannel church impulse responses for spatial audio applications.
+room_info: {positions: "yes", where: "pos.csv"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["14901751"]}
+adapter:
+  name: wav_tree
+  # the same 90 positions with an omni and an em32: omni preferred; em32 analysed on the capsule mean (order 0)
+  params:
+    pattern: '(?P<cond>OMNI|EIG)/(?P<src>S[CLR])_(?P<rcv>M[CLR])_(?:OMNI|EIG)_(?P<label>\d+)\.wav$'
+    room_from: pattern
+    room_default: church-santi-marcellino-e-pietro-cremona
+    roles: {1: [omni], 32: [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32]}
+    channel_formats: {1: mono_omni, 32: em32_raw}
+    reference_roles: {32: mean}
+    preferred_regex: '^OMNI/'
+wave: 1
+homepage: https://zenodo.org/records/14901751
+doi: 10.5281/zenodo.14901751
+status: active
+notes: "Space label: the single space shows as \"1\" because the adapter took the number at the end of the file names as the room label; it is the church of Santi Marcellino e Pietro in Cremona. The label will be corrected once the adapter pattern no longer uses that number as the label and the dataset is re-indexed."
+web_check:
+  checked: '2026-10-14'
+  institution: Politecnico di Milano
+  country: Italy

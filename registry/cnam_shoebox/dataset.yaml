@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: cnam_shoebox
+name: Cnam-LMSSC shoebox RIRs
+year: 2025
+type: simulated
+status: catalogued
+content: 'Undocumented upload of shoebox-room RIRs, presumably simulated: 125 rooms with 1,024 source-receiver pairs
+  each (1-second clips), stored as parquet with source and receiver coordinates.'
+expected:
+  n_irs: 128000
+  n_rooms: 125
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://huggingface.co/datasets/Cnam-LMSSC/shoebox_rir_updated
+web_check:
+  checked: '2026-10-14'
+  found_as: Cnam-LMSSC simulated shoebox RIRs (Hugging Face)
+  availability: open
+  families:
+  - mono
+  host: Hugging Face
+  size: 1.24 GB
+  file_formats: Parquet (audio plus source and receiver coordinates)
+  institution: Cnam, LMSSC (Laboratoire de Mécanique des Structures et des Systèmes Couplés)
+  country: France
+  evidence_urls:
+  - https://huggingface.co/datasets/Cnam-LMSSC/shoebox_rir_updated
+  - https://huggingface.co/api/datasets/Cnam-LMSSC/shoebox_rir_updated
+  - https://huggingface.co/api/datasets?author=Cnam-LMSSC
+  - https://datasets-server.huggingface.co/first-rows?dataset=Cnam-LMSSC/shoebox_rir_updated&config=room_00001&split=train
+  - https://huggingface.co/api/datasets/Cnam-LMSSC/Unboxed-RIR
+  confidence: low
+  caveats:
+  - The card has no description, method, sample rate or licence. 'Simulated' is inferred from the name and layout.
+  - 'Sister repos from the same lab: large_shoebox_rir (352,940 RIRs, 18 GB) and shoebox_rir_with_room_names (178,209
+    RIRs, 9 GB). The 136 GB Unboxed-RIR (DOI 10.57967/hf/9788) needs approval.'
+  - With no licence stated, the reuse terms are unclear.

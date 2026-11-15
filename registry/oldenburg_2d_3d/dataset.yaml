@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: oldenburg_2d_3d
+name: Oldenburg 2D/3D rendering comparison IRs
+year: 2023
+type: hybrid
+status: catalogued
+content: 24 binaural KEMAR IRs of virtual concert, speech and street scenes reproduced with eight 2D/3D loudspeaker
+  rendering methods (HOA, VBAP, NSP) in an Oldenburg lab, plus recordings of the scenes.
+fs_hz:
+- 44100
+expected:
+  n_irs: 24
+  n_rooms: 2
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/10037482
+doi: 10.5281/zenodo.10037482
+web_check:
+  checked: '2026-10-14'
+  found_as: 'Comparison of 2D and 3D multichannel rendering methods: IRs and scene recordings (Oldenburg)'
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: IRs.zip 117 MB; scenes.zip 1.0 GB
+  file_formats: WAV and MAT (in IRs.zip)
+  institution: Carl von Ossietzky Universität Oldenburg
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/10037482
+  - https://zenodo.org/api/records/10037482
+  - https://zenodo.org/records/10037482/preview/IRs.zip
+  confidence: medium
+  caveats:
+  - The IRs capture virtual scenes (a reverberant room and a street) played over loudspeaker arrays, not a real
+    hall.
+  - 'Only one source per scene: 3 scenes x 8 rendering methods, each IR also given in a truncated version.'
+  - No room dimensions or source positions in the record; KEMAR sat at the array centre with ears at 1.60 m.

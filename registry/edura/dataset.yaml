@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: edura
+name: EduRa database
+year: 2021
+type: simulated
+status: catalogued
+content: Simulated RIRs plus adult and child dummy-head BRIRs for 5 representative shoebox school and preschool
+  rooms, derived from measurements in 27 rooms in Aachen; with position schematics and SketchUp models.
+expected:
+  n_irs: 120
+  n_rooms: 5
+room_info:
+  dimensions: partial
+  geometry: partial
+  positions: partial
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/5747086
+doi: 10.5281/zenodo.5747086
+web_check:
+  checked: '2026-10-14'
+  found_as: 'EduRa database: school/preschool room models with simulated binaural RIRs'
+  availability: open
+  families:
+  - binaural
+  - mono
+  host: Zenodo
+  size: 51.5 MB
+  file_formats: WAV; SketchUp (.skp) models; PDF schematics and description
+  institution: RWTH Aachen University, Institute for Hearing Technology and Acoustics (IHTA)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/5747086
+  - https://zenodo.org/api/records/5747086
+  - https://zenodo.org/records/5747086/preview/EduRA_database_v20211201.zip
+  - https://zenodo.org/api/records/5153556
+  confidence: high
+  caveats:
+  - The IRs are simulated in shoebox models of 5 representative rooms, not measured in the 27 surveyed schools.
+  - SketchUp models are included for only 3 of the 5 rooms.
+  - Sample rate and simulation software are not stated on the record page.

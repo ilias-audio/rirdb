@@ -1,0 +1,54 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_synesthetic
+name: Synesthetic Room Impulse Responses Dataset
+year: 2025
+type: simulated
+status: catalogued
+content: 17,640 simulated shoebox-room RIRs (48 kHz, 3 s WAV) with varied size, source-receiver positions and band
+  absorption, made with pyroomacoustics (image-source plus ray tracing) to train energy-decay-curve prediction.
+fs_hz:
+- 48000
+expected:
+  n_irs: 17640
+  n_rooms: 17640
+room_info:
+  dimensions: partial
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: The RIRs are CC BY 4.0, but the room-feature CSV that describes them sits in a GitHub repo whose LICENSE
+    file is GPL-3.0 (its README badge says MIT), and the record says the data are intended for research and educational
+    use.
+homepage: https://zenodo.org/records/17503961
+doi: 10.5281/zenodo.17503961
+web_check:
+  checked: '2026-10-14'
+  found_as: Synesthetic Room Impulse Responses Dataset (TU Ilmenau)
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 940 MB
+  file_formats: WAV in ZIP; room-feature CSV on GitHub
+  institution: Technische Universität Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/17503961
+  - https://zenodo.org/api/records/17503961
+  - https://zenodo.org/records/17503961/preview/RIRs.zip
+  - https://github.com/TUIlmenauAMS/LSTM-Model-Energy-Decay-Curves
+  - https://raw.githubusercontent.com/TUIlmenauAMS/LSTM-Model-Energy-Decay-Curves/main/LICENSE
+  - https://raw.githubusercontent.com/TUIlmenauAMS/LSTM-Model-Energy-Decay-Curves/main/dataset/room_acoustic_largedataset/roomFeaturesDataset.csv
+  - https://arxiv.org/abs/2509.24834
+  confidence: high
+  caveats:
+  - Room size, positions and 7-band absorption are in a CSV in the authors' GitHub repo that lists only 6,000 IDs,
+    fewer than the 17,640 WAVs.
+  - Many files share one room size and source-receiver set-up and differ only in absorption.
+  - One 940 MB ZIP; the matching energy decay curves and trained model are separate Zenodo records.

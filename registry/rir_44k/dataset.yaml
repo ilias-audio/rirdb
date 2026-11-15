@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rir_44k
+name: RIR-44k (VoiceFixer)
+year: 2021
+type: simulated
+status: catalogued
+content: 43,239 simulated single-microphone RIRs at 44.1 kHz from random rectangular rooms (sides 1-12 m, RT60 0.05-1
+  s, omni or cardioid mic), released with the VoiceFixer speech-restoration paper.
+fs_hz:
+- 44100
+expected:
+  n_irs: 43239
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/5528124
+doi: 10.5281/zenodo.5528124
+web_check:
+  checked: '2026-10-14'
+  found_as: Simulated Room Impulse Response for 44.1k Audio
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 2.9 GB
+  file_formats: ZIP of NumPy .npy files
+  institution: ByteDance (Speech, Audio and Music Intelligence team)
+  evidence_urls:
+  - https://zenodo.org/records/5528124
+  - https://zenodo.org/api/records/5528124
+  - https://zenodo.org/records/5528124/preview/RIR_44k.zip
+  - https://ar5iv.labs.arxiv.org/html/2109.13731
+  confidence: high
+  caveats:
+  - Single 2.9 GB zip of NumPy .npy files; room size, mic and source positions and target RT60 are encoded in each
+    file name.
+  - Room size is drawn at random for each RIR, so there are no real or repeated spaces; made with rir_simulator_python.
+  - Split into 38,239 training and 5,000 test RIRs; the authors ask users to cite the VoiceFixer paper (arXiv:2109.13731).

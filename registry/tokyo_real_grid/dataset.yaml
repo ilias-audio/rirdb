@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tokyo_real_grid
+name: Real Grid RIR Dataset
+year: 2025
+type: measured
+status: catalogued
+content: Eight-channel RIRs measured with sine sweeps in one meeting room (about 5.9 x 6.9 x 2.9 m, RT60 0.60 s),
+  with a loudspeaker moved over a 98-point floor grid; three subsets vary source direction and mic position.
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: partial
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/14717170
+doi: 10.5281/zenodo.14717170
+web_check:
+  checked: '2026-10-14'
+  found_as: Real Grid RIR Dataset (meeting room, Institute of Science Tokyo)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 3.2 GB
+  file_formats: WAV (RIR1-RIR8 per measurement) plus NumPy .npy and sweep recordings, in one ZIP
+  institution: Institute of Science Tokyo
+  country: Japan
+  evidence_urls:
+  - https://zenodo.org/records/14717170
+  - https://zenodo.org/api/records/14717170
+  - https://zenodo.org/records/14717170/preview/GridRIRdataset.zip
+  - https://github.com/RunwuShi/GridRIRDataset
+  - https://raw.githubusercontent.com/RunwuShi/GridRIRDataset/main/process.ipynb
+  confidence: high
+  caveats:
+  - The sampling rate is not stated on Zenodo or GitHub.
+  - The total IR count is not stated. Each measurement folder also holds raw sweep recordings and NumPy files.
+  - Zenodo's ZIP preview shows only part of the tree (grid03), so check the contents after downloading.

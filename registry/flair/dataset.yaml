@@ -1,0 +1,28 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: flair
+name: FLAIR
+year: 2025
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 270 RIRs in a single room with a millimetre-accurate dense 3D point cloud of the room geometry and microphone positions (inverse problems with boundary information).
+expected: {n_irs: 270, n_rooms: 1}
+room_info: {geometry: "yes", positions: "yes", where: "millimetre-accurate point cloud of the room and microphone positions (record description); data_FLAIR.mat"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["17037517"]}
+adapter:
+  name: ndarray
+  # data_FLAIR.mat (MATLAB v5): rirs[17873 samples, 135 mics, 2 loudspeakers]
+  params: {glob: "data_FLAIR.mat", container: mat, array: rirs, time_axis: 0, record_axes: [1, 2],
+           fs_var: fs, room_default: flair-room}
+wave: 2
+homepage: https://zenodo.org/records/17037517
+paper: {title: "Bayesian Sound Field Reconstruction Using Partial Boundary Information", url: "https://ieeexplore.ieee.org/document/11197648"}
+doi: 10.5281/zenodo.17037517
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Lund University, with Aalto University
+  caveats:
+  - Comes with a millimetre-accurate point cloud of the room.

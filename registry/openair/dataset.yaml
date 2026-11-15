@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: openair
+name: OpenAIR
+year: 2010
+type: measured
+ir_kinds: [room, outdoor, scale_model]
+capture_formats: [mono_omni, stereo, foa_fuma, binaural]
+content: Ambisonic B-format (and mono/stereo) RIRs recorded in over 46 (still increasing) environments, with per-space data tables. Includes a few non-room entries (scale model, slinky, simulated auralizations) tagged by ir_kind.
+expected: {n_irs: 690, n_rooms: 58, note: "IR folders only; sweeps, auralizations and examples skipped"}
+room_info: {positions: "partial", images: "partial", reference_acoustics: "partial", where: "per-space data tables (xlsx: T30, EDT, C80 ... per position) and descriptions for some spaces; photos on the (now offline) website"}
+license: {spdx: LicenseRef-per-space, url: "https://web.archive.org/web/20180602082604/http://www.openairlib.net/auralizationdb", redistribute_audio: unknown, note: "Each contributor chose a licence per space; registry/openair/spaces.csv (archived openairlib.net pages of 2018, or the York-hosted copy where no openairlib.net page was archived; checked 2026-11-06): 39 CC BY-SA 3.0, 10 CC BY (9 of them 4.0, 1 3.0), 6 public domain, 1 CC BY-NC-SA 3.0, 1 CC BY-NC-ND 3.0, 2 not stated. Unlisted spaces fall back to unknown. The OpenAIR website is offline (hosting suspended) as of 2026-10-01; on 2026-11-06 www.openairlib.net answered with an expired TLS certificate, so the links here point to Wayback Machine copies (the licence link goes to the 2018 list of spaces, whose pages give the per-space terms). Two site versions disagree (checked 2026-10-13): the per-space licences match the original openairlib.net pages (2017-18, CC 3.0 links), while the later WordPress pages archived in 2026 state CC BY 4.0 for every space; follow the stricter original licence until York confirms."}
+access: open
+source:
+  kind: wget_mirror
+  urls: ["https://webfiles.york.ac.uk/OPENAIR/IRs/"]
+  accept: ["*.wav", "*.WAV", "*.csv", "*.txt", "*.xlsx", "*.pdf"]
+adapter: {name: openair}
+keep_archive: false
+wave: 1
+homepage: https://web.archive.org/web/20260715011419/https://openairlib.net/
+paper: {title: "OpenAIR: An interactive auralization web resource and database", url: "https://www.aes.org/e-lib/browse.cfm?elib=15648"}
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of York (AudioLab)
+  country: UK
+  host: University of York file server
+  licence_note: Each contributor chose a licence per space on the original openairlib.net pages (mostly CC BY-SA,
+    some non-commercial or no-derivatives, a few public domain or none). The later pages, archived in 2026 before
+    the site went offline, state CC BY 4.0 for every space. Follow the stricter original licence of each space until
+    the York team confirms; the per-space table is in the project registry (registry/openair/spaces.csv).
+  caveats:
+  - The website has been offline since 2026; the files are still on the University of York file server, and the
+    pages on the Wayback Machine.
+  - Each space has its own licence, mostly CC BY-SA.
+  - Mixes measured rooms with auralisations, a scale model and a slinky.
+  - Some 96 kHz files carry nothing above about 20 kHz; the Usina del Arte files hold 32 kHz content in 48 kHz files.
+  - rirdb's per-IR index (the ir_kind column that rirdb query returns) still files the 12 IRs of the Shrine and
+    Parish Church of All Saints, North Street, as outdoor (a keyword rule matched "street"), so until the index
+    is rebuilt they are missing from the clean measured rooms and the corpus-wide room counts; this page counts
+    them as rooms.

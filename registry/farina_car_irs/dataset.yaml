@@ -1,0 +1,50 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: farina_car_irs
+name: Farina 2x2 car-interior IRs (Cars+Sennheiser)
+type: measured
+status: catalogued
+content: Nine undocumented 2x2 IR files measured in car cabins (Astra, Audi 80, Audi 100, BMW 730, Croma, Dedra,
+  Citroën Evasion, Passat, Punto) stored as short 2-channel WAVs in Angelo Farina's open web archive, Italy.
+fs_hz:
+- 44100
+expected:
+  n_rooms: 9
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/
+web_check:
+  checked: '2026-10-14'
+  found_as: Angelo Farina public archive – 2x2 car-interior impulse responses
+  availability: open
+  families:
+  - stereo
+  host: Personal website
+  size: 0.3 MB
+  file_formats: WAV (2-channel, 16-bit PCM, 44.1 kHz)
+  institution: University of Parma (Angelo Farina)
+  country: Italy
+  evidence_urls:
+  - https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/
+  - https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/
+  - https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Astra-2x2.WAV
+  - https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/CitroenEvasion+Sennheiser/
+  - https://www.angelofarina.it/Public/Bin-B/
+  - https://www.angelofarina.it/Public/
+  - https://www.angelofarina.it/Public/IMP-RESP/
+  - https://www.kvraudio.com/forum/viewtopic.php?p=9155741
+  confidence: medium
+  caveats:
+  - Only nine car files of about 32 KB each (2-channel, 16-bit, 44.1 kHz, about 0.18 s); sibling folders hold 2x2
+    IRs of loudspeaker and dummy-head setups.
+  - 'No documentation: the meaning of ''2x2'' and ''Sennheiser'', the positions and the measurement method are not
+    stated.'
+  - No licence or terms of use anywhere in the folder or at the archive root.

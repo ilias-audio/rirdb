@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: eurecat_arir
+name: Ambisonic Room Impulse Responses (Eurecat)
+year: 2018
+type: measured
+status: catalogued
+content: Ambisonic RIRs in SOFA (AmbisonicsDRIR convention) from rooms and outdoor spots of the Fundació Miró (Barcelona),
+  the Alte Pinakothek (Munich) and St Andrews Castle (Scotland).
+expected:
+  n_rooms: 20
+room_info:
+  images: 'no'
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://zenodo.org/records/1417727
+doi: 10.5281/zenodo.1417727
+web_check:
+  checked: '2026-10-14'
+  found_as: Ambisonic RIRs of three European museums/sites (Eurecat)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  file_formats: SOFA (AmbisonicsDRIR convention) in ZIP
+  institution: Eurecat
+  country: Spain; Germany; UK
+  evidence_urls:
+  - https://zenodo.org/records/1417727
+  - https://zenodo.org/api/records/1417727
+  - https://zenodo.org/records/1417727/preview/StAndrews_Castle.zip
+  - https://zenodo.org/records/1417727/preview/Fundacio_Miro.zip
+  - https://zenodo.org/records/1417727/preview/Alte_Pinakotheke.zip
+  - https://zenodo.org/records/1299894
+  confidence: high
+  caveats:
+  - The record gives no microphone, position, IR-count or sampling-rate details; file names show Ambeo, SoundField
+    and Eigenmike sets at the Alte Pinakothek.
+  - Uses the AmbisonicsDRIR SOFA convention proposed by the authors; the record points to Matlab, Python and C++
+    readers.
+  - Room count is taken from the 20 location file names across the 3 sites (6 Miró galleries, 2 Pinakothek spaces,
+    12 castle spots).

@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: artsoundscapes_altai
+name: Artsoundscapes Altai rock-art IRs
+year: 2021
+type: measured
+status: catalogued
+content: 17 IRs measured in 2019 at three open-air rock-art sites in the Russian Altai (Kalbak-Tash I and II, Adyr-Kan)
+  with a Zylia microphone; stereo WAVs hold the W and Y Ambisonic channels, plus a parameter table.
+expected:
+  n_irs: 17
+  n_rooms: 3
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  images: 'no'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://dataverse.csuc.cat/dataset.xhtml?persistentId=doi:10.34810/data151
+doi: 10.34810/data151
+web_check:
+  checked: '2026-10-14'
+  found_as: ERC Artsoundscapes – IRs from rock art sites Kalbak-Tash I/II and Adyr-Kan (Altai, Russia)
+  availability: open
+  families:
+  - ambisonic
+  host: Dataverse (CORA, Universitat de Barcelona)
+  size: 3.3 MB
+  file_formats: 'WAV (stereo: W and Y B-format channels), TSV parameter table (from XLSX), TXT readme'
+  institution: Universitat de Barcelona (ERC Artsoundscapes)
+  country: Russia
+  evidence_urls:
+  - https://doi.org/10.34810/data151
+  - https://api.datacite.org/dois/10.34810/data151
+  - https://b2find.eudat.eu/dataset/244c7b45-f6c3-56a9-8dee-11bade87436b
+  - https://dataverse.csuc.cat/api/access/datafile/:persistentId?persistentId=doi:10.34810/data151/19
+  - https://dataverse.csuc.cat/api/access/datafile/:persistentId?persistentId=doi:10.34810/data151/1
+  confidence: high
+  caveats:
+  - Non-commercial, share-alike licence (CC BY-NC-SA 4.0).
+  - Files hold only the W and Y B-format channels; raw recordings are available on request.
+  - IR count is from the file list; sample rate is not stated.

@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: r3vival
+name: R3VIVAL
+year: 2023
+type: measured
+status: catalogued
+content: '272 spatial RIRs of one variable-acoustics lab (9.7 x 5.5 x 2.7 m): 34 source positions x 8 absorber-panel
+  settings, captured with a 7-mic open array for SDM, plus 360° stereoscopic videos.'
+expected:
+  n_irs: 272
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://github.com/facebookresearch/R3VIVAL
+web_check:
+  checked: '2026-10-14'
+  found_as: 'R3VIVAL: SRIRs and 360° videos of a variable-acoustics lab'
+  availability: open
+  families:
+  - array
+  host: GitHub
+  size: about 0.37 GB of RIR WAVs (1.34 MB each)
+  file_formats: WAV (7-channel, one file per source position and panel setting); MOV videos via Git LFS
+  institution: Meta Reality Labs Research; TU Ilmenau
+  country: USA
+  evidence_urls:
+  - https://github.com/facebookresearch/R3VIVAL
+  - https://api.github.com/repos/facebookresearch/R3VIVAL/contents/RIRs/FRL_array
+  - https://raw.githubusercontent.com/facebookresearch/R3VIVAL/main/LICENSE
+  - https://raw.githubusercontent.com/facebookresearch/R3VIVAL/main/.gitattributes
+  - https://sigport.org/documents/r3vival-dataset-repository-room-responses-and-360-videos-variable-acoustics-lab
+  - https://support.zylia.co/zylia-papers/zylia-related/the-r3vival-dataset-repository-of-room-responses-and-360-videos-of-a-variable-acoustics-lab/
+  confidence: high
+  caveats:
+  - The GitHub repository has been archived (read-only) since 31 Oct 2023.
+  - These are raw 7-channel array IRs; spatial or binaural use needs SDM processing (the repository includes scripts).
+  - The README does not give the sample rate; the videos are stored with Git LFS.

@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dcase2025_task4_foa
+name: DCASE2025Task4Dataset (FOA RIRs)
+year: 2025
+type: measured
+status: catalogued
+content: First-order Ambisonic RIRs (Sennheiser Ambeo VR, SOFA, 32 kHz) measured by NTT in six environments, plus
+  curated FOA-MEIR RIRs, shipped in the DCASE2025 Task 4 development set with sound events and noise.
+fs_hz:
+- 32000
+license:
+  spdx: LicenseRef-custom
+  note: The terms are NTT's own, in LICENSEv2.2.pdf (named LISENCEv2.2.pdf on Zenodo), and Zenodo classes them as
+    Other (Non-Commercial); read the PDF before reuse.
+homepage: https://zenodo.org/records/15117227
+doi: 10.5281/zenodo.15117227
+web_check:
+  checked: '2026-10-14'
+  found_as: 'NTT DCASE2025 (and DCASE2026) Task 4 datasets: measured FOA RIRs'
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 9.0 GB
+  file_formats: SOFA (RIRs) inside a 17-part split ZIP
+  institution: NTT Corporation
+  country: Japan
+  evidence_urls:
+  - https://zenodo.org/api/records/15117227
+  - https://zenodo.org/records/15117227
+  - https://github.com/nttcslab/dcase2025_task4_baseline
+  - https://dcase.community/challenge2025/task-spatial-semantic-segmentation-of-sound-scenes
+  - https://arxiv.org/html/2506.10676v1
+  - https://zenodo.org/api/records/19328046
+  confidence: medium
+  caveats:
+  - The RIRs are in the room_ir folder of a 9 GB split ZIP that also holds sound events and noise. You need all
+    17 parts to extract it.
+  - 'Some of the RIRs are repackaged from NTT''s FOA-MEIR. No total RIR count is given: the record says six environments,
+    while the challenge paper reports 540 new RIRs at 5 positions in 3 rooms.'
+  - The DCASE2026 Task 4 edition (Zenodo 19328046, about 10.8 GB, same non-commercial label) also contains real-room
+    FOA RIRs.

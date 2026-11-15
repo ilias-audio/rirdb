@@ -1,0 +1,32 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: meshrir
+name: MeshRIR
+year: 2021
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 18,081 mono source-receiver RIRs at 4,410 measurement points on very dense grids (S1-M3969 planar, 1 source x 3,969 points; S32-M441 cuboidal, 32 sources x 441 points) in a moderately reverberant room with accurate coordinates (npy release).
+expected: {n_irs: 18081, n_rooms: 1, note: "4,410 measurement points; 18,081 source-receiver IRs"}
+room_info: {positions: "yes", where: "pos_src.npy, pos_mic.npy per subset"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["10852693"], include: ["S1-M3969_npy.zip", "S32-M441_npy.zip", "src.zip", "LICENSE", "README.md"]}
+adapter:
+  name: ndarray
+  # ir_<point>.npy = [n_sources, 32768] at 48 kHz: one record per source x point
+  params: {glob: "S*_npy/S*_npy/ir_*.npy", container: npy, time_axis: 1, record_axes: [0], fs: 48000,
+           pattern: '(?P<cond>S\d+-M\d+)_npy/ir_(?P<rcv>\d+)\.npy$', room_default: meshrir-room}
+keep_archive: false
+wave: 3
+analysis: {scope: subsample_v1}
+cap: 267   # preview only: the most v1 measured per group; step 5 removes this cap
+homepage: https://sh01k.github.io/MeshRIR/
+paper: {title: "MeshRIR: A Dataset of Room Impulse Responses on Meshed Grid Points", url: "https://arxiv.org/abs/2106.10801"}
+doi: 10.5281/zenodo.10852693
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: University of Tokyo
+  country: Japan
+  caveats:
+  - '"4,410 RIRs" counts measurement points; there are 18,081 source-receiver IRs.'

@@ -1,0 +1,33 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: voxengo
+name: Voxengo free reverb impulse responses
+type: production
+ir_kinds: [creative]
+capture_formats: [stereo]
+fs_hz: [44100]
+content: Free stereo reverb IRs modelled with Voxengo's Impulse Modeler (synthetic, some named after real halls, a few fantasy spaces) plus speaker-cabinet responses, distributed with Voxengo's convolution tools.
+expected: {n_irs: 38}
+adapter: {name: wav_tree, params: {glob: "*.wav", room_from: file}}
+room_info: {dimensions: "no", volume: "no", geometry: "no", materials: "no", positions: "no", images: "no", reference_acoustics: "no", conditions: "no", where: "IR files only"}
+space_type: virtual   # modelled with Impulse Modeler, not recorded
+license:
+  spdx: LicenseRef-Voxengo-IR
+  url: https://www.voxengo.com/impulses/
+  redistribute_audio: unaltered_only
+  note: Royalty-free use incl. commercial; redistribution only complete, unaltered, free of charge, with the copyright notice; never sold.
+access: open
+source: {kind: http, urls: ["https://www.voxengo.com/files/impulses/IMreverbs.zip"]}
+wave: 0
+homepage: https://www.voxengo.com/impulses/
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Voxengo
+  host: Company website
+  licence_note: Royalty-free for any purpose, including commercial use; pass the files on only complete, unaltered,
+    free of charge and with the licence text; never sell them.
+  caveats:
+  - Modelled (synthetic) reverbs, some named after real halls, plus speaker-cabinet responses; no room information.
+    rirdb's per-IR index (the ir_kind column that rirdb query returns) still gives 37 of them the kind room and
+    1 outdoor, from the file names, until it is rebuilt; this page uses the corrected kind.
+  - Free to use in music, including commercially; redistribute only the complete, unaltered set.

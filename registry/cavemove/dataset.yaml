@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: cavemove
+name: CAVEMOVE
+year: 2025
+type: measured
+status: catalogued
+content: 8-channel IRs measured in parked cars (4 models in the paper) from a talk-box at the seats and from the
+  car audio, with a compact dashboard array and distributed mics, plus driving and ventilation noise; 16 kHz WAV.
+fs_hz:
+- 16000
+expected:
+  n_rooms: 4
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  reference_acoustics: 'no'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/17404917
+doi: 10.5281/zenodo.17404917
+web_check:
+  checked: '2026-10-14'
+  found_as: 'CAVEMOVE: acoustic database for voice-enabled technologies inside moving vehicles'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 7.6 GB
+  file_formats: 8-channel WAV (16 kHz, 24-bit) in one ZIP, info.json/info.mat per car, PDF documentation; Python/MATLAB
+    API on GitHub (MIT)
+  institution: FORTH Institute of Computer Science; Hellenic Mediterranean University
+  country: Greece
+  evidence_urls:
+  - https://zenodo.org/records/17404917
+  - https://zenodo.org/api/records/17404917
+  - https://zenodo.org/records/17404917/preview/cavemove_dataset.zip
+  - https://github.com/SPL-FORTH-ICS/CAVEMOVE
+  - https://arxiv.org/abs/2508.19691
+  - https://arxiv.org/html/2508.19691
+  confidence: high
+  caveats:
+  - Only part of the recorded collection is public, resampled to 16 kHz/24-bit (recorded at 48 kHz).
+  - The IRs come in one 7.6 GB ZIP with the noise recordings. No dry speech is included.
+  - The record says four cars in one sentence and three in another. The paper lists four, and the ZIP preview (truncated)
+    shows three car folders.

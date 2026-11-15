@@ -1,0 +1,37 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: iem_cube_bformat
+name: CUBE B-format RIR dataset (Soundfield ST450 MKII)
+year: 2020
+type: measured
+status: catalogued
+content: '720 first-order Ambisonic (B-format) RIRs measured in the IEM CUBE in Graz with Soundfield ST450 MKII
+  microphones: 30 receiver positions on a 1 m grid x 24 hemispherical source positions, as SOFA.'
+expected:
+  n_irs: 720
+  n_rooms: 1
+room_info:
+  positions: partial
+license:
+  spdx: CC-PDM-1.0
+  note: The data carry the Public Domain Mark 1.0 (no known copyright restrictions), not a licence.
+homepage: https://phaidra.kug.ac.at/o:104435
+web_check:
+  checked: '2026-10-14'
+  found_as: IEM CUBE B-format RIR dataset (Soundfield ST450 MKII)
+  availability: open
+  families:
+  - ambisonic
+  host: University repository (Phaidra, KUG Graz)
+  size: 524 MB
+  file_formats: SOFA (in one ZIP), with a link to the SOFA Matlab/Octave API
+  institution: IEM, University of Music and Performing Arts Graz
+  country: Austria
+  evidence_urls:
+  - https://phaidra.kug.ac.at/o:104435
+  - https://phaidra.kug.ac.at/api/object/o:104435/index/dc
+  - https://phaidra.kug.ac.at/api/object/o:104435/datacite?format=xml
+  - https://phaidra.kug.ac.at/api/object/o:104435/download
+  confidence: high
+  caveats:
+  - A single ZIP (cube_soundfield.zip, 524 MB) of SOFA files. The metadata does not give the sampling rate.
+  - No DOI. The landing page is a Phaidra object (o:104435) created on 2020-04-14.

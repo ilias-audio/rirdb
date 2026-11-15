@@ -1,0 +1,56 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: asn_database
+name: ASN Database v3.2
+year: 2023
+type: simulated
+status: catalogued
+content: 79,184 simulated RIRs (CATT-Acoustic, image sources + cone tracing) for 202 sources and 98 four-microphone
+  nodes on grids in a 5-room holiday-apartment model of the flat used for DCASE recordings.
+fs_hz:
+- 44100
+expected:
+  n_irs: 79184
+  n_rooms: 5
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: 'yes'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'yes'
+  conditions: partial
+license:
+  spdx: GPL-3.0-only
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: GPL-3.0-only
+    where: licence file of the GitHub repository that the record's description points to
+  note: The Zenodo record is CC BY 4.0, but its description asks users to read the licence file in the GitHub repository,
+    which is GPL-3.0.
+homepage: https://zenodo.org/records/8320987
+doi: 10.5281/zenodo.8320987
+web_check:
+  checked: '2026-10-14'
+  found_as: 'ASN Database v3.2: simulated RIRs for acoustic sensor networks'
+  availability: open
+  families:
+  - mono
+  - array
+  host: Zenodo
+  size: 18.7 GB in total (WAV 4.6 GB, BIN 4.6 GB, MAT 9.5 GB)
+  file_formats: WAV, BIN (32-bit little-endian), MAT; CATT input and geometry files
+  institution: Ruhr University Bochum, Institute of Communication Acoustics
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/8320987
+  - https://zenodo.org/api/records/8320987
+  - https://github.com/Jearde/asn-database
+  - https://raw.githubusercontent.com/Jearde/asn-database/main/LICENSE
+  - https://raw.githubusercontent.com/Jearde/asn-database/main/versions/database_readme_v3.2.md
+  - https://zenodo.org/records/8320987/preview/ASN_Database_3.2_WAV.zip
+  confidence: high
+  caveats:
+  - 'Large: the WAV, BIN and MAT ZIPs (4.6-9.5 GB each) hold the same RIRs in different formats; download only one.'
+  - 'Licence unclear: Zenodo says CC BY 4.0 but points to a GPL-3.0 licence file on GitHub.'
+  - An earlier version, v3.1 (Zenodo 7257829), has WAV files clipped near the sources.

@@ -1,0 +1,40 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: upv_rir_db
+name: UPV_RIR_DB
+year: 2026
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw, binaural]
+content: 166 multichannel RIR files (18,976 single IRs) measured in 3 rooms of the Universitat Politecnica de Valencia with 8 JBL loudspeakers, a 4x4 B&K 4951 array (AR), a KU100 dummy head (DH) and in-ear mics on listeners (BI), under up to 4 room configurations (window curtain, reflective panel). IRs are 16,384 samples at 44.1 kHz (0.37 s), so late decay parameters are often out of range.
+expected: {n_irs: 18976, n_rooms: 3, note: "the authors count 166 multichannel files and 18,976 single IRs; rirdb indexes 1,328 records = file x loudspeaker: AR 61 x 8 (reference capsule), DH 51 x 8 (point P01 ear pair), BI 54 x 8"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", conditions: "yes", reference_acoustics: "partial", where: "room T30 in the metadata; Master_coordinates.xlsx, Room_*_metadata.json, mapping.json; RC1-RC4 curtain and panel conditions"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["19371528"]}
+wave: 2
+adapter:
+  name: ndarray
+  # h_ctrl[16384, 8 loudspeakers, ch], fs 44.1 kHz (metadata general.process_factors.fs). Each zone Z has two
+  # points P01/P02 2.5 cm apart: AR ch = 2 x 16 capsules (reference ch 0); DH ch = [P01 ear pair, P02 ear pair]
+  # (pairs found by interaural cross-correlation: 1 and 3 lead and are louder for lateral sources; left/right order
+  # undocumented, IACC is symmetric); BI = one ear pair per listener direction (C/L/R) and participant (F/M).
+  params:
+    groups:
+      - {glob: "**/AR/AR_*_RIR.mat", container: mat, array: h_ctrl, time_axis: 0, channel_axis: 2, record_axes: [1],
+         record_is: src, fs: 44100, capture_format: array_raw, reference_role: mic_0,
+         pattern: '(?P<room>Room_[^/]+)_mat/[^/]+/(?P<cond>RC\d)/(?P<src>SC\d)/AR/AR_RC\d_SC\d_(?P<rcv>Z\d+)_RIR\.mat$'}
+      - {glob: "**/DH/DH_*_RIR.mat", container: mat, array: h_ctrl, time_axis: 0, channel_axis: 2, record_axes: [1],
+         record_is: src, fs: 44100, capture_format: binaural, channels: [0, 1], roles: [L, R],
+         pattern: '(?P<room>Room_[^/]+)_mat/[^/]+/(?P<cond>RC\d)/(?P<src>SC\d)/DH/DH_RC\d_SC\d_(?P<rcv>Z\d+)_RIR\.mat$'}
+      - {glob: "**/BI/BI_*_RIR.mat", container: mat, array: h_ctrl, time_axis: 0, channel_axis: 2, record_axes: [1],
+         record_is: src, fs: 44100, capture_format: binaural, roles: [L, R],
+         pattern: '(?P<room>Room_[^/]+)_mat/[^/]+/(?P<cond>RC\d)/(?P<src>SC\d)/BI/BI_RC\d_SC\d_(?P<rcv>Z\d+_[CLR]_[FM])_RIR\.mat$'}
+homepage: https://zenodo.org/records/19371528
+doi: 10.5281/zenodo.19371528
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Universitat Politecnica de Valencia
+  country: Spain
+  caveats:
+  - The IRs are 0.37 s long, shorter than the rooms' reverberation.

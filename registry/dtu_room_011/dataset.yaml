@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dtu_room_011
+name: RIR Dataset - ACT, DTU Elektro (011, IEC; plane, sphere)
+year: 2021
+type: measured
+status: catalogued
+content: '1,612 RIRs (806 per room) measured with a robot-moved microphone on a plane and a sphere in two DTU rooms:
+  a very reverberant shoebox room (011) and an IEC listening room; 44.1 kHz, HDF5.'
+fs_hz:
+- 44100
+expected:
+  n_irs: 1612
+  n_rooms: 2
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://data.dtu.dk/articles/dataset/Room_Impulse_Response_Dataset_-_ACT_DTU_Elektro_011_IEC_plane_sphere_/14320166
+doi: 10.11583/DTU.14320166.v1
+web_check:
+  checked: '2026-10-14'
+  found_as: 'DTU ACT Room Impulse Response Dataset: rooms 011 and IEC (plane, sphere)'
+  availability: open
+  families:
+  - mono
+  host: DTU Data (figshare)
+  size: 3.9 GB
+  file_formats: HDF5 (AVI videos, JPG photos, HTML readme)
+  institution: Technical University of Denmark (Acoustic Technology group, DTU Elektro)
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/14320166
+  - https://ndownloader.figshare.com/files/27340406
+  - https://ndownloader.figshare.com/files/27338927
+  - https://doi.org/10.11583/DTU.14320166.v1
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 4.0).
+  - 42 plane positions were measured twice, so each room has 764 unique positions.
+  - Positions are given relative to the robot base, not the room; two HDF5 files of about 1.9 GB each.

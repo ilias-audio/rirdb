@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuni_rcair
+name: TUNI-RCAIR
+year: 2021
+type: measured
+status: catalogued
+content: 7-microphone circular-array IRs measured in 7 Tampere University spaces (audio lab, offices, meeting rooms,
+  glass stair corridor, anechoic chamber), the array rotated in 5° steps at 3 source distances.
+fs_hz:
+- 48000
+expected:
+  n_irs: 777
+  n_rooms: 7
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/5242909
+doi: 10.5281/zenodo.5242909
+web_check:
+  checked: '2026-10-14'
+  found_as: 'TUNI-RCAIR: Tampere University Rotated Circular Array Impulse Response dataset'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 17.5 GB
+  file_formats: WAV in one tar.gz
+  institution: Tampere University
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/records/5242909
+  - https://zenodo.org/api/records/5242909
+  - https://tuni-rcair.github.io/
+  - https://eurasip.org/Proceedings/Eusipco/Eusipco2021/pdfs/0000201.pdf
+  confidence: high
+  caveats:
+  - 'Large: a single 17.5 GB tar.gz.'
+  - One of the seven spaces is an anechoic chamber.
+  - Short source distances only (0.7, 1.4 and 2.1 m); the array is rotated from -90° to +90° instead of moving the
+    source.

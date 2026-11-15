@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: iem_digital_twins
+name: IEM Audio-Visual Digital Twins
+year: 2026
+type: measured
+status: catalogued
+content: RIRs of five Graz venues (IEM meeting room and lecture hall, Graz Cathedral, IEM Experimentalstudio, Ligeti
+  Hall) from omni mics, Eigenmike EM64 or Soundfield, with 3D scans and models for 6DoF rendering.
+fs_hz:
+- 48000
+expected:
+  n_rooms: 5
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'yes'
+  positions: partial
+  images: partial
+  reference_acoustics: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: Neither the project page nor the server folders state a licence, and the SOFA headers say 'No license provided,
+    ask the author for permission'.
+homepage: https://opendata.iem.at/projects/digitaltwin/
+web_check:
+  checked: '2026-10-14'
+  found_as: IEM Audio-Visual Digital Twins
+  availability: open
+  families:
+  - mono
+  - array
+  - ambisonic
+  host: Lab website (users.iem.at)
+  size: about 17 GB (3.0-5.0 GB per venue)
+  file_formats: MAT, WAV (64-channel, 32-bit float), SOFA; E57, FBX and OBJ models and images
+  institution: IEM, University of Music and Performing Arts Graz
+  country: Austria
+  evidence_urls:
+  - https://opendata.iem.at/projects/digitaltwin/
+  - https://users.iem.at/frank/temp/digitaltwins/
+  - https://users.iem.at/frank/temp/digitaltwins/Dom/IR_denoised/
+  - https://users.iem.at/frank/temp/digitaltwins/Experimentalstudio/
+  confidence: medium
+  caveats:
+  - No licence stated; the SOFA headers say 'No license provided, ask the author for permission'.
+  - Files sit in a personal 'temp' folder on users.iem.at with no DOI, so links may change.
+  - Very large (single files up to 1.2 GB) with little documentation; the Ligeti Hall folder holds only a 33 MB
+    Assets.zip.

@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: reverbdata
+name: REVERBDATA
+year: 2024
+type: measured
+status: catalogued
+content: Measured RIRs of 22 significant Portuguese spaces (concert halls, theatres, churches, monasteries) in stereo
+  and binaural, 1st- and 3rd-order Ambisonics and some mono, with ISO 3382-1 parameters for each RIR.
+fs_hz:
+- 96000
+- 48000
+- 44100
+expected:
+  n_rooms: 22
+room_info:
+  dimensions: partial
+  volume: partial
+  geometry: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  note: The footer says 'This website is licensed under CC BY-NC-SA 4.0'. No separate licence for the IR files was
+    found.
+homepage: https://reverbdata.ipl.pt/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'REVERBDATA: impulse response database of significant Portuguese spaces'
+  availability: open
+  families:
+  - mono
+  - stereo
+  - binaural
+  - ambisonic
+  host: Lab website (SharePoint folders)
+  file_formats: WAV (32-bit float; 4-channel stereo+binaural; Ambisonics A/B in ACN/AmbiX), TXT acoustic parameters,
+    raw sweeps
+  institution: Polytechnic Institute of Lisbon (IPL) / Lisbon School of Music (ESML)
+  country: Portugal
+  evidence_urls:
+  - https://reverbdata.ipl.pt/
+  - https://reverbdata.ipl.pt/reverbdata/gulbenkian-hall/
+  - https://reverbdata.ipl.pt/reverbdata/garrett/
+  - https://iplx-my.sharepoint.com/:f:/g/personal/reverbdata_esml_ipl_pt/EqSC8NaVV4FNjhyUoVG61dIBu4htzpoEIh18n8GjeKExFA?e=Cz4oOP
+  confidence: high
+  caveats:
+  - Downloads are per space, from SharePoint folders linked on each space page. There is no single bulk download.
+  - The only licence statement is in the website footer and does not mention the IR files specifically.
+  - The number of positions varies by space (e.g. 12 audience points in the Gulbenkian Great Hall), and no total
+    IR count is given.

@@ -1,0 +1,50 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dtu_frequency_responses
+name: DTU acoustic frequency responses (classroom, cuboid room)
+year: 2021
+type: measured
+status: catalogued
+content: Room frequency responses measured by a robot-positioned microphone on dense planar grids in a DTU classroom
+  (4,761 points) and an empty cuboid room (2,023 points), stored as HDF5.
+expected:
+  n_irs: 6784
+  n_rooms: 2
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://data.dtu.dk/articles/dataset/Acoustic_frequency_responses_in_a_conventional_classroom/13315286
+doi: 10.11583/DTU.13315286
+web_check:
+  checked: '2026-10-14'
+  found_as: DTU acoustic frequency responses (conventional classroom; empty cuboid room)
+  availability: open
+  families:
+  - mono
+  host: figshare (DTU Data)
+  size: 708 MB
+  file_formats: HDF5 (complex frequency-domain responses per position), PDF sketch and photo, Markdown readme
+  institution: Technical University of Denmark (DTU), Acoustic Technology
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/13315286
+  - https://api.figshare.com/v2/articles/13315289
+  - https://ndownloader.figshare.com/files/27505451
+  - https://ndownloader.figshare.com/files/27506717
+  - https://doi.org/10.11583/DTU.13315286
+  - https://api.figshare.com/v2/articles/25867705
+  - https://api.figshare.com/v2/articles/14320166
+  confidence: medium
+  caveats:
+  - Stored as frequency responses (to 5 kHz for the classroom, 10 kHz for the empty room), not as time-domain IR
+    files.
+  - The classroom readme says 7,211 positions were measured but documents only the 4,761-point aperture (z = 1866
+    mm) in the file.
+  - Published as two records with separate DOIs (classroom 10.11583/DTU.13315286, empty room 10.11583/DTU.13315289).

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{# Shared layout of the four analysis pages: sub-navigation, page head, shared styles.
+   Children fill: lede (block), onpage (list of (anchor, label)), page_css (block), body (block). #}
+{% block head %}
+<style>
+.subnav { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 1.4em; padding: 0 0 10px; border-bottom: 1px solid var(--rule); }
+.subnav a { color: var(--ink-2); text-decoration: none; font-size: .9rem; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--surface); white-space: nowrap; }
+.subnav a:hover { border-color: var(--rule-strong); color: var(--ink); }
+.subnav a[aria-current="page"] { background: var(--accent-wash); border-color: transparent; color: var(--accent); font-weight: 700; }
+.onpage { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: .2em 0 0; padding: 0; list-style: none; font-size: .9rem; }
+.onpage li::before { content: "↓ "; color: var(--muted); }
+.wrap.wide { max-width: 1560px; padding-inline: clamp(16px, 2.4vw, 32px); }
+/* table cells that only make sense at one width: .d-only hides on phones, .m-only shows only there */
+.m-only { display: none !important; }
+@media (max-width: 600px) { .d-only { display: none !important; } .m-only { display: block !important; } }
+/* heat cells: --w (0-1) sets how much --series-1 is mixed into the surface, up to a per-theme maximum chosen so
+   that --ink keeps at least 4.5:1 on every cell (light: dark ink on <= 85 %; dark: light ink on <= 72 %) */
+:root { --heat-max: 85%; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --heat-max: 72%; } }
+:root[data-theme="dark"] { --heat-max: 72%; }
+.heat-c { background: color-mix(in srgb, var(--series-1) calc(var(--w, 0) * var(--heat-max)), var(--surface)); color: var(--ink); }
+.chart-grid { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); align-items: start; }
+.chart-grid figure.chart { margin: 0; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; margin: 0 0 1.2em; }
+.notes .card p, .notes .card li { font-size: .92rem; }
+.notes .card p { margin: 0 0 .6em; }
+.notes .card ul { margin: 0; padding-left: 1.1em; }
+figure.chart .tbl-wrap { max-height: 360px; overflow-y: auto; margin-bottom: 0; }
+figure.chart details .tbl { font-size: .84rem; }
+.tbl caption { text-align: left; }
+.tbl tbody tr:last-child th { border-bottom: 0; }
+.tbl th .sub { display: block; color: var(--muted); font-size: .8rem; font-weight: 400; }
+.tbl tr.grp > * { border-top: 1px solid var(--rule-strong); }
+.sql { display: block; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; background: none; padding: 0; }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; font-size: .95rem; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .kv { grid-template-columns: minmax(0, 1fr); gap: 0; } .kv dd { margin-bottom: 6px; } }
+.findq { border-left: 3px solid var(--rule-strong); margin: 0 0 1em; padding: 4px 0 4px 14px; }
+.findq p { margin: 0 0 .5em; }
+.findq footer { font-size: .86rem; color: var(--muted); }
+</style>
+{% block page_css %}{% endblock %}
+{% endblock %}
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <nav class="subnav" aria-label="Analysis pages">
+    {% for key, label, path in subnav %}<a href="{{ root }}{{ path }}"{% if key == sub %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}
+  </nav>
+  <p class="eyebrow"><a href="{{ root }}index.html">{{ SITE_NAME }}</a> / {% if sub == "index" %}Analysis{% else %}<a href="{{ root }}analysis/index.html">Analysis</a>{% endif %}</p>
+  <h1>{{ title }}</h1>
+  {% block lede %}{% endblock %}
+</div></div>
+{% block body %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# Data files: downloads/index.html. Context from pages_docs.render_downloads(). #}
+
+{% macro fsize(b) -%}{% if b is not none %}{{ b | bytes }}{% else %}<span class="muted" data-tip="Not present when this page was built">–</span>{% endif %}{%- endmacro %}
+
+{% block head %}
+<style>
+.dl-body { min-width: 0; }
+.dl-body > .section:first-of-type { border-top: 0; padding-top: 4px; }
+.dl-body h3 { margin-top: 1.8em; scroll-margin-top: 76px; overflow-wrap: break-word; }
+.dl-body h2 + h3, .dl-body h2 + p + h3 { margin-top: .8em; }
+.dl-tiles { margin: 0 0 1em; }
+.files-tbl .path { min-width: 13em; }
+.files-tbl .path code { background: none; padding: 0; font-size: .86rem; overflow-wrap: break-word; }
+.tbl tbody tr:last-child th { border-bottom: 0; }
+.files-tbl .what { min-width: 20em; }
+.files-tbl th .sub, .pd-tbl th .sub { display: block; color: var(--muted); font-size: .8rem; font-weight: 400; }
+.files-tbl .sub a { font-weight: 400; }
+.files-tbl th[scope="row"], .pd-tbl th[scope="row"] { text-align: left; }
+.pd-tbl td a { white-space: nowrap; }
+.pd-tbl .name { min-width: 12em; }
+.schema-tbl th[scope="row"] { font: 600 .84rem/1.4 var(--font-mono); white-space: nowrap; text-align: left; }
+.schema-tbl .vals { min-width: 14em; font-size: .82rem; color: var(--ink-2); }
+.schema-tbl .vals code { font-size: .78rem; white-space: nowrap; }
+.schema-tbl .info { min-width: 18em; }
+.keys { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 0 0 1em; padding: 0; list-style: none; }
+.keys code { font-size: .8rem; }
+.dl-body .code pre { padding-right: 66px; }
+@media (max-width: 640px) { .dl-body .code pre { padding-top: 36px; } }
+.chart.solo { max-width: 680px; }
+@media (max-width: 640px) {
+  .files-wrap { border: 0; background: none; overflow: visible; }
+  .files-tbl, .files-tbl tbody, .files-tbl tr, .files-tbl td, .files-tbl th[scope="row"] { display: block; width: 100%; min-width: 0 !important; }
+  .files-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .files-tbl tr { border-bottom: 1px solid var(--rule); padding: 10px 0; }
+  .files-tbl tbody tr:last-child { border-bottom: 0; }
+  .files-tbl td, .files-tbl th[scope="row"] { border: 0; padding: 2px 0; text-align: left; white-space: normal; }
+  .files-tbl tbody tr:hover td { background: none; }
+  .files-tbl td.fmt, .files-tbl td.n { display: inline-block; width: auto; font-size: .86rem; color: var(--ink-2); margin-right: 12px; }
+  .files-tbl td.n .sub { display: inline; margin-left: 4px; }
+  .files-tbl th .sub { display: inline; margin-left: 8px; }
+}
+@media (max-width: 640px) {
+  .schema-wrap { border: 0; background: none; overflow: visible; }
+  .schema-tbl, .schema-tbl tbody, .schema-tbl tr, .schema-tbl td, .schema-tbl th[scope="row"] { display: block; width: 100%; min-width: 0 !important; }
+  .schema-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .schema-tbl tr { border-bottom: 1px solid var(--rule); padding: 8px 0; }
+  .schema-tbl tbody tr:last-child { border-bottom: 0; }
+  .schema-tbl td, .schema-tbl th[scope="row"] { border: 0; padding: 1px 0; white-space: normal; }
+  .schema-tbl tbody tr:hover td { background: none; }
+  .schema-tbl td.vals.empty { display: none; }
+  .schema-tbl td.vals { margin-top: 2px; }
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}index.html">rirdb</a> / Data files</p>
+  <h1>Data files</h1>
+  <p class="lede">Everything on this site is also available as plain files for scripts and notebooks: the catalogue, the spaces, each dataset's analysis, the download locks and manifests, and the per-IR metrics.</p>
+  <p class="callout">These files hold metadata and values derived from the audio, never audio. The audio stays with its original host, and each dataset's own licence governs it. A licence for rirdb's own code and catalogue has not been chosen yet: see <a href="{{ root }}about/index.html#licence">About</a>.</p>
+</div></div>
+
+<div class="wrap with-side">
+  <nav class="side-nav" aria-label="On this page">
+    <ol>
+      <li><a href="#site-files">On this site</a></li>
+      <li><a href="#per-dataset">Per dataset</a></li>
+      <li><a href="#repo-files">In the repository</a></li>
+      <li><a href="#schemas">Columns and keys</a></li>
+      <li><a href="#load">Loading the files</a></li>
+    </ol>
+  </nav>
+  <div class="dl-body">
+    <ul class="toc-m" aria-label="On this page">
+      <li><a href="#site-files">On this site</a></li><li><a href="#per-dataset">Per dataset</a></li><li><a href="#repo-files">Repository</a></li>
+      <li><a href="#schemas">Columns</a></li><li><a href="#load">Loading</a></li>
+    </ul>
+
+    <section class="section" aria-labelledby="site-files">
+      <h2 id="site-files">On this site</h2>
+      <p>Built with the pages, from the same data. Sizes are those of this build.</p>
+      <div class="tbl-wrap files-wrap">
+        <table class="tbl files-tbl">
+          <thead><tr><th scope="col">File</th><th scope="col">What it holds</th><th scope="col">Format</th><th scope="col" class="n">Size</th></tr></thead>
+          <tbody>
+          {% for f in site_files %}
+            <tr>
+              <th scope="row" class="path">{% if f.folder %}{% if f.href is defined %}<a href="{{ root }}{{ f.href }}"><code>{{ wbr(f.label) }}</code></a>{% else %}<code>{{ wbr(f.label) }}</code>{% endif %}{% else %}<a href="{{ root }}{{ f.path }}"><code>{{ wbr(f.path) }}</code></a>{% endif %}
+                {% if f.n %}<span class="sub">{{ f.n }}{% if f.folder and f.href is not defined %}: <a href="#per-dataset">list</a>{% endif %}</span>{% endif %}</th>
+              <td class="what">{{ f.what }}{% if f.schema %} <a href="{{ f.schema }}">Columns</a>{% endif %}</td>
+              <td class="fmt">{{ f.fmt }}</td>
+              <td class="n" data-v="{{ f.bytes if f.bytes is not none else -1 }}">{{ fsize(f.bytes) }}{% if f.folder %}<span class="sub">in all</span>{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="per-dataset">
+      <h2 id="per-dataset">Per dataset</h2>
+      <p>Every file for each of the {{ per_ds | length }} registry datasets. Each has a detail JSON; for the {{ num.n_not_analysed | int }} datasets rirdb has not analysed it holds only what is known about their files, which is sometimes nothing. Per-IR metrics snapshots and dataset cards are on GitHub.</p>
+      <div class="filters">
+        <label class="fld"><span>Search</span><input type="search" data-filter="#pd" placeholder="Dataset name or id" aria-controls="pd"></label>
+        <label class="fld"><span>Analysed</span><select data-filter="#pd" data-key="an"><option value="">All</option><option value="yes">Analysed</option><option value="no">Not analysed</option></select></label>
+        <p class="count" data-count-for="#pd" aria-live="polite">{{ per_ds | length }} rows</p>
+      </div>
+      <div class="tbl-wrap tall">
+        <table class="tbl pd-tbl" id="pd">
+          <thead><tr>
+            <th scope="col" data-sort="text">Dataset</th>
+            <th scope="col" class="n" data-sort="num">Detail JSON</th>
+            <th scope="col" class="n" data-sort="num">Lock file</th>
+            <th scope="col" class="n" data-sort="num">Manifest</th>
+            <th scope="col" class="n" data-sort="num">Fetch script</th>
+            <th scope="col" class="n" data-sort="num">Per-IR metrics</th>
+            <th scope="col">Card</th>
+          </tr></thead>
+          <tbody>
+          {% for p in per_ds %}
+            <tr data-search="{{ p.name | lower }} {{ p.id }}" data-an="{{ 'yes' if p.analysed else 'no' }}">
+              <th scope="row" class="name" data-v="{{ p.name | lower }}"><a href="{{ root }}d/{{ p.id }}.html">{{ p.name }}</a><span class="sub">{{ p.id }}</span></th>
+              <td class="n" data-v="{{ p.ds if p.ds is not none else -1 }}">{% if p.ds is not none %}<a href="{{ root }}data/ds/{{ p.id }}.json" aria-label="{{ p.name }}: detail JSON, {{ p.ds | bytes }}">{{ p.ds | bytes }}</a>{% else %}{{ fsize(none) }}{% endif %}</td>
+              <td class="n" data-v="{{ p.lock if p.lock is not none else -1 }}">{% if p.lock is not none %}<a href="{{ root }}data/locks/{{ p.id }}.lock.tsv" aria-label="{{ p.name }}: lock file, {{ p.lock | bytes }}">{{ p.lock | bytes }}</a>{% else %}<span class="muted">none</span>{% endif %}</td>
+              <td class="n" data-v="{{ p.manifest if p.manifest is not none else -1 }}">{% if p.manifest is not none %}<a href="{{ root }}data/manifests/{{ p.id }}.files.tsv.gz" aria-label="{{ p.name }}: manifest, {{ p.manifest | bytes }}">{{ p.manifest | bytes }}</a>{% else %}<span class="muted">none</span>{% endif %}</td>
+              <td class="n" data-v="{{ p.script if p.script is not none else -1 }}">{% if p.script is not none %}<a href="{{ root }}get/{{ p.id }}.sh" aria-label="{{ p.name }}: fetch script">{{ p.id }}.sh</a>{% else %}<span class="muted">–</span>{% endif %}</td>
+              <td class="n" data-v="{{ p.snap if p.snap is not none else -1 }}">{% if p.snap is not none %}<a href="{{ p.snap_url }}" aria-label="{{ p.name }}: per-IR metrics, Parquet, {{ p.snap | bytes }}">{{ p.snap | bytes }}</a>{% else %}<span class="muted">not analysed</span>{% endif %}</td>
+              <td>{% if p.card %}<a href="{{ p.card_url }}" aria-label="{{ p.name }}: dataset card on GitHub">card</a>{% else %}<span class="muted">–</span>{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="tbl-foot">{{ pd_notes | join(" ") }}{% if n_snaps %} Per-IR metrics: {{ n_snaps }} Parquet files, {{ snap_bytes | bytes }} in all.{% endif %}{% if n_cards %} {{ n_cards }} dataset cards{% set nocard = per_ds | rejectattr("card") | map(attribute="name") | list %}{% if nocard %}; none yet for {{ nocard | join(" or ") if nocard | length == 2 else nocard | join(", ") }}{% endif %}.{% endif %}</p>
+    </section>
+
+    <section class="section" aria-labelledby="repo-files">
+      <h2 id="repo-files">In the repository</h2>
+      <p>Committed to <a href="{{ REPO_URL }}">the GitHub repository</a>, so they are versioned with the code that made them. File links download the file; folder links open the folder on GitHub.</p>
+      <div class="tbl-wrap files-wrap">
+        <table class="tbl files-tbl">
+          <thead><tr><th scope="col">Path</th><th scope="col">What it holds</th><th scope="col">Format</th><th scope="col" class="n">Size</th></tr></thead>
+          <tbody>
+          {% for f in repo_files %}
+            <tr>
+              <th scope="row" class="path">{% if f.url %}<a href="{{ f.url }}"><code>{{ wbr(f.label) }}</code></a>{% else %}<code>{{ wbr(f.label) }}</code>{% endif %}{% if f.n %}<span class="sub">{{ f.n }}</span>{% endif %}</th>
+              <td class="what">{{ f.what }}</td>
+              <td class="fmt">{{ f.fmt }}</td>
+              <td class="n" data-v="{{ f.bytes if f.bytes is not none else -1 }}">{{ fsize(f.bytes) }}{% if f.n %}<span class="sub">in all</span>{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="schemas">
+      <h2 id="schemas">Columns and keys</h2>
+      <p>For categorical columns, the values and their counts are read from the files of this build.</p>
+
+      <h3 id="schema-catalog">data/<wbr>catalog.csv and data/<wbr>catalog.json</h3>
+      <p>One row per dataset{% if cat_schema.n_rows is not none %} ({{ cat_schema.n_rows | int }} rows){% endif %}: the registry datasets and those found by the web survey. In the CSV, lists are joined with <code>|</code> and true or false is written <code>yes</code> or <code>no</code>; the JSON keeps lists and booleans. Empty means not stated.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th><th scope="col">Values</th></tr></thead>
+          <tbody>
+          {% for c, doc, vals in cat_schema.columns %}
+            <tr><th scope="row">{{ c }}</th><td class="info">{{ doc or "–" }}</td><td class="vals{{ "" if vals else " empty" }}">{% if vals %}{% for v, n in vals %}<code>{{ v }}</code> {{ n }}{{ ", " if not loop.last }}{% endfor %}{% else %}–{% endif %}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="schema-spaces">data/<wbr>spaces.csv</h3>
+      <p>One row per indexed space{% if sp_schema.n_rows is not none %} ({{ sp_schema.n_rows | int }} rows){% endif %}. Medians are over the space's clean IRs; for production libraries, over all their preferred IRs.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th><th scope="col">Values</th></tr></thead>
+          <tbody>
+          {% for c, doc, vals in sp_schema.columns %}
+            <tr><th scope="row">{{ c }}</th><td class="info">{{ doc or "–" }}</td><td class="vals{{ "" if vals else " empty" }}">{% if vals %}{% for v, n in vals %}<code>{{ v }}</code> {{ n }}{{ ", " if not loop.last }}{% endfor %}{% else %}–{% endif %}</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="schema-site">data/<wbr>site.json</h3>
+      <p>One JSON object. Its keys:</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Key</th><th scope="col">What it holds</th></tr></thead>
+          <tbody>
+          {% for k, v in site_keys %}<tr><th scope="row">{{ k }}</th><td class="info">{{ v or "–" }}</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if row_keys %}
+      <details class="box">
+        <summary>Keys of each object in <code>datasets</code></summary>
+        <ul class="keys">{% for k in row_keys %}<li><code>{{ k }}</code></li>{% endfor %}</ul>
+        <p class="small muted">The registry fields are those of the dataset files, <a href="{{ repo_blob('src/rirdb/registry.py') }}">registry/&lt;id&gt;/dataset.yaml</a>; <code>index</code>, <code>metrics</code> and <code>files</code> are summaries of the index, the metrics and the downloaded files.</p>
+      </details>
+      {% endif %}
+
+      <h3 id="schema-ds">data/<wbr>ds/<wbr>&lt;id&gt;.json</h3>
+      <p>One JSON object per registry dataset. Keys that do not apply to a dataset are missing or empty.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Key</th><th scope="col">What it holds</th></tr></thead>
+          <tbody>
+          {% for k, v in ds_keys %}<tr><th scope="row">{{ k }}</th><td class="info">{{ v }}</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="schema-lock">data/<wbr>locks/<wbr>&lt;id&gt;.lock.tsv</h3>
+      <p>Tab-separated, one row per file to download, with a header row.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+          <tbody>{% for k, v in lock_cols %}<tr><th scope="row">{{ k }}</th><td class="info">{{ v }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+
+      <h3 id="schema-manifest">data/<wbr>manifests/<wbr>&lt;id&gt;.files.tsv.gz</h3>
+      <p>Gzip-compressed, tab-separated, one row per extracted file, with a header row.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+          <tbody>{% for k, v in man_cols %}<tr><th scope="row">{{ k }}</th><td class="info">{{ v }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+
+      <h3 id="schema-metrics">snapshots/<wbr>metrics_core/<wbr>&lt;id&gt;.parquet</h3>
+      <p>One row per analysed IR, sorted by <code>ir_id</code>; metrics stored as 32-bit floats. The parameters, flags and grades are explained in the <a href="{{ root }}methods/index.html#glossary">glossary</a>. A value whose <code>valid_*</code> column is false is out of the ISO validity range: keep it out of statistics. Only T30 has <code>valid_*</code> columns here: the per-band <code>edt_&lt;band&gt;</code> and <code>c80_&lt;band&gt;</code> columns and <code>sti</code> also hold values outside the validity range, and the snapshots cannot tell them apart. For those, use the <code>rirdb dev query</code> views, which have <code>valid_edt_*</code>, <code>valid_c80_*</code> and <code>valid_sti</code>. The <code>*_mid</code> columns hold a value only where both the 500 Hz and the 1 kHz octave are valid.</p>
+      <p>The snapshots are exported from the <code>corpus</code> view, which has no <code>dup_of</code> column, so they still hold the {{ num.n_duplicates | int }} exact duplicate copies{% if num.dup_by_ds %} ({{ num.dup_by_ds }}){% endif %}; <a href="{{ repo_blob('reports/corpus/duplicates.csv') }}">reports/corpus/duplicates.csv</a> lists them by file. <code>duration_s</code> is the length analysed, after the onset is cut, not the length of the file. The file length (<code>duration_raw_s</code>) and the per-band <code>edc_mode_*</code> columns are only in the <code>rirdb dev query</code> views.</p>
+      {% if core_cols %}
+      <details class="box">
+        <summary>The {{ core_cols | length }} core columns, plus every <code>flag_*</code> column</summary>
+        <ul class="keys">{% for c in core_cols %}<li><code>{{ c }}</code></li>{% endfor %}</ul>
+      </details>
+      {% endif %}
+
+      <h3 id="schema-clap">snapshots/<wbr>clap_map_v1/<wbr>reference.parquet</h3>
+      <p>The frozen CLAP map: one row per mapped IR. <code>meta.json</code> next to it gives the model, its revision and the UMAP settings; <code>baseline.json</code> the realism and coverage of every dataset.</p>
+      <div class="tbl-wrap schema-wrap">
+        <table class="tbl schema-tbl">
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+          <tbody>{% for k, v in clap_cols %}<tr><th scope="row">{{ k }}</th><td class="info">{{ v }}</td></tr>{% endfor %}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="load">
+      <h2 id="load">Loading the files</h2>
+      <h3 id="load-catalogue">The catalogue, with pandas</h3>
+      {{ m.code(snippets.catalog, "sn-cat") }}
+      <h3 id="load-ds">One dataset's analysis</h3>
+      {{ m.code(snippets.ds, "sn-ds") }}
+      <h3 id="load-metrics">Per-IR metrics, with pandas</h3>
+      {{ m.code(snippets.metrics, "sn-met") }}
+      <h3 id="load-duckdb">All per-IR metrics at once, with DuckDB</h3>
+      <p>Clone the repository (it holds no audio), then query every snapshot as one table:</p>
+      {{ m.code(snippets.duckdb, "sn-duck") }}
+      {% if num.n_duplicates %}<p class="small muted">These counts can include some of the {{ num.n_duplicates | int }} exact duplicate copies, which the snapshots do not mark (<a href="#schema-metrics">see above</a>).</p>{% endif %}
+      <p class="small muted">To download a dataset and check its files against the lock file and manifest, use its fetch script: <a href="{{ root }}get/index.html">Get the data</a>.</p>
+    </section>
+  </div>
+</div>
+{% endblock %}

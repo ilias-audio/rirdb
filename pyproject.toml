@@ -1,27 +1,46 @@
 [build-system]
-requires = ["hatchling>=1.27"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "rirdb"
-version = "0.0.1"
-description = "Find, select, download and verify room impulse responses from public datasets"
+dynamic = ["version"]
+description = "Find room impulse responses across public datasets, and get them as one folder"
 readme = "README.md"
+authors = [{ name = "Ilias Ibnyahya", email = "ibnyahya.ilias@gmail.com" }]
+requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Ilias Ibnyahya" }]
-requires-python = ">=3.9"
-keywords = ["room impulse response", "reverberation", "room acoustics", "dataset", "audio"]
-classifiers = [
-  "Development Status :: 1 - Planning",
-  "Intended Audience :: Science/Research",
-  "Programming Language :: Python :: 3",
-  "Topic :: Multimedia :: Sound/Audio :: Analysis",
-  "Topic :: Scientific/Engineering",
+# The light install (decision B, master-plan step 2): search, info and get, with the readers, since get
+# converts files. Measuring needs the `analyse` extra. The maintainer commands (`rirdb dev`) need the full
+# environment of pixi.toml.
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2,<3",
+    "pyarrow>=15",
+    "soundfile>=0.12",
+    "scipy>=1.13",
+    "h5py>=3.10",
+    "typer>=0.12",
+    "rich>=13",
 ]
+
+[project.optional-dependencies]
+analyse = ["pyfar>=0.8.1,<0.9", "pyrato>=1.1.0,<1.2", "torch>=2.4"]
 
 [project.urls]
 Homepage = "https://github.com/ilias-audio/rirdb"
 
 [project.scripts]
-rirdb = "rirdb:main"
+rirdb = "rirdb.cli:main"
+
+[tool.hatch.version]
+path = "src/rirdb/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rirdb"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--dist loadgroup"     # tests marked xdist_group("toy") share one worker, so the pipeline runs once
+markers = ["slow: long-running tests (real data, large sweeps)"]

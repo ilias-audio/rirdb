@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mird
+name: Multichannel Impulse Response Database (Bar-Ilan)
+year: 2014
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: 234 8-channel RIRs recorded in the same room with 3 levels of reverberation (0.16/0.36/0.61 s) and 3 microphone array spacings (.mat files).
+expected: {n_irs: 234, n_rooms: 1, note: "1 room x 3 reverberation settings"}
+license: {spdx: ODC-By-1.0, url: "https://web.archive.org/web/20230628221840/https://www.eng.biu.ac.il/gannot/downloads/", redistribute_audio: yes, note: "Bar-Ilan's downloads page (Wayback copy of 2023-06-28; the live page now returns 404): \"This corpus is licensed under Open Data Commons Attribution License (ODC-By) v1.0\". Share and use it with attribution."}
+access: manual
+source:
+  kind: manual
+  instructions: "The Bar-Ilan web firewall rejects scripted requests for these archives (any URL containing parentheses returns an HTML \"Request Rejected\" page with HTTP 200; checked 2026-09-30 and 2026-11-06). Download the nine Impulse_response_Acoustic_Lab_Bar-Ilan_University_(Reverberation_*)_*.zip files from https://www.eng.biu.ac.il/~gannot/RIR_DATABASE/ in a browser into $RIRDB_ROOT/raw/_inbox/mird/, then run `sbatch jobs/download.sh fetch/adopt_manual.sh mird`. RWTH Aachen's IKS institute lists the same nine zips, with underscores in place of the parentheses, at https://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/multi-channel-impulse-response-database/ (seen on the Wayback Machine in April 2026); that host refused connections on 2026-11-06."
+wave: 1
+homepage: https://www.eng.biu.ac.il/~gannot/RIR_DATABASE/
+paper: {title: "Multichannel audio database in various acoustic environments", url: "https://ieeexplore.ieee.org/document/6954309"}
+status: manual
+web_check:
+  checked: '2026-10-14'
+  institution: Bar-Ilan University, with RWTH Aachen
+  country: Israel
+  host: Lab website (Bar-Ilan); RWTH Aachen (IKS) mirror
+  availability: open
+  licence_note: 'Bar-Ilan states the corpus is licensed under ODC-By 1.0 (archived page, 2023-24): share and use
+    it with attribution. ODC-By covers the database as a whole; the individual recordings have no separate statement.'
+  caveats:
+  - The Bar-Ilan server rejects scripted downloads of the zip files (their names contain parentheses); download
+    them in a browser.
+  - RWTH Aachen's IKS institute lists the same nine zips at https://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/multi-channel-impulse-response-database/
+    (names with underscores instead of parentheses), but that host refused connections on 6 November 2026.

@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: farina_collection
+name: Angelo Farina's public IR collection
+type: measured
+status: catalogued
+content: Measured IRs (mono, stereo, binaural and B-format) from over 15 venues, mostly Italian theatres, concert
+  halls and churches plus Vienna's Musikverein, in Angelo Farina's public web folder.
+fs_hz:
+- 44100
+- 48000
+- 96000
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: partial
+  materials: 'no'
+  positions: partial
+  images: partial
+  conditions: partial
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://www.angelofarina.it/Public/IMP-RESP/
+web_check:
+  checked: '2026-10-14'
+  found_as: Angelo Farina's theatre impulse responses (University of Parma)
+  availability: open
+  families:
+  - mono
+  - stereo
+  - binaural
+  - ambisonic
+  host: Personal website
+  file_formats: WAV, TIM (plus XLS, JPG, ZIP)
+  institution: University of Parma (Angelo Farina)
+  country: Italy
+  evidence_urls:
+  - https://www.angelofarina.it/Public/IMP-RESP/
+  - https://www.angelofarina.it/Public/IMP-RESP/Bergamo/Readme.txt
+  - https://www.angelofarina.it/Public/IMP-RESP/Musikverein/Musikverhein-notes.txt
+  - https://www.angelofarina.it/Public/IMP-RESP/Santa_Cecilia_Roma/Measurements-2005/Notes.txt
+  - https://github.com/IsaakCode/freeaudio/blob/master/best_free_impulse_responses.md
+  - https://web.archive.org/web/20250211060553/http://pcfarina.eng.unipr.it/Public/IMP-RESP/
+  confidence: medium
+  caveats:
+  - No licence or terms of use anywhere in the folder, only a few technical notes.
+  - The old University of Parma address (pcfarina.eng.unipr.it) did not respond on 2026-10-13; the same folder is
+    live at www.angelofarina.it.
+  - Loosely organised, with mixed formats and sample rates (WAV, .TIM; B-format split over stereo pairs) and some
+    files that are not of rooms, such as violin-body IRs.

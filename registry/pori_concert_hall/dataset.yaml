@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: pori_concert_hall
+name: Concert Hall Impulse Responses - Pori, Finland
+year: 2005
+type: measured
+status: catalogued
+content: Impulse responses for 3 stage sources and 7 receiver positions (4 in the audience, 3 on stage) in the Pori
+  Promenadikeskus concert hall, Finland, captured with omni, cardioid, dummy-head and SoundField mics in 2002.
+fs_hz:
+- 48000
+expected:
+  n_irs: 21
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'yes'
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'yes'
+license:
+  spdx: LicenseRef-custom
+  note: Free for non-commercial purposes if the authors are cited; commercial use needs written permission from
+    the copyright owners (TKK, now Aalto, Akukon Oy and the authors).
+homepage: http://legacy.spa.aalto.fi/projects/poririrs/
+web_check:
+  checked: '2026-10-14'
+  found_as: Pori concert hall impulse responses (TKK, now Aalto)
+  availability: open
+  families:
+  - stereo
+  - binaural
+  - ambisonic
+  host: Lab website
+  size: 62 MB
+  file_formats: WAV (24-bit, 2-5 channels) in 8 ZIP packages; PDF and text documentation
+  institution: Helsinki University of Technology (TKK, now Aalto University) and Akukon Oy
+  country: Finland
+  evidence_urls:
+  - http://legacy.spa.aalto.fi/projects/poririrs/
+  - http://legacy.spa.aalto.fi/projects/poririrs/docs/readme.txt
+  - http://legacy.spa.aalto.fi/projects/poririrs/docs/poriref.pdf
+  confidence: high
+  caveats:
+  - 'All responses were denoised: tails below the noise floor and content above 17 kHz were replaced by modelled
+    decaying noise.'
+  - Each response combines a dodecahedron loudspeaker and a subwoofer via a 150 Hz crossover.
+  - The old Aalto site works over plain HTTP only.

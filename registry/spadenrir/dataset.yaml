@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: spadenrir
+name: SpaDenRIR
+year: 2026
+type: simulated
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: Image-source RIRs on a dense 22 x 22 x 22 cubic grid of omnidirectional points (21.4 mm spacing) for 5 sources in each of 100 generated rooms, truncated to the first 100 ms (direct sound and early reflections) for sound-field reconstruction; 102 GB of HDF5.
+expected: {n_irs: 5324000, n_rooms: 100, note: "100 rooms x 10,648 points x 5 sources (derived from the description; no total stated; checked 2026-10-13)"}
+fs_hz: [48000]
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["21618947"]}
+wave: 4
+homepage: https://zenodo.org/records/21618947
+doi: 10.5281/zenodo.21618947
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Aalborg University and GN Store Nord
+  country: Denmark

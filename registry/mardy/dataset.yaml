@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mardy
+name: MARDY
+year: 2006
+type: measured
+status: catalogued
+content: 'Classic dereverberation set of multichannel RIRs: three loudspeakers (left, centre, right) to an 8-element
+  microphone array at three distances, measured with MLS at York.'
+room_info:
+  positions: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: Neither the live file nor the archived project page states a licence or terms of use.
+homepage: https://web.archive.org/web/20220626041955/https://www.commsp.ee.ic.ac.uk/~sap/resources/mardy-multichannel-acoustic-reverberation-database-at-york-database/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'MARDY: Multichannel Acoustic Reverberation Database at York'
+  availability: open
+  families:
+  - array
+  host: Lab website
+  size: 2.0 MB
+  file_formats: WAV files (ir_d_P_n.wav) in a RAR archive
+  institution: Imperial College London (Speech and Audio Processing group); University of York
+  country: UK
+  evidence_urls:
+  - https://www.commsp.ee.ic.ac.uk/~sap/resources/mardy-multichannel-acoustic-reverberation-database-at-york-database/
+  - https://web.archive.org/web/20220626041955/https://www.commsp.ee.ic.ac.uk/~sap/resources/mardy-multichannel-acoustic-reverberation-database-at-york-database/
+  - https://www.commsp.ee.ic.ac.uk/~sap/uploads/data/MARDY.rar
+  - https://research.tue.nl/en/publications/evaluation-of-speech-dereverberation-algorithms-using-the-mardy-d/
+  - https://signalprocessingsociety.org/community-involvement/audio-and-acoustic-signal-processing/online-resources
+  confidence: medium
+  caveats:
+  - 'Direct download: https://www.commsp.ee.ic.ac.uk/~sap/uploads/data/MARDY.rar (still working on 6 Nov 2026).
+    The project page has returned a server error since 14 Oct 2026; the link above goes to the Wayback Machine''s
+    copy.'
+  - No licence stated.
+  - RAR archive; the page does not give the room, sampling rate or number of IRs.

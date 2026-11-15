@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sadie_ii
+name: SADIE II BRIRs
+year: 2018
+type: measured
+status: catalogued
+content: Binaural room impulse responses for 18 listeners and two dummy heads (KU100, KEMAR) from a 50-loudspeaker
+  Lebedev grid at 1.5 m, measured at the University of York AudioLab as part of SADIE II.
+fs_hz:
+- 44100
+- 48000
+- 96000
+expected:
+  n_irs: 1000
+  n_rooms: 1
+room_info:
+  positions: partial
+license:
+  spdx: Apache-2.0
+homepage: https://zenodo.org/records/12092466
+doi: 10.5281/zenodo.12092466
+web_check:
+  checked: '2026-10-14'
+  found_as: 'SADIE II database: BRIR subset (University of York)'
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: about 155 MB for the 20 BRIR SOFA zips; full database 1.3 GB
+  file_formats: SOFA (per-head BRIR zips); WAV at 44.1/48/96 kHz in per-subject zips
+  institution: University of York (AudioLab)
+  country: UK
+  evidence_urls:
+  - https://www.york.ac.uk/sadie-project/database.html
+  - https://zenodo.org/api/records/12092466
+  - https://zenodo.org/api/records/10886409
+  - https://audiolab.york.ac.uk/published-resources/
+  - https://zenodo.org/records/12092466/files/D1_BRIR_SOFA.zip?download=1
+  confidence: high
+  caveats:
+  - Most of SADIE II is anechoic HRIRs; the BRIRs are separate per-head SOFA zips (about 8 MB each).
+  - The dataset pages do not describe the measurement room.
+  - Use v2-2 (June 2024), which fixed a faulty zip in v2-1.

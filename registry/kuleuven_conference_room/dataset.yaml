@@ -1,0 +1,40 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: kuleuven_conference_room
+name: U-shaped Conference Room RIRs (KU Leuven / Televic)
+year: 2026
+type: measured
+status: catalogued
+content: RIRs from 5 source positions to 23 microphone positions in a U-shaped conference room, for 3 microphone
+  configurations, with and without curtains; raw recordings and sweeps included as WAV.
+expected:
+  n_rooms: 1
+room_info:
+  positions: 'yes'
+  images: partial
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/19068723
+doi: 10.5281/zenodo.19068723
+web_check:
+  checked: '2026-10-14'
+  found_as: RIR measurements in a U-shaped conference room (KU Leuven / Televic)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 4.6 GB
+  file_formats: WAV, CSV positions, PDF readme, PNG plots
+  institution: KU Leuven; Televic Conference
+  country: Belgium
+  evidence_urls:
+  - https://zenodo.org/records/19068723
+  - https://zenodo.org/api/records/19068723
+  - https://zenodo.org/records/19068723/files/positions.csv
+  - https://zenodo.org/records/19068723/files/positions.py
+  confidence: high
+  caveats:
+  - The record does not state the sample rate or the number of RIRs; details are in README.pdf and a linked technical
+    report.
+  - 30 RIR WAV files of about 97 MB each, published next to the raw recordings and sweep signals (98 files in total).
+  - The record does not give the room's size or location.

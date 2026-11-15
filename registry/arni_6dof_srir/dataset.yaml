@@ -1,0 +1,34 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: arni_6dof_srir
+name: 6DoF SRIRs in Arni (Eigenmike + Zylia)
+year: 2022
+type: measured
+ir_kinds: [room]
+capture_formats: [em32_raw, sma_raw, hoa_sh]
+content: SRIRs with an Eigenmike em32 and a Zylia ZM-1 (raw and SH-encoded) for 3 sources x 7 receivers in 5 absorption configurations of the Arni variable-acoustics room.
+expected: {n_rooms: 1, note: "3 src x 7 rcv x 5 configurations per array"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", images: "yes", conditions: "yes", where: "6dof_source_and_receiver_positions.pdf; SOFA positions; absorber coverage 0-100 %"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["6382405"]}
+adapter:
+  name: sofa
+  # 5 absorption configurations; Eigenmike SH (4th order, 25 ch) preferred, Zylia SH kept
+  params:
+    groups:
+      - {glob: "6dof_SRIRs_eigenmike_SH/**/*.sofa", pattern: '_(?P<cond>\d+percent)_absorbers',
+         roles: [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15, ACN16, ACN17, ACN18, ACN19, ACN20, ACN21, ACN22, ACN23, ACN24],
+         capture_format: hoa_sh, room_from: dataset}
+      - {glob: "6dof_SRIRs_zylia_SH/**/*.sofa", pattern: '_(?P<cond>\d+percent)_absorbers',
+         roles: [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15],
+         capture_format: hoa_sh, room_from: dataset, preferred: false}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/6382405
+paper: {title: "Dataset of Spatial Room Impulse Responses in a Variable Acoustics Room for Six Degrees-of-Freedom Rendering and Analysis", url: "https://arxiv.org/abs/2111.11882"}
+doi: 10.5281/zenodo.6382405
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Aalto University
+  country: Finland

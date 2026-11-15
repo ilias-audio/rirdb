@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: openslr26
+name: OpenSLR SLR26 simulated RIRs
+year: 2017
+type: simulated
+status: catalogued
+content: Simulated room impulse responses with various room configurations, released at 8 kHz and 16 kHz for reverberant-speech
+  data augmentation in speech recognition (Ko et al., ICASSP 2017).
+fs_hz:
+- 8000
+- 16000
+room_info:
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: Apache-2.0
+homepage: https://www.openslr.org/26/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'OpenSLR SLR26: Simulated Room Impulse Response Database'
+  availability: open
+  host: OpenSLR
+  size: 128 MB (8 kHz) + 178 MB (16 kHz)
+  file_formats: ZIP archives (audio format inside not stated on the page)
+  institution: Johns Hopkins University (CLSP), with Microsoft Research
+  country: USA
+  evidence_urls:
+  - https://www.openslr.org/26/
+  - https://www.openslr.org/resources/26/about.html
+  - https://www.openslr.org/resources/26/sim_rir_16k.zip
+  - https://www.openslr.org/28/
+  - https://raw.githubusercontent.com/kaldi-asr/kaldi/master/egs/sre16/v2/run.sh
+  - https://www.danielpovey.com/files/2017_icassp_reverberation.pdf
+  confidence: medium
+  caveats:
+  - The OpenSLR page gives no room count, RIR count or simulation details.
+  - OpenSLR 28 (rirs_noises.zip) also bundles 16 kHz simulated RIRs from the same paper, most likely this set; the
+    guide's OpenSLR 28 entry covers only its real RIRs.
+  - Made for speech-recognition augmentation; only 8 kHz and 16 kHz versions exist.

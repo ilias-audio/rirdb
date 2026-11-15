@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# Get the data: get/index.html. Context from pages_get.page_context(). #}
+
+{% block head %}
+<style>
+.gt-body { min-width: 0; }
+.gt-body > .section:first-of-type { border-top: 0; padding-top: 4px; }
+.gt-body h3 { margin-top: 1.6em; }
+.gt-body h3:first-child { margin-top: 0; }
+.gt-tiles { margin: 0 0 1em; }
+.ways { list-style: none; counter-reset: way; padding: 0; margin: 0 0 1em; display: grid; gap: 12px; }
+.ways > li { counter-increment: way; display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 4px 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; }
+.ways > li::before { content: counter(way); grid-row: 1 / span 3; font: 800 1.5rem/1 var(--font-display); color: var(--accent); }
+.ways h3 { margin: 0; font-size: 1.05rem; }
+.ways p { margin: 0; }
+.ways .actions { margin: 4px 0 0; }
+.picker { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: end; margin: 0 0 12px; }
+.picker select { max-width: min(420px, 86vw); }
+.gt-body .code pre { padding-right: 66px; }
+@media (max-width: 640px) { .gt-body .code pre { padding-top: 36px; } }
+.does { padding-left: 1.2em; }
+.does li + li { margin-top: .35em; }
+.tbl .wrap-cell { min-width: 18em; }
+.tbl .path { min-width: 15em; }
+.tbl code.path { background: none; padding: 0; font-size: .82rem; }
+.tbl .sub-links { display: block; font-size: .8rem; margin-top: 2px; }
+.tbl .sub-links a + a { margin-left: 8px; }
+.copy-sm { font-size: .74rem; padding: 1px 7px; margin-left: 4px; vertical-align: 1px; }
+.ck { font: 600 .74rem/1.2 var(--font-mono); color: var(--ink-2); white-space: nowrap; }
+.manual-list { display: grid; gap: 12px; margin: 0 0 1em; }
+.manual-list .card h3 { margin: 0 0 .4em; font-size: 1.02rem; }
+.manual-list .card p { margin: 0 0 .5em; overflow-wrap: anywhere; }
+.manual-list .pills { margin: 0 0 .6em; }
+.cols-tbl th[scope="row"] { font-family: var(--font-mono); font-weight: 600; font-size: .84rem; white-space: nowrap; }
+.chart.solo { max-width: 440px; }
+.tier-tiles { margin: 0 0 1em; }
+.kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 10px; margin: 0 0 1em; }
+.kinds > div { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; }
+.kinds dt { font-weight: 700; margin: 0 0 .3em; }
+.kinds dt .muted { font-weight: 400; }
+.kinds dd { margin: 0; font-size: .92rem; color: var(--ink-2); }
+.kinds .needs { display: block; margin-top: .4em; color: var(--muted); font-size: .86rem; }
+.gt-body ul.pills { list-style: none; padding: 0; margin: 0 0 1em; }
+.gt-body ul.pills .pill { white-space: normal; }
+.tbl code.path wbr { display: inline; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}index.html">rirdb</a> / Get the data</p>
+  <h1>Get the data</h1>
+  <p class="lede">This site hosts no audio: every dataset is downloaded from its original source. Each of the {{ rows | length }} datasets in the rirdb registry has a fetch script. It downloads the files from the original host and checks each one against a checksum where one exists; for the {{ n_manual_scripts }} datasets that need a manual step, it prints how to get them.</p>
+  <dl class="tiles gt-tiles">
+    <div class="tile"><dt>datasets in the registry, each with a fetch script</dt><dd>{{ rows | length }}</dd></div>
+    <div class="tile"><dt>with a lock file: {{ n_lock_files | int }} files pinned with a checksum</dt><dd>{{ n_with_lock }}</dd></div>
+    <div class="tile"><dt>to download, the files in the lock files{% if unknown_rows or mirrors %} ({% if unknown_rows %}{{ unknown_rows }} files of unstated size{% endif %}{% if unknown_rows and mirrors %} and {% endif %}{% for mi in mirrors %}{{ mi.name }}'s web folder, {{ mi.bytes | bytes }}{{ ", " if not loop.last }}{% endfor %}, not counted){% endif %}</dt><dd>{{ data.corpus.download_bytes | bytes }}</dd></div>
+    <div class="tile"><dt>after extraction, {{ data.corpus.manifest_files | int }} files</dt><dd>{{ data.corpus.manifest_bytes | bytes }}</dd></div>
+    <div class="tile"><dt>more datasets in the survey, with landing pages only</dt><dd>{{ data.corpus.n_datasets_survey | int }}</dd></div>
+  </dl>
+</div></div>
+
+<div class="wrap with-side">
+<nav class="side-nav" aria-label="On this page"><ol>
+  {% for k, label in toc %}<li><a href="#{{ k }}">{{ label }}</a></li>{% endfor %}
+</ol></nav>
+<div class="gt-body">
+<ul class="toc-m" aria-label="Sections of this page">
+  {% for k, label in toc %}<li><a href="#{{ k }}">{{ label }}</a></li>{% endfor %}
+</ul>
+
+{# ================================================================ ways #}
+<section class="section" id="ways" aria-labelledby="ways-h">
+  <h2 id="ways-h">Five ways to get a dataset</h2>
+  <p>In order of effort. Whichever you use, the files come from the original host, and each dataset keeps its own licence.</p>
+  <ol class="ways">
+    <li>
+      <h3>From the source</h3>
+      <p>Each dataset page gives the homepage, the repository record, the DOI and every file with its size and checksum. Download by hand from there.</p>
+      <div class="actions"><a class="btn-ghost" href="{{ root }}datasets/index.html">Browse all datasets</a></div>
+    </li>
+    <li>
+      <h3>With the fetch script</h3>
+      <p>One bash script per dataset, <code>get/&lt;id&gt;.sh</code>. It downloads every file, resumes after an interruption (a GitHub archive starts again from the beginning), checks each file with <code>md5sum -c</code> or <code>sha256sum -c</code>, and prints how to extract the archives.</p>
+      <div class="actions"><a class="btn-ghost" href="#script">How the scripts work</a></div>
+    </li>
+    <li>
+      <h3>With the rirdb pipeline</h3>
+      <p>Clone the repository to download, check, index and analyse datasets the way this site was built.</p>
+      <div class="actions"><a class="btn-ghost" href="#pipeline">Pipeline commands</a></div>
+    </li>
+    <li>
+      <h3>With the legacy scripts</h3>
+      <p>The repository's original <code>get_*.sh</code> scripts cover {{ legacy | selectattr("id") | list | length }} datasets{% if legacy_dead %}, {{ legacy_dead | length }} of which they can no longer download (the host refuses scripts){% endif %}. {{ "They check no checksums." if not (legacy | selectattr("checks") | list) else "Few of them check checksums." }}</p>
+      <div class="actions"><a class="btn-ghost" href="#legacy">Legacy scripts</a></div>
+    </li>
+    <li>
+      <h3>At QMUL, from a ready copy</h3>
+      <p>On Apocrita, {{ store_rows | length }} datasets are already downloaded and checked: {{ tiers | selectattr("tier", "ne", "scratch") | map(attribute="n") | sum }} in the AudioEngineering group store and {{ tiers | selectattr("tier", "eq", "scratch") | map(attribute="n") | sum }} on scratch.</p>
+      <div class="actions"><a class="btn-ghost" href="#qmul">Copies at QMUL</a></div>
+    </li>
+  </ol>
+</section>
+
+{# ================================================================ fetch scripts #}
+<section class="section" id="script" aria-labelledby="script-h">
+  <h2 id="script-h">Fetch scripts</h2>
+  <p>Every dataset in the registry has a script at <code>get/&lt;id&gt;.sh</code>. It is plain bash, readable from top to bottom: the header gives the licence, the source, the number and size of the files and the date rirdb resolved them. Choose a dataset to see the commands.</p>
+  <div class="picker">
+    <label class="fld"><span>Dataset</span>
+      <select id="pick">{% for r in rows | sort(attribute="name") %}<option value="{{ r.id }}" data-mode="{{ r.pick }}"{% if r.id == ex.id %} selected{% endif %}>{{ r.name }}</option>{% endfor %}</select>
+    </label>
+    <a class="btn" id="pick-dl" href="{{ ex.id }}.sh" download><svg aria-hidden="true" width="16" height="16"><use href="#i-dl"/></svg><span>{{ ex.id }}.sh</span></a>
+    <a class="btn-ghost" id="pick-page" href="{{ root }}d/{{ ex.id }}.html">Dataset page</a>
+  </div>
+  <div class="code"><pre id="oneliner" data-tpls='{{ pick_tpls | tojson }}'>{{ pick_tpls[ex.pick] | replace("__ID__", ex.id) }}</pre><button class="btn-ghost copy" type="button" data-copy="#oneliner">Copy</button></div>
+  <p class="small muted">The commands change with the dataset: a script for a manual download prints instructions and downloads nothing, and a source without a lock file has no rirdb checksums to check against.</p>
+  {% if small3 %}
+  <p>Several datasets in one go (here the {{ small3 | length }} smallest with provider checksums):</p>
+  {{ m.code("for id in " ~ small3 | join(" ") ~ "; do\n  curl -fLO " ~ SITE_URL ~ "get/$id.sh\n  bash $id.sh ~/datasets\ndone", "many") }}
+  {% endif %}
+
+  <h3>What a script does</h3>
+  <ul class="does">
+    <li>Creates <code>&lt;target_dir&gt;/&lt;id&gt;/</code> and downloads every file in the dataset's lock file from the original host with <code>curl -L --fail --retry 3 -C -</code>: it follows redirects, retries, and resumes a partial file where the host allows it. GitHub's archive server does not, so an interrupted GitHub archive is downloaded again from the start.</li>
+    <li>Writes the checksums next to the files (<code>checksums.md5</code>, <code>checksums.sha256</code>) and checks each file with <code>md5sum -c</code> or <code>sha256sum -c</code>. Files that already verify are skipped, so running it again is safe.</li>
+    <li>Rejects a web page sent in place of a file (a firewall or login page), and warns when the disk has less free space than the files need.</li>
+    <li>Does not extract archives and deletes nothing it did not download. At the end it prints the commands that extract the archives the way rirdb does, so the paths match rirdb's manifest, and the command that checks every extracted file against it.</li>
+    <li>Stops with a non-zero exit status when a file fails, so it can run inside a batch job.</li>
+  </ul>
+  <p>It needs bash, curl and GNU coreutils (on macOS: <code>brew install coreutils</code>). Some sources need one more tool:</p>
+  <dl class="kinds">
+    {% for k in kind_rows %}
+    <div><dt>{{ k.label }} <span class="muted">· {{ k.n }} dataset{{ "s" if k.n != 1 }}</span></dt><dd>{{ k.do }}<span class="needs">Needs: {{ k.needs }}</span></dd></div>
+    {% endfor %}
+  </dl>
+</section>
+
+{# ================================================================ pipeline #}
+<section class="section" id="pipeline" aria-labelledby="pipeline-h">
+  <h2 id="pipeline-h">The rirdb pipeline</h2>
+  <p>The pipeline downloads, checks, indexes and analyses datasets; it is what this site is built from. The registry (one folder per dataset, <a href="{{ repo_blob('src/rirdb/registry.py') }}"><code>registry/&lt;id&gt;/dataset.yaml</code></a>) says where each dataset comes from, and the committed lock files and manifests pin exactly which files.</p>
+  {{ m.code("git clone " ~ REPO_URL ~ "\ncd room-impulse-responses\n# once; the override lets the GPU build install on a machine without a GPU\nCONDA_OVERRIDE_CUDA=12.6 pixi install\n# set RIRDB_ROOT: where the audio, the index and the metrics go\ncp .env.example .env", "pipe-install") }}
+  <h3>On a SLURM cluster</h3>
+  <p>On Apocrita every step runs as a batch job, Python included (see <a href="{{ repo_blob('docs/hpc.md') }}"><code>docs/hpc.md</code></a>). The download layer is bash only.</p>
+  {{ m.code("# resolve, download, extract and list the files of every dataset in wave 1\nsbatch jobs/download.sh fetch/run.sh --wave 1\n# two datasets, keeping the committed lock files as they are\nSKIP_RESOLVE=1 sbatch jobs/download.sh fetch/run.sh ace rochester\n# check every file against its manifest\nsbatch jobs/quick_cpu.sh pixi run rirdb dev verify --wave 1 --full\n# summarise what is in the files, then index them (one row per IR)\nsbatch jobs/quick_cpu.sh pixi run rirdb dev probe ace\nsbatch jobs/quick_cpu.sh pixi run rirdb dev index-v1 ace\n# the analysis as a SLURM array of 4 shards, then the merge\njobs/analyze_dataset.sh ace 4", "pipe-slurm") }}
+  <h3>Anywhere else</h3>
+  <p>Without SLURM the same scripts run in plain bash. The download layer needs bash, curl, jq, unzip, zip and tar, and wget for a mirrored web folder; 7-Zip comes with the pixi environment.</p>
+  {{ m.code("set -a; source .env; set +a\nSKIP_RESOLVE=1 bash fetch/run.sh ace rochester\npixi run rirdb dev verify ace rochester --full\npixi run rirdb dev probe ace && pixi run rirdb dev index-v1 ace\npixi run rirdb dev analyze --dataset ace && pixi run rirdb dev merge ace", "pipe-plain") }}
+  <p>Without <code>SKIP_RESOLVE=1</code>, <code>fetch/run.sh</code> asks each provider for its current file list first, rewrites the lock file, and warns if a provider's checksum changed. Datasets are grouped in download waves; <code>--wave N</code> selects the datasets of a wave that are open and active or planned, and leaves out the deferred, broken and manual ones.</p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <caption class="sr-only">Download waves of the rirdb pipeline</caption>
+      <thead><tr><th scope="col" class="n">Wave</th><th scope="col">What it holds</th><th scope="col" class="n">Datasets</th><th scope="col" class="n">Fetched by <code>--wave</code></th><th scope="col" class="n">Download</th></tr></thead>
+      <tbody>
+      {% for w in waves %}
+        <tr><td class="n">{{ w.wave }}</td><td>{{ w.text }}</td><td class="n">{{ w.n }}</td><td class="n">{{ w.n_fetch }}</td><td class="n">{{ w.bytes | bytes if w.bytes else "–" }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Download: the sizes in the lock files of the datasets <code>--wave</code> fetches{% if mirrors %}, and the size of rirdb's copy for a mirrored web folder{% endif %}{% if unknown_rows %}; {{ unknown_rows }} files of unstated size are not counted{% endif %}.{% if n_no_wave %} {{ n_no_wave }} datasets have no wave: they need a manual step or are not scheduled.{% endif %}</p>
+</section>
+
+{# ================================================================ legacy #}
+<section class="section" id="legacy" aria-labelledby="legacy-h">
+  <h2 id="legacy-h">Legacy download scripts</h2>
+  {% set checking = legacy | selectattr("checks") | list %}
+  <p>The repository started as a list of datasets with one download script each. These <code>get_*.sh</code> scripts still serve for quick one-off downloads (<code>bash get_all_rirs.sh &lt;destination&gt;</code>), but {% if checking %}only {{ checking | length }} of them check{% else %}none of them checks{% endif %} a checksum{% set hit = legacy | selectattr("host_issue", "defined") | list %}{% if hit %}, and {{ hit | length }} of them meet a host problem that rirdb found ({{ hit | map(attribute="name") | join(", ") }}){% endif %}.{% if legacy_dead %} {{ legacy_dead | map(attribute="name") | join(" and ") }} no longer download anything useful: the host refuses scripted requests.{% endif %} Prefer the fetch scripts above.</p>
+  <details class="box">
+  <summary>The {{ legacy | length }} scripts, what they fetch and from where</summary>
+  <div class="tbl-wrap" style="margin-top:10px">
+    <table class="tbl">
+      <caption class="sr-only">Legacy get_*.sh scripts and the datasets they fetch</caption>
+      <thead><tr><th scope="col">Script</th><th scope="col">Fetches</th><th scope="col">From</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+      {% for s in legacy %}
+        <tr>
+          <td class="nowrap"><a href="{{ s.href }}"><code>{{ s.name }}</code></a></td>
+          <td>{% if s.id %}<a href="{{ root }}d/{{ s.id }}.html">{{ s.ds_name }}</a>{% elif s.calls %}{{ s.n_on }} of the other scripts, in turn{% else %}–{% endif %}</td>
+          <td>{{ s.hosts | join(", ") or "–" }}</td>
+          <td class="wrap-cell">{{ s.notes | join(" ") }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </details>
+</section>
+
+{# ================================================================ QMUL #}
+<section class="section" id="qmul" aria-labelledby="qmul-h">
+  <h2 id="qmul-h">Copies at QMUL (Apocrita)</h2>
+  {% set inplace = tiers | selectattr("tier", "eq", "inplace") | map(attribute="n") | sum %}
+  <p>For QMUL colleagues: {{ store_rows | length }} datasets are already on Apocrita and were checked file by file against rirdb's manifests{% if inplace %}; rirdb downloaded all but {{ inplace }}, which were already in the group store and are used where they are{% endif %}. Read them where they are, or copy them to your own space. The list comes from <a href="{{ repo_blob('registry/storage.tsv') }}"><code>registry/storage.tsv</code></a>.</p>
+  <dl class="tiles tier-tiles">
+    {% for t in tiers %}<div class="tile"><dt>{{ t.label }} ({{ t.what }}): {{ t.n }} datasets, {{ t.files | int }} files</dt><dd>{{ t.bytes | bytes }}</dd></div>{% endfor %}
+  </dl>
+  <div class="callout warn"><p><strong>Scratch is temporary.</strong> QMUL deletes scratch files {% if purge_days %}{{ purge_days }} days {% endif %}after their last change{% if purge.on %} (around {{ purge.on }} for files extracted on {{ purge.since }}){% endif %}, and rirdb re-fetches its scratch copies when that happens. Do not rely on them, and do not refresh file timestamps to keep them: the scratch policy forbids it. Copy what you need, or read a dataset from the group store. Scratch copies sit in a personal scratch area; ask the maintainer if you cannot read one. Why the data is split this way: <a href="{{ repo_blob('docs/decisions/storage-2026-10.md') }}">storage decision record</a>.</p></div>
+  <div class="tbl-wrap tall">
+    <table class="tbl" id="store-tbl">
+      <caption class="sr-only">Datasets with a copy on Apocrita</caption>
+      <thead><tr><th scope="col" data-sort="text">Dataset</th><th scope="col" data-sort="text">Where</th><th scope="col">Path</th><th scope="col" class="n" data-sort="num">Files</th><th scope="col" class="n" data-sort="num">Size</th><th scope="col" data-sort="text">Checked</th></tr></thead>
+      <tbody>
+      {% for s in store_rows %}
+        <tr>
+          <td class="name"><a href="{{ root }}d/{{ s.id }}.html">{{ s.name }}</a></td>
+          <td class="nowrap">{{ s.tier_label }}</td>
+          <td class="path"><code class="path" id="p-{{ s.id }}">{{ s.path_html }}</code><button class="btn-ghost copy-sm" type="button" data-copy="#p-{{ s.id }}" aria-label="Copy the path of {{ s.name }}">Copy</button></td>
+          <td class="n" data-v="{{ s.n_files or 0 }}">{{ s.n_files | int }}{% if s.manifest_n %}<span class="sub">manifest: {{ s.manifest_n | int }}</span>{% endif %}</td>
+          <td class="n" data-v="{{ s.bytes or 0 }}">{{ s.bytes | bytes }}</td>
+          <td class="nowrap">{{ s.verified_on or "daily check" }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Group-store copies were checked against every sha256 on the date shown; scratch copies are re-checked by a daily integrity job. Files and size are as <code>storage.tsv</code> records them{% if store_rows | selectattr("manifest_n") | list %}; where the manifest now lists a different number of files (files added to the dataset after the copy was recorded), it is shown below the count{% endif %}.</p>
+</section>
+
+{# ================================================================ all datasets #}
+<section class="section" id="all" aria-labelledby="all-h">
+  <h2 id="all-h">All registry datasets</h2>
+  <p>One row per dataset in the registry, with what its fetch script works from. The lock file lists every file with its checksum; the manifest lists every file after extraction with its sha256.</p>
+  <form class="filters" role="search" onsubmit="return false">
+    <label class="fld"><span>Search</span><input type="search" data-filter="#get-tbl" placeholder="Name, id, licence"></label>
+    <label class="fld"><span>Access</span><select data-filter="#get-tbl" data-key="access"><option value="">Any</option>{% for k, n in access_n %}<option value="{{ k }}">{{ k }} ({{ n }})</option>{% endfor %}</select></label>
+    <label class="fld"><span>Source</span><select data-filter="#get-tbl" data-key="kind"><option value="">Any</option>{% for k, n in kinds_n %}<option value="{{ k }}">{{ source_labels.get(k, k) }} ({{ n }})</option>{% endfor %}</select></label>
+    <label class="fld"><span>Status</span><select data-filter="#get-tbl" data-key="status"><option value="">Any</option>{% for k, n in status_n %}<option value="{{ k }}">{{ k }} ({{ n }})</option>{% endfor %}</select></label>
+  </form>
+  <p class="count" data-count-for="#get-tbl" aria-live="polite">{{ rows | length }} rows</p>
+  <div class="tbl-wrap tall">
+    <table class="tbl" id="get-tbl">
+      <caption class="sr-only">All {{ rows | length }} registry datasets with their source, lock file, download size, checksums, licence and fetch script. Column headers sort the table.</caption>
+      <thead><tr>
+        <th scope="col" data-sort="text">Dataset</th>
+        <th scope="col" data-sort="text">Access</th>
+        <th scope="col" data-sort="text">Source</th>
+        <th scope="col" class="n" data-sort="num">Download</th>
+        <th scope="col" data-sort="text">Checksums</th>
+        <th scope="col" data-sort="text">Licence</th>
+        <th scope="col">Fetch script</th>
+      </tr></thead>
+      <tbody>
+      {% for r in rows %}
+        <tr data-search="{{ r.search }}" data-access="{{ r.access }}" data-kind="{{ r.kind }}" data-status="{{ r.status }}">
+          <td class="name" data-v="{{ r.name | lower }}"><a href="{{ root }}d/{{ r.id }}.html">{{ r.name }}</a><span class="sub">{{ r.id }}</span></td>
+          <td data-v="{{ r.access }} {{ r.status }}">{{ r.access }}<span class="sub" data-tip="{{ status_text.get(r.status, '') }}">status: {{ r.status }}</span></td>
+          <td>{{ r.kind_label }}</td>
+          <td class="n" data-v="{{ r.size_v }}">{{ r.size_text }}{% if r.size_sub %}<span class="sub">{{ r.size_sub }}</span>{% endif %}</td>
+          <td{% if r.ck_text %} data-tip="{{ r.ck_text }}"{% endif %}>{{ r.ck }}</td>
+          <td data-v="{{ r.lic_label | lower }}">{{ r.lic_label }}{% if r.lic_cls != "unspecified" %}<span class="sub">{{ r.lic_cls_label }}</span>{% endif %}</td>
+          <td class="nowrap"><a href="{{ r.id }}.sh" download><code>{{ r.id }}.sh</code></a>{% if r.has_lock or r.has_manifest %}<span class="sub-links">{% if r.has_lock %}<a href="{{ root }}data/locks/{{ r.id }}.lock.tsv">lock</a>{% endif %}{% if r.has_manifest %}<a href="{{ root }}data/manifests/{{ r.manifest_file }}">manifest</a>{% endif %}</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Download: the sum of the file sizes in the lock file; a web folder has no archive, so its size is that of rirdb's mirrored copy. Checksums from the provider are published by the repository; where the host publishes none, rirdb recorded a sha256 on its first download.</p>
+</section>
+
+{# ================================================================ manual #}
+<section class="section" id="manual" aria-labelledby="manual-h">
+  <h2 id="manual-h">Datasets without a scripted download</h2>
+  <p>For these {{ manual | length }} datasets the registry records instructions instead of a scripted download. Their fetch scripts print how to get the files and the homepage, then stop: the host blocks scripted downloads, the files need a free registration, or rirdb has no scripted download for it. Each card says which. Steps that run <code>sbatch</code> or mention <code>$RIRDB_ROOT</code> are for the rirdb pipeline on Apocrita: <code>fetch/adopt_manual.sh</code> hashes the files into a lock file, so later copies can be checked.</p>
+  <div class="manual-list">
+  {% for d in manual %}
+    <div class="card">
+      <h3><a href="{{ root }}d/{{ d.id }}.html">{{ d.name }}</a></h3>
+      <ul class="pills" aria-label="Access and status"><li class="pill">Access: {{ d.access }}</li><li class="pill">Status: {{ d.status }}</li>{% if d.has_lock %}<li class="pill accent">rirdb has checksums for its copy</li>{% endif %}</ul>
+      <p><strong>The fetch script stops:</strong> {{ d.why }}.</p>
+      <p>{{ d.instructions }}</p>
+      <p class="small">{% if d.homepage %}{{ m.ext(d.homepage, "Homepage") }} · {% endif %}<a href="{{ d.id }}.sh" download><code>{{ d.id }}.sh</code></a>{% if d.has_lock %}: checks your copy against rirdb's checksums{% endif %}</p>
+    </div>
+  {% endfor %}
+  </div>
+</section>
+
+{# ================================================================ risk #}
+<section class="section" id="risk" aria-labelledby="risk-h">
+  <h2 id="risk-h">Hosts at risk and broken downloads</h2>
+  <p>Problems with hosts that rirdb found while downloading (from <a href="{{ repo_blob('docs/decisions/dataset-findings.md') }}">the dataset findings</a>). The fetch scripts of these datasets repeat the note in their header.</p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <caption class="sr-only">Host problems found while downloading</caption>
+      <thead><tr><th scope="col">Dataset</th><th scope="col">Finding</th><th scope="col">Evidence</th><th scope="col">Handling</th></tr></thead>
+      <tbody>
+      {% for f in issues %}
+        <tr><td class="name"><a href="{{ root }}d/{{ f.id }}.html">{{ f.name }}</a><span class="sub">status: {{ f.status }}</span></td><td class="wrap-cell">{{ f.finding }}</td><td>{{ f.evidence or "–" }}</td><td>{{ f.handling or "–" }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Datasets served from a web server or GitHub</h3>
+  {% set show_lm = fragile | rejectattr("has_lock") | list or fragile | rejectattr("has_manifest") | list %}
+  <p>A Zenodo, Figshare or DepositOnce record cannot change once it is published: a change makes a new version. A lab web server or a GitHub repository can change or vanish without notice. {% if show_lm %}For these {{ fragile | length }} datasets, the lock file and the manifest (where there is one) say exactly what the files were{% else %}All {{ fragile | length }} datasets below have a lock file and a manifest, which say exactly what the files were{% endif %} if the host goes; the Wayback Machine may also hold a copy. A regular check of every download link is planned (<a href="{{ repo_blob('docs/plans/hosting-and-backlog.md') }}">hosting plan</a>).</p>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <caption class="sr-only">Datasets on web servers or GitHub</caption>
+      <thead><tr><th scope="col" data-sort="text">Dataset</th><th scope="col" data-sort="text">Source</th><th scope="col" data-sort="text">Host</th><th scope="col">DOI</th>{% if show_lm %}<th scope="col">Lock</th><th scope="col">Manifest</th>{% endif %}</tr></thead>
+      <tbody>
+      {% for f in fragile %}
+        <tr><td class="name"><a href="{{ root }}d/{{ f.id }}.html">{{ f.name }}</a></td><td>{{ f.kind }}</td><td>{{ f.host or "–" }}</td><td>{% if f.doi %}<a href="{{ f.doi | doi_url }}">{{ f.doi }}</a>{% else %}none{% endif %}</td>{% if show_lm %}<td>{{ "yes" if f.has_lock else "no" }}</td><td>{{ "yes" if f.has_manifest else "no" }}</td>{% endif %}</tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p>GitHub builds its archives on demand, and their bytes can change while the files inside stay the same. If a GitHub dataset's archive fails its sha256, run its script with <code>GIT=1</code>: it clones the pinned commit and checks every file against rirdb's manifest instead.</p>
+
+  {% if unpinned %}
+  <h3>Datasets without a lock file</h3>
+  <p>rirdb has not resolved these {{ unpinned | length }} sources yet, so nothing pins their files. Their scripts work from the source as it is when they run: a Zenodo record's file list (with Zenodo's md5), the tip of a GitHub branch, a Hugging Face revision, or an archived web page.</p>
+  <ul class="pills">{% for u in unpinned %}<li class="pill"><a href="{{ root }}d/{{ u.id }}.html">{{ u.name }}</a> · {{ u.kind }} · {{ u.status }}</li>{% endfor %}</ul>
+  {% endif %}
+</section>
+
+{# ================================================================ verify #}
+<section class="section" id="verify" aria-labelledby="verify-h">
+  <h2 id="verify-h">Checking files: lock files and manifests</h2>
+  <p>Two files describe each dataset rirdb downloaded. The <strong>lock file</strong> lists what to download, with the provider's checksum or one rirdb recorded. The <strong>manifest</strong> lists every file after extraction, with its sha256. Both are tab-separated text with a header row; manifests are gzipped. They are here as <code>data/locks/&lt;id&gt;.lock.tsv</code> and <code>data/manifests/&lt;id&gt;.files.tsv.gz</code>, linked from the table above and from each dataset page.</p>
+  <div class="cols-2">
+    <div>
+      <h3>Lock file columns</h3>
+      <div class="tbl-wrap"><table class="tbl cols-tbl"><caption class="sr-only">Columns of a lock file</caption><tbody>
+        {% for k, v in lock_columns %}<tr><th scope="row">{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div>
+    <div>
+      <h3>Manifest columns</h3>
+      <div class="tbl-wrap"><table class="tbl cols-tbl"><caption class="sr-only">Columns of a manifest</caption><tbody>
+        {% for k, v in manifest_columns %}<tr><th scope="row">{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div>
+  </div>
+  <h3>Checking by hand</h3>
+  <p>Run these in the dataset folder. <code>md5sum -c</code> and <code>sha256sum -c</code> read lines of the form <code>checksum, two spaces, file name</code>; awk turns the lock or the manifest into that form.</p>
+  {% set lk = "$site/locks/" %}
+  {% set mn = "$site/manifests/" %}
+  {% set cmds = "site=" ~ SITE_URL ~ "data\n\n# the downloaded files against the md5 rows of a lock file (" ~ ex.id ~ ")\ncurl -fsSL " ~ lk ~ ex.id ~ ".lock.tsv \\\n  | awk -F'\\t' 'NR > 1 && $4 == \"md5\" { print $5 \"  \" $1 }' \\\n  | md5sum -c -\n" %}
+  {% if ex_sha %}{% set cmds = cmds ~ "\n# the same with sha256 rows (" ~ ex_sha.id ~ ")\ncurl -fsSL " ~ lk ~ ex_sha.id ~ ".lock.tsv \\\n  | awk -F'\\t' 'NR > 1 && $4 == \"sha256\" { print $5 \"  \" $1 }' \\\n  | sha256sum -c -\n" %}{% endif %}
+  {% set cmds = cmds ~ "\n# every file after extraction against the manifest (" ~ ex.id ~ ")\ncurl -fsSL " ~ mn ~ ex.id ~ ".files.tsv.gz \\\n  | gunzip | awk -F'\\t' 'NR > 1 { print $3 \"  \" $1 }' \\\n  | sha256sum -c --ignore-missing --quiet -" %}
+  {{ m.code(cmds, "verify-cmds") }}
+  <p>With <code>--quiet</code> only problems are printed; drop <code>--ignore-missing</code> to list the files you do not have as well. A fetch script leaves <code>checksums.md5</code> or <code>checksums.sha256</code> in the dataset folder, so <code>md5sum -c checksums.md5</code> re-checks a copy at any time. Paths in a manifest assume the archives were extracted as rirdb does: in place when the dataset has one archive, into a folder named after each archive when it has several. The fetch scripts print these commands.</p>
+</section>
+
+{# ================================================================ extract #}
+<section class="section" id="extract" aria-labelledby="extract-h">
+  <h2 id="extract-h">Extracting archives</h2>
+  <p>The fetch scripts do not extract archives; at the end they print the exact commands for the dataset. rirdb extracts them as <a href="{{ repo_blob('fetch/extract.sh') }}"><code>fetch/extract.sh</code></a> does, and the manifests assume that layout:</p>
+  <ul class="does">
+    <li>A dataset with one archive is extracted in place: <code>unzip -q &lt;name&gt;.zip -d .</code> or <code>tar -xf &lt;name&gt;.tar.gz</code> (also <code>.tgz</code>, <code>.tbz2</code>, <code>.tar.bz2</code>, <code>.tar.xz</code>).</li>
+    <li>A dataset with several archives gets one folder per archive, named after it, because archives of one dataset can hold the same file names: <code>unzip -q &lt;name&gt;.zip -d &lt;name&gt;</code>.</li>
+    {% if split_ids %}<li>A split zip (<code>.z01</code>, <code>.z02</code>, … with a <code>.zip</code>) is joined first: <code>zip -s 0 &lt;name&gt;.zip --out &lt;name&gt;.joined.zip</code>, then unzipped. In the registry: {% for i in split_ids %}<a href="{{ root }}d/{{ i }}.html">{{ by_id[i].name if i in by_id else i }}</a>{{ ", " if not loop.last }}{% endfor %}.</li>{% endif %}
+    {% if big_zip %}<li>Zips over 4 GiB need ZIP64 records. Info-ZIP's zip-bomb check can reject a large, valid zip, so rirdb unzips archives that passed their checksum with <code>UNZIP_DISABLE_ZIPBOMB_DETECTION=TRUE</code>. If <code>unzip</code> still fails, try 7-Zip (<code>7z x</code>); if that fails too, <code>zip -FF &lt;name&gt;.zip --out &lt;name&gt;.repaired.zip</code> rebuilds the zip directory from the local headers{% if repaired %} (rirdb needed this for {% for r in repaired %}<a href="{{ root }}d/{{ r.id }}.html">{{ r.name }}</a>{{ ", " if not loop.last }}{% endfor %}){% endif %}. {{ big_zip | length }} datasets have zips over 4 GiB: {% for b in big_zip %}<a href="{{ root }}d/{{ b.id }}.html">{{ b.name }}</a> ({{ b.n }} file{{ "s" if b.n != 1 }}, largest {{ b.bytes | bytes }}){{ ", " if not loop.last else "." }}{% endfor %}</li>{% endif %}
+    {% set wb = rows | selectattr("kind", "eq", "wayback") | list %}
+    {% if wb %}<li>Old Mac archives served by the Wayback Machine ({% for r in wb %}<a href="{{ root }}d/{{ r.id }}.html">{{ r.name }}</a>{{ ", " if not loop.last }}{% endfor %}) can be StuffIt files (<code>.sit</code>): open them with <code>unar</code> from The Unarchiver.</li>{% endif %}
+  </ul>
+</section>
+
+{# ================================================================ storage #}
+<section class="section" id="storage" aria-labelledby="storage-h">
+  <h2 id="storage-h">Disk space</h2>
+  <p>Plan for the archives and the extracted files together: an archive can only be deleted once its extraction has been checked.</p>
+  <dl class="tiles gt-tiles">
+    <div class="tile"><dt>archives and files to download (all locks)</dt><dd>{{ data.corpus.download_bytes | bytes }}</dd></div>
+    <div class="tile"><dt>after extraction ({{ data.corpus.manifest_files | int }} files in {{ sizes | selectattr("ex") | list | length }} manifests)</dt><dd>{{ data.corpus.manifest_bytes | bytes }}</dd></div>
+    <div class="tile"><dt>with every archive kept next to its extracted files ({{ arch_bytes | bytes }} of archives{% if arch_unknown %}; {{ arch_unknown }} of unstated size not counted{% endif %})</dt><dd>{{ peak | bytes }}</dd></div>
+    <div class="tile"><dt>datasets that hold half of the extracted total</dt><dd>{{ n_half }}</dd></div>
+  </dl>
+  {% set tbl %}
+  <div class="tbl-wrap tall"><table class="tbl">
+    <caption class="sr-only">Download and extracted size of every dataset with a lock file or manifest</caption>
+    <thead><tr><th scope="col">Dataset</th><th scope="col" class="n">Download</th><th scope="col" class="n">Extracted</th><th scope="col" class="n">Files</th></tr></thead>
+    <tbody>{% for s in sizes %}<tr><td><a href="{{ root }}d/{{ s.id }}.html">{{ s.name }}</a></td><td class="n">{{ s.dl | bytes if s.dl else "–" }}</td><td class="n">{{ s.ex | bytes if s.ex else "–" }}</td><td class="n">{{ s.files | int if s.files else "–" }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% endset %}
+  {{ m.chart("Disk space after extraction, the " ~ (top | length) ~ " largest datasets (GB)", chart,
+             sub="From rirdb's manifests: the size of every file once the archives are extracted.",
+             caption=("The other " ~ rest_n ~ " datasets with a manifest take " ~ (rest_bytes | bytes) ~ " together.") if rest_n else None,
+             table=tbl, cls="solo") }}
+  {% set most = sizes | sort(attribute="files", reverse=true) | first %}
+  <ul class="does">
+    <li>Some datasets are many small files: {{ most.name }} holds {{ most.files | int }} files. Check the file-count quota as well as the space on shared filesystems.</li>
+    <li>The rirdb pipeline keeps small archives and deletes large ones after a checked extraction (<code>keep_archive</code> in the registry); the lock file is enough to download them again.</li>
+    <li>Keep the lock file and the manifest with your copy: they are all you need to check it later, or to find out which files a purge or a failed copy removed.</li>
+  </ul>
+</section>
+
+{# ================================================================ survey #}
+<section class="section" id="survey" aria-labelledby="survey-h">
+  <h2 id="survey-h">Survey-only datasets</h2>
+  <p>A web survey{% if data.survey_date %} ({{ data.survey_date }}){% endif %} found {{ data.corpus.n_datasets_survey | int }} more datasets that are not in the registry. They have no lock files and no fetch scripts: their pages give the landing page, the host, the licence and what is known about the contents. Download them from the landing page.</p>
+  <ul class="pills" aria-label="Availability of the survey datasets">{% for k, n in avail %}<li class="pill">{{ k | replace("_", " ") }}: {{ n }}</li>{% endfor %}</ul>
+  <div class="actions" style="margin-top:12px"><a class="btn-ghost" href="{{ root }}datasets/index.html">All {{ (rows | length) + data.corpus.n_datasets_survey }} datasets in the catalogue</a></div>
+</section>
+
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  var s = document.getElementById("pick");
+  if (!s) return;
+  var pre = document.getElementById("oneliner"), tpls = JSON.parse(pre.getAttribute("data-tpls"));
+  var dl = document.getElementById("pick-dl"), pg = document.getElementById("pick-page");
+  var base = pg.getAttribute("href").replace(/[^\/]+$/, "");
+  s.addEventListener("change", function () {
+    var id = s.value, mode = s.options[s.selectedIndex].getAttribute("data-mode");
+    pre.textContent = (tpls[mode] || tpls.files).replace(/__ID__/g, id);
+    dl.setAttribute("href", id + ".sh");
+    dl.querySelector("span").textContent = id + ".sh";
+    pg.setAttribute("href", base + id + ".html");
+  });
+})();
+</script>
+{% endblock %}

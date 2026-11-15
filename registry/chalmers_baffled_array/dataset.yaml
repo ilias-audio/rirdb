@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: chalmers_baffled_array
+name: Baffled Microphone Array RIRs at Three Elevations
+year: 2024
+type: measured
+status: catalogued
+content: Array RIRs from spherical, equatorial and non-spherical baffled arrays (up to 2,702 directions) and KEMAR
+  BRIRs at 360 head orientations, in a damped lab, a reverberant hall and an anechoic room; 3 source heights.
+expected:
+  n_rooms: 3
+room_info:
+  dimensions: 'yes'
+  materials: partial
+  positions: partial
+  images: 'yes'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/11199830
+doi: 10.5281/zenodo.11199830
+web_check:
+  checked: '2026-10-14'
+  found_as: RIRs from baffled microphone arrays and sound sources at three elevations (Chalmers)
+  availability: open
+  families:
+  - binaural
+  - ambisonic
+  - array
+  host: Zenodo
+  size: 9.2 GB
+  file_formats: SOFA (SingleRoomSRIR), MATLAB .mat filters, in ZIP
+  institution: Chalmers University of Technology
+  country: Sweden
+  evidence_urls:
+  - https://zenodo.org/records/11199830
+  - https://zenodo.org/api/records/11199830
+  - https://zenodo.org/api/records/11199830/versions
+  - https://zenodo.org/records/11199830/preview/DATA.zip
+  - https://zenodo.org/records/11199830/preview/DOCUMENTATION.zip
+  - https://www.ta.chalmers.se/?p=4389
+  confidence: high
+  caveats:
+  - About 9.2 GB of ZIPs; the raw recordings (about 77.5 GB) are only available on request from the authors.
+  - Anechoic and simulated array responses are mixed in with the lab and hall room measurements.
+  - The record does not state the sample rate or the number of IRs.

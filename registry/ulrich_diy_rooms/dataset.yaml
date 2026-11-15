@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ulrich_diy_rooms
+name: Thatcher Ulrich DIY room IRs
+year: 2017
+type: production
+status: catalogued
+content: Sine-sweep IRs (13 WAV files) of the bathroom, bedroom/foyer and dining room of the author's apartment,
+  from a DIY capture tutorial using PreSonus Eris 4.5 monitors and two Shure SM-81 mics.
+expected:
+  n_irs: 13
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://tulrich.com/recording/ir_capture/
+web_check:
+  checked: '2026-10-14'
+  found_as: Thatcher Ulrich DIY room IRs
+  availability: open
+  host: Personal website
+  size: 5.0 MB
+  file_formats: WAV
+  institution: Thatcher Ulrich (personal page)
+  country: Unknown
+  evidence_urls:
+  - https://tulrich.com/recording/ir_capture/
+  - https://tulrich.com/recording/ir_capture/ir_bathroom1.wav
+  - https://tulrich.com/recording/ir_capture/ir_foyerbedroom_C.wav
+  - https://github.com/IsaakCode/freeaudio/blob/master/best_free_impulse_responses.md
+  confidence: medium
+  caveats:
+  - The files are listed by name at the bottom of the page, not linked; each is served from the page's folder, e.g.
+    https://tulrich.com/recording/ir_capture/ir_bathroom1.wav
+  - No licence or terms of use stated
+  - Sample rate, channels and mic positions are not documented; one file (ir_wire_scarlett2i2) is named after an
+    audio interface, not a room

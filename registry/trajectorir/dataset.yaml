@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: trajectorir
+name: trajectoRIR
+year: 2025
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural, foa_ambix, array_raw]
+fs_hz: [48000]
+content: 8648 stationary RIRs sampling an L-shaped trajectory (RT 0.5 s room) with a dummy head, 3 first-order Ambisonics mics, circular (16/4 ch) and linear (12 ch) arrays; plus moving-microphone recordings.
+expected: {n_irs: 8648, n_rooms: 1}
+room_info: {positions: "yes", conditions: "yes", reference_acoustics: "partial", where: "RT in the description; mic_coordinates.csv, cart_pose.csv, mov_timestamps.csv; static and moving-microphone trajectories"}
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["15564430"]}
+adapter:
+  name: wav_tree
+  # stationary RIRs only (moving-microphone recordings are not IRs): STAT/RIR/<source>/<mic config>/<position>/<mic>.wav
+  params: {pattern: 'STAT/RIR/(?P<src>[^/]+)/(?P<cond>MC\d)/(?P<rcv>P\d+)/(?P<label>[^/]+)\.wav$', room_from: pattern, room_default: trajectorir-room}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/15564430
+paper: {title: "The trajectoRIR database: room acoustic recordings along a trajectory of moving microphones", url: "https://doi.org/10.1186/s13636-026-00449-2"}
+doi: 10.5281/zenodo.15564430
+status: active
+notes: "Each file is one microphone of a multi-microphone setup: a dummy head (DHL, DHR: 184 files), reference microphones next to the ears (RFL, RFR: 368), three first-order Ambisonics microphones as A-format cardioid capsules (A1-A3 LB/LF/RB/RF: 2,208) and omni arrays (UCA 2,944, ULA 2,208, CN 736). rirdb currently indexes all 8,648 as omni records, about 23 per measured position (368 source, configuration and position combinations), so the statistics count ear and cardioid capsules as omni until the adapter gives each microphone its format and the dataset is re-indexed and re-analysed."
+web_check:
+  checked: '2026-10-14'
+  institution: KU Leuven
+  country: Belgium
+  caveats:
+  - Also includes recordings made with moving microphones.

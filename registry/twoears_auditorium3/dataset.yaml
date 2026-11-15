@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: twoears_auditorium3
+name: 'Two!Ears KEMAR BRIRs: TU Berlin Auditorium 3'
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR dummy-head BRIRs for 6 loudspeaker positions in Auditorium 3, a mid-size lecture hall at TU Berlin,
+  with the head turned from -90° to 90° in 1° steps (Two!Ears project).
+expected:
+  n_rooms: 1
+room_info:
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/160749
+doi: 10.5281/zenodo.160749
+web_check:
+  checked: '2026-10-14'
+  found_as: Two!Ears KEMAR BRIRs in a mid-size lecture hall (TU Berlin Auditorium 3)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 343 MB
+  file_formats: SOFA (plus PDF setup sketch and JPG photo)
+  institution: TU Ilmenau; University of Rostock (Two!Ears project); measured at TU Berlin
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/160749
+  - https://zenodo.org/api/records/160749
+  - https://zenodo.org/api/records/160749/files/QU_KEMAR_Auditorium3.sofa/content
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  confidence: high
+  caveats:
+  - One 343 MB SOFA file; the sampling rate, room size and reverberation time are not stated on the record or in
+    the Two!Ears docs.
+  - A setup sketch (PDF) and a photo of the measurement come with the data.
+  - Head rotation covers only -90° to 90° (the front half).

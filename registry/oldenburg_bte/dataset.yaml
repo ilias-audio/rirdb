@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: oldenburg_bte
+name: Oldenburg in-ear and BTE HRIR/BRIR database
+year: 2009
+type: measured
+status: catalogued
+content: Eight-channel BRIRs (in-ear plus 3-mic behind-the-ear hearing aids on both ears of a head-and-torso simulator)
+  in two offices, a cafeteria and a courtyard, with ambient noise and anechoic HRIRs.
+expected:
+  n_rooms: 4
+room_info:
+  geometry: partial
+  positions: partial
+  images: partial
+license:
+  spdx: LicenseRef-custom
+  note: The registration terms grant use for purely research or educational purposes, forbid commercial exploitation
+    and reserve all other rights (Copyright 2009, Medizinische Physik, Universität Oldenburg).
+homepage: https://medi.uni-oldenburg.de/hrir/
+web_check:
+  checked: '2026-10-14'
+  found_as: Oldenburg multichannel in-ear and behind-the-ear HRIR/BRIR database (Kayser et al. 2009)
+  availability: free_registration
+  families:
+  - binaural
+  - array
+  host: Lab website
+  file_formats: SOFA (open mirror); format of the registered download not stated
+  institution: Medizinische Physik, University of Oldenburg
+  country: Germany
+  evidence_urls:
+  - https://medi.uni-oldenburg.de/hrir/
+  - https://medi.uni-oldenburg.de/hrir/html/download.html
+  - https://medi.uni-oldenburg.de/hrir/html/documentation.html
+  - https://sofacoustics.org/data/database/oldenburg/
+  - https://sofacoustics.org/data/database/oldenburg/OfficeII.sofa
+  - https://www.sofaconventions.org/mediawiki/index.php/Files
+  confidence: medium
+  caveats:
+  - A registration form emails the download link; only the Office II BRIRs and the anechoic HRIRs are openly mirrored
+    as SOFA on sofacoustics.org.
+  - Research and education use only; commercial exploitation is forbidden.
+  - The web pages give no sampling rate or IR counts (see the EURASIP JASP 2009 paper); the site was last updated
+    in 2013.

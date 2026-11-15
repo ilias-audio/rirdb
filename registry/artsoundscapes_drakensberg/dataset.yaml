@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: artsoundscapes_drakensberg
+name: Artsoundscapes Drakensberg rock-art IRs
+year: 2024
+type: measured
+status: catalogued
+content: 140 mono IRs measured in April-May 2022 at 27 rock-art sites in the Kamberg and Giant's Castle areas of
+  the Drakensberg, South Africa (MicW N201 mic, EASERA), as WAV and .etm files with a parameter table.
+expected:
+  n_irs: 140
+  n_rooms: 27
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://dataverse.csuc.cat/dataset.xhtml?persistentId=doi:10.34810/data1398
+doi: 10.34810/data1398
+web_check:
+  checked: '2026-10-14'
+  found_as: ERC Artsoundscapes – IRs from rock art sites of Kamberg and Giant's Castle (Drakensberg, South Africa)
+  availability: open
+  families:
+  - mono
+  host: Dataverse (CORA, Universitat de Barcelona)
+  size: 148 MB
+  file_formats: WAV (mono), EASERA .etm, TSV parameter table (from Excel), TXT readme
+  institution: Universitat de Barcelona (ERC Artsoundscapes)
+  country: South Africa
+  evidence_urls:
+  - https://doi.org/10.34810/data1398
+  - https://api.datacite.org/dois/10.34810/data1398
+  - https://dataverse.csuc.cat/oai?verb=GetRecord&metadataPrefix=oai_ddi&identifier=doi:10.34810/data1398
+  - https://dataverse.csuc.cat/api/access/datafile/101698
+  - https://dataverse.csuc.cat/api/access/datafile/101119
+  confidence: high
+  caveats:
+  - Non-commercial, share-alike licence (CC BY-NC-SA 4.0).
+  - Each IR comes as WAV and EASERA .etm (about 148 MB in all); sample rate is not stated.
+  - IR count is from the file list; one file is labelled as a 1.3 m sweep test.

@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_translation_seminar
+name: BRIRs for interactive listener translation (seminar room)
+year: 2020
+type: measured
+status: catalogued
+content: KEMAR 45BA BRIRs at 16 positions along a 7.5 m line in a seminar room (9.9 x 4.7 x 3.1 m, T60 1.0 s) for
+  two loudspeakers, head turned in 4° steps, in two sessions, plus omni RIRs; MATLAB and SOFA.
+expected:
+  n_irs: 5792
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/3457798
+doi: 10.5281/zenodo.3457798
+web_check:
+  checked: '2026-10-14'
+  found_as: BRIRs for interactive listener translation in a seminar room (Neidhardt, Pereppadan)
+  availability: open
+  families:
+  - binaural
+  - mono
+  host: Zenodo
+  size: 11.9 GB
+  file_formats: MAT (MATLAB) in ZIPs and the same data as SOFA; PNG/PDF room illustration; photos (ZIP)
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/3457798
+  - https://zenodo.org/api/records/3457798
+  - https://zenodo.org/records/3457798/preview/BRIRs_SeminarRoom_LS-Front.zip
+  - https://www.db-thueringen.de/receive/dbt_mods_00039972
+  confidence: high
+  caveats:
+  - About 11.9 GB in all, but each BRIR set comes both as a ZIP of MATLAB files and as a SOFA file, so one format
+    (about 6 GB) is enough.
+  - A second session has both loudspeakers turned 180° and slightly changed furnishing (documented with photos).
+  - Sampling rate and affiliation are not on the record (TU Ilmenau per the authors' ICSA 2019 paper); the count
+    (5,760 BRIRs + 32 omni RIRs) is derived.

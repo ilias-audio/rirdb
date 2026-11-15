@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ct_audiolink
+name: CT-AudioLink Room Impulse Responses
+year: 2016
+type: measured
+status: catalogued
+content: 24 omnidirectional RIRs (WAV) at several source and receiver positions in cultural-heritage buildings of
+  Thrace, Greece, including a museum, a church, a mosque and the Imaret of Komotini.
+expected:
+  n_irs: 24
+  n_rooms: 7
+room_info:
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/894181
+doi: 10.5281/zenodo.894181
+web_check:
+  checked: '2026-10-14'
+  found_as: 'CT-AudioLink: RIRs of cultural-heritage buildings of Thrace (Komotini)'
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  file_formats: WAV
+  institution: University of Patras; Democritus University of Thrace; Piraeus University of Applied Sciences
+  country: Greece
+  evidence_urls:
+  - https://zenodo.org/records/894181
+  - https://zenodo.org/api/records/894181
+  - http://ct-audiolink.eee.uniwa.gr/index.php/acoustics-soundscapes/acoustics/measurement-results
+  confidence: high
+  caveats:
+  - Sampling rate, microphone and position coordinates are not documented on Zenodo.
+  - Zenodo explains only 5 of the 7 file prefixes; the project website lists 7 spaces in 5 buildings and has acoustic
+    reports in Greek.
+  - 'Small set: 24 files, about 24.5 MB in total.'

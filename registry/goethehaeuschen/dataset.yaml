@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: goethehaeuschen
+name: O'er all the Hilltops is Loud Now (Goethehäuschen)
+year: 2025
+type: measured
+status: catalogued
+content: Spatial RIRs from a 7-microphone array at 57 positions in and outside the Goethehäuschen, a small historic
+  wooden cabin on Kickelhahn mountain in Ilmenau, with 8 fixed loudspeakers; SOFA files.
+expected:
+  n_rooms: 4
+room_info:
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/15013522
+doi: 10.5281/zenodo.15013522
+web_check:
+  checked: '2026-10-14'
+  found_as: 'O''er all the Hilltops is Loud Now: SRIR dataset of the Goethehäuschen, Ilmenau'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 2.3 GB
+  file_formats: SOFA 2.1 (AES69-2022) in ZIP per area; CSV ratings; PDF arrangement; photos (ZIP)
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/15013522
+  - https://zenodo.org/api/records/15013522
+  - https://zenodo.org/records/15013522/files/outside.zip?download=1
+  confidence: high
+  caveats:
+  - Upper-floor recordings were disturbed by draughts through open windows; a CSV rates those decay curves from
+    0 (severe disturbance) to 2 (none).
+  - 'The IR count is not stated: 57 positions with 8 loudspeakers, each measurement repeated once.'
+  - The sampling rate is not stated on the record.

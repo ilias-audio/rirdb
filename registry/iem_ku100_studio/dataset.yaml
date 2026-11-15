@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: iem_ku100_studio
+name: BRIRs_KU100_IEMProductionStudio
+year: 2018
+type: measured
+status: catalogued
+content: Binaural RIRs of a Neumann KU100 dummy head for each loudspeaker of the IEM production studio in Graz (127
+  m³, T60 about 0.4 s), measured with swept sines in 1° orientation steps; WAV files.
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  volume: 'yes'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-PDM-1.0
+  note: PHAIDRA labels the files with the Public Domain Mark 1.0 (a public-domain label rather than a licence) and
+    gives no other terms.
+homepage: https://phaidra.kug.ac.at/o:76742
+web_check:
+  checked: '2026-10-14'
+  found_as: BRIRs_KU100_IEMProductionStudio (IEM Graz)
+  availability: open
+  families:
+  - binaural
+  host: PHAIDRA (KUG university repository)
+  size: 145 MB
+  file_formats: WAV (in one ZIP) plus a one-page PDF ReadMe
+  institution: IEM, University of Music and Performing Arts Graz
+  country: Austria
+  evidence_urls:
+  - https://phaidra.kug.ac.at/o:76742
+  - https://phaidra.kug.ac.at/api/object/o:76742/index/dc
+  - https://phaidra.kug.ac.at/api/object/o:76742/comp/COMP000002
+  - https://opendata.iem.at/projects/binauralroomresponses/
+  confidence: high
+  caveats:
+  - 'One studio only: KU100 BRIRs for each studio loudspeaker at many head orientations.'
+  - IR count and sampling rate are not stated; channel 4 is the subwoofer and channels 13-16 are other loudspeaker
+    types.
+  - Released with a Public Domain Mark label rather than a formal licence.

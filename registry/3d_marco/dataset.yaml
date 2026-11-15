@@ -1,0 +1,63 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: 3d_marco
+name: 3D-MARCo (impulse responses)
+year: 2019
+type: measured
+status: catalogued
+content: Impulse responses for 13 stage loudspeaker positions in St Paul's concert hall, Huddersfield, each captured
+  by 64 microphones (3D arrays, dummy head, FOA) plus a 32-capsule Eigenmike, released with music recordings.
+fs_hz:
+- 96000
+- 48000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-3.0
+  statements:
+  - licence: CC-BY-3.0
+    where: Zenodo record
+  - licence: CC-BY-NC-3.0
+    where: License.pdf and the white paper in the documentation archive
+  note: The Zenodo record lists CC BY 3.0, but the License.pdf and white paper in the documentation archive both
+    state CC BY-NC 3.0 (no commercial use), so treat it as non-commercial unless the authors say otherwise.
+homepage: https://zenodo.org/records/3477602
+doi: 10.5281/zenodo.3477602
+web_check:
+  checked: '2026-10-14'
+  found_as: '3D-MARCo: 3D Microphone Array Recording Comparison (impulse responses)'
+  availability: open
+  families:
+  - mono
+  - stereo
+  - binaural
+  - ambisonic
+  - array
+  host: Zenodo
+  size: 741 MB (IR archive)
+  file_formats: WAV in ZIP (one mono file per microphone; Eigenmike as 32-channel raw and 25-channel 4th-order ACN/SN3D
+    B-format)
+  institution: Applied Psychoacoustics Lab, University of Huddersfield
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/records/3477602
+  - https://zenodo.org/api/records/3477602
+  - https://zenodo.org/api/records/3477602/files/03%203D-MARCo%20Impulse%20Responses.zip/container
+  - https://zenodo.org/api/records/3477602/files/01%203D-MARCo%20Documentation.zip/container/3D-MARCo%20Documentation/License.pdf
+  - https://zenodo.org/api/records/3477602/files/01%203D-MARCo%20Documentation.zip/container/3D-MARCo%20Documentation/3D-MARCo%20White%20Paper.pdf
+  - https://pure.hud.ac.uk/en/datasets/3d-microphone-array-recording-comparison-3d-marco/
+  - https://research.hud.ac.uk/institutes-centres/apl/resources/
+  confidence: high
+  caveats:
+  - 'Licence conflict: Zenodo says CC BY 3.0, but the bundled License.pdf and white paper say CC BY-NC 3.0.'
+  - The IRs are a separate 741 MB ZIP (858 WAV files); the whole record with the music recordings is about 23.6
+    GB.
+  - Eigenmike IRs are 48 kHz; all other microphones are 96 kHz.

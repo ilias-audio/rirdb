@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: voicehome
+name: voiceHome corpus (v0.2)
+year: 2016
+type: measured
+status: catalogued
+content: French distant-speech corpus that also ships room impulse responses and noise recorded with an 8-microphone
+  device in real homes (12 rooms in 3 homes, according to a later paper that used them).
+expected:
+  n_rooms: 12
+license:
+  spdx: CC-BY-NC-SA-4.0
+  note: The record also limits use to non-commercial scientific purposes and asks users to cite the corpus.
+homepage: https://zenodo.org/records/1314196
+doi: 10.5281/zenodo.1314196
+web_check:
+  checked: '2026-10-14'
+  found_as: voiceHome corpus v0.2 (RIRs in real homes)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 1.9 GB
+  file_formats: One ZIP archive plus a PDF documentation file
+  institution: IRISA (CNRS UMR 6074), LORIA (Université de Lorraine), CRPCC (Université Rennes 2), VoiceBox Technologies
+    France
+  country: France
+  evidence_urls:
+  - https://zenodo.org/api/records/1314196
+  - https://zenodo.org/records/1314196/files/voiceHome_corpus%20v0.2.zip?download=1
+  - https://www.isca-archive.org/interspeech_2016/bertin16_interspeech.html
+  - https://arxiv.org/html/2402.01413
+  - https://zenodo.org/api/records/1252143
+  confidence: medium
+  caveats:
+  - Non-commercial scientific use only (CC BY-NC-SA 4.0).
+  - The RIRs come inside a 1.9 GB speech-corpus ZIP; the documentation PDF is in French.
+  - Room counts come from a later paper that used these RIRs (CHiME-7 UDASE), not from the record.

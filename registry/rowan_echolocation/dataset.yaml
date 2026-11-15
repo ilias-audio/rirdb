@@ -1,0 +1,39 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rowan_echolocation
+name: Rowan et al. 2017 echolocation binaural IRs
+year: 2017
+type: measured
+status: catalogued
+content: Binaural IRs recorded in four rooms at Southampton's ISVR, including a large anechoic chamber and a reverberation
+  chamber, with and without a board 0.5-5 m away, for a human echolocation study.
+expected:
+  n_rooms: 4
+room_info:
+  positions: partial
+license:
+  spdx: CC-BY-4.0
+  note: CC BY 4.0 is set on the files in the ePrints record; the DataCite metadata lists no licence.
+homepage: https://eprints.soton.ac.uk/407762/
+doi: 10.5258/SOTON/D0070
+web_check:
+  checked: '2026-10-14'
+  found_as: Southampton binaural impulse responses for an echolocation study (Rowan et al. 2017)
+  availability: open
+  families:
+  - binaural
+  host: University repository (ePrints Soton)
+  size: 347 MB
+  file_formats: WAV in a zip, plus README.docx
+  institution: University of Southampton (ISVR)
+  country: UK
+  evidence_urls:
+  - https://api.datacite.org/dois/10.5258/SOTON/D0070
+  - https://eprints.soton.ac.uk/cgi/export/eprint/407762/JSON/soton-eprint-407762.js
+  - https://eprints.soton.ac.uk/id/eprint/407762/1/BinauralIRs.zip
+  - https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:10.1016/j.heares.2017.04.008&resultType=core&format=json
+  confidence: high
+  caveats:
+  - 'Made for an echolocation study: the IRs capture echoes from a board at 0.5-5 m, plus no-object references;
+    one of the four rooms is anechoic.'
+  - Sample rate, recording head and room details are only in a README.docx and the paywalled Hearing Research paper.
+  - The ePrints pages may block automated browsers, but the 347 MB zip downloads directly.

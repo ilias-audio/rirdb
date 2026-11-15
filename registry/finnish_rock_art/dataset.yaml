@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: finnish_rock_art
+name: In situ IRs from Finnish rock art sites
+year: 2024
+type: measured
+status: catalogued
+content: 24 outdoor IRs (WAV/FLAC, 96 kHz/24-bit) recorded at prehistoric rock-art sites by the water in Finland,
+  in winter and summer, using a balloon pop or a 10 s sine sweep and a Neumann KM183 microphone.
+fs_hz:
+- 96000
+expected:
+  n_irs: 24
+  n_rooms: 17
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://etsin.fairdata.fi/dataset/13cca906-37b5-4a11-9b4e-f11722ca606d
+doi: 10.23729/3980d94f-aac7-49b4-a327-9d0fa453736e
+web_check:
+  checked: '2026-10-14'
+  found_as: Selection of in situ impulse responses from Finnish rock art sites
+  availability: open
+  families:
+  - mono
+  host: Fairdata (Etsin / IDA)
+  size: 46 MB
+  file_formats: WAV (23), FLAC (1), DOCX metadata
+  institution: University of Helsinki
+  country: Finland
+  evidence_urls:
+  - https://etsin.fairdata.fi/dataset/13cca906-37b5-4a11-9b4e-f11722ca606d
+  - https://metax.fairdata.fi/v3/datasets/13cca906-37b5-4a11-9b4e-f11722ca606d
+  - https://metax.fairdata.fi/v3/datasets/13cca906-37b5-4a11-9b4e-f11722ca606d/files?pagination=false
+  - https://api.datacite.org/dois/10.23729/3980d94f-aac7-49b4-a327-9d0fa453736e
+  - https://research.fi/en/results/dataset/13cca906-37b5-4a11-9b4e-f11722ca606d
+  confidence: high
+  caveats:
+  - Files sit in Fairdata IDA and are downloaded from the Etsin page.
+  - One IR is a FLAC file; the files also cover Olhavanvuori, which is missing from the 16-site table.
+  - Mostly one IR per site; no acoustic parameters are included.

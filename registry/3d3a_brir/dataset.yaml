@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: 3d3a_brir
+name: 3D3A Lab BRIR Dataset
+year: 2024
+type: measured
+status: catalogued
+content: '68,376 BRIRs measured with a B&K HATS in a treated listening room at Princeton: 8 loudspeakers, 231 head
+  positions on a 5 cm grid and 37 head rotations, stored as SOFA files.'
+fs_hz:
+- 48000
+expected:
+  n_irs: 68376
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://datacommons.princeton.edu/discovery/catalog/doi-10-34770-6gc9-5787
+doi: 10.34770/6gc9-5787
+web_check:
+  checked: '2026-10-14'
+  found_as: 3D3A Lab multi-loudspeaker BRIR dataset with translational and rotational head coordinates (Princeton)
+  availability: open
+  families:
+  - binaural
+  host: Princeton Data Commons
+  size: 15.9 GB
+  file_formats: SOFA (AES69-2022), one file per listener distance
+  institution: Princeton University (3D3A Lab)
+  country: USA
+  evidence_urls:
+  - https://datacommons.princeton.edu/discovery/catalog/doi-10-34770-6gc9-5787.json
+  - https://api.datacite.org/dois/10.34770/6gc9-5787
+  - https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/LICENSE.md
+  - https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/README.md
+  - https://arxiv.org/abs/2403.12258
+  - https://www.frontiersin.org/journals/signal-processing/articles/10.3389/frsip.2024.1380060/full
+  confidence: high
+  caveats:
+  - 11 SOFA files of about 1.45 GB each (15.9 GB total); they download directly over HTTPS or via Globus.
+  - The repository web page shows a human-verification check; the file links themselves work.
+  - One acoustically treated room (RT60 about 0.24 s); loudspeakers were not equalised.

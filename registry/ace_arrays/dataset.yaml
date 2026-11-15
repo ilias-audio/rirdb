@@ -1,0 +1,35 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ace_arrays
+name: ACE Challenge corpus (multichannel arrays)
+year: 2015
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw, em32_raw]
+fs_hz: [48000]
+content: "{2,3,5,8,32}-channel RIRs (Chromebook, Mobile, Crucif, Lin8Ch, EM32) recorded in the 7 ACE rooms."
+expected: {n_rooms: 7}
+room_info: {positions: "partial", reference_acoustics: "yes", where: "as ACE: ground-truth T60/DRR CSVs and microphone arrangement PDF"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["6257551"], include: ["ACE_Corpus_RIRN_Chromebook.tbz2", "ACE_Corpus_RIRN_Mobile.tbz2", "ACE_Corpus_RIRN_Crucif.tbz2", "ACE_Corpus_RIRN_Lin8Ch.tbz2", "ACE_Corpus_RIRN_EM32.tbz2"]}
+adapter:
+  name: wav_tree
+  # <Config>/<room>/<position>/<Config>_<room>_<pos>_RIR.wav (noise recordings skipped); reference = first mic
+  params:
+    pattern: '(?P<cond>Chromebook|Mobile|Crucif|Lin8Ch|EM32)/(?P<room>[^/]+)/(?P<rcv>\d)/[^/]+_RIR\.wav$'
+    roles: {2: [mic_1, mic_2], 3: [mic_1, mic_2, mic_3], 4: [mic_1, mic_2, mic_3, mic_4], 5: [mic_1, mic_2, mic_3, mic_4, mic_5], 8: [mic_1, mic_2, mic_3, mic_4, mic_5, mic_6, mic_7, mic_8], 32: [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32]}
+    channel_formats: {2: array_raw, 3: array_raw, 4: array_raw, 5: array_raw, 8: array_raw, 32: em32_raw}
+    reference_roles: {2: mic_1, 3: mic_1, 4: mic_1, 5: mic_1, 8: mic_1, 32: mean}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/6257551
+paper: {title: "Estimation of room acoustic parameters: The ACE challenge", url: "https://ieeexplore.ieee.org/document/7336912"}
+doi: 10.5281/zenodo.6257551
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Imperial College London
+  country: UK
+  caveats:
+  - The IRs are windowed to about 0.5 to 1.5 s (median 0.6 s), so half of them (35 of 70) end before the noise floor.
+  - The original ACE website is offline (the Wayback Machine has a copy); the data is on Zenodo.

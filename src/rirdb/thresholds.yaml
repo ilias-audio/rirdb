@@ -1,0 +1,149 @@
+# Every number that turns a stored measurement into a validity, a defect, a processing tag or a grade.
+#
+# `build` reads this file and applies it to the stored numbers, so changing a value here needs no
+# audio: edit, then run `build` (data-model.md, R3 and section 10).
+#
+# The values are analyser v1's: configs/analyzer_v1.yaml and THRESH in src/rirdb/audit.py (audit 1.4.0).
+# That YAML stays the frozen record of what v1 did; this file is where the release reads them from.
+#
+# `set_while_reading` lists v1 numbers that are already inside a stored number or flag. They are here
+# so that every v1 number has a written home, but changing one has no effect until the audio is read
+# again. In step 4 they move to measure.yaml (data-model.md, section 9).
+#
+# Columns.csv refers to these entries by path, e.g. `validity.t30.min_decay_range_db`.
+
+validity:
+  # A value that fails its rule is published empty (R4). The decay range is the smoothed peak level
+  # over the noise floor, per band; it is published next to the values (decay_range_*_db).
+  edt:
+    min_decay_range_db: 20
+  t20:
+    min_decay_range_db: 35
+  t30:
+    min_decay_range_db: 45
+    set_while_reading:
+      # v1 fits a decay only if the curve reaches the bottom of the fit range inside the file; when
+      # no noise floor is found, that point must lie before this fraction of the file.
+      no_floor_fit_ends_before_fraction: 0.95
+  energy:
+    # C50, C80, D50 and centre time, per band
+    min_decay_range_db: 20
+    min_noise_intersection_s: 0.08
+  sti:
+    # The 8 kHz octave must lie below Nyquist: fs >= 2 * 8000 * sqrt(2).
+    min_fs_hz: 22627.4
+    # And the broadband decay: not failed, not truncated (processing.truncated), at least this range.
+    min_decay_range_db: 20
+  mid:
+    # A *_mid value is the mean of these two octaves, and needs both valid.
+    bands_hz: [500, 1000]
+
+defects:
+  # A defect is true when its stored number crosses the threshold. `major: true` caps the grade at C.
+  # A defect that does not apply to a layout is empty for it (R6: no channel comparison on Ambisonics).
+
+  clipping:
+    major: true
+    set_while_reading:
+      run_samples: 3              # v1 flag_clipped: a run of this many samples at the peak level
+
+  dropouts:
+    major: true
+    min_run_ms: 5                 # v1 dropout_ms: the longest run of exact zeros inside the signal
+    set_while_reading:
+      shortest_run_stored_ms: 5   # v1 stores runs of 5 ms or more only, so a lower min_run_ms changes nothing
+      side_level_over_step: 10    # ... and only runs with signal above 10 quantisation steps on both sides
+
+  no_decay:
+    major: true
+    # v1 active_s and env_slope_db_s: the signal stays within 30 dB of its peak for longer than
+    # min_active_s and its level falls slower than this slope (T60 above 30 s, or not an IR).
+    min_active_s: 1.0
+    max_slope_db_per_s: -2.0
+
+  sweep_residue:
+    major: true
+    min_glide_db: 8               # v1 glide_db: contrast of the strongest straight time-frequency ridge
+    set_while_reading:
+      min_glide_span_octaves: 1.5
+
+  tonal_interference:
+    major: true
+    min_tonal_fraction: 0.5       # v1 tonal_frac: share of frames holding a spectral line
+    set_while_reading:
+      line_prominence_db: 15      # a line is a peak this far above its +-1/3-octave neighbourhood
+
+  corrupt_samples:
+    major: true
+    # Non-finite or all-zero samples, or a file that cannot be read. No threshold.
+
+  band_limited:
+    major: false
+    # v1 bw_eff_hz (where the content stops) below this fraction of min(fs / 2, top_hz)
+    below_fraction_of_top: 0.7
+    top_hz: 20000
+    set_while_reading:
+      content_within_db: 50       # bw_eff_hz: highest 1/12-octave band within 50 dB of the 500 Hz-4 kHz level
+
+  quantisation_floor:
+    major: false
+    set_while_reading:
+      # v1 flag_quantized_tail: zero runs inside a decay sinking below the quantisation step,
+      # and more than this share of zero samples
+      min_zero_fraction: 0.05
+
+  dc_offset:
+    major: false
+    min_level_db: -50             # v1 dc_offset_db: the largest channel mean, relative to the peak
+
+  high_noise_floor:
+    major: false
+    below_peak_to_noise_db: 35    # peak_to_noise_db, broadband
+
+  inverted_channel:
+    major: false
+    applies_to_formats: [stereo, binaural]
+    # Not measured by analyser v1: empty in the 0.9 preview. The stored number comes in step 4.
+
+processing:
+  # Detected tags. A tag the authors document comes from the registry; `both` when both hold.
+  # `counts_as_minor_defect: true` adds one to defects_minor when the tag is detected, not when it
+  # is only documented.
+
+  resampled:
+    counts_as_minor_defect: true
+    # v1 resampled_from_hz found, and bw_cliff_db at least this deep
+    min_cliff_db: 40
+    set_while_reading:
+      source_rates_up_to_hz: 32000   # only cliffs at the Nyquist of a source rate up to 32 kHz are tested
+      nyquist_match: [0.85, 1.12]    # bw_eff_hz within this ratio of that Nyquist
+
+  bit_depth_reduced:
+    counts_as_minor_defect: true
+    # Not measured by analyser v1 (effective_bits comes in step 4): not assessed in the 0.9 preview.
+
+  truncated:
+    counts_as_minor_defect: false
+    # v1 intersection_s_bb (broadband Lundeby intersection) at or after this fraction of the duration:
+    # the file ends before the noise floor.
+    min_intersection_fraction_of_duration: 0.95
+
+  # windowed, denoised, equalised, format_derived: documented by the authors only in 0.9
+  # (denoised and equalised: deferred.md item 5).
+
+grades:
+  # S  T30 valid in every octave of s_and_a_bands_hz, no defect at all, and every defect assessed
+  # A  the same decay rule; minor defects allowed
+  # B  T20 or T30 valid in every octave of b_bands_hz; minor defects allowed
+  # C  some decay value valid (EDT, T20 or T30, any band); or the decay of S, A or B with a major defect
+  # D  no decay value valid
+  s_and_a_bands_hz: [125, 250, 500, 1000, 2000, 4000]
+  b_bands_hz: [250, 500, 1000, 2000]
+  major_defect_caps_at: C
+  # S needs every defect assessed (decision D, 15 Nov 2026): where a defect is empty because the audio was
+  # not audited (ReverbFX and TH Köln in 0.9), an S becomes A. The defects the analyser does not measure at
+  # all are left out of this rule until it measures them.
+  not_measured: [inverted_channel]   # analyser v1; step 4 measures it
+  empty_for_space_types: [anechoic]
+  set_while_reading:
+    min_analysable_s: 0.05        # v1 analyses nothing in a shorter signal (after the onset), so it grades D

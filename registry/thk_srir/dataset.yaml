@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: thk_srir
+name: TH Köln high-resolution spatial RIR database (omni subset)
+year: 2021
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+fs_hz: [48000]
+content: Omnidirectional RIRs (Earthworks M30) in three rooms of TH Köln's Deutz campus (Audimax, Classroom, Audiolab), three loudspeakers x two positions each; the same positions also have KU100 BRIRs and spherical-array DRIRs (SOFA; the whole record is 24.3 GB, not fetched). One of the sets Götz et al. (ICASSP 2026) trained on.
+expected: {n_irs: 18, n_rooms: 3}
+adapter: {name: wav_tree, params: {glob: "Omni_ir_*.wav", pattern: 'Omni_ir_earthworksM30_(?P<room>[^_]+)_(?P<src>LS[LCR])_(?P<rcv>P\d)\.wav$'}}
+room_info: {geometry: "yes", positions: "partial", where: "floor plans (pdf) and 3D models in the record"}
+license: {spdx: CC-BY-4.0, redistribute_audio: "yes"}
+access: open
+source: {kind: zenodo, records: ["5031335"], include: ["Omni_ir_*.wav", "*_floorplan.pdf"]}
+wave: 1
+homepage: https://doi.org/10.5281/zenodo.5031335
+paper: {title: "A High-Resolution Spatial Room Impulse Response Database (DAGA 2021)", url: "https://pub.dega-akustik.de/DAGA_2021/data/articles/000361.pdf"}
+doi: 10.5281/zenodo.5031335
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: TH Köln
+  country: Germany
+  host: Zenodo
+  caveats:
+  - 'rirdb holds the omni subset only (18 IRs). The full release at the same DOI adds KU100 BRIRs on a 360-point
+    horizontal grid and spherical-array DRIRs on a 2,702-point Lebedev grid for the same 18 source-receiver pairs:
+    58 files, 24.3 GB, mostly DRIR SOFA files of about 1 GB each.'
+  - Positions are shown on the PDF floor plans.

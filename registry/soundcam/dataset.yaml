@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: soundcam
+name: SoundCam
+year: 2023
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 5,000 10-channel real-world RIRs in three rooms (treated lab, in-the-wild living room, conference room) with humans at positions throughout each room. Only the Conference Room archive is fetched for now.
+expected: {n_irs: 50000, n_rooms: 3, note: "the authors count 5,000 10-channel measurements (50,000 single-channel IRs) in 3 rooms; rirdb fetched the Conference Room only: (100 empty + 1,000 + 100 with a person) measurements x 10 fixed mics = 12,000 single-channel records; one fixed loudspeaker"}
+room_info: {conditions: "yes", where: "3 room states indexed as conditions"}
+license: {spdx: MIT, redistribute_audio: yes}
+access: open
+source:
+  kind: http
+  urls:
+    - https://stacks.stanford.edu/file/druid:xq364hd5023/ConferenceRoom_preprocessed.tar.gz
+keep_archive: false
+wave: 2
+adapter:
+  name: ndarray
+  # <room>_preprocessed/<Empty|Human1|Human2>/deconvolved.npy: float32 [measurements, 10 mics, 667200] at 48 kHz
+  # (13.9 s). After ~1 s the tail is noise with transient bursts (up to -55 dB re peak at 3-4 s) that defeat the
+  # noise-floor estimate: cropped to 3 s (> 5 x T30). Loudspeaker and mics fixed; conditions = presence of a person.
+  params: {glob: "*_preprocessed/*/deconvolved.npy", container: npy, time_axis: 2, record_axes: [0, 1], fs: 48000, crop_s: 3.0,
+           pattern: '(?P<room>[A-Za-z]+)_preprocessed/(?P<cond>Empty|Human\d)/deconvolved\.npy$'}
+analysis: {scope: subsample_v1}
+cap: 57   # preview only: the most v1 measured per group; step 5 removes this cap
+homepage: https://sites.google.com/view/soundcam
+doi: 10.25740/xq364hd5023
+paper: {title: "SoundCam: A Dataset for Tasks in Tracking and Identifying Humans from Real Room Acoustics", url: "https://nips.cc/virtual/2023/poster/73471"}
+status: active
+notes: "Preprocessed archives total 413 GB (RIRs bundled with music recordings); Stanford serves ~2 MB/s. Only ConferenceRoom_preprocessed (51.7 GB) is fetched; LivingRoom (104 GB), TreatedRoom (211 GB) and TreatedRoomPanels (46 GB) are deferred until permanent storage."
+web_check:
+  checked: '2026-10-14'
+  institution: Stanford University
+  country: USA
+  host: Stanford Digital Repository
+  n_irs_display: 50000
+  n_rooms_display: 3
+  licence_note: 'MIT licence (a software licence applied to data): keep the copyright and permission notice. The
+    Stanford Digital Repository use statement adds that, where applicable, the content must not be used to identify
+    individuals or infringe their privacy; the recordings include study participants.'
+  caveats:
+  - Three rooms with people at different positions; only the conference room (12,000 IRs) was downloaded and analysed
+    here.
+  - The files are 13.9 s long with noise bursts in the tail; crop them to about 3 s.
+  - About 413 GB for all three rooms.

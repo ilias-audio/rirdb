@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{# Not found: 404.html. Rendered by pages_docs.render_404() with root = SITE_URL, because GitHub Pages serves
+   this file for a missing page at any depth. #}
+
+{% block head %}
+<meta name="robots" content="noindex">
+{% if inline_css %}<style>{{ inline_css }}</style>{% endif %}
+<style>
+.nf { padding-block: clamp(40px, 8vw, 96px) clamp(24px, 4vw, 48px); }
+.nf .lede { max-width: 56ch; }
+.nf .search-hero { max-width: 640px; }
+.nf ul { padding-left: 1.2em; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="nf"><div class="wrap">
+  <p class="eyebrow">Error 404</p>
+  <h1>Page not found</h1>
+  <p class="lede">There is no page at this address. It may have moved, or the link may have a typo.</p>
+  <form class="search-hero" action="{{ root }}datasets/index.html" method="get" role="search">
+    <label for="nf-q" class="sr-only">Search the datasets</label>
+    <input id="nf-q" type="search" name="q" placeholder="Search the datasets" autocomplete="off">
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <ul>
+    <li><a href="{{ root }}index.html">Home</a></li>
+    <li><a href="{{ root }}datasets/index.html">All datasets</a></li>
+    <li><a href="{{ root }}spaces/index.html">All spaces</a></li>
+    <li><a href="{{ root }}get/index.html">Get the data</a></li>
+  </ul>
+</div></div>
+{% endblock %}

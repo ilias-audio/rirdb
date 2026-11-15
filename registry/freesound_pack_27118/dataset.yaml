@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: freesound_pack_27118
+name: Impulse_Response_collection (Freesound pack 27118)
+year: 2019
+type: production
+status: catalogued
+content: 21 balloon-pop recordings (one a hammer hit) shared as IRs of staircases, rooms, a bathroom, Montpellier's
+  Saint-Pierre cathedral, a fort cave, a tunnel and outdoor sites, mainly in southern France.
+fs_hz:
+- 44100
+expected:
+  n_irs: 21
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: partial
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: Freesound licenses each sound separately; the uploader's 21 Attribution-licensed sounds are the 21 in this
+    pack, and every sound page checked says Attribution 4.0.
+homepage: https://freesound.org/people/allistersandwich/packs/27118/
+web_check:
+  checked: '2026-10-14'
+  found_as: Freesound IR pack 27118 (allistersandwich)
+  availability: free_registration
+  families:
+  - mono
+  - stereo
+  host: Freesound
+  file_formats: WAV (16-bit)
+  institution: Freesound user allistersandwich (individual)
+  country: France
+  evidence_urls:
+  - https://freesound.org/people/allistersandwich/packs/27118/
+  - https://freesound.org/search/?f=pack_grouping:%2227118_Impulse_Response_collection%22&s=Date+added+(newest+first)&g=1
+  - https://freesound.org/people/allistersandwich/sounds/479080/
+  - https://freesound.org/people/allistersandwich/sounds/479087/
+  - https://freesound.org/people/allistersandwich/sounds/479126/
+  - https://freesound.org/search/?q=&f=username:%22allistersandwich%22+license:%22Creative+Commons+0%22&g=0
+  confidence: high
+  caveats:
+  - Raw balloon pops (one hammer hit) recorded on a Zoom H2n, not sweep measurements
+  - A free Freesound account is needed to download
+  - Credit the uploader (CC BY 4.0); some spaces have both mono and stereo takes

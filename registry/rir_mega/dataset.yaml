@@ -1,0 +1,24 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rir_mega
+name: RIR-Mega
+year: 2025
+type: simulated
+ir_kinds: [room]
+capture_formats: [array_raw]
+fs_hz: [16000]
+content: 50,000 linear-array plus 8,000 circular-array 8-channel simulated RIRs (image-source method, shoebox rooms 3-25 m long) with a compact metadata schema; full archive on Zenodo, subset on Hugging Face.
+expected: {n_irs: 58000, note: "Zenodo v1.2.1: 50,000 linear + 8,000 circular 8-channel RIRs (checked 2026-10-13)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes, note: "Zenodo record and paper: CC BY 4.0. The Hugging Face subset is tagged CC BY-NC 4.0, added later and apparently a template leftover; use the Zenodo copy (checked 2026-10-13)."}
+access: open
+source: {kind: zenodo, records: ["17387402"]}
+wave: 4
+homepage: https://zenodo.org/records/17387402
+paper: {title: "RIR-Mega: a large-scale simulated room impulse response dataset for machine learning and room acoustics modeling", url: "https://arxiv.org/abs/2510.18917"}
+doi: 10.5281/zenodo.17387402
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Mandip Goswami (independent; Amazon affiliation)
+  country: USA
+  licence_note: 'RIR-Mega''s two copies carry different licences: CC BY 4.0 on Zenodo (also stated in the paper),
+    CC BY-NC 4.0 on Hugging Face. Download from Zenodo and you may use it under CC BY 4.0 (checked 2026-10-13).'

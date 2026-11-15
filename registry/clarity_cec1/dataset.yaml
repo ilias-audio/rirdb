@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: clarity_cec1
+name: Clarity CEC1 dataset (simulated BRIRs)
+year: 2021
+type: simulated
+status: catalogued
+content: Simulated binaural RIRs (RAVEN geometric model) for 10,000 hearing-aid listening scenes in randomised cuboid
+  living rooms, at the eardrum and three behind-the-ear microphones, packed with speech and noise.
+fs_hz:
+- 44100
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: 'yes'
+  materials: partial
+  positions: 'yes'
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/17068105
+doi: 10.5281/zenodo.17068105
+web_check:
+  checked: '2026-10-14'
+  found_as: '1st Clarity Enhancement Challenge (CEC1) dataset: room models and simulated BRIRs'
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 73 GB
+  file_formats: WAV (44.1 kHz, 32-bit) in tar.gz; RAVEN .rpf room files; JSON scene metadata
+  institution: University of Sheffield, University of Salford, University of Nottingham, Cardiff University (Clarity
+    project)
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/records/17068105
+  - https://zenodo.org/api/records/17068105
+  - https://claritychallenge.org/docs/cec1/data/cec1_data
+  - https://claritychallenge.org/docs/cec1/data/cec1_scenario
+  - https://claritychallenge.org/docs/cec1/cec1_download
+  confidence: high
+  caveats:
+  - About 73 GB of tar.gz archives (training set split into 9 parts); the BRIRs come bundled with the speech and
+    noise material.
+  - 'Simulated, not measured: RAVEN model of randomised cuboid living rooms; four stereo pairs per source (eardrum,
+    front, middle, rear mic).'
+  - Zenodo archive created in 2026 for the 2021 challenge data; full scenes are rebuilt with the PyClarity toolkit.

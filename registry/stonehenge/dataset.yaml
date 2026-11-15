@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: stonehenge
+name: Stonehenge impulse response measurements
+year: 2020
+type: measured
+status: catalogued
+content: Octave-band IRs for 61 measurements in a 1:12 acoustic scale model of Stonehenge, the prehistoric stone
+  circle, with derived acoustic parameters in a spreadsheet.
+expected:
+  n_irs: 61
+  n_rooms: 1
+room_info:
+  volume: 'no'
+  images: 'yes'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://salford.figshare.com/articles/dataset/Stonehenge_impulse_response_measurements/12687554
+doi: 10.17866/rd.salford.12687554.v1
+web_check:
+  checked: '2026-10-14'
+  found_as: Stonehenge impulse response measurements (1:12 scale model, Salford)
+  availability: open
+  families:
+  - mono
+  host: figshare (University of Salford)
+  size: 49 MB
+  file_formats: ZIP of octave-band IRs (file type inside not stated) plus XLSX of acoustic parameters
+  institution: University of Salford
+  country: UK
+  evidence_urls:
+  - https://salford.figshare.com/articles/dataset/Stonehenge_impulse_response_measurements/12687554
+  - https://api.figshare.com/v2/articles/12687554
+  - https://physicstoday.aip.org/quick-study/modeling-sound-at-stonehenge
+  - https://flic.kr/s/aHsmFcRWnU
+  confidence: high
+  caveats:
+  - Octave-band IRs from a scale model, valid up to about 5.5 kHz, with the test loudspeaker's response left in;
+    the authors warn they are poor for convolution reverb.
+  - Microphone positions m2 and m8 are the same position.
+  - The authors ask users to cite their 2020 Journal of Archaeological Science paper.

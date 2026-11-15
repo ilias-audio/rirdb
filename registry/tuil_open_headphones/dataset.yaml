@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_open_headphones
+name: BRIRs for a Listener Wearing Open Headphones
+year: 2021
+type: measured
+status: catalogued
+content: KEMAR 45BA BRIRs measured in TU Ilmenau's listening lab while the dummy head wore seven open headphone
+  models (or none), at 92 head angles, two distances and three repeats; MATLAB files at 48 kHz.
+fs_hz:
+- 48000
+expected:
+  n_irs: 4048
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: partial
+  reference_acoustics: 'no'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/5172098
+doi: 10.5281/zenodo.5172098
+web_check:
+  checked: '2026-10-14'
+  found_as: Collection of BRIRs for a listener wearing different types of open headphones
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 742 MB
+  file_formats: MAT (MATLAB) in one ZIP, plus JPEG photos
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/5172098
+  - https://zenodo.org/api/records/5172098
+  - https://zenodo.org/records/5172098/preview/BRIRS_Headphone_Influence.zip
+  confidence: high
+  caveats:
+  - Most BRIRs were measured with headphones on the dummy head, by design; only the 'withoutHP' files are plain
+    BRIRs.
+  - MATLAB .mat files only; the record gives no room size or reverberation time.
+  - IR count is derived from the file list (44 files x 92 head angles); the authors give no total.

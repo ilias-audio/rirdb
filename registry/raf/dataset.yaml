@@ -1,0 +1,22 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: raf
+name: Real Acoustic Fields (RAF)
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+fs_hz: [48000]
+content: About 86,000 RIRs (47k in the empty and 39k in the furnished configuration of one room) from a 36-microphone "Earful Tower", with multi-view images and 6DoF tracking of emitters and listeners (audio-visual room acoustics).
+expected: {n_irs: 86000, n_rooms: 1, note: "one room, empty and furnished (README, checked 2026-10-13)"}
+license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "README and LICENSE.md: CC BY-NC 4.0 (checked 2026-10-13)."}
+access: open
+source: {kind: manual, instructions: "Public download over plain HTTPS, no account: each file is at https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/<name>, for raf_emptyroom.z01 to .z11 and raf_emptyroom.zip, and raf_furnishedroom.z01 to .z09 and raf_furnishedroom.zip (22 files, about 23 GB; checked 2026-11-06). The same objects are at s3://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15/real_acoustic_fields/rir/archived/ for `aws s3 cp --no-sign-request`. Join each split zip before extracting, e.g. `zip -s 0 raf_emptyroom.zip --out raf_emptyroom_joined.zip`."}
+homepage: https://facebookresearch.github.io/real-acoustic-fields/
+paper: {title: "Real Acoustic Fields: An Audio-Visual Room Acoustics Dataset and Benchmark", url: "https://arxiv.org/abs/2403.18821"}
+status: manual
+web_check:
+  checked: '2026-10-14'
+  institution: Meta Reality Labs, with University of Michigan
+  country: USA
+  host: Public cloud bucket (AWS S3)
+  availability: open

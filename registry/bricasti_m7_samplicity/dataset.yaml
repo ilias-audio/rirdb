@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: bricasti_m7_samplicity
+name: Samplicity Bricasti M7 IR Library
+year: 2010
+type: production
+status: catalogued
+content: Free true-stereo impulse responses of the presets of a Bricasti M7 hardware reverb unit, captured by Samplicity
+  and offered as quad-channel and dual-stereo WAV files at 44.1 and 48 kHz.
+fs_hz:
+- 44100
+- 48000
+expected:
+  n_irs: 134
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: The download page only says the IRs are offered free of charge and as-is. News reports of the 2010 release
+    said Bricasti allowed the IRs on condition they are not included in any commercial product.
+homepage: https://samplicity.com/downloads/
+web_check:
+  checked: '2026-10-14'
+  found_as: Samplicity Bricasti M7 impulse responses (free archive)
+  availability: open
+  families:
+  - stereo
+  host: Company website
+  size: 964 MB
+  file_formats: ZIP of WAV files (true-stereo quad-channel and dual-stereo)
+  institution: Samplicity
+  country: Netherlands
+  evidence_urls:
+  - https://samplicity.com/downloads/
+  - https://cdn.samplicity.com/downloads/Samplicity%20-%20Bricasti%20IRs%20version%202023-10.zip
+  - https://www.sonicstate.com/news/2010/07/20/free-impulse-response-library/
+  - https://rekkerd.org/?p=23425
+  - https://www.kvraudio.com/forum/viewtopic.php?p=4146062
+  - https://samplicity.com/terms-and-conditions
+  confidence: medium
+  caveats:
+  - Captures of a hardware reverb unit's presets, not real rooms.
+  - 'No formal licence: offered ''free of charge and as-is''. 2010 news said Bricasti allowed the IRs only if they
+    stay out of commercial products.'
+  - 964 MB zip (version 2023-10). The page does not list its contents; the 2010 release covered 134 presets.

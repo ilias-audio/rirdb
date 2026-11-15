@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: openslr28
+name: RWCP + REVERB (via OpenSLR 28)
+year: 2017
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw, stereo]
+fs_hz: [16000]
+content: "Real RIRs bundled by OpenSLR 28 at 16 kHz: RWCP Sound Scene Database (2000; 143 multi-channel RIRs in 14 rooms) and REVERB Challenge (2013; 24 8-channel RIRs in small/medium/large rooms). Its AIR copy is de-duplicated against aachen_air; noises and simulated RIRs are not indexed."
+expected: {n_irs: 325, note: "OpenSLR lists 325 real RIR files, including 107 copies of Aachen AIR (skipped here); rirdb indexes 199 RWCP and REVERB records"}
+room_info: {dimensions: "no", geometry: "no", materials: "no", positions: "no", images: "no", where: "16 kHz RIR files only"}
+license:
+  spdx: LicenseRef-research-only
+  statements:
+  - licence: Apache-2.0
+    where: OpenSLR page of the bundle
+  - licence: LicenseRef-research-only
+    where: RWCP terms for the real RIRs (NII-SRC page; OpenSLR SLR13)
+  url: https://www.openslr.org/28/
+  redistribute_audio: unknown
+  note: 'OpenSLR lists the bundle as Apache-2.0, but its real RIRs are copies of RWCP and REVERB 2014 challenge
+    data whose own terms the bundle does not state; the AIR copies are skipped here (see aachen_air). RWCP restricts
+    its data to research and development use (NII-SRC page, OpenSLR SLR13), and the REVERB 2014 site no longer resolves
+    (checked 2026-10-13): treat the real RIRs as research-only.'
+access: open
+source: {kind: http, urls: ["https://www.openslr.org/resources/28/rirs_noises.zip"]}
+adapter: {name: openslr28}
+wave: 1
+homepage: https://www.openslr.org/28/
+paper: {title: "Sound scene data collection in real acoustical environments", url: "https://doi.org/10.1250/ast.20.225"}
+notes: "REVERB paper: https://ieeexplore.ieee.org/document/6701894 ; RWCP home: http://research.nii.ac.jp/src/en/RWCP-SSD.html"
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: OpenSLR bundle of RWCP and REVERB Challenge data
+  country: Japan
+  host: OpenSLR
+  licence_note: OpenSLR labels the bundle Apache 2.0, but its real RIRs are RWCP data that its owners restrict to
+    research and development use, plus REVERB Challenge data with no stated terms. Use the real RIRs for research
+    only.
+  caveats:
+  - 16 kHz copies of the RWCP and REVERB Challenge IRs; the terms of those original collections are not stated.
+  - Includes anechoic-chamber IRs. The bundle's simulated RIRs were made by its authors (Apache 2.0, no RWCP restriction)
+    and are listed separately as OpenSLR 26 simulated RIRs.

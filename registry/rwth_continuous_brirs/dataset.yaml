@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rwth_continuous_brirs
+name: Quasi-Continuous BRIRs in the Horizontal Plane
+year: 2025
+type: measured
+status: catalogued
+content: Binaural measurements of a stereo loudspeaker pair in RWTH Aachen's IKS|Lab with a KU100 dummy head turning
+  continuously through 370°; BRIRs for any angle are extracted with the included MATLAB code.
+fs_hz:
+- 32000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: partial
+  positions: partial
+  images: partial
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/15490727
+doi: 10.5281/zenodo.15490727
+web_check:
+  checked: '2026-10-14'
+  found_as: Quasi-Continuous BRIRs in the Horizontal Plane (RWTH IKS|Lab)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 0.65 GB
+  file_formats: MATLAB .mat in ZIP, with MATLAB code (.m) and PDF documentation
+  institution: RWTH Aachen University, Institute of Communication Systems (IKS)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/15490727
+  - https://zenodo.org/records/15490727/preview/dataset.zip
+  - https://zenodo.org/records/15490727/files/documentation.pdf
+  confidence: medium
+  caveats:
+  - 'Mostly raw measurement signals in one 650 MB MATLAB file: the quasi-continuous BRIRs (0.25 s) must be computed
+    with the included MATLAB adaptive-filter (NLMS) demo.'
+  - Ready-made IRs cover only 24 reference head orientations (30° steps) for the 2 loudspeakers, 1 s long.
+  - 'Four channels per measurement: the KU100 ears plus B&K 4101-B binaural microphones worn on the dummy head.'

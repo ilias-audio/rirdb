@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: munich_underground
+name: Underground station environment (Munich Theresienstraße)
+year: 2022
+type: measured
+status: catalogued
+content: Laser-scan-calibrated audio-visual model of Munich's Theresienstraße underground station with measured
+  binaural IRs at 17 positions, omni IRs and Eigenmike spherical-array sweeps, plus absorption data.
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: 'yes'
+  positions: partial
+  images: partial
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/6025631
+doi: 10.5281/zenodo.6025631
+web_check:
+  checked: '2026-10-14'
+  found_as: Underground station environment (Munich Theresienstraße, with measured IRs)
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  host: Zenodo
+  size: 5.7 GB
+  file_formats: WAV in ZIP; SOFA (HRIR, source directivity); OBJ/Blender models; TXT absorption coefficients; PDF
+  institution: Technical University of Munich (Audio Information Processing)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/6025631
+  - https://zenodo.org/api/records/6025631
+  - https://zenodo.org/records/6025631/preview/underground_v1.1.zip
+  - https://uol.de/p56371
+  - https://arxiv.org/abs/2111.01237
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 4.0); one 5.7 GB zip.
+  - Eigenmike data sit in a folder named EIGENMIKE_SINESWEEP (0.4-1.1 GB per file) and may need deconvolution with
+    the included sweep; check the PDF.
+  - Also holds HRIR and loudspeaker-directivity SOFA files, anechoic reference IRs and background-sound recordings.

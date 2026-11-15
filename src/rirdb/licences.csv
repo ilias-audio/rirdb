@@ -1,0 +1,32 @@
+id,research,commercial,training,redistribute,conditions,name
+CC0-1.0,yes,yes,yes,yes,,Creative Commons Zero 1.0 (public-domain dedication)
+CC-PDM-1.0,yes,yes,yes,yes,,Public Domain Mark 1.0
+LicenseRef-CC-PublicDomain,yes,yes,yes,yes,,Public domain (stated without naming CC0 or the Public Domain Mark)
+CC-BY-4.0,yes,yes,yes,yes,attribution,Creative Commons Attribution 4.0
+CC-BY-3.0,yes,yes,yes,yes,attribution,Creative Commons Attribution 3.0
+CC-BY-2.0,yes,yes,yes,yes,attribution,Creative Commons Attribution 2.0
+CC-BY-1.0,yes,yes,yes,yes,attribution,Creative Commons Attribution 1.0
+CC-BY-SA-4.0,yes,yes,yes,yes,attribution share_alike,Creative Commons Attribution-ShareAlike 4.0
+CC-BY-SA-3.0,yes,yes,yes,yes,attribution share_alike,Creative Commons Attribution-ShareAlike 3.0
+CC-BY-NC-4.0,yes,no,yes,yes,attribution non_commercial,Creative Commons Attribution-NonCommercial 4.0
+CC-BY-NC-3.0,yes,no,yes,yes,attribution non_commercial,Creative Commons Attribution-NonCommercial 3.0
+CC-BY-NC-SA-4.0,yes,no,yes,yes,attribution non_commercial share_alike,Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+CC-BY-NC-SA-3.0,yes,no,yes,yes,attribution non_commercial share_alike,Creative Commons Attribution-NonCommercial-ShareAlike 3.0
+CC-BY-NC-SA-2.0,yes,no,yes,yes,attribution non_commercial share_alike,Creative Commons Attribution-NonCommercial-ShareAlike 2.0
+CC-BY-ND-4.0,yes,yes,yes,unaltered_only,attribution no_derivatives,Creative Commons Attribution-NoDerivatives 4.0
+CC-BY-NC-ND-4.0,yes,no,yes,unaltered_only,attribution non_commercial no_derivatives,Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+CC-BY-NC-ND-3.0,yes,no,yes,unaltered_only,attribution non_commercial no_derivatives,Creative Commons Attribution-NonCommercial-NoDerivatives 3.0
+MIT,yes,yes,yes,yes,attribution,MIT License
+Apache-2.0,yes,yes,yes,yes,attribution,Apache License 2.0
+BSD-3-Clause,yes,yes,yes,yes,attribution,BSD 3-Clause License
+ODC-By-1.0,yes,yes,yes,yes,attribution,Open Data Commons Attribution License 1.0
+GPL-3.0-only,yes,yes,yes,yes,attribution share_alike,GNU General Public License 3.0
+LicenseRef-TAU-NonCommercial,yes,no,unknown,unknown,non_commercial,TAU-SRIR DB terms (non-commercial; Zenodo "other-nc")
+LicenseRef-S3A-academic,yes,no,unknown,unknown,non_commercial,S3A terms (academic use only)
+LicenseRef-research-only,yes,no,unknown,unknown,non_commercial,Research use only (terms that name no standard licence)
+LicenseRef-Voxengo-IR,yes,yes,yes,unaltered_only,,"Voxengo impulse-response terms: royalty-free use, commercial included; pass on only complete, unaltered and free of charge"
+LicenseRef-EchoThief,unknown,unknown,unknown,unknown,,EchoThief licence: read it
+LicenseRef-custom,unknown,unknown,unknown,unknown,,Custom terms written by the publisher: read them
+LicenseRef-per-space,unknown,unknown,unknown,unknown,,The licence differs per space: see the space
+LicenseRef-unspecified,unknown,unknown,unknown,unknown,,No licence found: all rights reserved by default
+LicenseRef-assumed-free,yes,yes,yes,yes,,"No licence stated by the authors; RIRDB treats the data as free to use until they answer (to confirm with them)"

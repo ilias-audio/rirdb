@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ertd
+name: Extended Room Transition Dataset (ERTD)
+year: 2024
+type: simulated
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 2,833 FDTD-simulated RIRs per variant on a 0.2 m grid over a meeting room coupled to a hallway (the geometry of McKenzie's Room Transition Dataset, NLOS source), at 1.55 m height; ERTD1 absorption matched to the measurements, ERTD2 with a strongly absorbing hallway wall.
+expected: {n_irs: 5666, n_rooms: 2, note: "2 variants x 2833"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["12169116"]}
+wave: 4
+homepage: https://zenodo.org/records/12169116
+paper: {title: "Common-slope modeling of late reverberation (IEEE/ACM TASLP 31, 2023)", url: "https://doi.org/10.1109/TASLP.2023.3317572"}
+doi: 10.5281/zenodo.12169116
+status: planned
+web_check:
+  checked: '2026-10-14'
+  institution: Aalto University
+  country: Finland

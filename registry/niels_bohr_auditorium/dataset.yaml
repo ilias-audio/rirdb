@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: niels_bohr_auditorium
+name: 'RIR Dataset: Niels Bohr Institute Auditorium A'
+year: 2024
+type: measured
+status: catalogued
+content: 'RIRs measured in Auditorium A of the Niels Bohr Institute, Copenhagen (about 126 m³): a robot arm moved
+  a microphone along a line, plus distributed Eigenmike em32 array measurements; one loudspeaker, 48 kHz.'
+fs_hz:
+- 48000
+expected:
+  n_rooms: 1
+room_info:
+  volume: 'yes'
+  geometry: partial
+  materials: partial
+  reference_acoustics: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/14212820
+doi: 10.5281/zenodo.14212820
+web_check:
+  checked: '2026-10-14'
+  found_as: 'Room Impulse Response Dataset: Niels Bohr Institute Auditorium A'
+  availability: open
+  families:
+  - mono
+  - ambisonic
+  - array
+  host: Zenodo
+  size: 1.4 GB
+  file_formats: HDF5, SOFA (PDF readme)
+  institution: Technical University of Denmark
+  country: Denmark
+  evidence_urls:
+  - https://zenodo.org/records/14212820
+  - https://zenodo.org/api/records/14212820
+  - https://zenodo.org/records/14212820/files/rir_NBI_line.h5?download=1
+  - https://doi.org/10.5281/zenodo.14212820
+  confidence: high
+  caveats:
+  - The record page does not give the number of measurement positions; details are in a 2-page PDF readme.
+  - The Eigenmike em32 data come as HDF5 with a SOFA copy; the line scan is a separate HDF5 file (about 1.4 GB in
+    total).
+  - One fixed loudspeaker position throughout.

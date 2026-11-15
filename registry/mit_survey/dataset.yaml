@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mit_survey
+name: MIT IR Survey
+year: 2016
+type: measured
+ir_kinds: [room, outdoor, vehicle]
+capture_formats: [mono_omni]
+fs_hz: [32000]
+content: 271 mono RIRs, each recorded in a distinct everyday place (surveyed from daily-life locations of volunteers); the public archive holds 270 (32 kHz, 24-bit).
+expected: {n_irs: 270, n_rooms: 270, note: "paper reports 271; Audio.zip contains 270"}
+room_info: {dimensions: "no", volume: "no", geometry: "no", materials: "no", positions: "no", reference_acoustics: "no", conditions: "no", where: "audio only; the place is named in the file name"}
+license:
+  spdx: LicenseRef-assumed-free
+  url: https://mcdermottlab.mit.edu/Reverb/IR_Survey.html
+  note: >-
+    No licence on the website, in Audio.zip (checked 2026-10-01), in the paper (PNAS 2016) or in the
+    authors' code repository github.com/jtraer/IR_Analysis_Synthesis (checked 2026-11-15). Ilias decided on
+    2026-11-15 to treat the IRs as free to use until the McDermott lab answers; the question is in
+    docs/plans/questions-for-authors.md.
+access: open
+source: {kind: http, urls: ["https://mcdermottlab.mit.edu/Reverb/IRMAudio/Audio.zip"]}
+adapter:
+  name: wav_tree
+  params: {pattern: 'Audio/h\d+_(?P<label>.+?)(_\w*tx\w*)?\.wav$', room_from: file}
+wave: 0
+homepage: https://mcdermottlab.mit.edu/Reverb/IR_Survey.html
+paper: {title: "Statistics of natural reverberation enable perceptual separation of sound and space", url: "https://www.pnas.org/content/113/48/E7856"}
+doi: 10.1073/pnas.1612524113
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: MIT (McDermott lab)
+  country: USA
+  host: Lab website (MIT)
+  doi_is_paper: true
+  caveats:
+  - The archive holds 270 IRs; the paper reports 271.
+  - Mono at 32 kHz; each place is described only by its file name.
+  - 'No licence anywhere: ask the McDermott lab before reusing or redistributing.'
+  - rirdb's per-IR index (the ir_kind column that rirdb query returns) still files the Park Street subway station
+    IR as outdoor (a keyword rule matched "park"), so until the index is rebuilt it is missing from the clean measured
+    rooms and the corpus-wide room counts; this page counts it as a room.

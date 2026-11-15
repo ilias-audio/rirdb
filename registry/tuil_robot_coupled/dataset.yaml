@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_robot_coupled
+name: "TU Ilmenau SRIR dataset: a robot's journey through coupled rooms"
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [sdm_array]
+content: SRIRs measured by a robot carrying a 7-mic SDM array (6 EM258 capsules at r = 5 cm plus a centre Earthworks M30 omni) on a grid through coupled spaces of TU Ilmenau's Helmholtzbau (hallway, coffee corner, two staircases; 2024) and along 4 lines from an office into the hallway (office part). 754 positions; 2 or 3 loudspeakers, each measured 2-3 times (first repeat indexed).
+expected: {n_irs: 2119, n_rooms: 8, note: "754 positions x 2-3 sources (first of the repeated measurements; count from the SOFA SourcePositions); rooms = measurement routes"}
+room_info: {positions: "yes", images: "yes", where: "robot positions in file names and SOFA; photos and overview figures"}
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-NC-SA-4.0
+    where: SOFA file headers (also for the office record 22702503)
+  redistribute_audio: "yes"
+  note: 'Conflicting statements: the strictest is used. Ask the authors to confirm.'
+access: open
+source: {kind: zenodo, records: ["13987509", "22702503"], include: ["*.zip", "*.jpg", "*.png"]}
+keep_archive: false
+wave: 2
+adapter:
+  name: sofa
+  # SingleRoomSRIR Data.IR[M, 7, N], fs 48 kHz, N = 4 s (grid) / 1 s (office lines). M = 6 or 9: 2-3 sources x
+  # 2-3 repeats (same SourcePosition, layout varies by file): first repeat per source. Receiver 6 = centre omni.
+  params: {glob: "**/*.sofa", pattern: '_(?P<rcv>-?[\d.]+X_-?[\d.]+Y)\.sofa$', room_from: parent,
+           capture_format: sdm_array, reference_role: mic_6, first_per_source: true}
+homepage: https://zenodo.org/records/13987509
+paper: {title: "Spatial Room Impulse Response Dataset: A Robot's Journey Through Coupled Rooms (DAGA 2024)", url: "https://pub.dega-akustik.de/DAGA_2024/files/upload/paper/453.pdf"}
+doi: 10.5281/zenodo.13987509
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: TU Ilmenau
+  country: Germany
+  licence_note: The Zenodo records say CC BY 4.0, but every SOFA file says CC BY-NC-SA 4.0. Until TU Ilmenau clarifies,
+    use it non-commercially, credit the authors and share under the same terms.
+  caveats:
+  - Zenodo says CC BY 4.0 but the SOFA files say CC BY-NC-SA 4.0; treat it as non-commercial when in doubt.
+  - An earlier Zenodo record was superseded in October 2024.
+  - 'Coupled rooms: the decay has two slopes, so T30 (about 2.6 s) and EDT (about 0.9 s) differ widely, and no single
+    reverberation time describes these IRs.'

@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: freesound_recordinghopkins
+name: Impulse Responses pack (recordinghopkins, Freesound)
+year: 2013
+type: production
+status: catalogued
+content: '31 stereo 48 kHz IRs for convolution reverb: a long underground concrete tunnel (7), Studio B at Middle
+  Tennessee State University (4 mic positions) and 20 vintage analog plate and spring reverbs.'
+fs_hz:
+- 48000
+expected:
+  n_irs: 31
+  n_rooms: 2
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://freesound.org/people/recordinghopkins/packs/11031/
+web_check:
+  checked: '2026-10-14'
+  found_as: Freesound – 'Impulse Responses' pack by recordinghopkins (Greg Hopkins)
+  availability: free_registration
+  families:
+  - stereo
+  host: Freesound
+  file_formats: WAV (24-bit)
+  institution: Freesound user recordinghopkins
+  country: USA
+  evidence_urls:
+  - https://freesound.org/people/recordinghopkins/packs/11031/
+  - https://freesound.org/search/?f=pack_grouping:%2211031_Impulse%20Responses%22&s=Date+added+(newest+first)&g=1
+  - https://freesound.org/people/recordinghopkins/sounds/175363/
+  - https://freesound.org/people/recordinghopkins/sounds/175324/
+  - https://freesound.org/people/recordinghopkins/
+  confidence: high
+  caveats:
+  - Downloading needs a free Freesound account.
+  - Only 11 of the 31 IRs are of real spaces. The other 20 are plate and spring reverb units.
+  - The uploader's real name is not shown on Freesound, and the tunnel's location is not given.

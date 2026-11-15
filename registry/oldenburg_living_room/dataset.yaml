@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: oldenburg_living_room
+name: Living room environment (Oldenburg)
+year: 2021
+type: measured
+status: catalogued
+content: 'Audio-visual model of the Oldenburg living-room lab (with kitchen) with 100 measured IR files for two
+  scenes: head-and-torso binaural, spherical-array and omni, plus geometry and absorption data.'
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: 'yes'
+  positions: partial
+  images: partial
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/5747753
+doi: 10.5281/zenodo.5747753
+web_check:
+  checked: '2026-10-14'
+  found_as: Living room environment (Oldenburg audio-visual scene with measured IRs)
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  host: Zenodo
+  size: 201 MB
+  file_formats: WAV in ZIP; OBJ/MTL acoustic and visual models; TXT absorption coefficients; PDF documentation
+  institution: Carl von Ossietzky University of Oldenburg (Medical Physics and Acoustics); HörTech gGmbH
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/5747753
+  - https://zenodo.org/api/records/5747753
+  - https://zenodo.org/records/5747753/preview/Living%20Room%201.1.zip
+  - https://arxiv.org/abs/2111.01237
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 4.0).
+  - One 201 MB zip with 100 IR WAV files (21 spherical-array, 40 head-and-torso, 39 omni), the sweeps, 3D acoustic
+    and visual models and a PDF guide.
+  - Version 1.1 (an earlier v1.0 is a separate Zenodo record); the sample rate is not stated on the record page.

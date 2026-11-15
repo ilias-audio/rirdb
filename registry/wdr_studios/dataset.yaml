@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: wdr_studios
+name: WDR Broadcast Studios Spatial Audio IR Compilation
+year: 2020
+type: measured
+status: catalogued
+content: KU100 BRIRs (360 head directions in 1° steps) and VariSphear spherical-array DRIRs on Lebedev grids, measured
+  in four WDR broadcast studios and control rooms in Cologne; SOFA plus a WAV archive.
+expected:
+  n_irs: 84
+  n_rooms: 4
+room_info:
+  images: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/3930833
+doi: 10.5281/zenodo.3930833
+web_check:
+  checked: '2026-10-14'
+  found_as: Spatial Audio Impulse Response Compilation at the WDR Broadcast Studios (TH Köln)
+  availability: open
+  families:
+  - binaural
+  - ambisonic
+  host: Zenodo
+  size: 25.5 GB
+  file_formats: SOFA (24 BRIR + 60 DRIR files); WAV data in a 15.5 GB ZIP; panoramas, photos, PDFs
+  institution: TH Köln
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/3930833
+  - https://zenodo.org/records/3930833
+  - https://sofacoustics.org/data/database/thk/
+  confidence: high
+  caveats:
+  - 'Very large: 25.5 GB in 99 files, including a 15.5 GB WAV ZIP; the SOFA files can be downloaded individually
+    and are also mirrored on sofacoustics.org.'
+  - The 84 counts SOFA measurement sets (each holds up to 1,202 array directions or 360 head orientations). The
+    authors give no total, and the record does not state the sample rate.
+  - Presented at the 2012 Tonmeistertagung and put on Zenodo in 2020; file codes are explained in an included name-coding
+    chart.

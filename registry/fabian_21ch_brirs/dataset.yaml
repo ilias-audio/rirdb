@@ -1,0 +1,37 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: fabian_21ch_brirs
+name: FABIAN BRIRs of a 21-channel loudspeaker array
+year: 2026
+type: measured
+status: catalogued
+content: FABIAN head-and-torso simulator BRIRs for 21 loudspeakers of the TU Studio Small dome at TU Berlin, with
+  the head turned on the torso (yaw ±60°, pitch ±30°, 2° steps); one SOFA file.
+expected:
+  n_rooms: 1
+room_info:
+  positions: partial
+  images: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/19683680
+doi: 10.5281/zenodo.19683680
+web_check:
+  checked: '2026-10-14'
+  found_as: BRIRs of a 21-channel loudspeaker array under multiple head-above-torso orientations (FABIAN, TU Studio
+    Small)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 4.7 GB
+  file_formats: SOFA (.sofa)
+  institution: TU Berlin, TH Köln and Aalto University
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/19683680
+  - https://zenodo.org/records/19683680/files/FABIAN_MOBRIR_TUStudioSmall_measured.sofa?download=1
+  confidence: high
+  caveats:
+  - A single 4.7 GB SOFA file.
+  - The record has no documentation, paper or room details, and does not state the sampling rate.
+  - The head turns relative to a fixed torso (head-above-torso orientation), not the whole dummy.

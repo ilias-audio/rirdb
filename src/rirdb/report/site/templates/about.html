@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# About: about/index.html. Context from pages_docs.render_about(). #}
+
+{% block head %}
+<style>
+.ab-body { min-width: 0; }
+.ab-body > .section:first-of-type { border-top: 0; padding-top: 4px; }
+.ab-body h3 { margin-top: 1.6em; }
+.ab-body h2 + h3 { margin-top: .6em; }
+.ab-body .prose { max-width: 74ch; }
+.ab-body .code pre { padding-right: 66px; white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .ab-body .code pre { padding-top: 36px; } }
+.cite-plain { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 16px; margin: 0 0 1em; max-width: 74ch; overflow-wrap: anywhere; }
+.credits { list-style: none; margin: 0 0 1em; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px; }
+.credits li { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; }
+.credits b { display: block; }
+.credits span { color: var(--ink-2); font-size: .92rem; }
+.who { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}index.html">rirdb</a> / About</p>
+  <h1>About rirdb</h1>
+  <p class="lede">rirdb is a consolidated, checked catalogue of public room impulse response datasets, with one uniform acoustic analysis of the IRs it could download{% if num.n_sub %} (of a fixed subsample for the {{ num.n_sub }} largest datasets){% endif %}. It exists so that anyone looking for reverb data can find it, judge it and fetch it without opening every archive first.</p>
+</div></div>
+
+<div class="wrap with-side">
+  <nav class="side-nav" aria-label="On this page">
+    <ol>
+      <li><a href="#what">What and why</a></li>
+      <li><a href="#who">Who</a></li>
+      <li><a href="#cite">How to cite</a></li>
+      <li><a href="#credits">Credits</a></li>
+      <li><a href="#licence">Licence</a></li>
+      <li><a href="#contribute">Contributing</a></li>
+      <li><a href="#build">How the site is built</a></li>
+      <li><a href="#limits">Limitations</a></li>
+    </ol>
+  </nav>
+  <div class="ab-body">
+    <ul class="toc-m" aria-label="On this page">
+      <li><a href="#what">What and why</a></li><li><a href="#who">Who</a></li><li><a href="#cite">Cite</a></li><li><a href="#credits">Credits</a></li>
+      <li><a href="#licence">Licence</a></li><li><a href="#contribute">Contribute</a></li><li><a href="#build">Build</a></li><li><a href="#limits">Limitations</a></li>
+    </ul>
+
+    <section class="section" aria-labelledby="what">
+      <h2 id="what">What rirdb is, and why</h2>
+      <div class="prose">
+        <p>Public room impulse response datasets are scattered across lab websites, Zenodo records, GitHub repositories and archives that sometimes disappear. Each describes its IRs in its own way, with its own licence, file layout and quality. Choosing one usually means downloading and inspecting several.</p>
+        <p>rirdb puts them in one place. It catalogues {{ num.n_all | int }} datasets: {{ num.n_registry | int }} in its registry and {{ num.n_survey | int }} more found on the web. For each it records where to get it, what it holds and what its licence allows. It downloads {{ num.n_lock_ds | int }} of the registry datasets with checksums and analyses their IRs with the same methods (ISO 3382-1/-2 and IEC 60268-16): {{ num.n_irs_analysed | int }} IRs from {{ num.n_analysed | int }} datasets so far{% if num.n_sub %}, every IR of {{ num.n_full }} of them and a fixed subsample of the {{ num.n_sub }} largest{% endif %}. The result can be searched by what you need: a kind of space, a decay time, a capture format, a licence.</p>
+        <p>It was built for research on feedback delay network (FDN) reverberation, where it supplies training data and target room responses, and it is shared so that others need not repeat the work.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="who">
+      <h2 id="who">Who</h2>
+      <div class="prose">
+        <p>rirdb is made by Ilias Ibnyahya, a PhD researcher at the <a href="https://www.c4dm.eecs.qmul.ac.uk/">Centre for Digital Music (C4DM)</a>, Queen Mary University of London, as part of his doctoral work on FDN reverberation. Source code and history: <a href="{{ REPO_URL }}">{{ REPO_URL | replace("https://", "") }}</a>.</p>
+        <p>The catalogue is to be presented as the Reverb Dataset Field Guide at DMRN+21, the Digital Music Research Network workshop at King's College London on 11 December 2026, if the abstract is accepted. The <a href="{{ root }}guide/index.html">Field Guide</a> is on this site.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="cite">
+      <h2 id="cite">How to cite</h2>
+      <div class="prose">
+        <p>Please cite every dataset you use: each dataset page gives its paper, DOI and licence. If rirdb's catalogue or analysis helped, please cite rirdb too.</p>
+        <p>rirdb has no DOI yet. Until it has one, cite the GitHub repository and the build date of the version you used. A Zenodo DOI for the code and the derived data is planned (<a href="{{ plan_url }}">hosting plan</a>); this page will give it once it exists.</p>
+      </div>
+      <p class="cite-plain">{{ plain_cite }}</p>
+      {{ m.code(bib, "bib") }}
+    </section>
+
+    <section class="section" aria-labelledby="credits">
+      <h2 id="credits">Credits</h2>
+      <div class="prose">
+        <p>The data is the work of the authors of every dataset listed here, who measured the rooms and shared the results. Every dataset page names them through the dataset's paper, homepage and DOI.</p>
+        <p>This repository started as a fork of <a href="{{ upstream_url }}">RoyJames/room-impulse-responses</a>, a community list of public RIR datasets; rirdb adds the registry, the checks and the analysis.</p>
+      </div>
+      <h3 id="libraries">Software</h3>
+      <ul class="credits">
+        <li><b><a href="https://pyfar.org">pyfar</a></b><span>Octave filter bank, onset detection, air attenuation.</span></li>
+        <li><b><a href="https://pyrato.readthedocs.io">pyrato</a></b><span>Lundeby noise handling, energy decay curves, ISO 3382 parameters, STI.</span></li>
+        <li><b><a href="https://duckdb.org">DuckDB</a></b><span>The SQL views over the Parquet index and metrics.</span></li>
+        <li><b><a href="https://huggingface.co/laion/clap-htsat-unfused">CLAP</a></b><span>LAION's audio embedding model, run through Hugging Face transformers, for the CLAP map.</span></li>
+        <li><b><a href="https://umap-learn.readthedocs.io">UMAP</a></b><span>The two-dimensional projection of the CLAP embeddings.</span></li>
+        <li><b>Jinja and markdown-it-py</b><span>This website's pages, rendered from the same data files.</span></li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="licence">
+      <h2 id="licence">Licence</h2>
+      <div class="prose">
+        {% if has_licence %}
+        <p>The licence of rirdb's code and catalogue is in the repository's <a href="{{ repo_blob('LICENSE') }}">LICENSE</a> file.</p>
+        {% else %}
+        <p>A licence for rirdb's own code and catalogue has not been chosen yet: the repository has no LICENSE file. The <a href="{{ plan_url }}">hosting plan</a> proposes MIT or BSD-3-Clause for the code and CC BY 4.0 for rirdb's derived data. This page will state the licence once it is chosen.</p>
+        {% endif %}
+        <p>Each dataset keeps its own licence. rirdb relicenses nothing and hosts no audio: it links to the original sources, and each dataset page explains, in plain words, what its licence allows.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="contribute">
+      <h2 id="contribute">Contributing</h2>
+      <div class="prose">
+        <p><b>A dataset that is missing.</b> Add a folder <code>registry/&lt;id&gt;/</code> with a <a href="{{ registry_url }}">dataset.yaml</a> and open a pull request. Give the source (Zenodo record, URL or repository), the licence, how many IRs and spaces it has, and the channel format.</p>
+        <p><b>A mistake.</b> A wrong licence reading, a dead link, a miscounted dataset or a space in the wrong category: <a href="{{ issues_url }}">open an issue</a> with a link to the evidence.</p>
+        <p><b>A dataset author?</b> Corrections and updated links are especially welcome, as are notes on how your IRs were measured.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="build">
+      <h2 id="build">How the site is built</h2>
+      <div class="prose">
+        <p>The site is static: plain HTML, CSS and a small script, with every chart drawn in advance as SVG. One command builds it from the registry, the index and the metrics. On QMUL's cluster it runs as a SLURM job:</p>
+      </div>
+      {{ m.code(build_cmds, "build-cmd") }}
+      <div class="prose">
+        <p>Every page footer gives the build date, commit and analyzer version. This build: {{ generated }}{% if data.git %}, commit <code>{{ data.git }}</code>{% endif %}, analyzer {{ data.analyzer_version }}. The <a href="{{ root }}methods/index.html">methods page</a> describes the pipeline behind it.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="limits">
+      <h2 id="limits">Limitations</h2>
+      <ul class="prose">
+        {% if data.survey_date %}<li>Licences, hosts, institutions and availability were checked on the web on {{ data.survey_date }}. They can change after that date: check the source before relying on them.</li>{% endif %}
+        <li>Links rot. Hosts move, records get new versions and lab pages disappear; the lock files pin the versions rirdb downloaded, so a change is visible when a fetch script runs.</li>
+        {% if offline_text %}<li>OpenAIR: {{ offline_text }}</li>{% endif %}
+        <li>{{ num.n_not_analysed | int }} registry datasets are not analysed{% if not_analysed %}: {{ not_analysed }}{% endif %}. {{ num.n_survey | int }} more datasets are catalogued from their web pages only. Each dataset page says which applies.</li>
+        <li>The analysis has known limitations, listed in the <a href="{{ root }}methods/index.html#analyzer">analyzer record</a>{% if c80_low %}: for example, C80 at {{ c80_low.band | hz }} reads {{ (0 - c80_low.median_diff) | num(1) }} dB lower than OpenAIR's published values (median over {{ c80_low.n | int }} spaces; see <a href="{{ root }}analysis/validation.html">Validation</a>){% endif %}.</li>
+        <li>The licence readings are plain-language summaries, not legal advice. The licence text of each dataset is what counts.</li>
+      </ul>
+    </section>
+  </div>
+</div>
+{% endblock %}

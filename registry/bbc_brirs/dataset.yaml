@@ -1,0 +1,27 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: bbc_brirs
+name: BBC R&D BRIR dataset
+year: 2017
+type: measured
+ir_kinds: [room]
+capture_formats: [binaural]
+content: BRIRs measured on a 3D multichannel loudspeaker system for dynamic data-based auralisation (SOFA MultiSpeakerBRIR convention).
+room_info: {geometry: "partial", images: "yes", where: "README.md, CAD render (lr_cad.jpg), panorama (lr_pano.jpg)"}
+license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
+access: open
+source: {kind: github, records: ["bbc/bbcrd-brirs@master"]}
+adapter:
+  name: wav_tree
+  # 2-channel files = frontal head orientation per loudspeaker (the 720-channel files hold all 360 orientations)
+  params: {pattern: 'irs/BBCRD_LR_(?P<src>[^/]+)\.wav$', room_from: pattern, room_default: bbc-rd-listening-room,
+           channels: [2], roles: {2: [L, R]}, channel_formats: {2: binaural}}
+wave: 1
+homepage: https://github.com/bbc/bbcrd-brirs
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: BBC R&D
+  country: UK
+  host: GitHub and BBC data server
+  caveats:
+  - IRs truncated to 16,384 samples (0.34 s); the SOFA files on the BBC server add variants with modelled onsets.

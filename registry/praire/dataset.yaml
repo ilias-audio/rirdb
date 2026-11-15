@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: praire
+name: PRAIRE
+year: 2023
+type: measured
+status: catalogued
+content: Measured IRs of 61 anonymised real spaces (classrooms, gyms, offices, theatres, churches, concert and event
+  halls, corridors, a studio) shared by consultants and researchers; FLAC files with XLS position sheets.
+expected:
+  n_rooms: 61
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: MIT
+  note: The page licenses the data under MIT (Copyright 2023 TU Budapest) but also says results are provided 'as
+    is' for academic purposes (re-evaluation); the MIT terms themselves set no such limit.
+homepage: https://last.hit.bme.hu/en/praire
+web_check:
+  checked: '2026-10-14'
+  found_as: 'PRAIRE: Public Room Acoustic Impulse Response Exhibition (BME)'
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  host: Lab website
+  size: about 528 MB (74 ZIPs, summed from server headers)
+  file_formats: FLAC IRs and XLS position/room sheets, one ZIP per case
+  institution: Budapest University of Technology and Economics (BME), Laboratory of Acoustics and Studio Technologies
+  country: Hungary
+  evidence_urls:
+  - https://last.hit.bme.hu/en/praire
+  - https://last.hit.bme.hu/sites/default/files/documents/C001%20-%20gymnasium.zip
+  confidence: high
+  caveats:
+  - 61 anonymised cases in 74 ZIPs; some rooms come in several parts or in before/after and seating/curtain variants.
+  - 'IRs are only deconvolved and cropped: the page gives no acoustic parameters, sample rate or total IR count.'
+  - The page flags inconsistent levels in two church cases (C035, C036) and heavy cropping in C061.

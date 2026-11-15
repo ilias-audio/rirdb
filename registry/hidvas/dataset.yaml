@@ -1,0 +1,54 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: hidvas
+name: HIDVAS
+year: 2026
+type: measured
+status: catalogued
+content: Swept-sine IRs from 8 loudspeakers and 2 in-ear receivers to behind-the-ear hearing-aid mics, dummy-head
+  eardrum mics and 2 external mics, in 2 KU Leuven rooms at 4 reverberation times; plus recordings.
+fs_hz:
+- 48000
+expected:
+  n_irs: 1216
+  n_rooms: 2
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: 'no'
+  materials: partial
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+  conditions: 'yes'
+license:
+  spdx: LicenseRef-unspecified
+  note: The Zenodo data record states no licence; the companion code repository on GitHub and the arXiv preprint
+    are CC BY 4.0, which does not by itself cover the data.
+homepage: https://zenodo.org/records/15773862
+doi: 10.5281/zenodo.15773862
+web_check:
+  checked: '2026-10-14'
+  found_as: 'HIDVAS: Hearing Instrument Dataset in Various Acoustical Scenarios'
+  availability: open
+  families:
+  - binaural
+  - array
+  - mono
+  host: Zenodo
+  size: 15.2 GB (IR-only ZIP 651 MB)
+  file_formats: WAV (ZIP), CSV setup coordinates
+  institution: KU Leuven
+  country: Belgium
+  evidence_urls:
+  - https://zenodo.org/api/records/15773862
+  - https://zenodo.org/records/15773862/files/README.md?download=1
+  - https://zenodo.org/api/records/15774050
+  - https://arxiv.org/abs/2606.14175
+  - https://arxiv.org/html/2606.14175v1
+  - https://github.com/Arnout-Roebben/HIDVAS
+  - https://github.com/Arnout-Roebben/HIDVAS/blob/main/LICENSE.md
+  confidence: high
+  caveats:
+  - No licence is stated for the data on Zenodo.
+  - An IR-only ZIP (651 MB) is offered next to the full 15.2 GB set with recordings.
+  - The Dutch LIST speech recordings are only in a separate restricted version.

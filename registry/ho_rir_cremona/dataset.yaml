@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ho_rir_cremona
+name: "The Sound of the Violin's Home (Arvedi Auditorium)"
+year: 2026
+type: measured
+ir_kinds: [room]
+capture_formats: [hoa_sh, sma_raw]
+content: Higher-order RIRs of the Arvedi Auditorium (Museo del Violino, Cremona).
+expected: {n_rooms: 1}
+room_info: {positions: "yes", where: "pos_sources.csv, pos_receivers.csv"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["20098848"]}
+adapter:
+  name: wav_tree
+  # 8-capsule spherical arrays at 65 receivers x 5 sources: analysed on the capsule mean (order 0)
+  params:
+    pattern: 'rirs/rir-(?P<src>S\d+)-(?P<rcv>A[0-9A_]+)\.wav$'
+    room_from: pattern
+    room_default: arvedi-auditorium-cremona
+    roles: {8: [c1, c2, c3, c4, c5, c6, c7, c8]}
+    channel_formats: {8: sma_raw}
+    reference_roles: {8: mean}
+wave: 1
+homepage: https://zenodo.org/records/20098848
+doi: 10.5281/zenodo.20098848
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Politecnico di Milano
+  country: Italy

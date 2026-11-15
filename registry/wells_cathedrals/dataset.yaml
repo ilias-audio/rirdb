@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: wells_cathedrals
+name: Jez Wells cathedral IRs (Arundel, Ely)
+year: 2007
+type: measured
+status: catalogued
+content: Three stereo impulse responses that Jez Wells (University of York) recorded in Arundel Cathedral's nave,
+  Ely Cathedral's choir and Ely's Lady Chapel while restoring 1950s choral recordings.
+fs_hz:
+- 44100
+expected:
+  n_irs: 3
+  n_rooms: 3
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://www.jezwells.org/Computer_music_tools.html
+web_check:
+  checked: '2026-10-14'
+  found_as: Jez Wells cathedral impulse responses (Arundel, Ely)
+  availability: open
+  families:
+  - stereo
+  host: Personal website
+  size: 4.9 MB (3 WAV files)
+  file_formats: WAV (stereo, 24-bit PCM)
+  institution: University of York (Jez Wells)
+  country: UK
+  evidence_urls:
+  - https://www.jezwells.org/Computer_music_tools.html
+  - https://www.jezwells.org/Impulse_responses/arundel_impulse_response_44_1kHz.wav
+  - https://www.jezwells.org/Impulse_responses/ely_choir_impulse_response_44_1kHz.wav
+  - https://www.jezwells.org/Impulse_responses/ely_lady_chapel_impulse_response_44_1kHz.wav
+  - https://eprints.whiterose.ac.uk/id/eprint/198111/
+  confidence: medium
+  caveats:
+  - Only three IRs. The measurement method and positions are not described.
+  - No licence or terms of use stated.
+  - The page is undated; the year comes from the files' server dates (July 2007).

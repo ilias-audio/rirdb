@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: gtu_rir
+name: GTU-RIR
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: 15,202 RIRs collected with a semi-automated recording system (4 loudspeakers, 6 microphones on motorised stands) in 11 rooms of Gebze Technical University; positions, room dimensions, RT60, temperature and humidity per record.
+expected: {n_irs: 15202, n_rooms: 11, note: "README, checked 2026-10-13"}
+fs_hz: [44100]
+room_info: {dimensions: "yes", positions: "yes", reference_acoustics: "yes", conditions: "partial", where: "per-record room dimensions, source and microphone positions, RT60, temperature and humidity in RIR.pickle.dat (README, checked 2026-10-13)"}
+license: {spdx: LicenseRef-unspecified, url: "https://github.com/mehmetpekmezci/gtu-rir", redistribute_audio: unknown, note: "The GitHub repository's code is GPL-3.0; its README states no licence for the RIR data file (RIR.pickle.dat on SharePoint), checked 2026-10-13 and 2026-11-06. Ask the authors before reusing or sharing the data."}
+access: manual
+source:
+  kind: manual
+  instructions: "SharePoint link returns 403 to scripts. Download RIR.pickle.dat via a browser from the link in https://github.com/mehmetpekmezci/gtu-rir and place it in $RIRDB_ROOT/raw/_inbox/gtu_rir/, then run `sbatch jobs/download.sh fetch/adopt_manual.sh gtu_rir`. Only unpickle inside a job, after the checksum is recorded."
+wave: 2
+homepage: https://github.com/mehmetpekmezci/gtu-rir
+status: manual
+web_check:
+  checked: '2026-10-14'
+  institution: Gebze Technical University
+  country: Turkey
+  host: SharePoint (GTU)
+  availability: open
+  licence_note: The GPL 3.0 licence is in the code repository on GitHub; the README states no licence for the RIR
+    file hosted on SharePoint. Ask the authors before reusing the data.
+  caveats:
+  - 'Published as one Python pickle (RIR.pickle.dat). Loading a pickle can run code: open it only in an isolated
+    environment, after checking its checksum.'
+  - The SharePoint link refuses scripted downloads; it works in a browser.

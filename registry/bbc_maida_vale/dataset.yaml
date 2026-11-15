@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: bbc_maida_vale
+name: BBC Maida Vale Impulse Response Dataset
+year: 2023
+type: measured
+status: catalogued
+content: Third-order Ambisonic spatial IRs for 3DoF/6DoF rendering, KEMAR binaural references and ISO 3382 measurements
+  of the BBC Maida Vale live rooms MV4 and MV5, with sources in four orientations.
+expected:
+  n_rooms: 2
+room_info:
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-3.0
+homepage: https://zenodo.org/records/10020866
+doi: 10.5281/zenodo.10020866
+web_check:
+  checked: '2026-10-14'
+  found_as: BBC Maida Vale Impulse Response Dataset
+  availability: open
+  families:
+  - ambisonic
+  - binaural
+  host: Zenodo
+  size: 3.9 GB (MV4.zip 3.4 GB, MV5.zip 0.54 GB)
+  file_formats: One ZIP per room (IRs with AmbiX convolver configs); PDF readmes and release notes
+  institution: University of York (with BBC R&D)
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/api/records/10020866
+  - https://zenodo.org/records/10020866
+  - https://doi.org/10.5281/zenodo.7267561
+  confidence: high
+  caveats:
+  - Measured in 2021; v2.01 (Oct 2023) is the latest version of concept DOI 10.5281/zenodo.7267561.
+  - The authors say the ISO 3382 set should not be used for auralisation. Where source and receiver positions coincide,
+    they advise removing the direct sound and adding close-miked direct sound.
+  - The record page does not state the number of IRs or the sample rate; details are in the per-room PDF readmes.

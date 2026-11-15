@@ -1,0 +1,53 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: anu_md_omp
+name: RIRs for MD-OMP Monte Carlo (ANU)
+year: 2025
+type: simulated
+status: catalogued
+content: Simulated RIRs from four sources to a 28-microphone perimeter array around the walls of a 3.36 x 4.48 x
+  4.1 m room, 100 Monte Carlo trials at each RT of 0.2-0.8 s, 16 kHz, for sound source localisation.
+fs_hz:
+- 16000
+expected:
+  n_irs: 78400
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: The Zenodo record lists both CC BY 4.0 and MIT without saying which part each covers; both allow commercial
+    use with attribution.
+homepage: https://zenodo.org/records/17500576
+doi: 10.5281/zenodo.17500576
+web_check:
+  checked: '2026-10-14'
+  found_as: Room Impulse Responses for MD-OMP Monte Carlo (ANU)
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 8.75 GB
+  file_formats: ZIP of MATLAB .mat files
+  institution: Australian National University (Audio & Acoustic Signal Processing Group)
+  country: Australia
+  evidence_urls:
+  - https://zenodo.org/records/17500576
+  - https://zenodo.org/api/records/17500576
+  - https://zenodo.org/records/17500576/preview/rir.zip
+  - https://github.com/weiting-lai/MD-OMP_Localization
+  - https://raw.githubusercontent.com/weiting-lai/MD-OMP_Localization/main/demo_monte_t60.m
+  - https://raw.githubusercontent.com/weiting-lai/MD-OMP_Localization/main/+function/+pos/perimetermic.m
+  confidence: medium
+  caveats:
+  - One 8.75 GB zip of 700 MATLAB .mat files (100 trials for each reverberation time from 0.2 to 0.8 s), each with
+    RIR sets and coordinates for 4 sources.
+  - IR count derived as 700 files x 4 sources x 28 microphones; room size and mic positions come from the GitHub
+    code, and the simulator is not named.
+  - One simulated room only; made to benchmark the MD-OMP localisation method (Lai et al., IEEE TASLP 2025).

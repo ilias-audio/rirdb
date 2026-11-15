@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: pan_ar
+name: PAN-AR
+year: 2024
+type: measured
+status: catalogued
+content: Second-order Ambisonic SRIRs (Core Sound OctoMic), ambient noise and 360-degree photos from a printer room,
+  a meeting room, a classroom and an underground car park, by the University of Milan.
+fs_hz:
+- 192000
+- 96000
+expected:
+  n_irs: 23
+  n_rooms: 4
+room_info:
+  geometry: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-SA-4.0
+homepage: https://zenodo.org/records/17831025
+doi: 10.5281/zenodo.17831025
+web_check:
+  checked: '2026-10-14'
+  found_as: 'PAN-AR: HOA RIRs, ambient noise and spherical pictures (University of Milan)'
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  file_formats: WAV (A-format and AmbiX B-format), JPG/JPEG, PDF floor plans, CSV, in ZIP; SOFA via SONICOM Ecosystem
+  institution: University of Milan
+  country: Italy
+  evidence_urls:
+  - https://zenodo.org/records/17831025
+  - https://zenodo.org/api/records/17831025
+  - https://zenodo.org/api/records/17831025/versions
+  - https://zenodo.org/records/17831025/files/README.md?download=1
+  - https://zenodo.org/records/17831025/files/IRs.csv?download=1
+  - https://ecosystem.sonicom.eu/databases/13
+  - https://sofacoustics.org/data/database/pan-ar/
+  - https://api.openalex.org/works/doi:10.1145/3678299.3678332
+  confidence: high
+  caveats:
+  - 23 SRIRs in total, each given as 8-channel A-format (192 kHz) and AmbiX B-format (96 kHz).
+  - SOFA versions are on the SONICOM Ecosystem (database 13) and sofacoustics.org.
+  - Version 1.0 (Dec 2025) replaced version 0.1.0 (2024) and adds final floor plans.

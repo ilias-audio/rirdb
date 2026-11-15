@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tampere_distance
+name: Speaker Distance Estimation Datasets (Tampere)
+year: 2026
+type: simulated
+status: catalogued
+content: 2,500 simulated RIRs (pyroomacoustics image-source method, reflection order 100) of randomised rooms, shared
+  by a 40,000-clip reverberant speech corpus for single-channel speaker distance estimation.
+expected:
+  n_irs: 2500
+room_info:
+  dimensions: 'no'
+  volume: 'yes'
+  geometry: 'no'
+  materials: partial
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-4.0
+  note: The record is CC BY-NC 4.0 (the authors attribute the NC term to the EARS speech) while its table lists
+    labels as CC BY 4.0 and STARSS23 audio and code as MIT; no separate licence is given for the RIRs.
+homepage: https://zenodo.org/records/23096979
+doi: 10.5281/zenodo.23096979
+web_check:
+  checked: '2026-10-14'
+  found_as: 'Speaker Distance Estimation Datasets: shared synthetic RIRs (Tampere)'
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 2.2 GB (RIR zip); 28.1 GB whole record
+  file_formats: ZIP of NumPy .npz files
+  institution: Tampere University
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/records/23096979
+  - https://zenodo.org/api/records/23096979
+  - https://zenodo.org/records/23096979/preview/shared_rir.zip
+  - https://github.com/michaelneri/audio-distance-estimation
+  confidence: high
+  caveats:
+  - Only shared_rir.zip (2.2 GB, 2,500 .npz files) holds the RIRs; the rest of the 28 GB record is reverberant speech,
+    STARSS23 clips and labels.
+  - Non-commercial licence (CC BY-NC 4.0) applies to the record, including the RIR archive.
+  - RIR sample rate, room dimensions and positions are not stated; per-scene volume, absorption and source distance
+    are in metadata_variants.csv (corpus audio is 16 kHz).

@@ -1,0 +1,40 @@
+# Run the tests at every push and pull request.
+#
+# The tests need no downloaded data: the ones that read the database ($RIRDB_ROOT) skip themselves here, and
+# tests/test_end_to_end.py runs a generated dataset through every stage, from `pin` to `build` and its checks.
+# The environment is the locked pixi one, as on Apocrita. It includes the CUDA build of PyTorch, which runs
+# on CPU; CONDA_OVERRIDE_CUDA lets it install on a runner without a GPU.
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CONDA_OVERRIDE_CUDA: "12.6"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space for the environment
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.67.0
+          locked: true
+          cache: true
+      - name: Tools the bash layer uses
+        run: sudo apt-get install -y --no-install-recommends jq unzip
+      - name: Tests
+        run: pixi run pytest -q -n auto

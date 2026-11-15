@@ -1,0 +1,52 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: aachen_st_nicholas
+name: St. Nicholas Chapel (Aachen Cathedral) data
+year: 2026
+type: hybrid
+status: catalogued
+content: 46 measured B-format RIRs (3 sources, 22 receivers) and 264 ODEON/TREBLE simulated IRs (unoccupied and
+  occupied) of the late-Gothic St. Nicholas Chapel, Aachen Cathedral, with ISO 3382 parameters and materials.
+fs_hz:
+- 48000
+- 44100
+- 32000
+expected:
+  n_irs: 310
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'yes'
+  geometry: 'no'
+  materials: 'yes'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'yes'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/23312556
+doi: 10.5281/zenodo.20428704
+web_check:
+  checked: '2026-10-14'
+  found_as: 'St. Nicholas Chapel, Aachen Cathedral: room acoustic measurement and decay analysis data'
+  availability: open
+  families:
+  - ambisonic
+  - mono
+  host: Zenodo
+  size: 428 MB
+  file_formats: WAV (in ZIPs), CSV, XLSX, Markdown
+  institution: FH Aachen University of Applied Sciences
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/23312556
+  - https://zenodo.org/api/records/23312556/files/README.md/content
+  - https://zenodo.org/api/records/23312556/files/LICENSE.txt/content
+  - https://zenodo.org/records/23312556/preview/impulse_responses.zip
+  - https://zenodo.org/records/23312556/preview/simulated_impulse_responses.zip
+  - https://zenodo.org/api/records?q=conceptrecid:20428704&allversions=true
+  confidence: high
+  caveats:
+  - 'Very recent: version 1.2 was posted on 12 October 2026 and the companion Acta Acustica article is still forthcoming.'
+  - The measured folders are named '_BRIR' but hold 4-channel FuMa B-format RIRs, not binaural ones.
+  - Simulated IRs mix formats (ODEON two-channel 44.1 kHz, TREBLE mono 32 kHz); the 3D model is not included.

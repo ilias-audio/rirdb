@@ -1,0 +1,27 @@
+#!/bin/bash
+# Submit the analysis of one dataset as a SLURM array + a dependent merge job.
+# Bash only (runs on the login node); every Python step runs inside sbatch.
+#
+#   jobs/analyze_dataset.sh <dataset_id> <n_shards> [extra rirdb dev analyze args, e.g. --full]
+#   TASKS=50-79 jobs/analyze_dataset.sh arni 80     # re-run some shards of an 80-shard run
+#   EMBED_SHARDS=2 jobs/analyze_dataset.sh soundcam 4  # also CLAP embeddings (GPU array) after the merge
+#
+# The registry is copied at submission and the jobs read that copy (RIRDB_REGISTRY),
+# so editing registry/<id>/dataset.yaml cannot break queued or running tasks.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+ds=$1; n=$2; shift 2
+tasks=${TASKS:-0-$((n - 1))}
+snap="$PWD/qlogs/registry_$(date +%Y%m%dT%H%M%S)_${ds}"
+rsync -a --exclude=files.tsv.gz registry/ "$snap/"
+arr=$(sbatch --parsable --export=ALL,RIRDB_REGISTRY="$snap" --array=${tasks}%50 -J "an_${ds}" jobs/cpu_array.sh \
+      pixi run rirdb dev analyze --dataset "$ds" --shard auto --n-shards "$n" "$@")
+mrg=$(sbatch --parsable --export=ALL,RIRDB_REGISTRY="$snap" --dependency=afterok:${arr} -p computeshort -t 0:30:0 \
+      -J "mg_${ds}" jobs/quick_cpu.sh pixi run rirdb dev merge "$ds")
+echo "$ds: analyze array $arr (tasks $tasks of $n shards), merge $mrg"
+if [ -n "${EMBED_SHARDS:-}" ]; then   # embeddings read the merged metrics (IRs analysed without error)
+    emb=$(PIXI_ENV=embed sbatch --parsable --export=ALL,RIRDB_REGISTRY="$snap" --dependency=afterok:${mrg} \
+          --array=0-$((EMBED_SHARDS - 1))%4 -J "emb_${ds}" jobs/gpu_array.sh \
+          pixi run -e embed rirdb dev embed "$ds" --shard auto --n-shards "$EMBED_SHARDS")
+    echo "$ds: embed array $emb ($EMBED_SHARDS shards)"
+fi

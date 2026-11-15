@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_same_setup_positions
+name: 'BRIRs: same listener-source setup at different positions'
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR BRIRs at five positions in a small conference room (10.3 x 5.8 x 3.1 m, RT 0.65 s), with a Genelec
+  loudspeaker kept in the same relation to the listener and the head turned in 5° steps; SOFA files.
+expected:
+  n_irs: 360
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/163617
+doi: 10.5281/zenodo.163617
+web_check:
+  checked: '2026-10-14'
+  found_as: 'BRIRs: same listener-source setup at different positions in a small conference room (Neidhardt)'
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 240 MB
+  file_formats: SOFA (5 files) in one ZIP, with a PDF room description and JPG photos
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/163617
+  - https://zenodo.org/api/records/163617
+  - https://zenodo.org/api/records/163485
+  - https://zenodo.org/records/163617/preview/BRIRs-ConferenceRoom_5Positions.zip
+  - https://zenodo.org/api/records/2593714
+  confidence: high
+  caveats:
+  - The record lists no affiliation; TU Ilmenau is inferred from the author's other dataset records.
+  - An earlier upload of the same data is Zenodo record 163485; use 163617 (marked 'Updated dataset').
+  - The sampling rate is not stated on the record; the IR count is derived (5 positions x 72 head angles).

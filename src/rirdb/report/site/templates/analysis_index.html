@@ -1,0 +1,244 @@
+{% extends "analysis_base.html" %}
+{% import "_macros.html" as m %}
+{% set C = data.corpus %}
+{% block page_css %}
+<style>
+#cmp { font-size: .84rem; }
+#cmp th, #cmp td { padding: 6px 8px; }
+#cmp thead th { font-size: .78rem; white-space: normal; vertical-align: bottom; line-height: 1.25; }
+#cmp .rng { width: 90px; }
+#cmp thead th.gk { white-space: nowrap; }
+#subsets td.sqlc { min-width: 280px; }
+#cmp td.g.zero { color: var(--muted); }
+#cmp td.name { min-width: 170px; max-width: 230px; }
+#cmp td.g { color: var(--ink-2); }
+#cmp td.t30 { white-space: nowrap; }
+#cmp td.t30 .num { display: inline-block; min-width: 2.8em; text-align: right; margin-left: 4px; }
+#cmp .t20 { font-size: .72rem; color: var(--muted); margin-left: 3px; }
+#cmp .pill { font-size: .7rem; padding: 0 6px; margin-left: 4px; vertical-align: 1px; }
+@media (min-width: 760px) {
+  #cmp th:first-child, #cmp td:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; box-shadow: 1px 0 0 var(--rule); }
+  #cmp thead th:first-child { z-index: 3; }
+  #cmp tbody tr:hover td:first-child { background: color-mix(in srgb, var(--sunk) 60%, var(--surface)); }
+}
+.tbl-wrap.cmp-wrap { max-height: min(80vh, 1100px); }
+.vrows { margin: 0 0 1em; }
+.vrow { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 6px 16px; align-items: end; padding: 6px 0; border-top: 1px solid var(--rule); }
+.vrow:first-child { border-top: 0; }
+.vrow .vl { font-weight: 700; font-size: .92rem; }
+.vrow .vl span { display: block; font-weight: 400; font-size: .8rem; color: var(--muted); }
+.vrow + .vrow .strip-head { display: none; }
+.vrow .strip { margin: 0; }
+@media (max-width: 600px) { .vrow { grid-template-columns: minmax(0, 1fr); } .vrow .strip > div { font-size: .7rem; } }
+.figs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+.figs figure { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px; }
+.figs img { display: block; width: 100%; border-radius: 3px; background: #fcfcfb; }
+.figs figcaption { font-size: .86rem; color: var(--ink-2); margin-top: 6px; }
+.na-list { columns: 2 280px; column-gap: 28px; padding-left: 1.1em; margin: 0 0 1em; font-size: .92rem; }
+.na-list li { break-inside: avoid; margin-bottom: .35em; }
+</style>
+{% endblock %}
+{% block lede %}
+<p class="lede">rirdb analysed {{ C.n_irs_analysed | int }} room impulse responses from {{ C.n_datasets_analysed | int }} public datasets with one analyzer (version {{ data.analyzer_version }}). This page compares the datasets and shows what the corpus as a whole contains.</p>
+<ul class="onpage" aria-label="On this page">
+  <li><a href="#how">How</a></li><li><a href="#grades">Grades</a></li><li><a href="#subsets">Subsets</a></li>
+  <li><a href="#compare">Datasets compared</a></li><li><a href="#dist">Distributions</a></li><li><a href="#bands">Per band</a></li>
+  <li><a href="#validity">T30 validity</a></li><li><a href="#categories">Space categories</a></li><li><a href="#more">More figures</a></li>
+</ul>
+{% endblock %}
+{% block body %}
+
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <dl class="tiles" style="margin-bottom:1.6em">
+      {% for t in tiles %}<div class="tile"><dt>{{ t.label }}</dt><dd>{{ t.v }}{% if t.small %} <small>{{ t.small }}</small>{% endif %}</dd></div>{% endfor %}
+    </dl>
+    <h2 id="how-h">What was analysed, and how</h2>
+    <div class="prose">
+      <p>Each analysed IR is read from the original files, cropped at its onset (ISO 3382-1: 20 dB below the peak) and filtered into octave bands from 63 Hz to 8 kHz. The analyzer computes the decay times (T30, T20, EDT), the energy ratios (C50, C80, D50, centre time), the direct-to-reverberant ratio, STI, bass and treble ratios and the mixing time. A value counts only where the decay range allows it, so every value has a validity flag, and every IR gets a grade from A to D. A separate signal audit looks for recording problems (sweep residue, hum, dropouts, unsteady noise, resampling) and raises flags; see <a href="{{ root }}analysis/quality.html">Signal quality</a>. The full method is on the <a href="{{ root }}methods/index.html">Methods</a> page.</p>
+      {% if subsampled %}
+      <p>For {{ subsampled | length }} very large datasets rirdb analysed a fixed subsample, keeping at least one record per space and condition: {% for s in subsampled %}<a href="{{ root }}d/{{ s.id }}.html">{{ s.name }}</a> ({{ s.n | int }} of {{ s.n_records | int }}){{ ", " if not loop.last else "." }}{% endfor %} That is why {{ C.n_irs_indexed | int }} IRs are indexed but {{ C.n_irs_analysed | int }} are analysed.</p>
+      {% endif %}
+    </div>
+    {% if not_analysed %}
+    <details class="box">
+      <summary>{{ not_analysed | length }} registry datasets have no analysis yet, and why</summary>
+      <p class="small">Their pages still give everything needed to fetch them.</p>
+      <ul class="na-list">
+        {% for r in not_analysed %}<li><a href="{{ root }}d/{{ r.id }}.html">{{ r.name }}</a> <span class="pill">{{ r.status }}</span><br><span class="small muted">{{ r.reason }}</span></li>{% endfor %}
+      </ul>
+    </details>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" id="grades" aria-labelledby="grades-h">
+  <div class="wrap">
+    <h2 id="grades-h">Grades</h2>
+    <p class="prose">The grade says how much of the decay analysis an IR supports. {% for k, v in data.grades.items() %}<strong>{{ k }}</strong>: {{ v }}{{ "; " if not loop.last else "." }}{% endfor %} Short files, anechoic responses and IRs with little range above the noise floor end up in C or D. A low grade is not a fault of the dataset when the IRs were never meant for reverberation times (anechoic or very short IRs).</p>
+    {{ m.chart("Grades of all " ~ (C.n_irs_ok | int) ~ " analysed IRs", grade_bar) }}
+    {% set gtable %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">Grade counts per dataset</caption><thead><tr><th scope="col">Dataset</th><th scope="col" class="n">IRs</th>{% for k in "ABCD" %}<th scope="col" class="n">{{ k }}</th>{% endfor %}</tr></thead><tbody>
+{% for r in g_rows %}<tr><th scope="row"><a href="{{ root }}d/{{ r.id }}.html">{{ r.label }}</a></th><td class="n">{{ r.n | int }}</td>{% for k in "ABCD" %}<td class="n">{{ r.parts[k] | int }}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table></div>
+    {% endset %}
+    {{ m.chart("Grades per dataset", grade_stack, sub="Share of each dataset's analysed IRs in grades A to D; datasets sorted by the number of IRs analysed (printed at the right). Names link to the dataset pages.", table=Markup(gtable)) }}
+  </div>
+</section>
+
+<section class="section" id="subsets" aria-labelledby="subsets-h">
+  <div class="wrap">
+    <h2 id="subsets-h">Nested subsets</h2>
+    <p class="prose">Corpus figures use one of four nested subsets of the de-duplicated corpus (<code>corpus_dedup</code>). Each row keeps part of the row above. Most figures on this site use the last one, <strong>clean measured rooms</strong>: measured room IRs, one representation per position, no duplicate copies, and no IR whose content is not a room decay. <a href="{{ root }}analysis/quality.html#clean">What it leaves out, and why</a>.</p>
+    <div class="tbl-wrap"><table class="tbl" id="subsets-tbl">
+      <caption class="sr-only">The four nested subsets with their SQL predicates and sizes</caption>
+      <thead><tr><th scope="col">Subset</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Left out from the row above</th><th scope="col" class="n">Spaces</th><th scope="col" class="n">Datasets</th><th scope="col">SQL predicate over <code>corpus_dedup</code></th></tr></thead>
+      <tbody>
+      {% for s in subsets %}<tr><th scope="row">{{ s.label }}</th><td class="n">{{ s.n_irs | int }}</td><td class="n">{% if s.drop is not none %}{{ s.drop | int }}{% else %}–{% endif %}</td><td class="n">{{ s.n_rooms | int }}</td><td class="n">{{ s.n_datasets | int }}</td><td class="sqlc"><code class="sql">{{ s.sql }}</code></td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    {% if ov_generated %}<p class="small muted">From the corpus overview report ({{ ov_generated }}, analyzer {{ ov_version }}).</p>{% endif %}
+  </div>
+</section>
+
+<section class="section" id="compare" aria-labelledby="compare-h">
+  <div class="wrap wide">
+    <h2 id="compare-h">The analysed datasets compared</h2>
+    <p class="prose">One row per analysed dataset ({{ n_rows }}), sorted by the number of IRs analysed. Click a column heading to sort. Values are medians unless the heading says otherwise.</p>
+    <div class="notes">
+      <div class="card"><p><strong>Which IRs.</strong> The grades count every analysed IR. T30, EDT, C80, DRR, STI and the T30 valid share use the IRs of real spaces (rooms, outdoor sites, vehicles; no anechoic, modelled, device or scale-model IRs), one representation per position, duplicates removed.{% for r in cmp_rows if r.over %} {{ r.name }} has no IRs of real spaces: its values are over its {{ r.over }} IRs, which the index still files as real spaces; its T30 is marked {{ r.over }}.{% endfor %} Peak-to-noise, bandwidth and duplicates use every analysed IR.</p></div>
+      <div class="card"><p><strong>T30</strong> is the mean of the 500 Hz and 1 kHz octaves, where both are valid. The bar spans the 10th to 90th percentile on a log scale from 0.1 to 10 s, the dot is the median. Where fewer than half of those IRs allow a T30, the T30-or-T20 value is shown and marked T20. <strong>T30 valid</strong>: share of those IRs where T30 is valid at both 500 Hz and 1 kHz.</p></div>
+      <div class="card"><p><strong>Peak-to-noise (PNR)</strong>: the usable decay range of the recording. <strong>Bandwidth</strong>: where the content of the IR stops, which can be far below the file's Nyquist frequency. <strong>Duplicates</strong>: share of IRs that are sample-identical copies of another IR.</p></div>
+    </div>
+    <div class="filters">
+      <label class="fld">Find a dataset<input type="search" data-filter="#cmp" placeholder="Name or id" autocomplete="off"></label>
+      <p class="count" data-count-for="#cmp" aria-live="polite"></p>
+    </div>
+    <div class="tbl-wrap cmp-wrap tall"><table class="tbl" id="cmp">
+      <caption class="sr-only">Per-dataset comparison of grades and median room-acoustic parameters</caption>
+      <thead><tr>
+        <th scope="col" data-sort="text">Dataset</th>
+        <th scope="col" class="n" data-sort="num">IRs analysed</th>
+        <th scope="col" class="n" data-sort="num">Spaces</th>
+        {% for k in "ABCD" %}<th scope="col" class="n gk" data-sort="num" title="Share of the dataset's IRs with grade {{ k }}">{{ k }} (%)</th>{% endfor %}
+        <th scope="col" data-sort="num">T30 (s), p10–p90 and median</th>
+        <th scope="col" class="n" data-sort="num">EDT (s)</th>
+        <th scope="col" class="n" data-sort="num">C80 (dB)</th>
+        <th scope="col" class="n" data-sort="num">DRR (dB)</th>
+        <th scope="col" class="n" data-sort="num">STI</th>
+        <th scope="col" class="n" data-sort="num">T30 valid</th>
+        <th scope="col" class="n" data-sort="num" title="Peak-to-noise ratio: the usable decay range">PNR (dB)</th>
+        <th scope="col" class="n" data-sort="num">Bandwidth</th>
+        <th scope="col" class="n" data-sort="num">Duplicates</th>
+      </tr></thead>
+      <tbody>
+      {% for r in cmp_rows %}
+      <tr data-search="{{ r.name }} {{ r.id }}">
+        <td class="name"><a href="{{ root }}d/{{ r.id }}.html#analysis">{{ r.name }}</a>{% if r.type != "measured" %}<span class="pill">{{ r.type }}</span>{% endif %}{% if r.subsample %}<span class="sub">subsample of {{ r.n_records | int }} records</span>{% endif %}</td>
+        <td class="n">{{ r.n | int }}</td>
+        <td class="n">{{ r.spaces | int }}</td>
+        {% for g in r.grades %}<td class="n g{% if not g.n %} zero{% endif %}" data-v="{{ g.share }}" data-tip="{{ r.name }}: grade {{ g.k }}, {{ g.n | int }} IRs ({{ g.share | pct(1) }})">{{ g.text }}</td>{% endfor %}
+        <td class="t30" data-v="{{ r.p50 if r.p50 is not none else '' }}">{% if r.p50 is not none %}{{ r.rng }}<span class="num">{{ r.p50 | num(2) }}</span>{% if r.t_kind == "T20" %}<span class="t20" data-tip="Fewer than half of the IRs allow a T30: T30-or-T20 median">T20</span>{% endif %}{% if r.over %}<span class="t20" data-tip="Over its {{ r.over }} IRs: it has no IRs of real spaces">{{ r.over }}</span>{% endif %}{% else %}<span class="muted">–</span>{% endif %}</td>
+        <td class="n">{{ r.edt | num(2) }}</td>
+        <td class="n">{{ r.c80 | num(1) }}</td>
+        <td class="n">{{ r.drr | num(1) }}</td>
+        <td class="n">{{ r.sti | num(2) }}</td>
+        <td class="n" data-v="{{ r.valid if r.valid is not none else '' }}">{{ r.valid | pct }}</td>
+        <td class="n">{{ r.pnr | num(0) }}</td>
+        <td class="n" data-v="{{ r.bw if r.bw is not none else '' }}">{{ r.bw | hz }}</td>
+        <td class="n" data-v="{{ r.dup if r.dup is not none else '' }}"{% if r.n_dup %} data-tip="{{ r.n_dup | int }} duplicate copies"{% endif %}>{% if r.dup %}{{ r.dup | pct(1) }}{% else %}{{ r.dup | pct }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+    <p class="tbl-foot"><span>Grades in per cent of the dataset's analysed IRs (“&lt;1” means fewer than 1&nbsp;% but at least one IR). A dash means no valid value. Full per-dataset results, with every parameter, band and flag, are on each dataset's page; the same numbers are in <a href="{{ root }}data/site.json">data/site.json</a> (<code>datasets[].metrics</code>).</span></p>
+  </div>
+</section>
+
+<section class="section" id="dist" aria-labelledby="dist-h">
+  <div class="wrap">
+    <h2 id="dist-h">Corpus distributions</h2>
+    <p class="prose">One value per space: the median of the space's IRs, so a space with thousands of IRs counts as much as a space with one. The decay and energy parameters use the clean measured rooms; peak-to-noise and bandwidth use every space, with one representation per position and no duplicate copies. These are the reference distributions drawn behind each dataset's own histograms on its page.</p>
+    <div class="chart-grid">
+      {% for h in hists %}
+      {% set ht %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ h.title }}</caption><thead><tr><th scope="col" class="n">From</th><th scope="col" class="n">To{% if h.unit %} ({{ h.unit }}){% endif %}</th><th scope="col" class="n">Spaces</th><th scope="col" class="n">Share</th></tr></thead><tbody>
+{% for b in h.rows %}<tr><td class="n">{{ b.lo }}</td><td class="n">{{ b.hi }}</td><td class="n">{{ b.n | int }}</td><td class="n">{{ b.share | pct(1) }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(h.title, h.svg, sub=h.sub, caption=h.caption, table=Markup(ht)) }}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bands" aria-labelledby="bands-h">
+  <div class="wrap">
+    <h2 id="bands-h">Per octave band, clean measured rooms</h2>
+    <p class="prose">For each space, the median of its valid values in each octave band; the boxes show how those per-space medians spread across the corpus (median line, 25–75&nbsp;% box, 5–95&nbsp;% whisker). These are distributions of space medians, not of single IRs. The number of spaces differs by band because a band counts only where a space has valid values there.</p>
+    <div class="chart-grid">
+      {% for b in bands %}
+      {% set bt %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ b.title }}</caption><thead><tr><th scope="col">Band (Hz)</th><th scope="col" class="n">Spaces</th><th scope="col" class="n">p5</th><th scope="col" class="n">p25</th><th scope="col" class="n">Median</th><th scope="col" class="n">p75</th><th scope="col" class="n">p95</th></tr></thead><tbody>
+{% for r in b.rows %}<tr><th scope="row">{{ r.band }}</th><td class="n">{{ r.n | int }}</td>{% for q in r.q %}<td class="n">{{ q }}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(b.title, b.svg, sub="Up to " ~ (b.n_max | int) ~ " spaces per band" ~ ((" · " ~ b.unit) if b.unit else ""), table=Markup(bt)) }}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if validity %}
+<section class="section" id="validity" aria-labelledby="validity-h">
+  <div class="wrap">
+    <h2 id="validity-h">T30 validity per octave band</h2>
+    <div class="prose">
+      <p>ISO 3382-1 fits T30 on the decay from −5 to −35 dB, and the bottom of that range must stay at least 10 dB above the noise floor. So a band has a valid T30 only when its decay range, from the smoothed peak to the noise, is at least 45 dB (35 dB for T20, 20 dB for EDT). The analyzer enforces this itself. Low bands fail most often: the octave filters ring, the noise is higher, and short files end before the decay does.</p>
+      <p>Three ways to count it, over the {{ validity.n_irs | int }} clean measured-room IRs of {{ validity.n_datasets | int }} datasets and {{ validity.n_spaces | int }} spaces. The per-IR share is dominated by the largest datasets; the per-dataset median gives each dataset one vote; the per-space share says whether a space has at least one usable IR in that band.</p>
+    </div>
+    <figure class="chart">
+      <p class="chart-title">Share with a valid T30 in per cent, per octave band (Hz)</p>
+      <p class="chart-sub">A stronger blue is a larger share</p>
+      <div class="vrows">
+        {% for r in validity.rows %}<div class="vrow"><div class="vl">{{ r.label }}<span>{{ r.sub }}</span></div><div>{{ r.strip }}</div></div>{% endfor %}
+      </div>
+      <details><summary>Table view</summary>
+        <div class="tbl-wrap"><table class="tbl"><caption class="sr-only">Share with a valid T30 per octave band</caption><thead><tr><th scope="col">Band (Hz)</th><th scope="col" class="n">Per IR</th><th scope="col" class="n">Per dataset (median)</th><th scope="col" class="n">Per space</th></tr></thead><tbody>
+        {% for r in validity.table %}<tr><th scope="row">{{ r.band }}</th><td class="n">{{ r.ir | pct(1) }}</td><td class="n">{{ r.ds | pct(1) }}</td><td class="n">{{ r.space | pct(1) }}</td></tr>{% endfor %}
+        </tbody></table></div>
+      </details>
+    </figure>
+  </div>
+</section>
+{% endif %}
+
+<section class="section" id="categories" aria-labelledby="categories-h">
+  <div class="wrap">
+    <h2 id="categories-h">Space categories</h2>
+    <p class="prose">What kind of space each of the {{ data.spaces | length }} indexed spaces is, from its name and the dataset's documentation, with hand corrections. Production-library and modelled spaces, devices, anechoic chambers and scale models are listed because they are indexed; they are not real rooms. Browse them on the <a href="{{ root }}spaces/index.html">Spaces</a> page.</p>
+    {% set ct %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">Indexed spaces per category</caption><thead><tr><th scope="col">Category</th><th scope="col" class="n">Indexed spaces</th><th scope="col" class="n">Physical spaces</th><th scope="col" class="n">With clean IRs</th><th scope="col" class="n">Indexed IRs</th></tr></thead><tbody>
+{% for c in cats %}<tr><th scope="row">{{ c.label }}</th><td class="n">{{ c.n | int }}</td><td class="n">{{ c.phys | int }}</td><td class="n">{{ c.clean | int }}</td><td class="n">{{ c.irs | int }}</td></tr>{% endfor %}
+</tbody></table></div>
+    {% endset %}
+    <div class="cols-2">
+      {{ m.chart("Indexed spaces per category", cat_chart, sub=(data.spaces | length | int) ~ " spaces in " ~ (cats | length) ~ " categories", table=Markup(ct)) }}
+      <div class="prose small">
+        <p><strong>Physical spaces</strong> count a room once when it appears more than once ({{ space_facts.n_merged | int }} such repeats){% if space_facts.example %}, for example “{{ space_facts.example.label }}”, in both {{ space_facts.example.a }} and {{ space_facts.example.b }}{% endif %}. <strong>With clean IRs</strong>: spaces with at least one measured IR in its preferred representation, not a duplicate copy and without a content flag, whatever the kind of space (outdoor sites and vehicles count here). Only the room spaces among them enter the decay distributions above.</p>
+        <p>By number of spaces the largest labelled groups are {{ space_facts.top_cats | join(", ") }}. By number of IRs the corpus is dominated by a few rooms measured on dense grids: the five largest spaces hold {{ space_facts.big_share | pct }} of the {{ space_facts.n_irs | int }} indexed IRs ({% for b in space_facts.big %}<a href="{{ root }}d/{{ b.id }}.html">{{ b.name }}</a> {{ b.n | int }}{{ ", " if not loop.last else "" }}{% endfor %}). That is why the distributions above give each space one value.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="more" aria-labelledby="more-h">
+  <div class="wrap">
+    <h2 id="more-h">More figures</h2>
+    <p class="prose">The <a href="{{ root }}overview/index.html">interactive corpus overview</a> has every distribution for each subset, per-dataset tables and the CLAP map with tooltips. The static figures of the corpus report:</p>
+    <div class="figs">
+      {% for f in figures %}<figure><img src="{{ f.src }}" alt="{{ f.alt }}" loading="lazy"{% if f.w %} width="{{ f.w }}" height="{{ f.h }}"{% endif %}><figcaption>{{ f.title }}. <a href="{{ f.src }}">Full size</a></figcaption></figure>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

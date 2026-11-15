@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: oldenburg_pub
+name: Pub environment (Oldenburg)
+year: 2021
+type: measured
+status: catalogued
+content: 'Audio-visual model of a pub in Oldenburg with measured IRs for one listening scene: head-and-torso binaural,
+  first-order Ambisonic (tetrahedral mic) and omni, plus geometry, photos and a positions table.'
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://zenodo.org/records/5886987
+doi: 10.5281/zenodo.5886987
+web_check:
+  checked: '2026-10-14'
+  found_as: Pub environment (Oldenburg audio-visual scene with measured IRs)
+  availability: open
+  families:
+  - binaural
+  - ambisonic
+  - mono
+  host: Zenodo
+  size: 380 MB
+  file_formats: WAV and AMB (B-format) in ZIP; OBJ/Blender models; XLSX positions; JPG photos; SVG plans; PDF
+  institution: University of Oldenburg (Auditory Signal Processing, Cluster of Excellence Hearing4all)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/5886987
+  - https://zenodo.org/api/records/5886987
+  - https://zenodo.org/records/5886987/preview/Pub.zip
+  - https://arxiv.org/abs/2111.01237
+  confidence: high
+  caveats:
+  - Non-commercial share-alike licence (CC BY-NC-SA 4.0).
+  - 'One 379 MB zip: 119 head-and-torso, 107 omni and 112 first-order Ambisonic IR files (Ambisonic also as .amb),
+    in four groups R1-R4.'
+  - Includes 3D acoustic and visual models, photos, floor plans and a positions spreadsheet; the PDF description
+    is a separate file on the record.

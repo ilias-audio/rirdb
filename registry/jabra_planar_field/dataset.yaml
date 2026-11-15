@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: jabra_planar_field
+name: Sparsely sampled planar sound field (Jabra - GN Audio)
+year: 2023
+type: measured
+status: catalogued
+content: 136 RIRs in a furnished meeting room (8 × 5 × 2.5 m) at Jabra / GN Audio offices in Ballerup, with microphone
+  and loudspeaker positions tracked by a Vicon motion-capture system; 32 kHz, HDF5.
+fs_hz:
+- 32000
+expected:
+  n_irs: 136
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: 'no'
+  materials: partial
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://data.dtu.dk/articles/dataset/Sparsely_sampled_planar_sound_field_in_a_furnished_room_Jabra_-_GN_Audio_/23093495
+doi: 10.11583/DTU.23093495.v1
+web_check:
+  checked: '2026-10-14'
+  found_as: Sparsely sampled planar sound field in a furnished room (Jabra / GN Audio)
+  availability: open
+  families:
+  - mono
+  host: DTU Data (figshare)
+  size: 70 MB
+  file_formats: HDF5 (PNG layout figure, Markdown readme)
+  institution: Technical University of Denmark (measured at Jabra / GN Audio, Ballerup)
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/23093495
+  - https://ndownloader.figshare.com/files/42478035
+  - https://ndownloader.figshare.com/files/40832504
+  - https://doi.org/10.11583/DTU.23093495.v1
+  confidence: high
+  caveats:
+  - 'Small set: 130 RIRs plus 6 near-field reference RIRs.'
+  - Sampled at 32 kHz.
+  - Only an average T60 (0.55 s) is given for the room.

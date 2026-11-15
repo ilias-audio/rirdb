@@ -1,0 +1,23 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: bird
+name: BIRD - Big Impulse Response Dataset
+year: 2020
+type: simulated
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: 100,000 two-microphone RIRs from the image method (Habets) over a wide range of shoebox room sizes and mic spacings, in 10 folds.
+expected: {n_irs: 100000}
+fs_hz: [16000]
+room_info: {dimensions: "yes", positions: "yes", materials: "partial", where: "per-item room size, one absorption coefficient, source and microphone positions (simulation parameters)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["4139416"]}
+wave: 4
+homepage: https://zenodo.org/records/4139416
+doi: 10.5281/zenodo.4139416
+paper: {title: "BIRD: Big Impulse Response Dataset", url: "https://arxiv.org/abs/2010.09930"}
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Universite de Sherbrooke and Mila
+  country: Canada

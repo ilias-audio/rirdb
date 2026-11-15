@@ -1,0 +1,538 @@
+#!/usr/bin/env bash
+{{ title }}
+#
+{% for l in header %}
+{{ l }}
+{% endfor %}
+#
+{% for l in run %}
+{{ l }}
+{% endfor %}
+
+set -euo pipefail
+
+ID={{ id }}
+DEST="${1:-.}/$ID"
+DETAILS='{{ det_url }}'
+{% if mode in ("manual", "info") %}
+
+cat <<'EOF'
+{% for l in manual_text %}
+{{ l }}
+{% endfor %}
+EOF
+{% if manual_lock is defined %}
+
+# rirdb's copy, file by file (sha256). The check writes this list to a temporary file outside your
+# copy and leaves the copy untouched (it may be read-only, or shared with others). To check a copy
+# by hand, run in its folder:
+#   curl -fsSL {{ lock_url }} \
+#     | awk -F'\t' 'NR > 1 { print $5 "  " $1 }' | sha256sum -c --quiet -
+if [ -d "$DEST" ] && [ -n "$(ls -A "$DEST" 2>/dev/null)" ]; then
+    command -v sha256sum >/dev/null 2>&1 || { echo "Checking needs sha256sum (GNU coreutils)." >&2; exit 1; }
+    list=$(mktemp)
+    trap 'rm -f "$list"' EXIT
+    cat > "$list" <<'EOF'
+{% for l in sha %}
+{{ l }}
+{% endfor %}
+EOF
+    n_all=$(wc -l < "$list" | tr -d ' ')
+    n_missing=0
+    while IFS= read -r line; do [ -e "$DEST/${line:66}" ] || n_missing=$((n_missing + 1)); done < "$list"
+    echo
+    echo "Checking your copy in $DEST against rirdb's checksums ({{ n_files_text }} files) ..."
+    if [ "$n_missing" -eq "$n_all" ]; then
+        echo "None of the {{ n_files_text }} files in rirdb's list is in $DEST: check that the paths match it." >&2
+        exit 1
+    fi
+    rc=0; (cd "$DEST" && sha256sum -c --quiet --ignore-missing "$list") || rc=$?
+    if [ "$rc" -ne 0 ]; then
+        echo "Some files differ from rirdb's copy (listed above); $n_missing of the {{ n_files_text }} files in its list are missing." >&2
+        exit 1
+    elif [ "$n_missing" -gt 0 ]; then
+        echo "The $((n_all - n_missing)) files present match rirdb's copy; $n_missing of the {{ n_files_text }} files in its list are missing." >&2
+        exit 1
+    fi
+    echo "All {{ n_files_text }} files match rirdb's copy."
+else
+    echo
+    cat <<'EOF'
+{% for l in manual_lock_note %}
+{{ l }}
+{% endfor %}
+EOF
+    echo "Put your copy in $DEST and run this script again to check it."
+fi
+{% endif %}
+exit 0
+{% else %}
+UA="rirdb-fetch (+{{ site_url }})"
+DRY_RUN=${DRY_RUN:-}
+{% if mode in ("files", "github", "zenodo_live", "wayback") %}
+FAIL_HINT={{ q_fail_hint }}    # printed when a file fails
+{% endif %}
+
+# ------------------------------------------------------------------ helpers
+
+n_ok=0; n_new=0; n_failed=0
+
+need() { # tool...: stop early when one is missing
+    local t
+    for t in "$@"; do
+        command -v "$t" >/dev/null 2>&1 && continue
+        case $t in
+            md5sum|sha256sum) echo "This script needs $t (GNU coreutils; on macOS: brew install coreutils)." >&2 ;;
+            *) echo "This script needs $t." >&2 ;;
+        esac
+        exit 1
+    done
+}
+{% set files_mode = mode in ("files", "github", "zenodo_live") %}
+{% if files_mode or mode == "hf" %}
+
+human() { # bytes -> text in decimal units (1 GB = 10^9 bytes)
+    case ${1:-} in ''|-) echo "size not stated"; return 0 ;; esac
+    awk -v b="$1" 'BEGIN { split("B kB MB GB TB", u, " "); i = 1
+        while (b >= 1000 && i < 5) { b /= 1000; i++ }
+        if (i == 1) printf "%d B", b; else printf "%.1f %s", b, u[i] }'
+}
+{% endif %}
+{% if mode == "wayback" %}
+
+recorded() { # name list: the checksum line for exactly this file name, if any
+    awk -v f="$1" '{ n = substr($0, length($1) + 3) } n == f { print; exit }' "$2"
+}
+
+unrecord() { # name list: drop the checksum line of this file name
+    awk -v f="$1" '{ n = substr($0, length($1) + 3) } n != f' "$2" > "$2.tmp" && mv "$2.tmp" "$2"
+}
+{% endif %}
+{% if files_mode %}
+
+verify() { # relpath: 0 = matches its line in checksums.md5 or checksums.sha256, 1 = differs, 2 = not listed
+    local rel=$1 list tool line
+    for list in checksums.md5 checksums.sha256; do
+        [ -f "$DEST/$list" ] || continue
+        line=$(awk -v f="$rel" '{ n = substr($0, length($1) + 3) } n == f { print; exit }' "$DEST/$list")
+        [ -n "$line" ] || continue
+        case $list in *.md5) tool=md5sum ;; *) tool=sha256sum ;; esac
+        if (cd "$DEST" && printf '%s\n' "$line" | "$tool" -c --status -); then return 0; fi
+        return 1
+    done
+    return 2
+}
+{% endif %}
+{% if files_mode or mode == "wayback" %}
+
+is_html() { # file: true when a server sent a web page (an error or login page) instead of data
+    head -c 512 "$1" 2>/dev/null | tr 'A-Z' 'a-z' | grep -qE '^[[:space:]]*<(!doctype|html|head|body)'
+}
+
+download() { # url file: follows redirects, retries, resumes a partial file
+    curl -L --fail --retry 3 -C - -A "$UA" -o "$2" "$1" </dev/null
+}
+{% endif %}
+{% if has_alt %}
+
+download_or_archived() { # url file [archived_url]: the original URL first; if it fails, the archived copy
+    download "$1" "$2" && return 0
+    [ -n "${3:-}" ] || return 1
+    echo "  retry   ${2#"$DEST/"} from the Wayback Machine's copy (slow): $3"
+    download "$3" "$2"
+}
+{% endif %}
+{% if files_mode %}
+
+{% set dl = 'download_or_archived "$url" "$out" "$alt"' if has_alt else 'download "$url" "$out"' %}
+get() { # relpath size_in_bytes url{% if has_alt %} [archived_url]{% endif %}: download one file unless it already verifies, then check it
+    local rel=$1 size=$2 url=$3{% if has_alt %} alt=${4:-}{% endif %} out="$DEST/$1" rc resumed=
+    if [ -n "$DRY_RUN" ]; then
+        printf '  %-64s %14s\n' "$rel" "$(human "$size")"
+        return 0
+    fi
+    if [ -f "$out" ] && verify "$rel"; then
+        echo "  ok      $rel (already here)"
+        n_ok=$((n_ok + 1)); return 0
+    fi
+    [ -s "$out" ] && resumed=1
+    mkdir -p "$(dirname "$out")"
+    echo "  get     $rel ($(human "$size"))"
+    if ! {{ dl }}; then
+        if [ -z "$resumed" ]; then
+            if [ -s "$out" ]; then
+                # keep the partial file: the next run resumes it
+                echo "  FAILED  $rel: download error (the partial file is kept: run the script again to resume)"
+            else
+                rm -f "$out"
+                echo "  FAILED  $rel: download error (nothing received: the host may be down; see $DETAILS)"
+            fi
+            n_failed=$((n_failed + 1)); return 0
+        fi
+        # a file from an earlier run that the server will not resume (complete but corrupt): start once from zero
+        rm -f "$out"
+        if ! {{ dl }}; then
+            echo "  FAILED  $rel: download error"
+            n_failed=$((n_failed + 1)); return 0
+        fi
+    fi
+    rc=0; verify "$rel" || rc=$?
+    if [ "$rc" -eq 1 ] && [ -n "$resumed" ]; then
+        echo "  retry   $rel from the start (the partial file did not match)"
+        rm -f "$out"
+        download "$url" "$out" || true
+        rc=0; verify "$rel" || rc=$?
+    fi
+    case $rc in
+        0) echo "  ok      $rel"; n_ok=$((n_ok + 1)); n_new=$((n_new + 1)) ;;
+        2) echo "  kept    $rel (no reference checksum; sha256 $(sha256sum "$out" | cut -d' ' -f1))"
+           n_ok=$((n_ok + 1)); n_new=$((n_new + 1)) ;;
+        *) if is_html "$out"; then echo "  FAILED  $rel: the server sent a web page instead of the file"
+           else echo "  FAILED  $rel: the checksum does not match"; fi
+           rm -f "$out"; n_failed=$((n_failed + 1)) ;;
+    esac
+}
+{% endif %}
+{% if files_mode or mode == "hf" %}
+
+space_check() { # bytes the files need: warn when the disk has less free space
+    local free
+    free=$(df -Pk "$DEST" 2>/dev/null | awk 'NR == 2 { printf "%.0f", $4 * 1024 }')
+    if [ -n "$free" ] && [ "$free" -lt "$1" ]; then
+        echo "Warning: the files need $(human "$1") and only $(human "$free") is free in $DEST." >&2
+    fi
+}
+{% endif %}
+{% if mode in ("github", "git_live", "hf") %}
+
+lfs_pull() { # repository folder: fetch its Git LFS files, if it uses Git LFS
+    grep -qs 'filter=lfs' "$1/.gitattributes" || return 0
+    git lfs version >/dev/null 2>&1 || {
+        echo "This repository keeps its large files in Git LFS: install git-lfs (https://git-lfs.com) and run again." >&2
+        exit 1; }
+    git -C "$1" lfs install --local >/dev/null
+    git -C "$1" lfs pull
+}
+{% endif %}
+{% if files_mode or mode == "wayback" %}
+
+summary() { # number of files expected, word for what was checked
+    echo
+    if [ -n "$DRY_RUN" ]; then echo "Dry run: nothing was downloaded."; return 0; fi
+    echo "$ID: $n_ok of $1 files $2 in $DEST ($n_new downloaded in this run)."
+    if [ "$n_failed" -gt 0 ]; then
+        echo "$n_failed file(s) failed: run the script again to retry. Known problems: $DETAILS" >&2
+        [ -z "$FAIL_HINT" ] || echo "$FAIL_HINT" >&2
+        return 1
+    fi
+}
+{% endif %}
+
+next_steps() {
+    [ -z "$DRY_RUN" ] || return 0
+    echo
+    echo "Next steps, in $DEST:"
+    cat <<'EOF'
+{% for l in next %}
+{{ ("  " ~ l) if l else "" }}
+{% endfor %}
+EOF
+}
+{% if mode == "github" %}
+
+# ------------------------------------------------------------------ the pinned commit
+
+REPO={{ repo }}
+COMMIT={{ commit }}
+TREE={{ tree }}    # the folder in GitHub's archive, and in rirdb's manifest
+
+# Every file of the pinned commit (sha256, from rirdb's manifest), to check a clone or the extracted archive:
+#   cd <target_dir>/{{ id }} && sha256sum -c --quiet checksums-files.sha256
+if [ -z "$DRY_RUN" ]; then
+    mkdir -p "$DEST"
+    cat > "$DEST/checksums-files.sha256" <<'EOF'
+{% for l in tree_files %}
+{{ l }}
+{% endfor %}
+EOF
+fi
+
+if [ "${GIT:-}" = 1 ]; then
+    need git sha256sum
+    if [ -n "$DRY_RUN" ]; then
+        echo "Would clone https://github.com/$REPO at commit $COMMIT into $DEST/$TREE"
+        exit 0
+    fi
+    if [ ! -d "$DEST/$TREE/.git" ]; then
+        git init -q "$DEST/$TREE"
+        git -C "$DEST/$TREE" remote add origin "https://github.com/$REPO.git"
+    fi
+    GIT_LFS_SKIP_SMUDGE=1 git -C "$DEST/$TREE" fetch --depth 1 origin "$COMMIT"
+    GIT_LFS_SKIP_SMUDGE=1 git -C "$DEST/$TREE" checkout -q --detach "$COMMIT"
+    lfs_pull "$DEST/$TREE"
+    echo "Checking every file against rirdb's manifest ..."
+    if (cd "$DEST" && sha256sum -c --quiet checksums-files.sha256); then
+        echo "$ID: all {{ tree_files | length }} files of commit $COMMIT match, in $DEST/$TREE"
+    else
+        echo "$ID: some files differ from rirdb's copy (listed above)." >&2
+        exit 1
+    fi
+    exit 0
+fi
+{% endif %}
+{% if mode in ("files", "github") %}
+
+# ------------------------------------------------------------------ checksums
+
+# From the rirdb lock file: {{ lock_url }}
+# They stay next to the files, so the copy can be checked again at any time:
+#   cd <target_dir>/{{ id }} && {{ "md5sum -c checksums.md5" if md5 else "sha256sum -c checksums.sha256" }}
+need curl {{ tools | join(" ") }}
+if [ -z "$DRY_RUN" ]; then
+    mkdir -p "$DEST"
+{% if md5 %}
+    cat > "$DEST/checksums.md5" <<'EOF'
+{% for l in md5 %}
+{{ l }}
+{% endfor %}
+EOF
+{% endif %}
+{% if sha %}
+    cat > "$DEST/checksums.sha256" <<'EOF'
+{% for l in sha %}
+{{ l }}
+{% endfor %}
+EOF
+{% endif %}
+fi
+
+# ------------------------------------------------------------------ files
+
+printf '%s -> %s\n' {{ q_intro }} "$DEST"
+{% if total %}
+[ -n "$DRY_RUN" ] || space_check {{ total }}
+{% endif %}
+# get <path in the dataset folder> <size in bytes> <url>{{ " [<archived copy, tried if the url fails>]" if has_alt else "" }}
+{% for f in files %}
+get {{ f.q_rel }} {{ f.size }} {{ f.q_url }}{{ (" " ~ f.q_alt) if f.q_alt else "" }}
+{% endfor %}
+
+summary {{ n_files }} verified || exit 1
+next_steps
+{% elif mode == "zenodo_live" %}
+
+# ------------------------------------------------------------------ files, listed from Zenodo
+
+RECORDS="{{ records }}"    # {{ records_url }}
+need curl jq md5sum
+echo "No rirdb lock file for $ID yet: listing the files of Zenodo record $RECORDS ..."
+list=$(for rec in $RECORDS; do
+    curl -fsSL -A "$UA" "https://zenodo.org/api/records/$rec" </dev/null \
+        | jq -r --arg rec "$rec" '.files[] | [$rec, .key, (.size | tostring), .checksum, .links.self] | @tsv'
+done)
+[ -n "$list" ] || { echo "Zenodo listed no files: see $DETAILS" >&2; exit 1; }
+n=$(printf '%s\n' "$list" | wc -l | tr -d ' ')
+total=$(printf '%s\n' "$list" | awk -F'\t' '{ s += $3 } END { printf "%.0f", s }')
+echo "$n files, $(human "$total") -> $DEST"
+if [ -z "$DRY_RUN" ]; then
+    mkdir -p "$DEST"
+    : > "$DEST/checksums.md5"
+    space_check "$total"
+fi
+while IFS=$'\t' read -r rec key size checksum url; do
+{% if multi %}
+    rel="${rec:0:8}/$key"    # files of several records: prefixed with the record id, as rirdb does
+{% else %}
+    rel=$key
+{% endif %}
+    case $checksum in
+        md5:*) [ -n "$DRY_RUN" ] || printf '%s  %s\n' "${checksum#md5:}" "$rel" >> "$DEST/checksums.md5" ;;
+        *) echo "  note    $rel: Zenodo gives no md5 ($checksum)" ;;
+    esac
+    get "$rel" "$size" "$url"
+done <<< "$list"
+
+summary "$n" verified || exit 1
+next_steps
+{% elif mode == "git_live" %}
+
+# ------------------------------------------------------------------ clone
+
+REPO={{ repo }}
+REF={{ ref }}
+DIR="$DEST/"{{ tree }}
+need git
+# does the repository keep files in Git LFS? Its .gitattributes says so, read before cloning (needs curl)
+USES_LFS=
+if command -v curl >/dev/null 2>&1; then
+    attrs=$(curl -fsSL -A "$UA" "https://raw.githubusercontent.com/$REPO/${REF:-HEAD}/.gitattributes" 2>/dev/null </dev/null) || attrs=
+    case $attrs in *filter=lfs*) USES_LFS=1 ;; esac
+fi
+if [ -n "$DRY_RUN" ]; then
+    if [ -n "$REF" ]; then WHICH="branch $REF"; else WHICH="default branch"; fi
+    echo "Would clone https://github.com/$REPO ($WHICH) into $DIR"
+    [ -z "$USES_LFS" ] || echo "The repository keeps its large files in Git LFS: a full run downloads them too (it needs git-lfs)."
+    exit 0
+fi
+if [ -n "$USES_LFS" ] && ! git lfs version >/dev/null 2>&1; then
+    echo "This repository keeps its large files in Git LFS: install git-lfs (https://git-lfs.com) and run again." >&2
+    exit 1
+fi
+mkdir -p "$DEST"
+if [ -d "$DIR/.git" ]; then
+    GIT_LFS_SKIP_SMUDGE=1 git -C "$DIR" pull --ff-only
+else
+{% if ref == "''" %}
+    # no ref in the registry: clone the default branch (git clone --branch HEAD would fail)
+{% else %}
+    # the branch the registry names
+{% endif %}
+    GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 ${REF:+--branch "$REF"} "https://github.com/$REPO.git" "$DIR"
+fi
+lfs_pull "$DIR"
+echo
+echo "$ID: cloned $REPO at commit $(git -C "$DIR" rev-parse HEAD) into $DIR"
+echo "rirdb has not pinned a commit for this dataset: note the commit above to cite or re-create your copy."
+next_steps
+{% elif mode == "hf" %}
+
+# ------------------------------------------------------------------ Hugging Face
+
+REPO={{ repo }}
+REV={{ rev }}
+DIR="$DEST/"{{ tree }}
+need curl jq
+# the repository's files and sizes, from the Hugging Face API, so the download size is known before it starts
+echo "Listing the files of the Hugging Face dataset $REPO (revision $REV) ..."
+list=$(curl -fsSL -A "$UA" "https://huggingface.co/api/datasets/$REPO/revision/$REV?blobs=true" </dev/null \
+    | jq -r '.siblings[] | [.rfilename, (.size // "-" | tostring)] | @tsv') || list=
+total=
+if [ -n "$list" ]; then
+    n=$(printf '%s\n' "$list" | wc -l | tr -d ' ')
+    total=$(printf '%s\n' "$list" | awk -F'\t' '{ s += $2 } END { printf "%.0f", s }')
+    echo "$n files, $(human "$total") -> $DIR"
+    if [ -n "$DRY_RUN" ]; then
+        while IFS=$'\t' read -r f size; do printf '  %-64s %14s\n' "$f" "$(human "$size")"; done <<< "$list"
+    fi
+else
+    echo "The Hugging Face API did not list the files: the download size is not known." >&2
+fi
+if [ -n "$DRY_RUN" ]; then
+    echo
+    echo "Dry run: nothing was downloaded."
+    exit 0
+fi
+mkdir -p "$DEST"
+[ -z "$total" ] || space_check "$total"
+if command -v hf >/dev/null 2>&1; then
+    hf download "$REPO" --repo-type dataset --revision "$REV" --local-dir "$DIR"
+elif command -v huggingface-cli >/dev/null 2>&1; then
+    huggingface-cli download "$REPO" --repo-type dataset --revision "$REV" --local-dir "$DIR"
+else
+    need git
+    if [ -d "$DIR/.git" ]; then
+        GIT_LFS_SKIP_SMUDGE=1 git -C "$DIR" fetch origin "$REV"
+        GIT_LFS_SKIP_SMUDGE=1 git -C "$DIR" checkout -q FETCH_HEAD
+    else
+        GIT_LFS_SKIP_SMUDGE=1 git clone "https://huggingface.co/datasets/$REPO" "$DIR"
+        GIT_LFS_SKIP_SMUDGE=1 git -C "$DIR" checkout -q "$REV"
+    fi
+    lfs_pull "$DIR"    # git-lfs checks the sha256 of every large file it downloads
+    echo "Commit: $(git -C "$DIR" rev-parse HEAD)"
+fi
+echo
+echo "$ID: downloaded $REPO (revision $REV) into $DIR"
+echo "rirdb has not resolved this dataset yet, so there are no rirdb checksums to compare with."
+next_steps
+{% elif mode == "mirror" %}
+
+# ------------------------------------------------------------------ mirror the web folder
+
+URL={{ url }}
+{% if accept %}
+ACCEPT={{ accept }}    # the registry's wget --accept patterns
+{% endif %}
+CUT={{ cut }}    # path components of the URL that wget drops, so the files land directly in the dataset folder
+need wget curl gzip sha256sum
+if [ -n "$DRY_RUN" ]; then
+    echo "Would mirror $URL into $DEST{% if accept %} (files matching $ACCEPT){% endif %}."
+    echo "rirdb's copy holds {{ manifest_n | default('?', true) }} files, {{ manifest_bytes_text }}."
+    exit 0
+fi
+mkdir -p "$DEST"
+echo "Mirroring $URL into $DEST ..."
+rc=0
+# -nc keeps the files already here, so running the script again only fetches what is missing
+wget -r -np -nH --cut-dirs="$CUT" -nc -e robots=off --no-verbose --tries=10 --waitretry=10 \
+     --reject-regex {{ reject }}{% if accept %} -A "$ACCEPT"{% endif %} -P "$DEST" "$URL" || rc=$?
+[ "$rc" -eq 0 ] || echo "wget ended with code $rc (some files may be missing); checking what arrived." >&2
+find "$DEST" -name 'index.html*' -delete
+
+# ------------------------------------------------------------------ check against rirdb's manifest
+# The sha256 of every file in rirdb's copy is in {{ manifest_url }}
+# (a copy placed in the dataset folder as $ID.files.tsv.gz is used if present).
+manifest="$DEST/$ID.files.tsv.gz"
+if [ ! -s "$manifest" ] && ! curl -fsSL -A "$UA" -o "$manifest" {{ q_manifest_url }} </dev/null; then
+    rm -f "$manifest"
+    echo "Could not download rirdb's manifest: the files are not checked. See $DETAILS" >&2
+    exit 0
+fi
+gunzip -c "$manifest" | awk -F'\t' 'NR > 1 { print $3 "  " $1 }' > "$DEST/checksums-files.sha256"
+res=$(cd "$DEST" && sha256sum -c checksums-files.sha256 2>/dev/null || true)
+n_all=$(wc -l < "$DEST/checksums-files.sha256" | tr -d ' ')
+n_ok=$(printf '%s\n' "$res" | grep -c ': OK$' || true)
+n_missing=$(printf '%s\n' "$res" | grep -c ': FAILED open or read$' || true)
+n_bad=$(printf '%s\n' "$res" | grep -c ': FAILED$' || true)
+echo
+echo "$ID: $n_ok of $n_all files match rirdb's manifest; $n_missing missing; $n_bad differ."
+if [ "$n_bad" -gt 0 ]; then
+    echo "Files that differ from rirdb's copy (first 20):"
+    printf '%s\n' "$res" | grep ': FAILED$' | head -20
+fi
+next_steps
+# a non-zero exit when files differ or nothing arrived, so a batch job notices
+[ "$n_bad" -eq 0 ] && [ "$n_ok" -gt 0 ] || exit 1
+{% elif mode == "wayback" %}
+
+# ------------------------------------------------------------------ files linked from the archived page
+
+PAGE={{ page }}
+ARCHIVE="https://web.archive.org/web/{{ snapshot }}id_/"    # id_ = the archived bytes, without the Wayback toolbar
+need curl sha256sum
+base=${PAGE%/*}/
+echo "Reading the archived page $ARCHIVE$PAGE ..."
+html=$(curl -fsSL -A "$UA" "$ARCHIVE$PAGE" </dev/null)
+links=$(printf '%s\n' "$html" | grep -oiE 'href="[^"#:]+\.({{ exts }})"' | cut -d'"' -f2 | sed 's/&amp;/\&/g' | sort -u)
+[ -n "$links" ] || { echo "The archived page links to no files." >&2; exit 1; }
+n=$(printf '%s\n' "$links" | wc -l | tr -d ' ')
+echo "$n files -> $DEST"
+[ -n "$DRY_RUN" ] || { mkdir -p "$DEST"; touch "$DEST/checksums.sha256"; }
+while IFS= read -r link; do
+    enc=${link##*/}
+    name=$(printf '%b' "${enc//%/\\x}")    # URL-decoded file name
+    if [ -n "$DRY_RUN" ]; then echo "  $name"; continue; fi
+    out="$DEST/$name"
+    line=$(recorded "$name" "$DEST/checksums.sha256")
+    if [ -n "$line" ]; then
+        # received in an earlier run: check it against the sha256 recorded then
+        if [ -f "$out" ] && (cd "$DEST" && printf '%s\n' "$line" | sha256sum -c --status -); then
+            echo "  ok      $name (already here)"; n_ok=$((n_ok + 1)); continue
+        fi
+        [ -f "$out" ] && echo "  retry   $name from the start (it no longer matches the sha256 recorded when it was received)"
+        rm -f "$out"; unrecord "$name" "$DEST/checksums.sha256"
+    fi
+    echo "  get     $name"
+    if download "$ARCHIVE$base$link" "$out" && ! is_html "$out"; then
+        # no reference checksum exists: record what was received
+        printf '%s  %s\n' "$(sha256sum "$out" | cut -d' ' -f1)" "$name" >> "$DEST/checksums.sha256"
+        n_ok=$((n_ok + 1)); n_new=$((n_new + 1))
+    else
+        echo "  FAILED  $name"; rm -f "$out"; n_failed=$((n_failed + 1))
+    fi
+done <<< "$links"
+
+summary "$n" received || exit 1
+next_steps
+{% endif %}
+{% endif %}
+{#- Generated by pages_get.render() from pages_get.script_context(); every script is checked with bash -n. #}

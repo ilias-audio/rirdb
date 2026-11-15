@@ -1,0 +1,57 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: artsoundscapes_cadiz
+name: 'ERC Artsoundscapes: Cádiz rock-art sites'
+year: 2025
+type: measured
+status: catalogued
+content: Omni, 3rd-order Ambisonic (Zylia ZM-1) and binaural-rendered IRs measured in June 2021 at 10 rock-art sites
+  in Cádiz, Spain, by the ERC Artsoundscapes project; 256 WAV files at 48 kHz.
+fs_hz:
+- 48000
+expected:
+  n_irs: 84
+  n_rooms: 10
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  note: Zenodo's licence field gives CC BY-NC-SA 4.0, but the description ends with '©Artsoundscapes project. All
+    rights reserved.'
+homepage: https://zenodo.org/records/15821383
+doi: 10.5281/zenodo.15821383
+web_check:
+  checked: '2026-10-14'
+  found_as: 'ERC Artsoundscapes: acoustic measurements of rock-art sites in Cádiz'
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  host: Zenodo
+  size: 154 MB
+  file_formats: 'WAV (32-bit, 48 kHz): 1-ch omni, 2-ch binaural, 16-ch 3rd-order Ambisonics; one ZIP per site'
+  institution: Universitat de Barcelona (ERC Artsoundscapes), with Universidad de Cádiz, Université de Bordeaux
+    and ICREA
+  country: Spain
+  evidence_urls:
+  - https://zenodo.org/records/15821383
+  - https://zenodo.org/api/records/15821383
+  - https://zenodo.org/records/15821383/preview/Diosa.zip
+  - https://zenodo.org/records/15821383/preview/Horadada.zip
+  - https://zenodo.org/records/15821383/preview/Mujeres.zip
+  - https://zenodo.org/records/15821383/preview/Bacinete%20Ppal.zip
+  - https://zenodo.org/records/15821383/preview/Tajo%20de%20las%20Figuras.zip
+  confidence: high
+  caveats:
+  - Non-commercial licence; the description also carries an 'All rights reserved' line.
+  - 'Only WAV files: no position maps, photos or acoustic parameters. Binaural files are rendered from the Ambisonic
+    IRs, not recorded with a dummy head.'
+  - 'The authors give no IR count: the 84 source-receiver pairs (256 files, including repeat takes) were counted
+    from the file names.'

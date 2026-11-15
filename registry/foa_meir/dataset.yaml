@@ -1,0 +1,50 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: foa_meir
+name: FOA-MEIR
+year: 2022
+type: measured
+status: catalogued
+content: About 2,100 first-order Ambisonic (A-format) impulse responses measured in over 100 environments, from
+  an anechoic room to offices, meeting rooms and halls, for sound event localisation and detection research.
+fs_hz:
+- 48000
+expected:
+  n_irs: 2118
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+license:
+  spdx: LicenseRef-custom
+  note: NTT's evaluation licence allows only internal use to test and evaluate the methods in the authors' paper
+    and forbids distribution, modification and transfer; Zenodo tags it 'other-nc'.
+homepage: https://zenodo.org/records/6088574
+doi: 10.5281/zenodo.6088574
+web_check:
+  checked: '2026-10-14'
+  found_as: 'FOA-MEIR: multi-environment IRs with a first-order Ambisonic microphone (NTT)'
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 7.4 GB
+  file_formats: Raw 64-bit float binary IRs (.bin, 4-channel A-format); WAV noise and dry sounds; 11-part split
+    ZIP
+  institution: NTT Corporation
+  country: Japan
+  evidence_urls:
+  - https://zenodo.org/records/6088574
+  - https://zenodo.org/api/records/6088574
+  - https://zenodo.org/records/6088574/files/LICENSE.pdf
+  - https://github.com/nttrd-mdlab/seld-foa-meir
+  - https://raw.githubusercontent.com/nttrd-mdlab/seld-foa-meir/main/README.md
+  - https://arxiv.org/abs/2202.09121
+  confidence: high
+  caveats:
+  - 'Restrictive NTT evaluation licence: internal evaluation only, with no redistribution or modification.'
+  - Split into an 11-part ZIP of about 7.4 GB that also holds dry sounds and ambient noise.
+  - IRs are raw float binaries (.bin), not WAV; 96 of the environments have only 3 IRs each.

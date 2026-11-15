@@ -1,0 +1,25 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: fokke
+name: Fokke van Saane impulse responses
+type: production
+ir_kinds: [digital_reverb, plate, spring, device, room, outdoor]
+capture_formats: [stereo]
+content: Hardware reverb units (Lexicon, EMT, spring, tape echo), speakers/telephones and a few spaces (forest, street, factory hall); site offline, archived on the Wayback Machine as StuffIt archives.
+license: {spdx: LicenseRef-unspecified, redistribute_audio: unknown, note: "Stated as free to use in any convolver."}
+access: open
+source: {kind: wayback, urls: ["https://fokkie.home.xs4all.nl/IR.htm"]}
+wave: 1
+homepage: https://web.archive.org/web/2012/https://fokkie.home.xs4all.nl/IR.htm
+status: deferred
+notes: "The files are StuffIt (.sit) archives: extract them with The Unarchiver or unar. rirdb has not fetched them yet because its pipeline has no .sit extractor."
+web_check:
+  checked: '2026-10-14'
+  institution: Fokke van Saane (individual)
+  country: Netherlands
+  host: Wayback Machine
+  availability: archived
+  licence_note: The archived page calls the IRs freeware and asks for a copy of any CD made with them; there is
+    no licence, so ask before redistributing.
+  caveats:
+  - The original website is gone; the collection survives only on the Wayback Machine, as StuffIt archives.
+  - Mostly hardware reverbs, loudspeakers and telephones, plus a few rooms, churches and outdoor places.

@@ -1,0 +1,56 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: loudspeaker_orchestra
+name: Loudspeaker Orchestra with Multi-Channel Microphone Arrays
+year: 2022
+type: measured
+status: catalogued
+content: Measured IRs from each of 18 loudspeakers to 9 microphones (omni, two dummy heads, equatorial arrays, FOA/HOA
+  mics) in the Berliner Philharmonie and the Berlin Open Lab, as SOFA files, with orchestra recordings.
+fs_hz:
+- 48000
+expected:
+  n_irs: 324
+  n_rooms: 2
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  materials: 'no'
+  positions: 'yes'
+  images: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-SA-4.0
+    where: DepositOnce record and the documentation's licence line
+  - licence: CC-BY-NC-SA-4.0
+    where: 'documentation text: redistribution and editing ''for non-commercial purposes'''
+  note: The record and the documentation name CC BY-SA 4.0, but the documentation's text says the database may be
+    redistributed and edited 'for non-commercial purposes'.
+homepage: https://depositonce.tu-berlin.de/handle/11303/16995.3
+doi: 10.14279/depositonce-15774.3
+web_check:
+  checked: '2026-10-14'
+  found_as: Recordings of a Loudspeaker Orchestra with Multi-Channel Microphone Arrays (with measured IRs)
+  availability: open
+  families:
+  - mono
+  - binaural
+  - ambisonic
+  - array
+  host: DepositOnce
+  size: 10.6 GB (IR archives 4.8 GB)
+  file_formats: SOFA (AES69-2022, SingleRoomMIMOSRIR) in ZIP; SketchUp room models, WAV stimuli, photos
+  institution: TU Berlin (Audio Communication Group)
+  country: Germany
+  evidence_urls:
+  - https://depositonce.tu-berlin.de/items/bf819762-b4b4-455b-a556-7fdb19350e7b/full
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/bf819762-b4b4-455b-a556-7fdb19350e7b
+  - https://api-depositonce.tu-berlin.de/server/api/core/items/bf819762-b4b4-455b-a556-7fdb19350e7b/bundles?embed=bitstreams&size=50
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/e426b95f-dd1f-469f-9e46-9a646593dac7/content
+  - https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/23942636-4a61-4c3e-95ab-12cb55d95372/content
+  confidence: high
+  caveats:
+  - The IRs are in two zips totalling 4.8 GB (whole record 10.6 GB), stored as SOFA files.
+  - 'Licence wording conflicts: CC BY-SA 4.0 is named, but the documentation says non-commercial purposes.'
+  - IR count is derived (18 loudspeakers x 9 microphones x 2 rooms); the FABIAN BRIRs cover 91 head orientations.

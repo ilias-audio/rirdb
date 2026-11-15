@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sauna_irs
+name: Dataset of sauna impulse responses
+year: 2024
+type: measured
+status: catalogued
+content: 5,199 IRs measured with a loudspeaker and two microphones in a sauna at Aalto University (Espoo) as it
+  warmed up, with logs from seven temperature and humidity sensors, a position diagram and a photo.
+expected:
+  n_irs: 5199
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'no'
+  positions: partial
+  images: 'yes'
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/14851522
+doi: 10.5281/zenodo.11145470
+web_check:
+  checked: '2026-10-14'
+  found_as: Dataset of sauna impulse responses (Aalto)
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 1.7 GB
+  file_formats: WAV in ZIP; XLSX sensor logs; PNG diagram and photo
+  institution: Aalto University; FAU Erlangen-Nürnberg
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/api/records/14851522
+  - https://zenodo.org/api/records/11145471
+  - https://zenodo.org/records/14851522/preview/1s_IRs_02_2025.zip
+  - https://research.aalto.fi/fi/datasets/dataset-of-sauna-impulse-responses/
+  - https://cris.fau.de/publications/331882644
+  confidence: high
+  caveats:
+  - 'One small room: 998 IRs used 1-s sweeps and 4,201 used 2-s sweeps, kept in separate ZIPs.'
+  - The files were replaced in February 2025; the concept DOI always points to the latest version.
+  - Sampling rate and room size are not stated on the record; details are in the Inter-Noise 2024 paper.

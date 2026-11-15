@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: twoears_spirit
+name: 'Two!Ears KEMAR BRIRs: TU Berlin meeting room Spirit'
+year: 2016
+type: measured
+status: catalogued
+content: KEMAR dummy-head BRIRs for 3 loudspeakers around a table in 'Spirit', a small meeting room at TU Berlin,
+  with the head turned from -90° to 90° in 1° steps (Two!Ears project).
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/160751
+doi: 10.5281/zenodo.160751
+web_check:
+  checked: '2026-10-14'
+  found_as: Two!Ears KEMAR BRIRs in a small meeting room (TU Berlin 'Spirit')
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 167 MB
+  file_formats: SOFA
+  institution: TU Ilmenau; University of Rostock (Two!Ears project); measured at TU Berlin
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/160751
+  - https://zenodo.org/api/records/160751
+  - https://zenodo.org/api/records/160751/files/QU_KEMAR_spirit.sofa/content
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  confidence: high
+  caveats:
+  - Single 167 MB SOFA file; Zenodo has no sketch or photo (the Two!Ears docs show a room photo not taken during
+    the measurement).
+  - Sampling rate, room size and reverberation time are not stated.
+  - Head rotation covers only -90° to 90° (the front half).

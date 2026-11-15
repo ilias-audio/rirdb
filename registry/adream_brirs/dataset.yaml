@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: adream_brirs
+name: BRIRs of an apartment-like environment (ADREAM)
+year: 2016
+type: measured
+status: catalogued
+content: 'KEMAR dummy-head BRIRs in a mock apartment at LAAS-CNRS, Toulouse: 4 loudspeakers x 4 listener positions
+  with head turns of ±78° in 2° steps, plus 20 positions along a path; SOFA files.'
+fs_hz:
+- 44100
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/49357
+doi: 10.5281/zenodo.49357
+web_check:
+  checked: '2026-10-14'
+  found_as: BRIRs of an apartment-like environment (ADREAM lab, LAAS-CNRS)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 2.1 GB
+  file_formats: SOFA in ZIP; PDF and JPEG documentation in doc.zip
+  institution: University of Rostock, TU Ilmenau and LAAS-CNRS (Two!Ears project)
+  country: France
+  evidence_urls:
+  - https://zenodo.org/api/records/49357
+  - https://zenodo.org/records/49357/preview/BRIRs.zip
+  - https://zenodo.org/records/49357/preview/doc.zip
+  - https://docs.twoears.eu/en/latest/database/impulse-responses/brirs/
+  - https://www.int.uni-rostock.de/fileadmin/user_upload/publications/spors/2016/Winter_etal_AES_Binaural_database_apartment.pdf
+  confidence: high
+  caveats:
+  - BRIRs.zip is 1.6 GB; documentation and about 195 photos are a separate 0.47 GB doc.zip.
+  - The 'apartment' is a drywall mock-up (two rooms and a half-open area) built inside a large hall, with no ceiling.
+  - The 20 path positions use a fixed 0° head orientation; head turns were measured only at the 4 main listener
+    positions.

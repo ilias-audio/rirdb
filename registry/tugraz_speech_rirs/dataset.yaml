@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tugraz_speech_rirs
+name: Dataset of Room Impulse Responses for Realistic Speech Data
+year: 2024
+type: measured
+status: catalogued
+content: 16-channel circular-array RIRs measured with a robot-moved loudspeaker on fine grids in a classroom (97
+  points) and a large corridor (210 points), 4 source directions per point, for simulating moving talkers.
+fs_hz:
+- 48000
+expected:
+  n_irs: 1228
+  n_rooms: 2
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://repository.tugraz.at/records/f6q9h-fc803
+doi: 10.3217/f6q9h-fc803
+web_check:
+  checked: '2026-10-14'
+  found_as: TU Graz dataset of room impulse responses for realistic speech data (Fragner et al.)
+  availability: open
+  families:
+  - array
+  host: University repository (TU Graz Repository)
+  size: 17.5 GB
+  file_formats: Custom binary (meta.json, index and data files; Python reader) in one ZIP
+  institution: Graz University of Technology
+  country: Austria
+  evidence_urls:
+  - https://repository.tugraz.at/records/f6q9h-fc803
+  - https://repository.tugraz.at/api/records/f6q9h-fc803
+  - https://repository.tugraz.at/api/records/6na1n-ap123
+  - https://pmc.ncbi.nlm.nih.gov/articles/PMC10912595/
+  confidence: high
+  caveats:
+  - 'Large: a single 17.5 GB ZIP.'
+  - IRs are stored in a custom binary format read with the authors' Python script, not as WAV files.
+  - This is version 2 (2024); version 1 (2023) has DOI 10.3217/6na1n-ap123.

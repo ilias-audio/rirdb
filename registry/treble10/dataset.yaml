@@ -1,0 +1,23 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: treble10
+name: Treble10-RIR
+year: 2025
+type: simulated
+ir_kinds: [room]
+capture_formats: [mono_omni, array_raw, hoa_sh]
+fs_hz: [32000]
+content: 3,085 broadband RIRs per receiver format (mono, a 6-microphone device, 8th-order Ambisonics) from a hybrid wave-based (<5 kHz) + geometrical solver in 10 furnished real-world rooms (bathrooms, bedrooms, living rooms, meeting rooms), receiver grids at 3 heights.
+expected: {n_irs: 3085, n_rooms: 10, note: "3,085 source-receiver positions, each published as mono, 6-channel and 8th-order HOA files (Hugging Face splits, checked 2026-10-13)"}
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes, note: "Hugging Face card: CC BY-NC-SA 4.0 (checked 2026-10-13)."}
+access: open
+source: {kind: hf, records: ["treble-technologies/Treble10-RIR@main"]}
+wave: 4
+homepage: https://huggingface.co/datasets/treble-technologies/Treble10-RIR
+paper: {title: "Treble10: A high-quality dataset for far-field speech recognition, dereverberation, and enhancement", url: "https://arxiv.org/abs/2510.23141"}
+doi: 10.57967/hf/6687
+status: deferred
+web_check:
+  checked: '2026-10-14'
+  institution: Treble Technologies
+  country: Iceland
+  host: Hugging Face

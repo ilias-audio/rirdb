@@ -1,0 +1,52 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: parirset
+name: PaRIRset
+year: 2026
+type: measured
+status: catalogued
+content: Stereo RIRs from 40 concert venues in Spain (indoor and outdoor), measured through each venue's left/right
+  PA at front of house with a reference mic and a Zylia ZM-1, for live-music source separation.
+fs_hz:
+- 44100
+expected:
+  n_irs: 2376
+  n_rooms: 40
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC0-1.0
+  note: The card releases everything under CC0 1.0, but the train split also bundles RIRs from ACE, MIT IR Survey
+    and OpenSLR 28 whose own terms the card does not restate.
+homepage: https://huggingface.co/datasets/enricguso/parirset
+doi: 10.57967/hf/9774
+web_check:
+  checked: '2026-10-14'
+  found_as: 'PaRIRset: RIRs of concert venues via their PA systems'
+  availability: open
+  families:
+  - stereo
+  host: Hugging Face
+  size: 306 MB
+  file_formats: WAV (16-bit) plus venues.csv metadata
+  institution: Universitat Pompeu Fabra (Music Technology Group) and Eurecat
+  country: Spain
+  evidence_urls:
+  - https://huggingface.co/datasets/enricguso/parirset
+  - https://huggingface.co/api/datasets/enricguso/parirset
+  - https://huggingface.co/datasets/enricguso/parirset/raw/main/README.md
+  - https://huggingface.co/datasets/enricguso/parirset/raw/main/venues.csv
+  - https://arxiv.org/abs/2607.27828
+  - https://enricguso.github.io/crowdioset_parirset
+  confidence: high
+  caveats:
+  - 'The 2,376 files are variants of one front-of-house measurement per venue: reference-mic RIRs, gain/polarity-augmented
+    copies, single Zylia capsules and beamformed virtual mics'
+  - The train split also bundles RIRs from ACE, MIT IR Survey and OpenSLR 28
+  - Raw 48 kHz mono and multichannel recordings are described in the paper but are not in this repository

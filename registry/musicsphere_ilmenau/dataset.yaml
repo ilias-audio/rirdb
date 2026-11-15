@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: musicsphere_ilmenau
+name: MusicSphere ROAM-JIL (St. Jakobus Church, Ilmenau)
+year: 2026
+type: measured
+status: catalogued
+content: Omnidirectional RIRs (9 mics in and around the organ) and robot-measured spatial RIRs (7-mic array, 43
+  positions, rear glass wall open and closed) in St. Jakobus Church, Ilmenau; SOFA files.
+expected:
+  n_rooms: 1
+room_info:
+  geometry: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/20037928
+doi: 10.5281/zenodo.20037928
+web_check:
+  checked: '2026-10-14'
+  found_as: 'MusicSphere / ROAM-JIL: room and organ acoustic measurements of St. Jakobus Church, Ilmenau'
+  availability: open
+  families:
+  - mono
+  - array
+  host: Zenodo
+  size: 3.0 GB
+  file_formats: 'SOFA 2.1 (SingleRoomSRIR 1.1): one omni SOFA file and SRIR ZIPs; PDF photo collage; JPG overview'
+  institution: TU Ilmenau; Fraunhofer IDMT
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/api/records/20037928
+  - https://zenodo.org/api/records/19496982
+  - https://zenodo.org/api/records/19497219
+  - https://zenodo.org/records/19497219/files/ROAM-JIL-Gallery.zip?download=1
+  - https://zenodo.org/records/19496982/files/ROAM-JIL-Omnidirectional.sofa?download=1
+  confidence: high
+  caveats:
+  - 'The IRs are in two sub-records: Part 1 omni RIRs (zenodo 19496982) and Part 2 spatial RIRs (zenodo 19497219);
+    the overview record holds only a PDF and an image.'
+  - Parts 3 and 4 are organ recordings, not IRs.
+  - The IR count and sampling rate are not stated.

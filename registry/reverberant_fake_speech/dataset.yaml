@@ -1,0 +1,52 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: reverberant_fake_speech
+name: Synthetic Room Impulse Responses and Reverberant Fake Speech
+year: 2025
+type: hybrid
+status: catalogued
+content: About 132,000 synthetic RIRs made by re-shaping the T60 and DRR of 264 MIT IR Survey recordings (500 variants
+  each), plus those 264 originals and ASVspoof 2021 fake speech reverberated with them.
+expected:
+  n_irs: 132264
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: >-
+    CC BY 4.0, as the Zenodo record and the README publish it (kept by Ilias, 15 Nov 2026). The RIRs are
+    derived from, and partly copies of, the MIT IR Survey, which states no licence; the question is in
+    docs/plans/questions-for-authors.md.
+homepage: https://zenodo.org/records/17180301
+doi: 10.5281/zenodo.17180301
+web_check:
+  checked: '2026-10-14'
+  found_as: Synthetic Room Impulse Responses and Reverberant Fake Speech (NTU Singapore)
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 7.7 GB (RIRs about 0.9 GB)
+  file_formats: tgz archives of audio (format not stated); CSV with T60/DRR per RIR
+  institution: Nanyang Technological University
+  country: Singapore
+  evidence_urls:
+  - https://zenodo.org/records/17180301
+  - https://zenodo.org/api/records/17180301
+  - https://zenodo.org/records/17180301/files/README.txt
+  - https://zenodo.org/records/17180301/files/rir-syn-test_info.csv
+  - https://arxiv.org/abs/2409.14712
+  - https://arxiv.org/html/2409.14712v1
+  - https://mcdermottlab.mit.edu/Reverb/IR_Survey.html
+  confidence: medium
+  caveats:
+  - 'Built from the MIT IR Survey (registry: mit_survey): the ''real'' archives copy 264 of its recordings and the
+    synthetic set holds 500 re-shaped variants of each.'
+  - The authors warn that the T60 and DRR values in the CSVs are estimates and may be highly inaccurate.
+  - About 7.7 GB in all, but the RIRs are only about 0.9 GB; the two large archives are reverberant fake speech.

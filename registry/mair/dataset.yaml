@@ -1,0 +1,54 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mair
+name: MAIR (Microphone Array Impulse Response) library
+year: 2017
+type: measured
+status: catalogued
+content: Impulse responses from 13 stage loudspeakers in St Paul's concert hall, Huddersfield, captured with 39
+  microphone setups (stereo pairs to 9-channel 3D arrays, dummy head, FOA), plus an 8-speaker 360° layout.
+fs_hz:
+- 44100
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+  note: Zenodo's licence field reads 'Other (Open)', but the README, licence.txt and the user guide all state CC
+    BY 4.0.
+homepage: https://zenodo.org/records/2639677
+doi: 10.5281/zenodo.2639677
+web_check:
+  checked: '2026-10-14'
+  found_as: 'MAIR: Microphone Array Impulse Response library and renderer (Huddersfield)'
+  availability: open
+  families:
+  - stereo
+  - binaural
+  - ambisonic
+  - array
+  host: Zenodo
+  size: 897 MB
+  file_formats: WAV (one mono 44.1 kHz/32-bit file per microphone and loudspeaker); Max 7 renderer (.mxf); PDF guide
+  institution: Applied Psychoacoustics Lab, University of Huddersfield
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/api/records/2639677
+  - https://github.com/APL-Huddersfield/MAIR-Library-and-Renderer
+  - https://raw.githubusercontent.com/APL-Huddersfield/MAIR-Library-and-Renderer/master/readme.md
+  - https://raw.githubusercontent.com/APL-Huddersfield/MAIR-Library-and-Renderer/master/licence.txt
+  - https://raw.githubusercontent.com/APL-Huddersfield/MAIR-Library-and-Renderer/master/MAIR%20Technical%20Descriptions%20and%20User%20Guide.pdf
+  - https://api.github.com/repos/APL-Huddersfield/MAIR-Library-and-Renderer/git/trees/master?recursive=1
+  - https://eprints.hud.ac.uk/id/eprint/33676/
+  confidence: high
+  caveats:
+  - The renderer needs Max 7 (free runtime), but the WAV files can be used on their own.
+  - Ambience (Hamasaki) arrays were measured for the centre loudspeaker only.
+  - Bundled SADIE HRIRs from the University of York come under York's own licence.

@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mirage
+name: MIRaGe
+year: 2019
+type: measured
+status: catalogued
+content: Measured multichannel RIRs for 4,104 loudspeaker positions on a dense cube grid (plus 25 more), captured
+  by six 5-mic linear arrays in one variable-acoustics lab at Bar-Ilan at T60s of 100, 300 and 600 ms.
+fs_hz:
+- 48000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: The lab page shows only '© Copyright 2019 - Acoustic Signal Analysis and Processing Group' and the paper
+    says the data are free of charge for the research community; no data licence is named (the MATLAB tools on GitHub
+    are MIT).
+homepage: https://asap.ite.tul.cz/downloads/mirage/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'MIRaGe: Multichannel Impulse Response database on a cube-shaped Grid'
+  availability: open
+  families:
+  - array
+  host: Google Drive
+  size: about 12 GB per array (recordings)
+  file_formats: FLAC sweep/noise recordings in ZIPs; MAT IR tensors
+  institution: Technical University of Liberec (ASAP group) and Bar-Ilan University
+  country: Israel
+  evidence_urls:
+  - https://asap.ite.tul.cz/downloads/mirage/
+  - https://drive.google.com/embeddedfolderview?id=17x1_gqZDYejzbuFYR5bPy1ZocQ518z1m
+  - https://drive.google.com/embeddedfolderview?id=18WukJlw42qNFkTnvydPJPuayEau8NtUx
+  - https://docs.google.com/document/d/1py5lUPwOojQlG5gJGml4saLiH6Z-oMQph7cQvSSZw5k
+  - https://github.com/JarCme/MIRaGe_Utils
+  - https://arxiv.org/abs/1907.12421
+  - https://ar5iv.labs.arxiv.org/html/1907.12421
+  confidence: high
+  caveats:
+  - No data licence stated, only a copyright line; the MATLAB tools on GitHub are MIT-licensed.
+  - The main download holds raw chirp and white-noise recordings (about 12 GB per array); ready-made IRs are in
+    18 separate .mat tensors.
+  - Files sit in public Google Drive folders linked from the lab page; not the same data as Bar-Ilan's 2014 MIRD.

@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: uts_multizone
+name: UTS RIR Database (multizone sound field reproduction)
+year: 2022
+type: measured
+status: catalogued
+content: 260,400 single-channel RIRs from a 60-loudspeaker circular array to two microphone arrays placed in 5 zones,
+  measured with sine sweeps in 7 rooms (anechoic chamber to open-plan office) at UTS Tech Lab, Sydney.
+fs_hz:
+- 48000
+expected:
+  n_irs: 260400
+  n_rooms: 7
+room_info:
+  geometry: 'no'
+  positions: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-3.0
+  note: The dataset record states the Australian port CC BY-NC 3.0 AU, which has no exact SPDX id. The portal's
+    top-level collection shows CC BY 4.0, but that applies to the repository, not to this dataset.
+homepage: https://data.research.uts.edu.au/publication/fad2f4b0c03d11ec91ce05dbccc55a63/
+doi: 10.26195/0wx8-v473
+web_check:
+  checked: '2026-10-14'
+  found_as: UTS room impulse response database for multizone sound field reproduction
+  availability: open
+  families:
+  - array
+  host: University repository
+  size: 7.9 GB
+  file_formats: 24-bit mono WAV in one ZIP per room (or one combined ZIP), MATLAB reader script
+  institution: University of Technology Sydney
+  country: Australia
+  evidence_urls:
+  - https://doi.org/10.26195/0wx8-v473
+  - https://data.research.uts.edu.au/api/object/meta?resolve-parts&noUrid&id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63
+  - https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Small%20Meeting%20Room.zip
+  - https://data.research.uts.edu.au/api/configuration
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 3.0 AU).
+  - The record says to contact the data manager for access, but the room ZIPs were served without a login when checked
+    on 2026-10-13.
+  - As served, the 7 room ZIPs total about 7.9 GB, though the metadata lists 19.6 GB. Two of the 7 rooms are anechoic
+    or hemi-anechoic.

@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: lexicon_480l_nelson
+name: Grant Nelson's Lexicon 480L IRs
+year: 2014
+type: production
+status: catalogued
+content: Free impulse responses of 54 programs of producer Grant Nelson's own Lexicon 480L hardware reverb (halls,
+  plates, rooms, ambience, effects), as AIFF files with Altiverb and Space Designer presets.
+expected:
+  n_irs: 54
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+homepage: https://www.housecallfm.com/download-gns-personal-lexicon-480l
+web_check:
+  checked: '2026-10-14'
+  found_as: Grant Nelson's personal Lexicon 480L IRs
+  availability: open
+  host: Personal website
+  size: 22 MB
+  file_formats: ZIP (BGLex480.zip) of AIFF audio files plus Altiverb/Space Designer presets and install notes
+  institution: Grant Nelson / Housecall FM
+  country: UK
+  evidence_urls:
+  - https://www.housecallfm.com/download-gns-personal-lexicon-480l
+  - https://www.housecallfm.com/download.php?f=BGLex480.zip
+  - https://www.synthtopia.com/content/2014/02/19/free-lexicon-480l-impulse-responses-from-grant-nelson/
+  - https://en.wikipedia.org/wiki/Grant_Nelson_(DJ)
+  confidence: high
+  caveats:
+  - Captures of a hardware reverb unit's presets, not real rooms.
+  - No licence or terms of use stated.
+  - Sample rate and channel count are not stated. The files are AIFF according to a user comment.

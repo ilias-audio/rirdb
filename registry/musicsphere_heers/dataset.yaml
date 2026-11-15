@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: musicsphere_heers
+name: MusicSphere ROAM-MHE (Sint-Martinus Church, Heers)
+year: 2026
+type: measured
+status: catalogued
+content: Spatial RIRs from a robot-mounted 7-microphone array at 152 positions in the nave of Sint-Martinus Church,
+  Heers (Belgium), with 5 sources near the organ and altar; SOFA files.
+expected:
+  n_rooms: 1
+room_info:
+  geometry: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/22111389
+doi: 10.5281/zenodo.22111389
+web_check:
+  checked: '2026-10-14'
+  found_as: 'MusicSphere / ROAM-MHE: room and organ acoustic measurements of Sint-Martinus Church, Heers'
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 11.7 GB
+  file_formats: SOFA 2.1 (SingleRoomSRIR 1.1) in ZIP; PDF overview; 360° images (separate part)
+  institution: TU Ilmenau; Fraunhofer IDMT
+  country: Belgium
+  evidence_urls:
+  - https://zenodo.org/api/records/22111389
+  - https://zenodo.org/api/records/22686848
+  - https://zenodo.org/api/records/22813283
+  - https://zenodo.org/records/22686848/files/ROAM-MHE-fine.zip?download=1
+  confidence: high
+  caveats:
+  - 'The SRIRs are in the Part 1 record (zenodo 22686848: two ZIPs of 8.6 GB and 3.1 GB); the overview record holds
+    only a PDF.'
+  - Some positions were measured more than once.
+  - The IR count and sampling rate are not stated.

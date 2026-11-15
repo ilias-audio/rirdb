@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ebrird
+name: eBrIRD
+year: 2021
+type: measured
+status: catalogued
+content: Hearing-aid BRIRs from a KEMAR (eardrum mics plus front/back mics of two behind-the-ear aids) in an anechoic
+  chamber, a kitchen and a restaurant in Marseille and a car, with head turns from -90 to 90 degrees.
+fs_hz:
+- 44100
+expected:
+  n_rooms: 4
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: partial
+  materials: partial
+  positions: partial
+  images: partial
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: The archived page states no licence or terms of use and gives only an e-mail contact for enquiries.
+homepage: https://www.phon.ucl.ac.uk/resource/ebrird/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'eBrIRD: ELOSPHERES binaural room impulse response database (UCL)'
+  availability: offline
+  families:
+  - binaural
+  - mono
+  host: Lab website
+  size: about 1.7 GB of IR files, plus a 5 GB car-noise file
+  file_formats: SOFA
+  institution: University College London (Speech, Hearing and Phonetic Sciences; ELOSPHERES project), measured at
+    LMA (CNRS), Marseille
+  country: France
+  evidence_urls:
+  - https://www.phon.ucl.ac.uk/resource/ebrird/
+  - https://web.archive.org/web/20250519053306/https://www.phon.ucl.ac.uk/resource/ebrird/
+  - https://web.archive.org/cdx/search/cdx?url=phon.ucl.ac.uk/downloads/ebrird/&matchType=prefix
+  confidence: medium
+  caveats:
+  - The download site was unreachable on 14 Oct 2026; the Wayback Machine keeps the page but not the BRIR files.
+  - No licence stated.
+  - Includes a 5 GB car-cabin noise file alongside the IRs.

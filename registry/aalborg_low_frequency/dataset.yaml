@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: aalborg_low_frequency
+name: RIRs for Low-Frequency Sound Field Control
+year: 2024
+type: measured
+status: catalogued
+content: Low-frequency RIRs (15-600 Hz sweeps, stored at 1.2 kHz) measured in a multichannel room and a listening
+  room at Aalborg University with sweeps of 36 ms to 15 s, as design and evaluation sets for sound zones.
+fs_hz:
+- 1200
+expected:
+  n_rooms: 2
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'no'
+  materials: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/11098543
+doi: 10.5281/zenodo.11098543
+web_check:
+  checked: '2026-10-14'
+  found_as: Room Impulse Responses for Low-Frequency Sound Field Control
+  availability: open
+  families:
+  - array
+  host: Zenodo
+  size: 481 MB (Light) / 8.0 GB (Full)
+  file_formats: MAT 3-D arrays in ZIP, MATLAB code; Full ZIP adds raw sweeps and recordings
+  institution: Aalborg University; Bang & Olufsen; KU Leuven
+  country: Denmark
+  evidence_urls:
+  - https://zenodo.org/records/11098543
+  - https://zenodo.org/api/records/11098543
+  - https://zenodo.org/records/11098543/preview/RIR_LF_SFC_Light.zip
+  - https://vbn.aau.dk/da/publications/spatial-sampling-versus-acquisition-time-of-room-impulse-response/
+  - https://vbn.aau.dk/ws/files/768422568/757_1_10.0024519.pdf
+  - https://zenodo.org/api/records/4501339
+  confidence: high
+  caveats:
+  - Covers only about 15-600 Hz and is stored at 1.2 kHz, so it suits low-frequency sound-zone work, not full-band
+    reverb.
+  - The 481 MB Light ZIP has the ready-to-use RIRs; the 8 GB Full ZIP adds the original 48 kHz sweeps and recordings.
+  - Room sizes, source positions and T20 values are in the companion JASA 2024 paper (Cadavid et al.), not on the
+    record.

@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: rochester
+name: University of Rochester RIR dataset
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+fs_hz: [48000]
+content: Mono RIRs (48 kHz, 32-bit) from 14 rooms of the University of Rochester with a wide range of RT60, clarity and EDT; room layouts and acoustic plots per room.
+expected: {n_irs: 90, n_rooms: 14}
+room_info: {dimensions: "yes", volume: "partial", positions: "partial", images: "yes", reference_acoustics: "yes", materials: "partial", conditions: "no", where: "RoomSummary.pdf (dimensions, treatment, windows); per-room floor plan, layout and acoustic plots (EDC, clarity, spectra)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: figshare, records: ["26801089"]}
+adapter:
+  name: wav_tree
+  params: {pattern: 'Room0*(?P<room>\d+)/.*_Speak(?P<src>\d+)_Mic(?P<rcv>\d+)\.wav$'}
+wave: 0
+homepage: https://rochester.figshare.com/articles/dataset/University_of_Rochester_room_impulse_response_dataset/26801089
+doi: 10.60593/ur.d.26801089
+status: active
+notes: "Room 13: the three Speak2 files are byte-identical copies of the Speak1 files (publishing error, found by content hash on 2026-09-30); the corpus_dedup view marks them."
+web_check:
+  checked: '2026-10-14'
+  institution: University of Rochester
+  country: USA
+  host: Figshare (University of Rochester)
+  caveats:
+  - In room 13 the three "Speak2" files are copies of the "Speak1" files.
+  - Comes with room dimensions, layouts and acoustic plots.

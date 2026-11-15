@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ash_ir
+name: ASH IR Dataset
+year: 2021
+type: production
+status: catalogued
+content: Equalised 2-channel BRIRs of 39 rooms (studios, control rooms, seminar rooms, halls) derived from public
+  BRIR datasets, with headphone filters and Equalizer APO configs for virtual surround on headphones.
+fs_hz:
+- 44100
+expected:
+  n_irs: 795
+  n_rooms: 39
+room_info:
+  geometry: 'no'
+  positions: partial
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://zenodo.org/records/4780815
+doi: 10.5281/zenodo.2588014
+web_check:
+  checked: '2026-10-14'
+  found_as: ASH IR Dataset (Audio Spatialisation for Headphones)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 161 MB
+  file_formats: ZIP of WAV (2-channel BRIRs) plus PDF documentation and Equalizer APO configuration files
+  institution: Shanon Pearce (no affiliation listed)
+  country: Germany, UK, France
+  evidence_urls:
+  - https://zenodo.org/api/records/4780815
+  - https://zenodo.org/records/4780815/preview/ASH_IR_Dataset_v8.0.0.zip
+  - https://github.com/ShanonPearce/ASH-IR-Dataset
+  - https://github.com/ShanonPearce/ASH-Listening-Set
+  - https://github.com/ShanonPearce/ASH-Listening-Set/wiki/Room-and-Measurement-Summary
+  confidence: high
+  caveats:
+  - 'Not new measurements: the BRIRs are equalised derivatives of other public BRIR datasets, listed in a Source-Datasets
+    PDF inside the ZIP.'
+  - A newer version, ASH-Listening-Set (35 rooms), is on GitHub without a DOI.
+  - Non-commercial, share-alike licence.

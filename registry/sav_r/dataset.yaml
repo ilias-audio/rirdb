@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sav_r
+name: SAV+R RIR dataset
+year: 2022
+type: measured
+status: catalogued
+content: 240 mono and Ambisonic RIRs from the Maison Symphonique concert hall and 67 third-order Ambisonic RIRs
+  from Montreal's former planetarium (Centech), made for 6DoF navigation, with glTF 3D models of both spaces.
+expected:
+  n_irs: 307
+  n_rooms: 2
+room_info:
+  geometry: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://archive.org/details/savr_rir_dataset_202204
+web_check:
+  checked: '2026-10-14'
+  found_as: SAV+R RIR dataset (Maison Symphonique and former Montreal planetarium)
+  availability: open
+  families:
+  - mono
+  - ambisonic
+  host: Internet Archive
+  size: 5.2 GB
+  file_formats: WAV, FLAC, glTF 3D models, PNG spectrograms
+  institution: Society for Arts and Technology (SAT) Metalab, Montreal
+  country: Canada
+  evidence_urls:
+  - https://archive.org/details/savr_rir_dataset_202204
+  - https://archive.org/metadata/savr_rir_dataset_202204/metadata
+  - https://archive.org/metadata/savr_rir_dataset_202204
+  - https://support.zylia.co/zylia-papers/zylia-related/two-datasets-of-room-impulse-responses-for-navigation-in-six-degrees-of-freedom-a-symphonic-concert-hall-and-a-former-planetarium/
+  confidence: high
+  caveats:
+  - Hosted on the Internet Archive as a 5.2 GB item (287 WAV, 183 FLAC and 2 glTF files). Each format can be downloaded
+    as a zip.
+  - The archive page does not give the sampling rate or the microphone models. The details are in the DAFx 2022
+    paper by Piquet et al.
+  - The Centech set includes test series with and without furniture installed.

@@ -1,0 +1,24 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: acousticrooms
+name: AcousticRooms
+year: 2025
+type: simulated
+ir_kinds: [room]
+capture_formats: [mono_omni]
+content: 300,000+ single-channel RIRs simulated in 260 rooms of 10 categories (apartment, auditorium, office, cafe, ...) with 3D geometry and materials from a 332-material library.
+expected: {n_irs: 300000, n_rooms: 260}
+room_info: {geometry: "yes", materials: "yes", positions: "yes", where: "meshes and per-surface materials from a 332-material library in the release"}
+fs_hz: [22050]
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: github, records: ["facebookresearch/AcousticRooms@clean-main"]}
+wave: 4
+homepage: https://github.com/facebookresearch/AcousticRooms
+paper: {title: "Hearing Anywhere in Any Environment", url: "https://arxiv.org/abs/2504.10746"}
+status: deferred
+notes: "A full download is about 63 GB: the repository keeps 62.4 GB in 15 Git LFS files (among them single_channel_ir.zip, 4.1 GB; depth_map.zip, 3.6 GB; and the dense simulations, 52.1 GB in 11 zip parts), and the clone itself is about 0.9 GB. The GitHub API gives 618 MB because it leaves Git LFS out (checked 2026-11-06)."
+web_check:
+  checked: '2026-10-14'
+  institution: Meta Reality Labs, with University of Washington and University of Maryland
+  country: USA
+  host: GitHub (Git LFS)

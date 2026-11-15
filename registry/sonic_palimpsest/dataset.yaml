@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sonic_palimpsest
+name: Sonic Palimpsest Impulse Response Library
+year: 2022
+type: measured
+status: catalogued
+content: Deconvolved stereo and first-order Ambisonic IRs (Ambisonics also decoded to binaural and stereo) of 15
+  spaces at Chatham Historic Dockyard, incl. a ropery, a destroyer and a submarine.
+expected:
+  n_rooms: 15
+license:
+  spdx: CC-BY-4.0
+homepage: https://research.kent.ac.uk/sonic-palimpsest/impulse-responses/
+web_check:
+  checked: '2026-10-14'
+  found_as: Sonic Palimpsest IR library (Chatham Historic Dockyard)
+  availability: open
+  families:
+  - stereo
+  - ambisonic
+  - binaural
+  host: Google Drive
+  size: about 30 MB (WAV ZIP, as shown by Google Drive)
+  file_formats: WAV in a ZIP; a second ZIP in Altiverb format
+  institution: University of Kent (Sonic Palimpsest project)
+  country: UK
+  evidence_urls:
+  - https://research.kent.ac.uk/sonic-palimpsest/impulse-responses/
+  - https://drive.google.com/file/d/1utDu8wCdpj6fj0AlXNMXMIeWgn93arEF/view?usp=sharing
+  - https://drive.google.com/file/d/1_jwj9PVNx8ZtpGzWMjoW-0u0prMnHc66/view?usp=sharing
+  - https://drive.usercontent.google.com/download?id=1utDu8wCdpj6fj0AlXNMXMIeWgn93arEF&export=download
+  confidence: high
+  caveats:
+  - Both packs are ZIP files on Google Drive, linked from the project page; sample rate and number of IRs are not
+    stated.
+  - Only a few sweep-measured spaces (Ropery, Tarred Yarn Store, No. 3 Slip) have SoundField Ambisonic captures;
+    the ships, submarine, house and air-raid shelter were captured with bursts on stereo mics.
+  - The capture matrix on the page is hard to read, so per-space microphone coverage is approximate.

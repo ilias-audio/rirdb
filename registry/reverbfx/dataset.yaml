@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: reverbfx
+name: ReverbFX (reverb plugin IRs)
+year: 2025
+type: production
+ir_kinds: [digital_reverb]
+capture_formats: [stereo]
+fs_hz: [48000]
+content: 1,846 stereo IRs captured from four reverb plugins (Valhalla Supermassive, Protoverb, SkyNet, TAL-Reverb-4), 14 randomised versions of each preset (delay, low cut, ...), RT60 0.31-52 s; train/valid/test splits. Algorithmic reverbs, not rooms.
+expected: {n_irs: 1846, note: "the Zenodo archives hold 1,833 WAV IRs (train 1,434, valid 199, test 200), 13 fewer than the record states, plus one macOS metadata file (test/._Protoverb_40_04.wav, 263 bytes); the group-store copy holds the same files (valid and test checked by sha256 on 2026-11-06)"}
+adapter: {name: wav_tree, params: {glob: "*/*.wav", pattern: '^(?P<label>train|valid|test)/(?P<room>.+)_(?P<cond>\d+)\.wav$'}}
+room_info: {conditions: "yes", where: "file names: <plugin>_<preset>_<version>; meta.tar (not group-readable) has the settings"}
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-NC-SA-4.0
+    where: 'LICENCE.txt: CC BY-NC 4.0 with a same-licence clause for adaptations'
+  url: https://zenodo.org/records/16186381
+  redistribute_audio: 'yes'
+  training_use: allowed
+  note: 'Conflicting statements: the strictest is used. Ask the authors to confirm.'
+# access stays manual: rirdb uses the group's copy in place (registry/storage.tsv) (inplace: lock), and an open zenodo source would
+# make fetch/resolve.sh replace that lock with the Zenodo archives
+access: manual
+source: {kind: zenodo, records: ["16186381"], instructions: "Public download (no account): train.tar.gz, valid.tar.gz and test.tar.gz (about 4.7 GB in all), meta.tar and LICENCE.txt from Zenodo record 16186381 (https://zenodo.org/records/16186381); each tar.gz holds one folder (train/, valid/, test/) of WAV files. Extract each into the dataset folder (`tar -xzf train.tar.gz -C <folder>`, and the same for valid.tar.gz and test.tar.gz): the paths then match rirdb's lock, and the extracted valid and test files matched its sha256 file for file (checked 2026-11-06). The maintainer uses a copy already held by the research group, in place."}
+wave: 4
+homepage: https://sp-uhh.github.io/reverbfx/
+paper: {title: "ReverbFX: A Dataset of Room Impulse Responses Derived from Reverb Effect Plugins for Singing Voice Dereverberation", url: "https://arxiv.org/abs/2505.20533"}
+doi: 10.5281/zenodo.16186381
+status: active
+notes: "Algorithmic reverbs, used by rirdb's author for evaluation only; Valhalla Supermassive is itself a modulated feedback delay network."
+web_check:
+  checked: '2026-10-14'
+  institution: University of Hamburg
+  country: Germany
+  host: Zenodo
+  licence_note: The LICENCE.txt in the Zenodo record releases the dataset under CC BY-NC 4.0 for non-commercial
+    research and education only, asks for credit to the University of Hamburg and the plugin developers, and adds
+    that adaptations must be shared under the same licence. The record's own licence field says CC BY 4.0. Follow
+    LICENCE.txt.
+  caveats:
+  - 'Licence conflict: the Zenodo record says CC BY 4.0, but the bundled LICENCE.txt says CC BY-NC 4.0 with a same-licence
+    clause (non-commercial only).'
+  - The IRs come from reverb plugins, not real rooms.
+  - About 4.7 GB of tar.gz archives (train, valid, test) on Zenodo.

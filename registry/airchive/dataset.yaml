@@ -1,0 +1,49 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: airchive
+name: AIRCHIVE IR library
+year: 2026
+type: measured
+status: catalogued
+content: 24 sine-sweep and balloon IRs (each mono and XY stereo, 48 kHz) from the Salzburg Cathedral crypt, a disused
+  railway tunnel and the Schloss Frohnburg entrance hall, with photos and acoustic parameters.
+fs_hz:
+- 48000
+expected:
+  n_irs: 24
+  n_rooms: 3
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: 'no'
+  materials: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/23091674
+doi: 10.5281/zenodo.23091674
+web_check:
+  checked: '2026-10-14'
+  found_as: AIRCHIVE IR library (Salzburg Cathedral crypt, Kleiner Tunnel Scharfling, Schloss Frohnburg)
+  availability: open
+  families:
+  - mono
+  - stereo
+  host: Zenodo
+  size: 286 MB
+  file_formats: WAV (32-bit float), CSV/JSON parameters, PNG/SVG figures, JPG photos, Python code
+  institution: Mozarteum University Salzburg
+  country: Austria
+  evidence_urls:
+  - https://zenodo.org/records/23091674
+  - https://zenodo.org/api/records/23091674
+  - https://zenodo.org/records/23091674/files/README.md
+  - https://zenodo.org/records/23091674/preview/AIRCHIVE_IR_library_v1.4.1.zip
+  confidence: high
+  caveats:
+  - IRs are uncalibrated and peak-normalised, so they do not suit absolute level comparisons; source-receiver distances
+    were not surveyed.
+  - The XY stereo pair was not at the measurement microphone's position.
+  - Updated often (v1.4.1, October 2026); the author asks for citation by concept DOI 10.5281/zenodo.23066420.

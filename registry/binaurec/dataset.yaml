@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: binaurec
+name: BinauRec
+year: 2022
+type: hybrid
+status: catalogued
+content: Swept-sine RIRs from 4 loudspeakers to behind-the-ear hearing-aid mics, with and without a KEMAR head,
+  in one room in Nancy, plus simulated RIRs of the same scenes and matching speech-in-noise recordings.
+fs_hz:
+- 16000
+expected:
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/7256984
+doi: 10.5281/zenodo.7256984
+web_check:
+  checked: '2026-10-14'
+  found_as: 'BinauRec: binaural speech-enhancement dataset with measured and simulated RIRs'
+  availability: open
+  families:
+  - binaural
+  - array
+  host: Zenodo
+  size: 12.4 GB
+  file_formats: WAV (mono, 16-bit) in one ZIP; SVG layout diagrams
+  institution: Université de Lorraine
+  country: France
+  evidence_urls:
+  - https://zenodo.org/api/records/7256984
+  - https://zenodo.org/records/7256984/files/README.md?download=1
+  - https://zenodo.org/records/7256984/preview/BinauRec.zip
+  confidence: medium
+  caveats:
+  - RIRs are 16 kHz mono WAV and come inside one 12.4 GB ZIP with the recordings.
+  - The simulated RIRs (Pyroomacoustics) ignore the dummy head, and the number of RIRs is not stated.

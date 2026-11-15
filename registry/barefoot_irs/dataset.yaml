@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: barefoot_irs
+name: Barefoot Recording Impulse Response Project
+year: 2021
+type: production
+status: catalogued
+content: 'Stereo IRs of Barefoot Recording, Eric Valentine''s studio: two recording rooms, an iso booth, two echo
+  chambers, a lounge and two hallways, captured with 20 s sweeps and a Neumann KM184 pair for Avid Space.'
+expected:
+  n_rooms: 8
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-custom
+  note: 'Informal terms on the page: ''This software is provided to the community for free. Use it, share it, ...
+    have fun! Just don''t re-package for re-sale.'''
+homepage: https://www.cianriordan.com/barefoot
+web_check:
+  checked: '2026-10-14'
+  found_as: Barefoot Recording Impulse Response Project (Cian Riordan)
+  availability: open
+  families:
+  - stereo
+  host: Personal website (Dropbox download)
+  size: 66 MB
+  file_formats: ZIP of an IR library for Avid Space (IR file format not stated)
+  institution: Cian Riordan (independent engineer)
+  country: USA
+  evidence_urls:
+  - https://www.cianriordan.com/barefoot
+  - https://www.dropbox.com/s/pm74x4m1b07klhv/BF%20TL%20SPACE%20LIBRARY.zip?dl=0
+  - https://github.com/IsaakCode/freeaudio/blob/master/best_free_impulse_responses.md
+  - https://mixdownmag.com.au/features/eric-valentine-barefoot-studios/
+  confidence: high
+  caveats:
+  - Made for Avid Space (formerly TL Space); file format, sample rate and number of IRs are not stated
+  - Recorded with Neumann KM184 music mics, not a measurement mic; mic positions are not described
+  - A 'Drumbrella' drum setup is listed alongside the 8 rooms; the year is taken from the page's December 2021 screenshots

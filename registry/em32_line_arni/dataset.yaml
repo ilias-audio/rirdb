@@ -1,0 +1,27 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: em32_line_arni
+name: "SRIR dataset: em32 along a line (Arni)"
+year: 2025
+type: measured
+ir_kinds: [room]
+capture_formats: [em32_raw]
+content: Eigenmike em32 SRIRs along a line in the Arni room for 3 sources in dry, reverberant and anisotropic configurations (SOFA).
+expected: {n_rooms: 1, note: "3 configurations x 3 sources"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", conditions: "yes", where: "Readme_Arni_em32.pdf (8.9 x 6.3 x 3.6 m); SOFA positions; dry/anisotropic/... panel states"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["15169199"]}
+adapter:
+  name: sofa
+  # Data.IR[65 positions, 32 capsules, 48000]: capsule mean (order 0) as the omni reference
+  params: {glob: "*.sofa", pattern: 'arni_em32_(?P<cond>dry|reverberant|anisotropic)_(?P<src>S\d)\.sofa$',
+           room_from: pattern, capture_format: em32_raw, reference_role: mean}
+wave: 3
+analysis: {scope: full}   # only 585 records
+homepage: https://zenodo.org/records/15169199
+doi: 10.5281/zenodo.15169199
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Technical University of Denmark and Aalto University
+  country: Denmark, Finland

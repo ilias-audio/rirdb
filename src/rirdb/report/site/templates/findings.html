@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{# Dataset findings: methods/findings.html. Context from pages_docs.render_findings(); f = parse_findings(). #}
+
+{% block head %}
+<style>
+.fd-tiles { margin: 0 0 1em; }
+.ftbl tbody tr:last-child th { border-bottom: 0; }
+.fd-intro { max-width: 76ch; margin-top: 1.4em; }
+.fd-intro p { margin: 0 0 .8em; }
+.ftbl td, .ftbl th { line-height: 1.45; }
+.ftbl .c-ds { min-width: 11em; max-width: 16em; }
+.ftbl .c-find { min-width: 22em; }
+.ftbl .c-ev { min-width: 15em; }
+.ftbl .c-hand { min-width: 15em; }
+.ftbl th[scope="row"] { font-weight: 400; text-align: left; }
+.ftbl th[scope="row"] a { font-weight: 700; }
+.ftbl .also { display: block; margin-top: 6px; font-size: .8rem; color: var(--muted); }
+.ftbl th[scope="row"] .also a { font-weight: 400; }
+.ftbl td code, .ftbl th code { font-size: .82em; }
+.fd-after { max-width: 76ch; margin-top: .6em; }
+.fd-after p { margin: 0 0 .6em; }
+.ftbl-wrap { max-height: none; }
+@media (max-width: 760px) {
+  .ftbl-wrap { border: 0; background: none; overflow: visible; }
+  .ftbl, .ftbl tbody, .ftbl tr, .ftbl td, .ftbl th[scope="row"] { display: block; width: 100%; min-width: 0 !important; max-width: none !important; }
+  .ftbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .ftbl tr { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); margin: 0 0 10px; padding: 6px 0; }
+  .ftbl tbody tr:hover td { background: none; }
+  .ftbl td, .ftbl th[scope="row"] { border: 0; padding: 4px 14px; }
+  .ftbl th[scope="row"] { font-size: 1rem; padding-top: 8px; }
+  .ftbl td::before { content: attr(data-label); display: block; font: 600 .72rem/1.3 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-bottom: 1px; }
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="page-head"><div class="wrap">
+  <p class="eyebrow"><a href="{{ root }}index.html">rirdb</a> / <a href="{{ root }}methods/index.html">Methods</a> / Findings</p>
+  <h1>Dataset findings</h1>
+  <p class="lede">Downloading, indexing and analysing the registry datasets file by file exposed problems that their pages and papers do not mention. This is the full list: what we found, the evidence, and how rirdb handles it.</p>
+  <dl class="tiles fd-tiles">
+    <div class="tile"><dt>findings about the data</dt><dd>{{ n_data | int }}</dd></div>
+    <div class="tile"><dt>findings about licences</dt><dd>{{ n_lic | int }}</dd></div>
+    <div class="tile"><dt>datasets concerned, each linked to its page</dt><dd>{{ n_ids | int }}</dd></div>
+  </dl>
+
+  <div class="fd-intro">
+    {{ f.intro }}
+    <p>This page renders <a href="{{ doc_url }}">docs/decisions/dataset-findings.md</a>{% if f.meta.get("date") %} (dated {{ f.meta.date }}){% endif %}, the record the pipeline keeps. Each dataset page lists the findings that concern it. Every row names the evidence, so each claim can be checked against the files.</p>
+  </div>
+</div></div>
+
+{% for s in f.sections %}
+<section class="section" aria-labelledby="{{ s.id }}"><div class="wrap">
+  <h2 id="{{ s.id }}">{{ s.title }}</h2>
+  {{ s.before }}
+  {% set tid = "ft-" ~ s.key %}
+  <div class="filters">
+    <label class="fld"><span>Search {{ s.title | lower }}</span><input type="search" data-filter="#{{ tid }}" placeholder="Dataset, word, file…" aria-controls="{{ tid }}"></label>
+    <p class="count" data-count-for="#{{ tid }}" aria-live="polite">{{ s.rows | length }} rows</p>
+  </div>
+  <div class="tbl-wrap ftbl-wrap">
+    <table class="tbl ftbl" id="{{ tid }}">
+      <thead><tr>
+        {% for c in s.columns %}<th scope="col"{% if loop.first %} data-sort="text"{% endif %} class="{{ s.classes[loop.index0] }}">{{ c }}</th>{% endfor %}
+      </tr></thead>
+      <tbody>
+      {% for r in s.rows %}
+        <tr data-search="{{ r.search }}">
+          <th scope="row" class="c-ds" data-v="{{ r.subject_plain }}">{{ r.subject_html }}{% if r.also %}<span class="also">Concerns {% for i, n in r.also %}<a href="{{ root }}d/{{ i }}.html">{{ n }}</a>{{ ", " if not loop.last }}{% endfor %}</span>{% endif %}</th>
+          {% for c in r.cells %}
+          <td data-label="{{ s.columns[loop.index] }}" class="{{ s.classes[loop.index] }}">{% if c %}{{ c }}{% else %}<span class="muted">–</span>{% endif %}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if s.after %}<div class="fd-after">{{ s.after }}</div>{% endif %}
+</div></section>
+{% endfor %}
+
+<section class="section" aria-labelledby="more-h"><div class="wrap">
+  <h2 id="more-h">Related</h2>
+  <ul>
+    <li><a href="{{ root }}methods/index.html#analyzer">The analyzer's decision record</a>: the methods choices these findings led to.</li>
+    <li><a href="{{ root }}analysis/quality.html">Quality across datasets</a>: grades, flags and duplicates per dataset.</li>
+    <li><a href="{{ root }}analysis/validation.html">Validation</a>: rirdb's values against published ones.</li>
+  </ul>
+</div></section>
+{% endblock %}

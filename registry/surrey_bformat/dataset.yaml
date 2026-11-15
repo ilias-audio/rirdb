@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: surrey_bformat
+name: B-format RIRs (Zermini, Surrey)
+year: 2023
+type: measured
+status: catalogued
+content: A single MATLAB file of B-format (first-order Ambisonic) room impulse responses from the University of
+  Surrey, used to make reverberant speech mixtures for a B-format speech-separation study.
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/7558529
+doi: 10.5281/zenodo.7558529
+web_check:
+  checked: '2026-10-14'
+  found_as: Room Impulse Responses for B-format recordings (Zermini, Surrey)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 66 MB
+  file_formats: MAT (MATLAB)
+  institution: University of Surrey
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/api/records/7558529
+  - https://zenodo.org/records/7558529/files/B_format_RIRs_12BB01_Alfredo_S3A.mat?download=1
+  - https://openresearch.surrey.ac.uk/esploro/outputs/doctoral/99512310402346
+  - https://cvssp.org/data/s3a/public/s3arir_register2.php
+  - https://cvssp.org/data/s3a/public/BinauralRIRs/
+  confidence: low
+  caveats:
+  - The record does not say which room, whether the RIRs were measured or simulated, or how many there are.
+  - The file name mentions room '12BB01' and the S3A project; S3A's own RIR sets are academic-only, so check where
+    these came from.
+  - A single 66 MB MATLAB .mat file.

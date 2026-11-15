@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: metu_sparg
+name: METU SPARG Eigenmike em32 AIR dataset
+year: 2019
+type: measured
+ir_kinds: [room]
+capture_formats: [em32_raw, mono_omni]
+content: Eigenmike em32 acoustic impulse responses for 244 source positions in a classroom (METU S05), with omni reference measurements at the same position.
+expected: {n_rooms: 1, note: "244 emitter positions x 32 capsules"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", where: "documentation.pdf (6.5 x 8.3 x 2.9 m; a grid of loudspeaker positions around the array, which stays fixed at 1.5 m)"}
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-SA-4.0
+    where: spargair/LICENSE.txt
+  - licence: CC-BY-NC-SA-4.0
+    where: documentation.pdf, section 4
+  url: https://zenodo.org/records/2635758
+  redistribute_audio: "yes"
+  note: 'Conflicting statements: the strictest is used. Ask the authors to confirm.'
+access: open
+source: {kind: zenodo, records: ["2635758"]}
+adapter:
+  name: wav_tree
+  # alctron/<pos>.wav: omni reference mic at the em32 position (the 32 capsule files per position are not indexed yet)
+  params: {pattern: 'spargair/alctron/(?P<src>\d+)\.wav$', room_from: pattern, room_default: metu-classroom-s05}
+wave: 2
+homepage: http://www.sparg.ii.metu.edu.tr/code.html
+doi: 10.5281/zenodo.2635758
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Middle East Technical University (METU)
+  country: Turkey
+  caveats:
+  - 'Licence conflict: Zenodo says CC BY 4.0, the archive''s LICENSE.txt CC BY-SA 4.0 and its documentation CC BY-NC-SA
+    4.0; treat it as non-commercial, share-alike.'
+  - The loudspeaker moved around a fixed em32 and omni microphone. The authors advise against positions 330, 331,
+    333 and 334 (directly above and below the array), where the loudspeaker did not face the array; rirdb still
+    indexes and analyses them.
+  licence_note: The Zenodo record says CC BY 4.0, the LICENSE.txt in the archive is CC BY-SA 4.0, and the documentation
+    (section 4) says CC BY-NC-SA 4.0. Until the authors confirm, use it non-commercially, credit the authors and
+    share under the same terms.

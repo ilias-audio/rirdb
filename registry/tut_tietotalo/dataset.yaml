@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tut_tietotalo
+name: TUT Tietotalo Ambisonic Impulse Response
+year: 2018
+type: measured
+status: catalogued
+content: '32-channel Eigenmike IRs of a large university corridor in Tampere, measured with MLS from a loudspeaker
+  moved in circles: 36 azimuths, 9 or 5 elevations, at 1 m and 2 m, stored as STFT-domain responses.'
+expected:
+  n_irs: 504
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: LicenseRef-custom
+  note: Tampere University of Technology's own licence allows use and copying for experimental and non-commercial
+    purposes only, with the copyright notice kept and the Audio Research Group acknowledged; all commercial use,
+    including selling results obtained with the data, is prohibited.
+homepage: https://zenodo.org/records/1443539
+doi: 10.5281/zenodo.1443539
+web_check:
+  checked: '2026-10-14'
+  found_as: TUT Tietotalo Ambisonic Impulse Response
+  availability: open
+  families:
+  - array
+  - ambisonic
+  host: Zenodo
+  size: 1.07 GB
+  file_formats: MATLAB .mat (array of size 2x9x1025x36x4x32, STFT domain)
+  institution: Tampere University of Technology (with Aalto University)
+  country: Finland
+  evidence_urls:
+  - https://zenodo.org/records/1443539
+  - https://zenodo.org/api/records/1443539
+  - https://zenodo.org/records/1443539/files/LICENSE?download=1
+  - https://zenodo.org/records/6408611
+  - https://github.com/sharathadavanne/seld-net
+  confidence: high
+  caveats:
+  - Non-commercial use only, under Tampere University of Technology's own licence.
+  - IRs are stored in the STFT domain (1025 bins x 4 blocks) in one 1.07 GB .mat file, not as WAV; the sampling
+    rate is not stated.
+  - Raw 32-channel Eigenmike signals; converting them to Ambisonics is left to the user.

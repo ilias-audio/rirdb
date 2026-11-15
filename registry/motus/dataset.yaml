@@ -1,0 +1,35 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: motus
+name: Motus
+year: 2021
+type: measured
+ir_kinds: [room]
+capture_formats: [hoa_sh]
+content: 3,320 higher-order Ambisonic RIRs measured with an Eigenmike em32, 4 loudspeaker positions and 830 furniture configurations in a single room at Aalto Acoustics Lab; 3D models for each configuration (spherical photos not fetched).
+expected: {n_irs: 3320, n_rooms: 1, note: "830 furniture configurations"}
+room_info: {dimensions: "yes", geometry: "yes", positions: "yes", conditions: "yes", where: "metadata/JSON/<id>_metadata.json (room vertices, source and receiver positions); <id>_3d_model.skp; 830 furniture configurations"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["4923187"], include: ["sh_rirs.zip", "metadata.zip", "3d_models.zip", "code.zip"]}
+adapter:
+  name: wav_tree
+  # sh_rirs/<furniture config>_<loudspeaker>_sh_rirs.wav: 4th-order SH (25 ch); normalisation not documented -> no JLF
+  params:
+    pattern: 'sh_rirs/(?P<cond>\d{4})_(?P<src>\d)_sh_rirs\.wav$'
+    room_from: pattern
+    room_default: motus-room
+    roles: {25: [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15, ACN16, ACN17, ACN18, ACN19, ACN20, ACN21, ACN22, ACN23, ACN24]}
+    channel_formats: {25: hoa_sh}
+    orientation_known: false
+keep_archive: false
+wave: 2
+homepage: https://doi.org/10.5281/zenodo.4923187
+paper: {title: "A dataset of higher-order Ambisonic room impulse responses and 3D models measured in a room with varying furniture", url: "https://doi.org/10.1109/I3DA48870.2021.9610933"}
+doi: 10.5281/zenodo.4923187
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Aalto University
+  country: Finland
+  caveats:
+  - Comes with a 3-D model of each of the 830 furniture configurations.

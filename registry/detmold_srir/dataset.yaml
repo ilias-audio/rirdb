@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: detmold_srir
+name: Detmold University of Music SRIR database
+year: 2020
+type: measured
+ir_kinds: [room]
+capture_formats: [sdm_array, binaural, array_raw]
+content: About 600 multichannel SRIRs from 3 performance spaces (Konzerthaus ~600 seats, Brahmssaal ~100 seats, Sommertheater ~300 seats), stage and audience positions, open SDM array and dummy head; incl. orchestra loudspeaker setups.
+expected: {n_irs: 657, n_rooms: 3, note: "~600 multichannel RIRs; figure-8 files of set C not indexed"}
+room_info: {volume: "yes", positions: "partial", images: "yes", reference_acoustics: "partial", conditions: "yes", where: "MainDocumentation_v02.pdf (volumes), *_POSITIONS.png plans, *MeasurementInfo.txt, stage and orchestra configurations"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["4116247"]}
+adapter:
+  name: wav_tree
+  params:
+    pattern: 'Set(?P<set>[ABC])_[^/]+/Data/(?:(?P<room>Brahmssaal|KonzertHaus|SommerTheater)/)?(?P<mic>DummyHead|OpenArray|Omni)/(?:(?P<cond>[^/]+)/)?(?P<rcv>[^/]+)\.wav$'
+    room_default: KonzertHaus
+    roles: {1: [omni], 2: [L, R], 6: [mic_0, mic_1, mic_2, mic_3, mic_4, mic_5]}
+    channel_formats: {1: mono_omni, 2: binaural, 6: sdm_array}
+wave: 1
+homepage: https://zenodo.org/records/4116247
+doi: 10.5281/zenodo.4116247
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Detmold University of Music
+  country: Germany
+  caveats:
+  - Includes settings of an electronic artificial reverb next to the room IRs.

@@ -1,0 +1,115 @@
+{% extends "analysis_base.html" %}
+{% import "_macros.html" as m %}
+{% block page_css %}
+<style>
+.vtbl th[scope="row"] { white-space: nowrap; font-weight: 400; }
+@media (max-width: 600px) { .vtbl th[scope="row"] { white-space: normal; min-width: 130px; } }
+.vtbl tbody tr.grp > * { border-top: 1px solid var(--rule-strong); }
+.vgrid { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); align-items: start; }
+.vgrid figure.chart { margin: 0; }
+.vgrid figure.chart svg.viz, #limits figure.chart svg.viz { max-width: 460px; margin-inline: auto; }
+.vgrid svg.viz .ref-fill { opacity: .16; }
+.static-fig { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px; }
+.static-fig img { display: block; width: 100%; background: #fcfcfb; border-radius: 3px; }
+.static-fig figcaption { font-size: .86rem; color: var(--ink-2); margin-top: 6px; }
+</style>
+{% endblock %}
+{% block lede %}
+<p class="lede">Two datasets publish their own acoustic parameters for the same IRs. Comparing rirdb's values with them checks the whole chain, from reading the files to the decay fit. Agreement is good for decay times; early-energy parameters scatter more, and C80 is low in the lowest band.</p>
+<ul class="onpage" aria-label="On this page">
+  {% if openair %}<li><a href="#openair">OpenAIR tables</a></li>{% endif %}{% if ace %}<li><a href="#ace">ACE ground truth</a></li>{% endif %}<li><a href="#limits">Known limitation</a></li>
+</ul>
+{% endblock %}
+{% block body %}
+
+{% if openair %}
+{% set O = openair %}
+<section class="section" id="openair" aria-labelledby="openair-h">
+  <div class="wrap">
+    <h2 id="openair-h">OpenAIR: published per-space tables</h2>
+    <div class="prose">
+      <p>OpenAIR published a table of acoustic parameters for many of its spaces. rirdb compares its own values with those tables for the {{ O.n_spaces | int }} spaces that have both a table and analysed IRs. rirdb's value for a space is the median over the space's preferred IRs of the <em>valid</em> values (Lundeby-compensated decay curves). OpenAIR did not document its method or which IRs it used, so perfect agreement is not expected. OpenAIR's “Reverberation Time” row is compared with T30.</p>
+      <p>A median ratio of 1 or a median difference of 0 means no bias. From 250 Hz to 4 kHz the T30 median ratio is between {{ O.t30_ratio_range[0] | num(2) }} and {{ O.t30_ratio_range[1] | num(2) }}, and {{ O.t30_within_range[0] | pct }} to {{ O.t30_within_range[1] | pct }} of the spaces agree within 10&nbsp;%. EDT, C80 and D50 depend on where the source and microphone stood, and OpenAIR gives one value per space, so they scatter more.</p>
+    </div>
+    <div class="tbl-wrap"><table class="tbl vtbl">
+      <caption class="sr-only">Agreement with OpenAIR's published values, per parameter and octave band</caption>
+      <thead><tr><th scope="col">Parameter and measure</th>{% for b in O.bands %}<th scope="col" class="n">{{ b }} Hz</th>{% endfor %}</tr></thead>
+      <tbody>{% for r in O.rows %}<tr{% if loop.index0 and O.rows[loop.index0 - 1].m != r.m %} class="grp"{% endif %}><th scope="row">{{ r.label }}</th>{% for v in r.vals %}<td class="n">{{ v }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+    </table></div>
+    <div class="vgrid">
+      {% for c in O.charts %}
+      {% set ct %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ c.title }}</caption><thead><tr><th scope="col">Space</th><th scope="col" class="n">OpenAIR</th><th scope="col" class="n">rirdb</th><th scope="col" class="n">{{ c.dlabel }}</th></tr></thead><tbody>
+{% for p in c.table %}<tr><th scope="row">{{ p.name }}</th><td class="n">{{ p.pub }}</td><td class="n">{{ p.ours }}</td><td class="n">{{ p.d }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(c.title, c.svg, sub=c.sub, caption="One point per space. The line is perfect agreement" ~ ("; the shaded band is ±10 %." if "ratio" in c.sub else "."), table=Markup(ct)) }}
+      {% endfor %}
+    </div>
+    <figure class="static-fig" style="margin-top:1.2em">
+      <img src="../assets/openair_t30_edt.png" alt="Two log-log scatter plots of rirdb against OpenAIR's published values per space, at 500 Hz and 1 kHz together: T30 on the left, EDT on the right. Most T30 points lie on the line of agreement, with a few spaces far below it; EDT points scatter more widely around the line." loading="lazy" width="1170" height="546">
+      <figcaption>The validation report's figure: T30 and EDT per space, 500 Hz and 1 kHz together. <a href="../assets/openair_t30_edt.png">Full size</a></figcaption>
+    </figure>
+  </div>
+</section>
+{% endif %}
+
+{% if ace %}
+{% set A = ace %}
+<section class="section" id="ace" aria-labelledby="ace-h">
+  <div class="wrap">
+    <h2 id="ace-h">ACE challenge: ground truth per IR</h2>
+    <div class="prose">
+      <p>The ACE challenge published, for each measured IR, its own ISO T30 (broadband and per band) and a broadband direct-to-reverberant ratio. rirdb compares its values with them on the multichannel arrays: {{ A.n_irs | int }} IRs ({{ A.configs | length }} arrays, {{ A.configs | join(", ") }}, at {{ A.n_room_pos | int }} positions in {{ A.rooms | length }} rooms{% if A.n_spaces and A.n_spaces > A.rooms | length %}; rirdb indexes {{ A.n_spaces | int }} spaces for this dataset, and the comparison keeps the IRs whose room, position and array match a ground-truth row{% endif %}), {{ A.n_metrics }} parameters each: {{ A.n_points | int }} comparisons. rirdb's first channel is compared with ACE's channel 1. ACE's per-band values are in 1/3 octaves, compared here with rirdb's octave bands.</p>
+      <p>DRR in rirdb follows ACE's own convention: the full-band IR with a direct window of ±8 ms around the direct peak. ACE's measurement file states that window in every row. rirdb first used a narrower window, which put its DRR consistently below ACE's; the comparison here is what led to the change.</p>
+    </div>
+    <div class="tbl-wrap"><table class="tbl">
+      <caption class="sr-only">Agreement with ACE's ground truth</caption>
+      <thead><tr><th scope="col">Parameter</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Median ratio (ours / ACE)</th><th scope="col" class="n">Within 10&nbsp;%</th><th scope="col" class="n">Median difference</th><th scope="col" class="n">Mean absolute difference</th><th scope="col" class="n">Within 2 dB</th></tr></thead>
+      <tbody>
+      {% for r in A.rows %}<tr><th scope="row">{{ r.label }}</th><td class="n">{{ r.n | int }}</td><td class="n">{{ r.ratio | num(3) }}</td><td class="n">{{ r.w10 | pct }}</td><td class="n">{% if r.diff is not none %}{{ r.diff | num(2) }} dB{% else %}–{% endif %}</td><td class="n">{% if r.mae is not none %}{{ r.mae | num(2) }} dB{% else %}–{% endif %}</td><td class="n">{{ r.w2 | pct }}</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    <div class="vgrid">
+      {% for c in A.charts %}
+      {% set ct %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ c.title }}</caption><thead><tr><th scope="col">IR</th><th scope="col" class="n">ACE</th><th scope="col" class="n">rirdb</th><th scope="col" class="n">{{ c.dlabel }}</th></tr></thead><tbody>
+{% for p in c.table %}<tr><th scope="row">{{ p.name }}</th><td class="n">{{ p.pub }}</td><td class="n">{{ p.ours }}</td><td class="n">{{ p.d }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(c.title, c.svg, sub=c.sub, caption="One point per IR (room, position, array). The line is perfect agreement" ~ ("; the shaded band is ±10 %." if "ratio" in c.sub else "."), table=Markup(ct)) }}
+      {% endfor %}
+    </div>
+    <p class="small">Dataset pages: <a href="{{ root }}d/ace_arrays.html#validation">{{ A.name }}</a>{% if openair %}, <a href="{{ root }}d/openair.html#validation">{{ openair.name }}</a>{% endif %}. Raw comparisons: <a href="{{ repo_blob('reports/validation/ace_comparison.csv') }}">ace_comparison.csv</a>, <a href="{{ repo_blob('reports/validation/openair_comparison.csv') }}">openair_comparison.csv</a>.</p>
+  </div>
+</section>
+{% endif %}
+
+<section class="section" id="limits" aria-labelledby="limits-h">
+  <div class="wrap">
+    <h2 id="limits-h">Known limitation: C80 at 125 Hz</h2>
+    {% if openair and openair.lim %}
+    <div class="cols-2">
+      <div class="prose">
+        <div class="callout warn">
+          <p>At 125 Hz, rirdb's C80 is {{ (-openair.lim.median_diff) | num(1) }} dB lower than OpenAIR's (median over {{ openair.lim.n | int }} spaces; mean absolute difference {{ openair.lim.mae | num(1) }} dB).{% if openair.c80_250 %} At 250 Hz the median difference is {{ openair.c80_250.median_diff | num(1) }} dB{% if openair.c80_hi_max is not none %}; from 500 Hz up it stays within ±{{ openair.c80_hi_max | num(1) }} dB{% endif %}.{% endif %}</p>
+        </div>
+        <p>The likely cause is the group delay of the causal octave filter at low frequencies, which moves early energy past the 80 ms boundary. OpenAIR did not document its filters. Decay times are not affected: a pure delay does not change a slope. The candidate fix for the next analyzer version is to compensate each band for its group delay at the centre frequency before the energy ratios are computed.</p>
+        <p>Until then, treat the early-energy parameters in the lowest bands as biased low when comparing with other tools{% if openair.d50_125 %} (D50 at 125 Hz: median difference {{ openair.d50_125.median_diff | num(2) }}){% endif %}. The analyzer's method notes are on the <a href="{{ root }}methods/index.html">Methods</a> page.</p>
+      </div>
+      {% if openair.lim_chart %}
+      {% set c = openair.lim_chart %}
+      {% set ct %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ c.title }}</caption><thead><tr><th scope="col">Space</th><th scope="col" class="n">OpenAIR</th><th scope="col" class="n">rirdb</th><th scope="col" class="n">{{ c.dlabel }}</th></tr></thead><tbody>
+{% for p in c.table %}<tr><th scope="row">{{ p.name }}</th><td class="n">{{ p.pub }}</td><td class="n">{{ p.ours }}</td><td class="n">{{ p.d }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(c.title, c.svg, sub=c.sub, caption="One point per space. Points below the line: rirdb lower than OpenAIR.", table=Markup(ct)) }}
+      {% endif %}
+    </div>
+    {% else %}
+    <p>No comparison data for C80 at 125 Hz.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

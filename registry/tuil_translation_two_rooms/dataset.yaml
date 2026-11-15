@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_translation_two_rooms
+name: BRIRs for interactive listener translation in two rooms
+year: 2020
+type: measured
+status: catalogued
+content: KEMAR BRIRs at 9 points along a 2 m line (full 360° head rotation in 4° steps) for a front and a side loudspeaker,
+  in a listening lab (T60 0.27 s) and a seminar room (T60 1.0 s), plus omni RIRs.
+fs_hz:
+- 48000
+expected:
+  n_rooms: 2
+room_info:
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/3457782
+doi: 10.5281/zenodo.3457782
+web_check:
+  checked: '2026-10-14'
+  found_as: BRIR data set for interactive listener translation in two rooms (Neidhardt, Zerlik, Kamandi)
+  availability: open
+  families:
+  - binaural
+  - mono
+  host: Zenodo
+  size: 11.0 GB (all 24 files; the SOFA files alone about 5.5 GB)
+  file_formats: SOFA and ZIP (BRIRs), MAT (omni RIRs), PNG illustrations, photos (ZIP)
+  institution: TU Ilmenau (inferred; the Zenodo record lists no affiliations)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/3457782
+  - https://zenodo.org/api/records/3457782
+  - https://zenodo.org/api/records/3457782/files/RIRs_SeminarRoom_FrontLS_9Pos.sofa/content
+  - https://zenodo.org/api/records/3457798
+  - https://openresearch.surrey.ac.uk/esploro/outputs/dataset/BRIR-data-set-for-interactive-listener/991034545702346
+  confidence: high
+  caveats:
+  - 'Large: about 11 GB in all; the BRIRs come both as SOFA and as ZIP, with single files up to 1.7 GB.'
+  - Extra seminar-room BRIR files are labelled 'withHeadphones' and AKG K1000 headphone EQ filters are included;
+    the record does not explain them.
+  - The record gives no room sizes or BRIR sampling rate (the omni RIR files are labelled 48 kHz). A different seminar-room
+    set by Neidhardt and Pereppadan is Zenodo 3457798.

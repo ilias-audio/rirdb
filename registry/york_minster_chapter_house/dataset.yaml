@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: york_minster_chapter_house
+name: York Minster Chapter House RIRs
+year: 2020
+type: hybrid
+status: catalogued
+content: Measured (18) and simulated (86, from two models) B-format RIRs of York Minster's 13th-century octagonal
+  Chapter House, with energy-parameter spreadsheets; data for an Acoustics 2020 paper.
+expected:
+  n_irs: 104
+  n_rooms: 1
+room_info:
+  geometry: 'no'
+  images: 'no'
+  reference_acoustics: 'yes'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo licence field
+  - licence: CC-BY-NC-SA-4.0
+    where: Zenodo record description (the LICENCE.txt inside the ZIP was not checked)
+  note: Zenodo's licence field says CC BY 4.0, while the record description says the work is licensed under CC BY-NC-SA
+    4.0; the ZIP also holds a LICENCE.txt that was not checked.
+homepage: https://zenodo.org/records/4040994
+doi: 10.5281/zenodo.4040994
+web_check:
+  checked: '2026-10-14'
+  found_as: The Acoustic Environment of York Minster's Chapter House (dataset)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 365 MB
+  file_formats: WAV (B-format), XLSX parameter tables, TXT readme/licence/metadata (one ZIP)
+  institution: University of York, with University of Seville
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/records/4040994
+  - https://zenodo.org/api/records/4040994
+  - https://zenodo.org/records/4040994/preview/CA-PUB-YM-CH-DataSet-v1.0.zip
+  - https://api.crossref.org/works/10.3390/acoustics2010003
+  confidence: high
+  caveats:
+  - 'Licence conflict (CC BY 4.0 vs CC BY-NC-SA 4.0): assume non-commercial use only until the authors clarify.'
+  - Sample rate and microphone are not stated on the record (see the Acoustics 2020 paper).
+  - A different space from the York Minster entry in OpenAIR.

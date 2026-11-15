@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sant_climent_taull
+name: Model of Sant Climent de Taüll
+year: 2019
+type: hybrid
+status: catalogued
+content: 12 measured B-format RIRs (3 sources x 4 receivers) in the Romanesque church of Sant Climent de Taüll,
+  Catalonia, plus 96 ODEON-simulated binaural and 2nd-order Ambisonic IRs of two model states.
+expected:
+  n_irs: 108
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+license:
+  spdx: CC-BY-2.0
+homepage: https://zenodo.org/records/3558319
+doi: 10.5281/zenodo.3558319
+web_check:
+  checked: '2026-10-14'
+  found_as: 'Model of Sant Climent de Taüll: impulse responses and auralisations'
+  availability: open
+  families:
+  - ambisonic
+  - binaural
+  host: Zenodo
+  size: 2.3 GB (IR ZIP 1.4 GB)
+  file_formats: WAV in ZIP (B-format, A-format, binaural, FuMa 2nd-order)
+  institution: University of York (AudioLab)
+  country: Spain
+  evidence_urls:
+  - https://zenodo.org/api/records/3558319
+  - https://zenodo.org/records/3558319/preview/ImpulseResponses.zip
+  - https://zenodo.org/records/3558319/preview/Auralisations.zip
+  confidence: high
+  caveats:
+  - 'No readme: the record does not say which historical state Model A and Model B represent, nor the sampling rate
+    or positions.'
+  - The church 'A-Format' files (about 130 MB each) look like raw sweep recordings; the 12 'B-Format' files are
+    the measured IRs.
+  - The IR archive is 1.4 GB; auralisations and anechoic sources come in a separate 915 MB ZIP.

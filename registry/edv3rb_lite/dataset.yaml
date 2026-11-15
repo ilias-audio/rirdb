@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: edv3rb_lite
+name: EdV3rb LITE (Tovusound)
+year: 2015
+type: production
+status: catalogued
+content: 'Free ($0) sound-design pack: 5.0 room tones of 3 locations (Carlsberg No 19, a factory furnace, a staircase)
+  plus 32 IR patches (8 in 5.0, 16 stereo, 8 mono), recorded with a Genelec 8020 source.'
+fs_hz:
+- 48000
+- 96000
+expected:
+  n_irs: 32
+  n_rooms: 3
+license:
+  spdx: LicenseRef-custom
+  note: 'Single-user EULA: you may use the sounds inside your own released, synced or broadcast projects, but not
+    redistribute, resell or use them to build sound libraries. AI training is not mentioned.'
+homepage: https://tovusound.com/shop/edv3rb-lite/
+web_check:
+  checked: '2026-10-14'
+  found_as: Tovu Sound EdV3rb LITE
+  availability: free_registration
+  families:
+  - mono
+  - stereo
+  - array
+  host: Company website
+  size: 3.3 GB to 7.3 GB (by format)
+  file_formats: WAV
+  institution: Tovusound
+  country: Germany
+  evidence_urls:
+  - https://tovusound.com/shop/edv3rb-lite/
+  - https://tovusound.com/end-user-license-agreement/
+  - https://asoundeffect.com/sounddesigner/tovusound
+  confidence: medium
+  caveats:
+  - You get it through a $0 checkout in the Tovusound shop. It was not confirmed whether an account is required.
+  - Most of the download is 5.0 room-tone recordings. The listing says '3 rooms' but also '4 Halls' and '1 Stairs'.
+  - The publisher is in Cologne, Germany, but the page does not say where the locations are.

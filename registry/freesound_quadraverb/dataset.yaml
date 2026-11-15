@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: freesound_quadraverb
+name: Quadraverb IRs (Freesound, mansardian)
+year: 2022
+type: production
+status: catalogued
+content: 32 IRs captured from the uploader's 1989 Quadraverb hardware reverb (Hall, Plate, Room and Chamber programs
+  at several decay and diffusion settings), shared as separate stereo WAV files on Freesound.
+fs_hz:
+- 44100
+expected:
+  n_irs: 32
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://freesound.org/search/?q=quadraverb&f=username%3A%22mansardian%22
+web_check:
+  checked: '2026-10-14'
+  found_as: Freesound – Alesis Quadraverb IRs (mansardian)
+  availability: free_registration
+  families:
+  - stereo
+  host: Freesound
+  file_formats: WAV (32-bit, stereo, 44.1 kHz)
+  institution: Freesound user mansardian (individual)
+  country: Unknown
+  evidence_urls:
+  - https://freesound.org/people/mansardian/
+  - https://freesound.org/people/mansardian/sounds/
+  - https://freesound.org/search/?q=quadraverb&f=username%3A%22mansardian%22
+  - https://freesound.org/search/?q=quadraverb&f=username%3A%22mansardian%22&page=2
+  - https://freesound.org/people/mansardian/sounds/645301/
+  - https://freesound.org/people/mansardian/sounds/645271/
+  confidence: high
+  caveats:
+  - Download needs a free Freesound account. There is no pack or zip, so the 32 files are fetched one by one.
+  - These are hardware reverb presets, not real spaces. File names give the decay and diffusion settings.
+  - CC BY 4.0 was read on two file pages. The uploader's licence filter lists every upload as Attribution except
+    one CC0 living-room speaker IR.

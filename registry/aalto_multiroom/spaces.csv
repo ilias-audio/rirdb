@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+hallways-lecturehall,MRTD hallways and lecture hall (coupled; Aalto Otakaari 5),circulation,room,,,,,,,multi-room scene; 77 positions,
+offices,MRTD offices (coupled; Aalto Otakaari 5),office_meeting,room,,,,,,,multi-room scene; 49 positions,
+workshops,MRTD workshops (coupled; Aalto Otakaari 5),industrial,room,,,,,,,multi-room scene,

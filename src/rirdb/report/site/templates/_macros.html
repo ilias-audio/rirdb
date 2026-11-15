@@ -1,0 +1,43 @@
+{# Shared macros. Import with: {% import "_macros.html" as m %} #}
+
+{# yes / partial / no / unknown badge. value: "yes" | "partial" | "no" | None/"unknown"; text overrides the label #}
+{% macro yn(value, text=None) -%}
+{%- set v = (value or "unknown") | string -%}
+{%- set cls = {"yes": "yes", "partial": "part", "part": "part", "no": "no", "unaltered_only": "part", "allowed": "yes",
+               "prohibited": "no", "non_commercial_only": "part", "unclear": "unk", "unknown": "unk", "ask": "unk"}.get(v, "unk") -%}
+<span class="badge {{ cls }}"><svg aria-hidden="true"><use href="#i-{{ cls }}"/></svg>{{ text if text is not none else v | replace("_", " ") }}</span>
+{%- endmacro %}
+
+{# a chart in a figure: title, subtitle, the SVG markup, optional caption and table view (HTML) #}
+{% macro chart(title, svg, sub=None, caption=None, table=None, id=None, cls="") -%}
+<figure class="chart {{ cls }}"{% if id %} id="{{ id }}"{% endif %}>
+  <p class="chart-title">{{ title }}</p>
+  {% if sub %}<p class="chart-sub">{{ sub }}</p>{% endif %}
+  {{ svg }}
+  {% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}
+  {% if table %}<details><summary>Table view</summary>{{ table }}</details>{% endif %}
+</figure>
+{%- endmacro %}
+
+{# code block with a copy button #}
+{% macro code(text, id) -%}
+<div class="code"><pre id="{{ id }}">{{ text }}</pre><button class="btn-ghost copy" type="button" data-copy="#{{ id }}">Copy</button></div>
+{%- endmacro %}
+
+{# external link with icon #}
+{% macro ext(href, text=None) -%}
+<a href="{{ href }}" rel="noopener">{{ text or href }}<svg aria-hidden="true" width="12" height="12" style="margin-left:3px;vertical-align:-1px"><use href="#i-ext"/></svg></a>
+{%- endmacro %}
+
+{# grade chip #}
+{% macro grade(g) -%}<span class="grade {{ g }}" title="Grade {{ g }}">{{ g }}</span>{%- endmacro %}
+
+{# page header: eyebrow (breadcrumb html), h1, lede #}
+{% macro head(title, lede=None, eyebrow=None) -%}
+<div class="page-head"><div class="wrap">
+  {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+  <h1>{{ title }}</h1>
+  {% if lede %}<p class="lede">{{ lede }}</p>{% endif %}
+  {{ caller() if caller is defined else "" }}
+</div></div>
+{%- endmacro %}

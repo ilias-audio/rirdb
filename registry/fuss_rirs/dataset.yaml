@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: fuss_rirs
+name: FUSS RIR data
+year: 2020
+type: simulated
+status: catalogued
+content: Simulated single-microphone RIRs for 22,000 random shoebox rooms (image method with frequency-dependent
+  walls), released as a separate 5.8 GB archive of Google's FUSS sound-separation dataset.
+fs_hz:
+- 16000
+expected:
+  n_rooms: 22000
+room_info:
+  dimensions: partial
+  geometry: partial
+  materials: partial
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/4012661
+doi: 10.5281/zenodo.3694383
+web_check:
+  checked: '2026-10-14'
+  found_as: FUSS (Free Universal Sound Separation) RIR data
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 5.8 GB
+  file_formats: WAV (16-bit PCM, 16 kHz) in tar.gz
+  institution: Google Research
+  country: USA
+  evidence_urls:
+  - https://zenodo.org/api/records/4012661
+  - https://zenodo.org/api/records/3710392
+  - https://ar5iv.labs.arxiv.org/html/2011.00803
+  - https://opensource.googleblog.com/2020/04/free-universal-sound-separation.html
+  - https://raw.githubusercontent.com/google-research/sound-separation/master/datasets/fuss/reverberate_and_mix.py
+  - https://zenodo.org/records/4012661/files/FUSS_rir_data.tar.gz?download=1
+  confidence: high
+  caveats:
+  - The RIRs are one 5.8 GB file (FUSS_rir_data.tar.gz) in a larger Zenodo record; the other files are sound-separation
+    audio and models.
+  - The paper gives 20,000 train, 1,000 validation and 1,000 test rooms (3-7 m by 4-8 m, 2.13-3.05 m high) but no
+    total IR count.
+  - '16 kHz with one microphone per room: meant for data augmentation, not for high-fidelity room acoustics.'

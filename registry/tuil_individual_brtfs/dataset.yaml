@@ -1,0 +1,44 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_individual_brtfs
+name: Measured Binaural Room Transfer Functions of Individuals
+year: 2016
+type: measured
+status: catalogued
+content: BRIRs of 25 people measured at TU Ilmenau in a listening lab and an empty seminar room (182 m³, T60 2.0
+  s), plus for some people an acoustically enhanced seminar room and a small lecture hall; SOFA files.
+expected:
+  n_rooms: 4
+room_info:
+  dimensions: 'no'
+  volume: partial
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://zenodo.org/records/61083
+doi: 10.5281/zenodo.61083
+web_check:
+  checked: '2026-10-14'
+  found_as: Dataset of Measured Binaural Room Transfer Functions of Individuals (TU Ilmenau)
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 721.5 MB
+  file_formats: SOFA (105 files in one ZIP)
+  institution: TU Ilmenau
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/61083
+  - https://zenodo.org/api/records/61083
+  - https://zenodo.org/records/61083/preview/BRIRs.zip
+  confidence: high
+  caveats:
+  - Non-commercial use only, and anything you share must use the same licence (CC BY-NC-SA 4.0).
+  - Sampling rate and IR count are not stated; Zenodo's preview of the ZIP lists 105 SOFA files.
+  - Most people were measured for 6 source directions only; all 12 clock positions only for those measured in the
+    two extra rooms.

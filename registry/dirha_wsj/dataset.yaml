@@ -1,0 +1,51 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dirha_wsj
+name: DIRHA English WSJ training IRs (FBK)
+year: 2017
+type: measured
+status: catalogued
+content: Measured IRs from 3 loudspeaker positions to 63 microphones in the living room of the DIRHA project apartment,
+  as MATLAB files with mic and source coordinates, shared in FBK's DIRHA English WSJ GitHub repo.
+expected:
+  n_irs: 189
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: The repository has no licence file; the README only asks users to cite Ravanelli et al. (ASRU 2015, Interspeech
+    2016).
+homepage: https://github.com/SHINE-FBK/DIRHA_English_wsj/tree/master/Training_IRs
+web_check:
+  checked: '2026-10-14'
+  found_as: DIRHA impulse responses (FBK)
+  availability: open
+  families:
+  - mono
+  - array
+  host: GitHub
+  size: about 62 MB (whole repository)
+  file_formats: MAT, with a TXT per microphone (coordinates in cm, some with T60)
+  institution: Fondazione Bruno Kessler (FBK, SHINE unit)
+  country: Italy
+  evidence_urls:
+  - https://speechtek.fbk.eu/dirha-data/
+  - https://github.com/SHINE-FBK/DIRHA_English_wsj
+  - https://raw.githubusercontent.com/SHINE-FBK/DIRHA_English_wsj/master/README.md
+  - https://api.github.com/repos/SHINE-FBK/DIRHA_English_wsj/contents/Training_IRs/T1_O6
+  - https://raw.githubusercontent.com/SHINE-FBK/DIRHA_English_wsj/master/Training_IRs/T1_O6/L1C.txt
+  - https://api.github.com/repos/SHINE-FBK/DIRHA_English_wsj
+  - https://arxiv.org/abs/1711.09470
+  confidence: medium
+  caveats:
+  - Only this small training subset is public; the full DIRHA IR campaign and the DIRHA corpora are on request from
+    FBK (speechtek.fbk.eu/dirha-data).
+  - 189 IRs is counted from the files (3 positions x 63 microphones); each folder also has 5 Beam_* files and a
+    reference chirp. The sample rate is not stated.
+  - No licence; ask FBK before reuse beyond research.

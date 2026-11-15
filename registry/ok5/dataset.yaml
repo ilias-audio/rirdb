@@ -1,0 +1,24 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ok5
+name: OK5 (Aalto)
+year: 2026
+type: measured
+ir_kinds: [room]
+capture_formats: [sdm_array]
+content: 70 spatial RIRs from 25 spaces (offices, corridors, lecture rooms, stairwells, ...) of the Otakaari 5 building at Aalto University, measured with a 6-microphone GRAS vector-intensity probe.
+expected: {n_irs: 70, n_rooms: 25}
+room_info: {positions: "yes", images: "yes", where: "SOFA source and listener positions; floor_plan.pdf"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["18622201"], include: ["measurements.zip", "floor_plan.pdf"]}
+adapter: {name: sofa, params: {glob: "measurements/*.sofa", capture_format: sdm_array, reference_role: mic_0}}
+wave: 1
+homepage: https://zenodo.org/records/18622201
+doi: 10.5281/zenodo.18622201
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Aalto University
+  country: Finland
+  caveats:
+  - Source and receiver positions in the SOFA files, and a floor plan.

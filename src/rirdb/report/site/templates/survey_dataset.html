@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block head %}
+<style>
+.sv-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 4px 0 18px; }
+.sv-actions .btn { font-size: 1.02rem; padding: 9px 18px; }
+.sv-actions .btn svg, .sv-actions .btn-ghost svg { width: 14px; height: 14px; }
+.sv-pills { margin: 0 0 14px; }
+.sv-avail { margin: -6px 0 18px; font-size: .92rem; color: var(--ink-2); max-width: 70ch; }
+.sv-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: start; }
+@media (max-width: 900px) { .sv-grid { grid-template-columns: minmax(0, 1fr); } }
+.sv-grid h2, .sv-sec h2 { font-size: 1.35rem; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 8px; margin: 0; }
+.info-grid > div { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 8px 10px; }
+.info-grid dt { font-size: .92rem; }
+.info-grid dd { margin: 0; }
+.perm-list { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; margin: 0 0 12px; }
+.perm-list .badge { white-space: normal; text-align: left; }
+.lic-cls { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; flex: none; }
+.evidence { margin: 0; padding-left: 1.3em; font-size: .9rem; }
+.evidence li + li { margin-top: .3em; }
+.evidence a { overflow-wrap: anywhere; }
+.status-box { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.status-box p { margin: 0 0 .5em; }
+.cite-box { position: relative; background: var(--sunk); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 74px 12px 14px; margin: 0 0 1em; max-width: 92ch; }
+.cite-box p { margin: 0; overflow-wrap: anywhere; font-size: .95rem; }
+.cite-box .copy { position: absolute; top: 8px; right: 8px; font-size: .78rem; padding: 3px 8px; }
+</style>
+{% endblock %}
+{% block main %}
+{% call m.head(n.name, n.description, Markup('<a href="' ~ root ~ 'datasets/index.html">Datasets</a> / ' ~ ('Surveyed record' if d.twin else 'Surveyed only'))) %}
+<div class="pills sv-pills" aria-label="Summary">
+  {% if n.year %}<span class="pill">{{ n.year }}</span>{% endif %}
+  <span class="pill">{{ d.type_label }}</span>
+  {% for f in d.fam_labels %}<span class="pill">{{ f }}</span>{% endfor %}
+  <span class="pill">{{ d.avail_label }}</span>
+  <span class="pill">Licence: {{ d.cls.label }}</span>
+</div>
+<div class="sv-actions">
+  {% if n.landing_url %}<a class="btn" href="{{ n.landing_url }}" rel="noopener">Go to the dataset<svg aria-hidden="true"><use href="#i-ext"/></svg></a>{% endif %}
+  {% if n.doi %}<a class="btn-ghost" href="{{ n.doi | doi_url }}" rel="noopener">DOI {{ n.doi }}<svg aria-hidden="true"><use href="#i-ext"/></svg></a>{% endif %}
+  <a class="btn-ghost" href="{{ root }}datasets/index.html">Back to all datasets</a>
+</div>
+{% if d.avail_group != "open" %}<p class="sv-avail">{{ m.yn(d.avail_badge, d.avail_label) }} {{ d.avail_text }}</p>{% endif %}
+<div class="callout">
+  {% if d.twin %}
+  <p><b>Also in the rirdb registry.</b> rirdb holds this dataset, in whole or in part, as <a href="{{ root }}{{ d.twin.url }}">{{ d.twin.name }}</a>. That page has its fetch script, the file list and checksums{% if d.twin.analysed %} and rirdb's analysis{% endif %}. This page keeps what a web survey found on {{ survey_day or "the survey date" }}: the dataset's own pages, repository records and papers, listed under <a href="#evidence">Evidence</a>.</p>
+  {% else %}
+  <p><b>Catalogued, not yet downloaded or analysed by rirdb.</b> This record holds what a web survey found on {{ survey_day or "the survey date" }}: the dataset's own pages, repository records and papers, listed under <a href="#evidence">Evidence</a>. rirdb has not fetched its files, so there are no checksums, file lists or acoustic measurements for it yet.</p>
+  <p>To add it to the registry, complete its file <a href="{{ repo_blob('registry/' ~ n.id ~ '/dataset.yaml') }}">registry/{{ n.id }}/dataset.yaml</a> (source, counts, capture format) and open a pull request on <a href="{{ REPO_URL }}">the rirdb repository</a>.</p>
+  {% endif %}
+</div>
+{% endcall %}
+
+<section class="section sv-sec" aria-labelledby="h-facts">
+  <div class="wrap sv-grid">
+    <div>
+      <h2 id="h-facts">What it is</h2>
+      <dl class="facts">
+        {% if n.found_as and n.found_as != n.name %}<dt>Found as</dt><dd>{{ n.found_as }}</dd>{% endif %}
+        <dt>Year</dt><dd>{{ n.year or "not stated" }}</dd>
+        <dt>Type</dt><dd>{{ d.type_label }}</dd>
+        <dt>Captured as</dt><dd>{{ d.fam_labels | join(", ") if d.fam_labels else "not stated" }}</dd>
+        <dt>IRs</dt><dd>{{ n.n_irs | int if n.n_irs is not none else "not stated" }}</dd>
+        <dt>Rooms or spaces</dt><dd>{{ n.n_rooms | int if n.n_rooms is not none else "not stated" }}</dd>
+        <dt>Sample rates</dt><dd>{{ d.fs_text or "not stated" }}</dd>
+        <dt>File formats</dt><dd>{{ n.file_formats or "not stated" }}</dd>
+        <dt>Size</dt><dd>{{ n.size or "not stated" }}</dd>
+        <dt>Institution</dt><dd>{{ n.institution or "not stated" }}</dd>
+        <dt>Country</dt><dd>{{ n.country or "not stated" }}</dd>
+      </dl>
+    </div>
+    <div>
+      <h2 id="h-get">Where to get it</h2>
+      <dl class="facts">
+        <dt>Host</dt><dd>{{ n.host or "not stated" }}</dd>
+        <dt>Landing page</dt><dd>{% if n.landing_url %}{{ m.ext(n.landing_url) }}{% else %}not stated{% endif %}</dd>
+        <dt>DOI</dt><dd>{% if n.doi %}{{ m.ext(n.doi | doi_url, n.doi) }}{% else %}none found{% endif %}</dd>
+        <dt>Availability</dt><dd>{{ m.yn(d.avail_badge, d.avail_label) }}<br><span class="small">{{ d.avail_text }}</span></dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="section sv-sec" aria-labelledby="h-lic">
+  <div class="wrap sv-grid">
+    <div>
+      <h2 id="h-lic">Licence</h2>
+      <dl class="facts">
+        <dt>Licence</dt><dd>{{ n.licence_label or "Not stated" }}</dd>
+        <dt>SPDX identifier</dt><dd>{% if n.licence_spdx %}<code>{{ n.licence_spdx }}</code>{% if d.licence.cls == "conflict" %}<br><span class="small">Only one of the conflicting statements: read the licence above and follow the stricter one.</span>{% endif %}{% else %}none{% endif %}</dd>
+        <dt>Class</dt><dd><span class="lic-cls"><span class="sw" style="background:var({{ d.cls.color }})"></span><b>{{ d.cls.label }}</b></span><br><span class="small">{{ d.cls.text }}</span></dd>
+      </dl>
+      {% if n.licence_note %}<p class="small" style="margin-top:1em">{{ n.licence_note }}</p>{% endif %}
+    </div>
+    <div>
+      <h3>What you may do</h3>
+      <div class="perm-list">
+        {% for p in d.perms %}{{ m.yn(p.cls, p.full) }}{% endfor %}
+      </div>
+      <p class="small muted">The survey recorded: commercial use <code>{{ n.commercial_use or "unclear" }}</code>, ML training <code>{{ n.ml_training or "unclear" }}</code>, redistribution <code>{{ n.redistribution or "unclear" }}</code>. The answers above read these with the licence class, so share-alike and non-commercial conditions are spelled out. It is not legal advice: read the licence on the dataset's page.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section sv-sec" aria-labelledby="h-rooms">
+  <div class="wrap">
+    <h2 id="h-rooms">What it publishes about its rooms</h2>
+    {% if info_known %}
+    <dl class="info-grid">
+      {% for i in info %}<div><dt>{{ i.label }}</dt><dd>{{ m.yn(i.yn, i.text) }}</dd></div>{% endfor %}
+    </dl>
+    <p class="small muted" style="margin-top:.8em">"Not checked" means the survey did not record this field for this dataset.</p>
+    {% else %}
+    <p>The survey did not record what this dataset publishes about its rooms (dimensions, volume, 3-D model, materials, positions, photos, reference acoustics, changing conditions). Check the dataset's own page.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if n.caveats %}
+<section class="section sv-sec" aria-labelledby="h-cav">
+  <div class="wrap"><div class="prose">
+    <h2 id="h-cav">Worth knowing</h2>
+    {% for c in n.caveats %}<div class="callout warn"><p>{{ c }}</p></div>{% endfor %}
+  </div></div>
+</section>
+{% endif %}
+
+<section class="section sv-sec" id="cite" aria-labelledby="cite-h">
+  <div class="wrap">
+    <h2 id="cite-h">Cite</h2>
+    <p>Cite the dataset authors and name the licence. The survey did not record the authors or a paper to cite: take them from the {{ "DOI record" if n.doi else "landing page" }}{% if n.evidence_urls %} or the evidence below{% endif %}, and cite the paper the authors ask for.</p>
+    <div class="cite-box"><p id="cite-line">{{ cite_line }}</p><button class="btn-ghost copy" type="button" data-copy="#cite-line">Copy</button></div>
+    <p class="small">If you use this catalogue, please cite rirdb too: <a href="{{ root }}about/index.html">About, citing and contributing</a>.</p>
+  </div>
+</section>
+
+<section class="section sv-sec" aria-labelledby="evidence">
+  <div class="wrap sv-grid">
+    <div>
+      <h2 id="evidence">Evidence</h2>
+      {% if n.evidence_urls %}
+      <p class="small">The pages and records used to check the facts above ({{ n.evidence_urls | length }}):</p>
+      <ol class="evidence">
+        {% for u in n.evidence_urls %}<li><a href="{{ u }}" rel="noopener">{{ u }}</a></li>{% endfor %}
+      </ol>
+      {% else %}<p class="small">No evidence links were recorded.</p>{% endif %}
+    </div>
+    <div class="status-box">
+      <h2>About this record</h2>
+      <dl class="facts">
+        <dt>Survey date</dt><dd>{{ survey_day or "not recorded" }}</dd>
+        <dt>Confidence</dt><dd>{{ n.confidence or "not recorded" }}{% if confidence_text %}<br><span class="small">{{ confidence_text }}</span>{% endif %}</dd>
+        <dt>rirdb status</dt><dd>{% if d.twin %}Surveyed record; the registry holds the dataset as <a href="{{ root }}{{ d.twin.url }}">{{ d.twin.name }}</a>{% else %}Surveyed only: not in the registry{% endif %}</dd>
+        <dt>Record id</dt><dd><code>{{ n.id }}</code></dd>
+        <dt>As data</dt><dd>One row in <a href="{{ root }}data/catalog.json">catalog.json</a> and <a href="{{ root }}data/catalog.csv">catalog.csv</a></dd>
+      </dl>
+      <p class="small muted" style="margin-top:1em">Facts change: hosts move and licences are revised. If something here is out of date, open an issue or a pull request on <a href="{{ REPO_URL }}">the repository</a>.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

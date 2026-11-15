@@ -1,0 +1,168 @@
+{% extends "analysis_base.html" %}
+{% import "_macros.html" as m %}
+{% set M = meta %}
+{% block page_css %}
+<style>
+.bg-grid { display: grid; gap: clamp(14px, 2vw, 22px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); align-items: start; }
+.bg-grid figure.chart { margin: 0; }
+.bg-grid figure.chart svg.viz { max-width: 440px; margin-inline: auto; }
+.mm { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin: 0 0 1em; }
+.mm-cell { display: flex; flex-direction: column; gap: 3px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 8px 8px 10px; text-decoration: none; color: var(--ink); min-width: 0; }
+.mm-cell:hover, .mm-cell:focus-visible { border-color: var(--accent); box-shadow: var(--shadow); }
+.mm-cell svg.viz { width: 100%; height: auto; margin-bottom: 4px; }
+.mm-name { font-weight: 700; font-size: .86rem; line-height: 1.25; color: var(--accent); overflow-wrap: anywhere; }
+.mm-sub { font-size: .76rem; color: var(--ink-2); line-height: 1.3; }
+.mm-sub.un { color: var(--muted); }
+#yard { font-size: .84rem; }
+#yard th, #yard td { padding: 6px 8px; }
+#yard thead th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
+#yard thead tr.gh th { position: static; text-align: center; font-size: .76rem; color: var(--muted); border-bottom: 1px solid var(--rule); }
+#yard td.gs, #yard th.gs { border-left: 2px solid var(--rule-strong); }
+#yard tfoot td, #yard tfoot th { border-top: 1px solid var(--rule-strong); font-weight: 700; }
+#yard td.name { min-width: 160px; }
+@media (min-width: 760px) {
+  #yard td.name, #yard thead tr:last-child th:first-child, #yard tfoot th { position: sticky; left: 0; background: var(--surface); z-index: 2; box-shadow: 1px 0 0 var(--rule); }
+}
+.defs dt { font-weight: 700; margin-top: .6em; }
+.defs dd { margin: 0 0 0 0; }
+</style>
+{% endblock %}
+{% block lede %}
+<p class="lede">A pretrained audio model (CLAP) turns each IR into a vector; a fixed two-dimensional map of those vectors shows which datasets sound alike. The same space scores how real each dataset looks next to the others, which is the yardstick for placing new IRs, such as FDN renders, on the map later.</p>
+<ul class="onpage" aria-label="On this page">
+  <li><a href="#what">What the map is</a></li><li><a href="#corpus">The corpus</a></li><li><a href="#datasets">Every dataset</a></li><li><a href="#yardstick">Realism and coverage</a></li>
+</ul>
+{% endblock %}
+{% block body %}
+
+<section class="section" id="what" aria-labelledby="what-h">
+  <div class="wrap">
+    <h2 id="what-h">What the map is</h2>
+    <div class="cols-2">
+      <div class="prose">
+        <p>The map is fitted once and then frozen, so a dataset or a new set of IRs always lands in the same place. It has two versions, one per CLAP signal:</p>
+        <ul>
+          <li><strong>The IR itself</strong>: the embedding of the impulse response as audio.</li>
+          <li><strong>Effect on dry recordings</strong> (<code>reverb_vector</code>): the embedding of what the IR does to six dry recordings, the convolved audio, averaged over the six. This is closer to how a listener meets the reverb.</li>
+        </ul>
+        <p>Distances are cosine distances in the full embedding space; the flat UMAP picture is only for looking. UMAP places points that are unlike anything in the map next to their nearest neighbours, so a set can look closer to the corpus than it is. Read the numbers, not the picture.</p>
+        <p>The map sample keeps preferred, de-duplicated IRs without analysis errors, at most {{ M.cap_per_dataset | int }} per dataset and at least one per room. Realism and coverage use only its clean measured-room IRs.</p>
+      </div>
+      <dl class="kv card">
+        <dt>Model</dt><dd><code>{{ M.model }}</code>{% if M.model_revision %}, revision <code>{{ M.model_revision[:7] }}</code>{% endif %}</dd>
+        <dt>Fitted</dt><dd>{{ M.created }}</dd>
+        <dt>IRs on the map</dt><dd>{{ M.n | int }}, of which {{ M.n_clean | int }} clean measured-room IRs</dd>
+        <dt>Per dataset</dt><dd>at most {{ M.cap_per_dataset | int }}, every room kept</dd>
+        <dt>UMAP</dt><dd>{% if M.umap %}{{ M.umap.n_neighbors }} neighbours, minimum distance {{ M.umap.min_dist }}, {{ M.umap.metric }} metric{% else %}–{% endif %}</dd>
+        <dt>Neighbourhood</dt><dd>distance to the {{ M.k }}th-nearest IR from another dataset</dd>
+        <dt>Dry recordings</dt><dd><code>{{ M.dry_sources }}</code></dd>
+        <dt>Map version</dt><dd><code>{{ M.map_version }}</code></dd>
+      </dl>
+    </div>
+    <h3 style="margin-top:1.2em">Realism and coverage</h3>
+    <dl class="defs prose">
+      <dt>Neighbourhood of a reference IR</dt>
+      <dd>The distance from a clean measured-room IR to its {{ M.k }}th-nearest neighbour <em>from another dataset</em>. Other datasets only, because CLAP groups IRs by their recording chain: an IR's nearest neighbour is almost always from its own dataset, and same-dataset neighbourhoods would call every new set unrealistic.</dd>
+      <dt>Realism</dt>
+      <dd>Share of a set's IRs that fall inside the neighbourhood of at least one reference IR. In the spirit of precision (Kynkäänniemi et al. 2019).</dd>
+      <dt>Coverage</dt>
+      <dd>Share of the reference IRs, and of the reference rooms, with at least one of the set's IRs inside their neighbourhood. In the spirit of recall and coverage (Naeem et al. 2020).</dd>
+      <dt>Yardstick</dt>
+      <dd>Each real dataset is scored against all the others, with its own IRs left out of every neighbourhood. This is exactly how a new set is scored, so the real datasets' scores show what “real” looks like.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="section" id="corpus" aria-labelledby="corpus-h">
+  <div class="wrap">
+    <h2 id="corpus-h">The corpus on the two maps</h2>
+    <p class="prose">Every IR of the map sample, in grey. The axes have no units: only neighbourhoods matter.</p>
+    <div class="bg-grid">
+      {% for b in bgs %}{{ m.chart(b.title, b.svg, sub=(b.n | int) ~ " IRs · " ~ b.label) }}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="datasets" aria-labelledby="datasets-h">
+  <div class="wrap wide">
+    <h2 id="datasets-h">Every dataset on the reverb-effect map</h2>
+    <p class="prose">One small map per analysed dataset ({{ panels | length }}), in blue over the corpus in grey, on the effect-on-dry-recordings map. Up to {{ panel_max | int }} points are drawn per panel (every k-th IR of the map sample). The realism under each name is its yardstick score; {{ n_unscored }} datasets have no clean measured-room IRs and are not scored. Each panel links to the dataset's page, which shows both maps.</p>
+    <div class="mm">
+      {% for p in panels %}
+      <a class="mm-cell" href="{{ root }}d/{{ p.id }}.html#map">
+        {{ p.svg }}
+        <span class="mm-name">{{ p.name }}</span>
+        {% if p.why %}<span class="mm-sub un">{{ p.n | int }} IRs · {{ p.why }}</span>{% else %}<span class="mm-sub">{{ p.n | int }} IRs · realism {{ p.realism | pct }}</span>{% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {{ charts.legend([("s1", "This dataset"), ("--other", "Rest of the corpus")]) }}
+  </div>
+</section>
+
+<section class="section" id="yardstick" aria-labelledby="yardstick-h">
+  <div class="wrap wide">
+    <h2 id="yardstick-h">The yardstick: how real each dataset looks</h2>
+    <div class="cols-2">
+      <div class="prose">
+        {% if least %}
+        <p>On the effect-on-dry-recordings map, the median scored dataset reaches a realism of {{ meds.reverb_vector.realism | pct }} ({{ n_scored }} datasets{% if mid %}: the mean of the two middle scores, {{ mid.lo | pct(1) }} and {{ mid.hi | pct(1) }}{% endif %}). The lowest are {% for r in least %}<a href="{{ root }}d/{{ r.id }}.html#map">{{ r.name }}</a> ({{ r.reverb_vector.realism | pct }}){{ ", " if not loop.last else "." }}{% endfor %}</p>
+        {% endif %}
+        {% if find %}
+        <blockquote class="findq">
+          <p>{{ find.finding }}</p>
+          <footer>Finding recorded in <a href="{{ root }}methods/findings.html">the dataset findings</a>{% if find.handling %}; handling: {{ find.handling }}{% endif %}.</footer>
+        </blockquote>
+        {% endif %}
+        <p>A low score does not mean the rooms are unreal. It means the files sound unlike every other dataset to CLAP, through short or truncated files, a high noise floor or a limited bandwidth. Generated IRs should be judged against these real-dataset scores, not against 100&nbsp;%.</p>
+      </div>
+      {% if realism_hist %}
+      {% set rt %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">Realism per dataset, effect on dry recordings</caption><thead><tr><th scope="col">Dataset</th><th scope="col" class="n">Realism</th></tr></thead><tbody>
+{% for r in realism_rows %}<tr><th scope="row">{{ r.name }}</th><td class="n">{{ r.reverb_vector.realism | pct(1) }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart("Datasets per realism band, effect on dry recordings", realism_hist, sub=n_scored ~ " scored datasets; realism in per cent", table=Markup(rt)) }}
+      {% endif %}
+    </div>
+
+    <div class="filters">
+      <label class="fld">Find a dataset<input type="search" data-filter="#yard" placeholder="Name or id" autocomplete="off"></label>
+      <p class="count" data-count-for="#yard" aria-live="polite"></p>
+    </div>
+    <div class="tbl-wrap"><table class="tbl" id="yard">
+      <caption class="sr-only">Realism, coverage and nearest-neighbour distance of every scored dataset, on both CLAP maps</caption>
+      <thead>
+        <tr class="gh"><th scope="colgroup" colspan="2"></th><th scope="colgroup" colspan="4" class="gs">Effect on dry recordings</th><th scope="colgroup" colspan="4" class="gs">The IR itself</th></tr>
+        <tr>
+          <th scope="col" data-sort="text">Dataset</th>
+          <th scope="col" class="n" data-sort="num">IRs scored</th>
+          {% for s in ("reverb_vector", "ir") %}
+          <th scope="col" class="n gs" data-sort="num">Realism</th>
+          <th scope="col" class="n" data-sort="num">Coverage, IRs</th>
+          <th scope="col" class="n" data-sort="num">Coverage, rooms</th>
+          <th scope="col" class="n" data-sort="num" title="Cosine distance from each IR to the nearest reference IR of another dataset: median, with the 25th and 75th percentiles">Nearest distance: median, p25–p75</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in yard %}
+      <tr data-search="{{ r.name }} {{ r.id }}">
+        <td class="name"><a href="{{ root }}d/{{ r.id }}.html#map">{{ r.name }}</a></td>
+        <td class="n">{{ (r.reverb_vector.n if r.reverb_vector.n is not none else r.ir.n) | int }}</td>
+        {% for s in ("reverb_vector", "ir") %}{% set x = r[s] %}
+        <td class="n gs" data-v="{{ x.realism if x.realism is not none else '' }}">{{ x.realism | pct }}</td>
+        <td class="n" data-v="{{ x.cov_ir if x.cov_ir is not none else '' }}">{{ x.cov_ir | pct(1) }}</td>
+        <td class="n" data-v="{{ x.cov_room if x.cov_room is not none else '' }}">{{ x.cov_room | pct }}</td>
+        <td class="n" data-v="{{ x.q50 if x.q50 is not none else '' }}">{{ x.q50 | num(3) }}<span class="sub">{{ x.q25 | num(3) }}–{{ x.q75 | num(3) }}</span></td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot><tr><th scope="row">Median over datasets</th><td></td>{% for s in ("reverb_vector", "ir") %}<td class="n gs">{{ meds[s].realism | pct }}</td><td class="n">{{ meds[s].cov_ir | pct(1) }}</td><td class="n">{{ meds[s].cov_room | pct }}</td><td class="n">{{ meds[s].q50 | num(3) }}</td>{% endfor %}</tr></tfoot>
+    </table></div>
+    <p class="tbl-foot"><span>IRs scored: the dataset's clean measured-room IRs in the map sample. The same scores are in <a href="{{ root }}data/site.json">data/site.json</a> (<code>clap.baseline</code>). See every point with its tooltip in the <a href="{{ root }}overview/index.html">interactive corpus overview</a>.</span></p>
+    <p class="actions"><a class="btn" href="{{ root }}overview/index.html">Open the interactive overview</a></p>
+  </div>
+</section>
+{% endblock %}

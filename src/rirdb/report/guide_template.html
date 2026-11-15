@@ -1,0 +1,1947 @@
+<title>Reverb Dataset Field Guide</title>
+<meta name="description" content="Every public room impulse response dataset we could find: what it holds, what its licence allows, where to get it, and what the field is missing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: a field guide. Prose sits in a 68ch column; the catalogue and the charts use the full
+   1200px frame. The hero draws one impulse response across the page. */
+:root {
+  --paper: #f6f7f9;
+  --surface: #ffffff;
+  --sunk: #eef0f4;
+  --ink: #121725;
+  --ink-2: #454d62;
+  --muted: #646c81;
+  --rule: #dde1e8;
+  --rule-strong: #c3c9d4;
+  --accent: #1f56c3;
+  --accent-wash: #e7eefb;
+  --wave: #2a78d6;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100;
+  --series-5: #e87ba4; --series-6: #008300; --series-7: #6250d6; --series-8: #e34948;
+  --ord-3: #184f95; --ord-2: #5598e7; --ord-1: #b7d3f6;
+  --other: #b9bec9;
+  --yes: #0b6f0b; --yes-fill: #0ca30c;
+  --part: #835400; --part-fill: #fab219;
+  --no: #ab2626; --no-fill: #d03b3b;
+  --unk: #5d6478; --unk-fill: #9aa1b2;
+  --grid: #e4e7ed;
+  --axis: #c3c9d4;
+  --on-s1: #ffffff; --on-fill: #121725; --on-ord3: #ffffff; --on-ord2: #121725; --on-ord1: #121725;
+  --shadow: 0 1px 2px rgba(18, 23, 37, .06), 0 4px 16px rgba(18, 23, 37, .06);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius: 6px;
+  --frame: 1200px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1119; --surface: #161a24; --sunk: #1c2130;
+    --ink: #e9ecf3; --ink-2: #b8bfce; --muted: #9098ab;
+    --rule: #272d3b; --rule-strong: #384052;
+    --accent: #93b4ff; --accent-wash: #1a2440; --wave: #5598e7;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+    --ord-3: #9ec5f4; --ord-2: #3987e5; --ord-1: #1c4f8f;
+    --other: #4b5265;
+    --yes: #46c946; --yes-fill: #0ca30c; --part: #f4bb45; --part-fill: #fab219;
+    --no: #ff8f86; --no-fill: #d03b3b; --unk: #a2a9ba; --unk-fill: #5a6276;
+    --grid: #242a38; --axis: #3a4254;
+    --on-s1: #0b0f18; --on-fill: #121725; --on-ord3: #0b0f18; --on-ord2: #0b0f18; --on-ord1: #e9ecf3;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1119; --surface: #161a24; --sunk: #1c2130;
+  --ink: #e9ecf3; --ink-2: #b8bfce; --muted: #9098ab;
+  --rule: #272d3b; --rule-strong: #384052;
+  --accent: #93b4ff; --accent-wash: #1a2440; --wave: #5598e7;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --ord-3: #9ec5f4; --ord-2: #3987e5; --ord-1: #1c4f8f;
+  --other: #4b5265;
+  --yes: #46c946; --yes-fill: #0ca30c; --part: #f4bb45; --part-fill: #fab219;
+  --no: #ff8f86; --no-fill: #d03b3b; --unk: #a2a9ba; --unk-fill: #5a6276;
+  --grid: #242a38; --axis: #3a4254;
+  --on-s1: #0b0f18; --on-fill: #121725; --on-ord3: #0b0f18; --on-ord2: #0b0f18; --on-ord1: #e9ecf3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--font-body);
+  font-feature-settings: "kern";
+}
+a { color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+button, input, select { font: inherit; color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.wrap { max-width: var(--frame); margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+.prose { max-width: 68ch; }
+.prose p { margin-block: 0 1em; }
+h1, h2, h3 { text-wrap: balance; }
+h2 { font: 800 clamp(1.8rem, 3.4vw, 2.6rem)/1.08 var(--font-display); letter-spacing: -.012em; margin: 0 0 .5em; }
+h3 { font: 700 1.15rem/1.3 var(--font-body); margin: 0 0 .35em; }
+.eyebrow { font: 600 .78rem/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .9em; }
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
+
+/* ---------- top bar */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  -webkit-backdrop-filter: saturate(1.2) blur(8px); backdrop-filter: saturate(1.2) blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 800 1rem/1 var(--font-display); color: var(--ink); text-decoration: none; white-space: nowrap; }
+.brand svg { width: 34px; height: 20px; flex: none; color: var(--wave); }
+.toc { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-left: auto; min-width: 0; }
+.toc::-webkit-scrollbar { display: none; }
+.toc a { color: var(--ink-2); text-decoration: none; font-size: .9rem; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.toc a:hover { background: var(--sunk); color: var(--ink); }
+@media (max-width: 760px) {
+  .top .wrap { flex-direction: column; align-items: stretch; gap: 0; padding-block: 8px 4px; }
+  .toc { margin-left: -10px; }
+}
+
+/* ---------- hero */
+.hero { padding-block: clamp(40px, 7vw, 84px) clamp(28px, 4vw, 48px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
+.hero h1 {
+  font: 800 clamp(2.6rem, 6.4vw, 5rem)/.95 var(--font-display);
+  font-variation-settings: "opsz" 96; letter-spacing: -.025em; margin: 0 0 .35em;
+}
+.lede { font-size: clamp(1.1rem, 1.6vw, 1.28rem); line-height: 1.55; color: var(--ink-2); max-width: 46ch; margin: 0 0 1.1em; }
+.byline { font-size: .9rem; color: var(--muted); margin: 0; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 0; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.tile { background: var(--surface); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; }
+.tile dt { order: 2; font-size: .9rem; line-height: 1.35; color: var(--ink-2); }
+.tile dd { order: 1; margin: 0; font: 800 clamp(1.9rem, 3.4vw, 2.6rem)/1 var(--font-display); letter-spacing: -.02em; }
+@media (max-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; } }
+
+.player { margin: clamp(28px, 4vw, 44px) 0 0; border-top: 1px solid var(--rule); padding-top: 18px; }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 10px; }
+.player-head h2 { font: 700 1.05rem/1.3 var(--font-body); margin: 0; letter-spacing: 0; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--rule-strong); background: var(--surface); color: var(--ink);
+  border-radius: 999px; padding: 6px 12px; font-size: .9rem; line-height: 1.2; cursor: pointer;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chip .mono { font-size: .8rem; opacity: .8; margin-left: 4px; }
+.play {
+  display: inline-flex; align-items: center; gap: 8px; margin-left: auto;
+  border: 0; background: var(--accent); color: var(--surface); border-radius: 999px; padding: 8px 16px 8px 12px;
+  font-weight: 700; cursor: pointer;
+}
+.play svg { width: 16px; height: 16px; }
+.play[data-playing="true"] { background: var(--ink); }
+@media (max-width: 560px) { .play { margin-left: 0; } }
+.ir-canvas { display: block; width: 100%; height: clamp(150px, 20vw, 210px); }
+.player figcaption { font-size: .95rem; color: var(--ink-2); margin-top: 8px; max-width: 80ch; }
+
+/* ---------- sections */
+.section { padding-block: clamp(48px, 7vw, 88px); border-top: 1px solid var(--rule); }
+.section-head { margin-bottom: clamp(20px, 3vw, 32px); }
+.section-head .prose > p:last-child { margin-bottom: 0; }
+
+/* primer */
+.formats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.format { border-top: 2px solid var(--ink); padding-top: 14px; }
+.format svg { width: 44px; height: 44px; color: var(--ink-2); display: block; margin-bottom: 8px; }
+.format h3 { margin-bottom: .2em; }
+.format p { margin: 0; color: var(--ink-2); font-size: .95rem; }
+@media (max-width: 900px) { .formats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .formats { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- catalogue */
+.controls { display: grid; gap: 14px; margin-bottom: 14px; }
+.uses { border: 0; padding: 0; margin: 0; min-width: 0; }
+.uses legend { font-weight: 700; margin-bottom: 8px; padding: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters { display: grid; grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)); gap: 10px; }
+.fld { display: grid; gap: 4px; font-size: .85rem; color: var(--muted); min-width: 0; }
+.fld input, .fld select {
+  width: 100%; min-width: 0; border: 1px solid var(--rule-strong); background: var(--surface); color: var(--ink);
+  border-radius: var(--radius); padding: 8px 10px; font-size: .95rem;
+}
+@media (max-width: 900px) { .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .filters .fld:first-child { grid-column: 1 / -1; } }
+.cat-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.cat-status p { margin: 0; font-size: .95rem; color: var(--ink-2); }
+.btn-ghost { border: 1px solid var(--rule-strong); background: var(--surface); border-radius: var(--radius); padding: 6px 12px; cursor: pointer; font-size: .9rem; }
+.btn-ghost:hover { border-color: var(--accent); }
+.copy-out { width: 100%; min-height: 8em; font: .8rem/1.4 var(--font-mono); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); color: var(--ink); padding: 8px; }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); }
+table.cat { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.cat thead th {
+  position: sticky; top: 0; z-index: 1; background: var(--sunk); text-align: left; font-size: .8rem; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 10px 12px; border-bottom: 1px solid var(--rule);
+}
+.cat td { padding: 12px; vertical-align: top; border-top: 1px solid var(--rule); }
+.cat tr.row:first-child td { border-top: 0; }
+.cat tr.more td { border-top: 0; padding-top: 0; background: var(--surface); }
+.cat .name-btn {
+  all: unset; cursor: pointer; font-weight: 700; color: var(--ink); display: inline; line-height: 1.35;
+}
+.cat .name-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.cat .name-btn .caret { display: inline-block; width: 1em; color: var(--muted); transition: transform .15s; }
+.cat .name-btn[aria-expanded="true"] .caret { transform: rotate(90deg); }
+.cat .origin { color: var(--muted); font-size: .85rem; margin-top: 2px; }
+.badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.badge { font-size: .74rem; line-height: 1; padding: 4px 7px; border-radius: 4px; border: 1px solid var(--rule-strong); color: var(--ink-2); white-space: nowrap; }
+.badge.measured-here { border-color: transparent; background: var(--accent-wash); color: var(--accent); font-weight: 700; }
+.badge.warn { border-color: transparent; background: color-mix(in srgb, var(--part-fill) 22%, var(--surface)); color: var(--part); font-weight: 700; }
+.badge.bad { border-color: transparent; background: color-mix(in srgb, var(--no-fill) 16%, var(--surface)); color: var(--no); font-weight: 700; }
+.kind { font-size: .8rem; color: var(--muted); margin-bottom: 4px; }
+.perms.full { display: grid; gap: 3px; font-size: .9rem; margin-bottom: .6em; }
+.fams { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.fam { font-size: .78rem; padding: 3px 7px; border-radius: 4px; background: var(--sunk); color: var(--ink-2); white-space: nowrap; }
+.counts { font-variant-numeric: tabular-nums; }
+.counts b { font-weight: 700; }
+.rt { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.rt svg { width: 112px; height: 18px; flex: none; }
+.rt .v { font-variant-numeric: tabular-nums; font-size: .9rem; }
+.rt .rt-kind { font-size: .75rem; color: var(--muted); }
+.lic-name { font-weight: 700; margin-bottom: 4px; }
+.perms { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: .84rem; }
+.perm { display: flex; align-items: center; gap: 6px; line-height: 1.3; }
+.perm svg { width: 15px; height: 15px; flex: none; }
+.perm.yes { color: var(--yes); } .perm.part { color: var(--part); } .perm.no { color: var(--no); } .perm.unk { color: var(--unk); }
+.get a { display: inline-block; margin-right: 10px; white-space: nowrap; }
+.get .host { color: var(--ink-2); font-size: .85rem; margin-top: 4px; }
+.detail { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px 32px; padding: 6px 4px 14px 22px; }
+.detail h4 { margin: 0 0 4px; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.detail p { margin: 0 0 .8em; }
+.detail ul { margin: 0 0 .8em; padding-left: 1.1em; }
+.detail li { margin-bottom: .25em; }
+.info-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: .8em; }
+.info { font-size: .78rem; padding: 3px 7px; border-radius: 4px; display: inline-flex; gap: 5px; align-items: center; }
+.info.yes { background: color-mix(in srgb, var(--yes-fill) 16%, var(--surface)); color: var(--yes); }
+.info.partial { background: color-mix(in srgb, var(--part-fill) 20%, var(--surface)); color: var(--part); }
+.info.no, .info.unknown { background: var(--sunk); color: var(--muted); }
+.info svg { width: 12px; height: 12px; }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 2px 12px; font-size: .9rem; margin: 0 0 .8em; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .85rem; color: var(--ink-2); margin-top: 12px; align-items: center; }
+.legend-row .perm { display: inline-flex; }
+.legend-row svg.rtkey { width: 112px; height: 18px; }
+.empty { padding: 28px; text-align: center; color: var(--ink-2); }
+.cat-more { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; font-size: .95rem; color: var(--ink-2); }
+
+@media (max-width: 760px) {
+  .table-scroll { border: 0; background: transparent; overflow: visible; }
+  table.cat, .cat tbody, .cat tr, .cat td { display: block; width: 100%; }
+  .cat thead { display: none; }
+  .cat tr.row { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius) var(--radius) 0 0; margin-top: 12px; }
+  .cat tr.row.closed { border-radius: var(--radius); }
+  .cat tr.more { background: var(--surface); border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 var(--radius) var(--radius); }
+  .cat td { border-top: 1px solid var(--rule); padding: 10px 14px; }
+  .cat td:first-child { border-top: 0; }
+  .cat td[data-label]::before { content: attr(data-label); display: block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  /* card: name across the top, contents and reverb time side by side, licence and links below */
+  .cat tr.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .cat tr.row td.c-name, .cat tr.row td.c-lic, .cat tr.row td.c-get { grid-column: 1 / -1; }
+  .cat tr.row td.c-inside { border-right: 1px solid var(--rule); }
+  .cat td.c-rt .rt { flex-wrap: wrap; white-space: normal; }
+  .cat td.c-rt .rt svg { width: 100%; max-width: 112px; }
+  .cat td.c-get a { margin-right: 14px; }
+  .cat td.c-get .host { display: inline; }
+  .detail { grid-template-columns: minmax(0, 1fr); padding: 4px 0 8px; }
+}
+
+/* ---------- licences */
+.lic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; margin-bottom: 28px; }
+.lic-card { background: var(--surface); padding: 16px 18px; display: grid; gap: 8px; align-content: start; }
+.lic-card .top-line { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.lic-card h3 { margin: 0; display: flex; align-items: center; gap: 8px; }
+.lic-card h3 .sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.lic-card .count { font: 800 1.5rem/1 var(--font-display); }
+.lic-card p { margin: 0; color: var(--ink-2); font-size: .93rem; }
+.lic-card .examples { font-size: .82rem; color: var(--muted); }
+.lic-card:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
+.lic-card:last-child:nth-child(3n+2) { grid-column: span 2; }
+@media (max-width: 900px) { .lic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lic-card:last-child:nth-child(n) { grid-column: auto; } .lic-card:last-child:nth-child(2n+1) { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .lic-grid { grid-template-columns: minmax(0, 1fr); } }
+.findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; margin: 8px 0 0; padding: 0; list-style: none; }
+.findings li { border-top: 1px solid var(--rule); padding-top: 10px; }
+.findings b { display: block; }
+@media (max-width: 760px) { .findings { grid-template-columns: minmax(0, 1fr); } }
+.credit-box { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); padding: 14px 18px; margin: -12px 0 28px; max-width: 90ch; }
+.credit-box h3 { font-size: 1rem; margin: 0 0 4px; }
+.credit-box p { margin: 0; color: var(--ink-2); font-size: .95rem; }
+.callout { border-left: 3px solid var(--rule-strong); padding: 4px 0 4px 14px; color: var(--ink-2); font-size: .95rem; margin-top: 20px; max-width: 80ch; }
+
+/* ---------- charts */
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px); }
+.chart { margin: 0; min-width: 0; display: flex; flex-direction: column; }
+.chart.wide { grid-column: 1 / -1; }
+.chart figcaption h3 { font: 700 1.2rem/1.25 var(--font-body); margin: 0 0 4px; }
+.chart figcaption p { margin: 0 0 12px; color: var(--ink-2); font-size: .95rem; }
+.plot { position: relative; min-height: 60px; }
+.plot svg { display: block; overflow: visible; }
+.plot text { font-family: var(--font-body); }
+.chart .note { font-size: .85rem; color: var(--muted); margin: 8px 0 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .85rem; color: var(--ink-2); margin: 0 0 8px; padding: 0; list-style: none; }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.legend .sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+details.tv { margin-top: 10px; font-size: .9rem; }
+details.tv summary { cursor: pointer; color: var(--accent); width: max-content; }
+details.tv .tv-body { overflow-x: auto; margin-top: 8px; }
+details.tv table { border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 60%; }
+details.tv th, details.tv td { text-align: left; padding: 4px 12px 4px 0; border-bottom: 1px solid var(--rule); font-size: .85rem; }
+details.tv th { color: var(--muted); font-weight: 700; }
+details.tv td.n, details.tv th.n { text-align: right; }
+@media (max-width: 900px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+.mark { cursor: default; }
+.mark:focus { outline: none; }
+.mark:focus-visible .hit, .mark:hover .hit { fill: var(--sunk); }
+#tip {
+  position: fixed; z-index: 50; pointer-events: none; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--rule-strong); box-shadow: var(--shadow); border-radius: var(--radius);
+  padding: 8px 10px; font-size: .85rem; line-height: 1.35; max-width: 280px;
+}
+#tip strong { display: block; font-size: 1rem; font-variant-numeric: tabular-nums; }
+#tip .t-sub { color: var(--muted); }
+#tip .row { display: flex; align-items: center; gap: 6px; }
+#tip .key { width: 10px; height: 2px; border-radius: 1px; flex: none; }
+
+/* ---------- gaps */
+.gaps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 56px); counter-reset: gap; }
+.gap { border-top: 1px solid var(--rule); padding: 20px 0 22px; }
+.gap h4 { font: 800 1.35rem/1.2 var(--font-display); letter-spacing: -.005em; margin: 0 0 .4em; text-wrap: balance; }
+.gap-group { font: 600 .8rem/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 32px 0 4px; }
+.gap p { margin: 0 0 .7em; }
+.gap .help { margin: 0; font-size: .95rem; color: var(--ink-2); display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px; }
+.gap .help span:first-child { font: 600 .72rem/1.9 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--accent); }
+@media (max-width: 860px) { .gaps { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- storing */
+ol.checklist { list-style: none; padding: 0; margin: 0; counter-reset: c; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 56px); }
+@media (max-width: 760px) { ol.checklist { grid-template-columns: minmax(0, 1fr); } }
+ol.checklist li { counter-increment: c; display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 4px; padding: 10px 0; border-top: 1px solid var(--rule); }
+ol.checklist li::before { content: counter(c); font: 700 .9rem/1.6 var(--font-mono); color: var(--muted); }
+ol.checklist b { display: block; }
+ol.checklist span { color: var(--ink-2); font-size: .95rem; }
+.diagram { margin: 0; }
+.diagram-scroll { overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 720px; height: auto; color: var(--ink); }
+.diagram { margin: 0 0 8px; }
+.diagram figcaption { font-size: .9rem; color: var(--ink-2); margin-top: 10px; max-width: 80ch; }
+.diagram-list { display: none; margin: 0; padding-left: 1.3em; }
+.diagram-list li { margin-bottom: .5em; }
+@media (max-width: 760px) { .diagram-scroll { display: none; } .diagram-list { display: block; } }
+.principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 32px; margin: 24px 0 0; padding: 0; list-style: none; }
+.principles li { border-top: 2px solid var(--ink); padding-top: 10px; }
+.principles b { display: block; margin-bottom: 2px; }
+.principles span { color: var(--ink-2); font-size: .95rem; }
+@media (max-width: 760px) { .principles { grid-template-columns: minmax(0, 1fr); } }
+.fmt-scroll { overflow-x: auto; margin-top: 12px; }
+table.fmt { border-collapse: collapse; width: 100%; min-width: 600px; font-size: .93rem; }
+.fmt th, .fmt td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-top: 1px solid var(--rule); }
+.fmt thead th { border-top: 0; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.fmt td:first-child { font-weight: 700; }
+.ours { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; margin-top: 14px; }
+.ours div { background: var(--surface); padding: 14px 16px; }
+.ours b { display: block; font: 800 1.5rem/1.1 var(--font-display); }
+.ours span { font-size: .88rem; color: var(--ink-2); }
+@media (max-width: 760px) { .ours { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- glossary, method, footer */
+dl.gloss { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 56px); margin: 0; }
+dl.gloss div { border-top: 1px solid var(--rule); padding: 12px 0; }
+dl.gloss dt { font-weight: 700; }
+dl.gloss dd { margin: 2px 0 0; color: var(--ink-2); font-size: .95rem; }
+@media (max-width: 760px) { dl.gloss { grid-template-columns: minmax(0, 1fr); } }
+ol.steps { padding-left: 1.3em; margin: 0 0 1.2em; }
+ol.steps li { margin-bottom: .5em; padding-left: .2em; }
+.cite { font: .88rem/1.5 var(--font-mono); background: var(--sunk); border-radius: var(--radius); padding: 12px 14px; overflow-wrap: anywhere; }
+footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; font-size: .9rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-yes" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.25" fill="currentColor" opacity=".16"/><path d="M4.6 8.3l2.2 2.2 4.6-4.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-part" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.25" fill="currentColor" opacity=".18"/><path d="M4.5 8h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-no" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.25" fill="currentColor" opacity=".16"/><path d="M5.4 5.4l5.2 5.2M10.6 5.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-unk" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.25" fill="currentColor" opacity=".16"/><path d="M6.1 6.2a1.95 1.95 0 1 1 2.7 1.8c-.55.25-.8.6-.8 1.2v.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8" cy="11.6" r="1" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Reverb Dataset Field Guide, back to top">
+      <svg viewBox="0 0 34 20" aria-hidden="true"><path d="M2 10h3l1-8 1 16 1-12 1.2 9 1-6 1 4 1.1-3 1 2.2 1.2-1.8 1 1.3 1.2-1 1.1.7 1.3-.5 1.4.3 1.6-.2H32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <span>Reverb Dataset Field Guide</span>
+    </a>
+    <nav class="toc" aria-label="Sections">
+      <a href="#primer">Basics</a>
+      <a href="#datasets">Datasets</a>
+      <a href="#licences">Licences</a>
+      <a href="#landscape">Landscape</a>
+      <a href="#gaps">Gaps</a>
+      <a href="#storing">Storing</a>
+      <a href="#glossary">Glossary</a>
+      <a href="#method">Method</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="title">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">DMRN+21 · King's College London · 11 December 2026</p>
+          <h1 id="title">Reverb Dataset Field Guide</h1>
+          <p class="lede">An impulse response is the sound of a space answering a single click. Researchers have published millions of them. This guide lists every public collection we could find, says what each licence lets you do and where to download it, and shows what the collections cover and what is still missing.</p>
+          <p class="byline">Ilias Ibnyahya · Centre for Digital Music, Queen Mary University of London · facts checked <span data-k="checked"></span></p>
+        </div>
+        <dl class="tiles" id="tiles"></dl>
+      </div>
+
+      <figure class="player" id="player">
+        <div class="player-head">
+          <h2 id="player-title">Hear how long a space rings</h2>
+          <div class="presets" role="group" aria-labelledby="player-title" id="presets"></div>
+          <button class="play" id="play" type="button" data-playing="false">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
+            <span>Play</span>
+          </button>
+        </div>
+        <canvas class="ir-canvas" id="ir-canvas" role="img" aria-label="Simulated impulse response"></canvas>
+        <figcaption id="ir-caption"></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="primer" aria-labelledby="primer-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Basics</p>
+        <h2 id="primer-h">What is in a reverb dataset?</h2>
+        <p>An impulse response (IR) is made by playing a sweep or a click through a loudspeaker and recording it with a microphone; processing turns the recording into the response to one perfect click. Each IR belongs to one loudspeaker position and one microphone position, and it includes the equipment as well as the room, so moving either changes the IR. A file can hold one IR or thousands. Musicians load IRs into convolution reverbs, acousticians read room properties from them, and machine-learning models use them to make a dry recording sound as if it had been made somewhere else.</p>
+        <p>Datasets differ in four ways that matter when you choose one: how many <em>spaces</em> they cover and how many positions in each (a dataset can hold a hundred thousand IRs from a single room), how the sound was captured, which loudspeaker was used (an omnidirectional source, as room-acoustic standards ask, or a directional studio speaker), and what the licence allows.</p>
+      </div>
+      <div class="formats">
+        <div class="format">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="5" fill="currentColor"/><circle cx="22" cy="22" r="11" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><circle cx="22" cy="22" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".3"/></svg>
+          <h3>Mono</h3>
+          <p>One omnidirectional microphone. Enough for reverberation time, clarity and most machine-learning work.</p>
+        </div>
+        <div class="format">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 7c-7.5 0-12 5.6-12 12.6 0 4.2 1.6 7.3 3.6 9.6.9 1 1.4 2.3 1.4 3.6V37h14v-3.2c0-1.3.6-2.6 1.6-3.5 2.2-2.1 3.4-5.6 3.4-10.4C34 12.6 29.5 7 22 7z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="21" r="3" fill="currentColor"/><circle cx="35" cy="21" r="3" fill="currentColor"/></svg>
+          <h3>Binaural</h3>
+          <p>Two microphones in the ears of a dummy head. Plays back as three-dimensional sound on headphones.</p>
+        </div>
+        <div class="format">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="15" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="22" cy="22" rx="15" ry="5.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/><ellipse cx="22" cy="22" rx="5.5" ry="15" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/><circle cx="22" cy="22" r="2.6" fill="currentColor"/></svg>
+          <h3>Ambisonic</h3>
+          <p>A compact microphone that also records where sound comes from. Can be played on any speaker layout, on headphones or in VR.</p>
+        </div>
+        <div class="format">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><g fill="currentColor"><circle cx="9" cy="9" r="2.4"/><circle cx="17.7" cy="9" r="2.4"/><circle cx="26.3" cy="9" r="2.4"/><circle cx="35" cy="9" r="2.4"/><circle cx="9" cy="17.7" r="2.4"/><circle cx="17.7" cy="17.7" r="2.4"/><circle cx="26.3" cy="17.7" r="2.4"/><circle cx="35" cy="17.7" r="2.4"/><circle cx="9" cy="26.3" r="2.4"/><circle cx="17.7" cy="26.3" r="2.4"/><circle cx="26.3" cy="26.3" r="2.4"/><circle cx="35" cy="26.3" r="2.4"/><circle cx="9" cy="35" r="2.4"/><circle cx="17.7" cy="35" r="2.4"/><circle cx="26.3" cy="35" r="2.4"/><circle cx="35" cy="35" r="2.4"/></g></svg>
+          <h3>Microphone array</h3>
+          <p>Many microphones on a line, a plane, a sphere or a grid. For sound-field research and source localisation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="datasets" aria-labelledby="datasets-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Catalogue</p>
+        <h2 id="datasets-h">Find a dataset</h2>
+        <p>Every public reverb dataset we know of. <b>Analysed here</b> means we downloaded it, verified or recorded a checksum for every file, and analysed its IRs with the same method (the dense ones through a fixed one-in-sixteen sample); the others are described from their publishers' pages. Open a row for the details and for what we found inside.</p>
+      </div>
+
+      <div class="controls">
+        <fieldset class="uses">
+          <legend>I want to…</legend>
+          <div class="chips" id="uses"></div>
+        </fieldset>
+        <div class="filters">
+          <label class="fld" for="q"><span>Search</span><input id="q" type="search" placeholder="Name, place, institution, country" autocomplete="off"></label>
+          <label class="fld" for="f-type"><span>Type</span><select id="f-type"><option value="">All types</option><option value="measured">Measured</option><option value="simulated">Simulated</option><option value="production">Production library</option><option value="hybrid">Measured + simulated</option></select></label>
+          <label class="fld" for="f-fam"><span>Captured as</span><select id="f-fam"><option value="">Any format</option><option value="mono">Mono</option><option value="stereo">Stereo</option><option value="binaural">Binaural</option><option value="ambisonic">Ambisonic</option><option value="array">Microphone array</option></select></label>
+          <label class="fld" for="f-avail"><span>Availability</span><select id="f-avail"><option value="">Any</option><option value="open">Open download</option><option value="gated">Registration or manual</option><option value="gone">Broken or archive only</option></select></label>
+          <label class="fld" for="f-sort"><span>Sort by</span><select id="f-sort"><option value="year">Newest first</option><option value="irs">Most IRs</option><option value="spaces">Most spaces</option><option value="name">Name</option></select></label>
+        </div>
+        <div class="cat-status">
+          <p id="count" aria-live="polite"></p>
+          <button class="btn-ghost" id="copy" type="button">Copy table as CSV</button>
+        </div>
+        <textarea class="copy-out" id="copy-out" hidden readonly aria-label="Catalogue as CSV"></textarea>
+      </div>
+
+      <div class="table-scroll">
+        <table class="cat" id="cat">
+          <caption class="sr-only">Public reverb datasets: contents, reverberation time, licence and where to get them</caption>
+          <thead><tr><th scope="col">Dataset</th><th scope="col">What is inside</th><th scope="col">Reverb time (mid)</th><th scope="col">Licence</th><th scope="col">Where to get it</th></tr></thead>
+          <tbody id="cat-body"></tbody>
+        </table>
+      </div>
+      <div class="cat-more" id="cat-more" hidden><span id="cat-shown"></span><button class="btn-ghost" id="more-n" type="button">Show more</button><button class="btn-ghost" id="more-all" type="button">Show all</button></div>
+      <div class="legend-row" aria-label="Legend">
+        <span><b>Products</b> commercial use · <b>ML training</b> training models · <b>Sharing</b> redistributing the audio:</span>
+        <span class="perm yes"><svg aria-hidden="true"><use href="#i-yes"/></svg>allowed</span>
+        <span class="perm part"><svg aria-hidden="true"><use href="#i-part"/></svg>with conditions</span>
+        <span class="perm no"><svg aria-hidden="true"><use href="#i-no"/></svg>not allowed</span>
+        <span class="perm unk"><svg aria-hidden="true"><use href="#i-unk"/></svg>not stated</span>
+      </div>
+      <div class="legend-row" aria-hidden="true">
+        <span><svg class="rtkey" id="rt-key"></svg> Reverb time at mid frequencies (average of the 500 Hz and 1 kHz octaves): bar from the 10th to the 90th percentile of the IRs, dot at the median, 0.1 s to 10 s on a log scale. T30 where at least half the IRs allow it; otherwise T20, marked.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="licences" aria-labelledby="licences-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Licences</p>
+        <h2 id="licences-h">What can I do with it?</h2>
+        <p>A licence answers three questions. May I use the data in a commercial product? May I train a machine-learning model on it? May I share the audio with others? Most reverb datasets use a Creative Commons licence, and most of those allow all three, with credit to the authors. The exceptions are worth knowing before you build on a dataset.</p>
+      </div>
+      <div class="lic-grid" id="lic-grid"></div>
+      <div class="credit-box">
+        <h3>How to credit a dataset</h3>
+        <p>Name the dataset and its authors, link its DOI, name the licence and say whether you changed the files, for example: <span class="mono small">Arni variable-acoustics room RIRs (Aalto University), doi:10.5281/zenodo.6985104, CC BY 4.0, trimmed to 2 s.</span> In a track or a plug-in, put this in the credits or the About box. Data under a software licence (MIT, BSD, Apache) must ship with its licence text.</p>
+      </div>
+      <div class="charts">
+        <figure class="chart wide" id="ch-lic">
+          <figcaption><h3>Most datasets are open, but most IRs are not</h3><p>Share of datasets, of indexed room IRs and of spaces, by licence type. <span data-k="lic_ir_note"></span></p></figcaption>
+          <ul class="legend" aria-hidden="true"></ul>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+        </figure>
+      </div>
+      <h3 style="margin-top:36px">What we found in the fine print</h3>
+      <ul class="findings" id="lic-findings"></ul>
+      <p class="callout">This is a plain-language summary of the licences, not legal advice. Several questions are still open for machine learning: whether a trained model, or what it generates, is an adaptation of its training data (which matters for share-alike and attribution); whether a model trained on non-commercial data may later be used commercially; and how text-and-data-mining exceptions (UK CDPA s29A for non-commercial research; EU DSM Directive, Articles 3 and 4) apply alongside a licence. When in doubt, ask the authors; most are glad to be asked.</p>
+    </div>
+  </section>
+
+  <section class="section" id="landscape" aria-labelledby="landscape-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Landscape</p>
+        <h2 id="landscape-h">What the public datasets cover</h2>
+        <p>Ten views of the collections. Counts of datasets include everything in the catalogue; counts of IRs and spaces, and every acoustic measurement, come from the <span data-k="n_analysed"></span> datasets we downloaded and analysed. Every chart has its numbers underneath.</p>
+      </div>
+      <div class="charts">
+        <figure class="chart" id="ch-years">
+          <figcaption><h3>A young and growing field</h3><p>Datasets by year of release. More than half appeared in the last five years.</p></figcaption>
+          <ul class="legend" aria-hidden="true"></ul>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-scatter">
+          <figcaption><h3>Millions of IRs, a few hundred rooms</h3><p>IRs against spaces for each analysed dataset, on log scales. Dense grids sit high on the left: many IRs, one room.</p></figcaption>
+          <ul class="legend" aria-hidden="true"></ul>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+        </figure>
+        <figure class="chart" id="ch-cats">
+          <figcaption><h3>Few of the spaces are made for music</h3><p>Distinct spaces by kind, across the analysed datasets.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-t30">
+          <figcaption><h3>Most measured rooms are fairly dry</h3><p>Reverberation time at mid frequencies of each room measured in the research datasets, with typical values for reference.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-formats">
+          <figcaption><h3>How the sound was captured</h3><p>Datasets offering each capture format. A dataset can offer several.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+        </figure>
+        <figure class="chart" id="ch-fs">
+          <figcaption><h3>48 kHz is the norm, but not a promise</h3><p>Datasets by sampling rate of their files, in kHz. A file's rate is not its bandwidth: some 48 and 96 kHz files carry nothing above 16 or 22 kHz.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-roominfo">
+          <figcaption><h3>Rooms are rarely described</h3><p>What the datasets publish about their spaces, for the datasets where we checked.</p></figcaption>
+          <ul class="legend" aria-hidden="true"></ul>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-lowfreq">
+          <figcaption><h3>The bass is the hardest part to measure</h3><p>Share of IRs with a valid T30 in each octave band, in the typical (median) analysed dataset. ISO 3382 needs 45 dB of clean decay; short files and noisy rooms run out first in the bass.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+        </figure>
+        <figure class="chart" id="ch-countries">
+          <figcaption><h3>Mostly measured in Europe</h3><p>Datasets by country of origin: where the spaces are, or for simulated sets, the institution.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+        <figure class="chart" id="ch-hosts">
+          <figcaption><h3>Where datasets live</h3><p>Datasets by hosting platform. Repositories give a DOI and checksums; lab, company and personal websites can vanish.</p></figcaption>
+          <div class="plot"></div>
+          <details class="tv"><summary>Show the numbers</summary><div class="tv-body"></div></details>
+          <p class="note"></p>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gaps" aria-labelledby="gaps-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Gaps</p>
+        <h2 id="gaps-h">What is missing</h2>
+        <p>Thirteen gaps stand out from the catalogue and the measurements, grouped by the question they answer. Each comes with the evidence and with what would close it.</p>
+      </div>
+      <h3 class="gap-group">Can I use it?</h3>
+      <div class="gaps">
+        <article class="gap">
+          <h4>Licences that leave questions</h4>
+          <p><span data-k="n_no_licence_words"></span> state no licence, <span data-k="n_conflict_words"></span> give contradictory terms, and only two licences (EchoThief, SoundSpaces) say anything explicit about AI. Of the <span data-k="n_spaces"></span> spaces we analysed, only <span data-k="spaces_commercial"></span> come from datasets whose licence allows a commercial model; the MIT IR Survey's 270 places have no licence and EchoThief forbids AI training.</p>
+          <p class="help"><span>Helps</span><span>A standard licence with its version (CC BY 4.0 or CC0 are the simplest to reuse), one sentence on machine-learning use saying whether a trained model counts as an adaptation, and the same statement in the record, the README and the files.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Links that rot</h4>
+          <p>The OpenAIR website went offline in 2026 (its files survive on a University of York file server), the original ACE Challenge site is unreachable, UCL's server for the eBrIRD hearing-aid BRIRs did not respond when we checked, the Fokke van Saane collection exists only in the Wayback Machine, and the DRR-scaled BRIR archive on Zenodo is truncated. <span data-k="n_web_only_words"></span> only on a lab, company or personal website, some through Google Drive or Dropbox links.</p>
+          <p class="help"><span>Helps</span><span>A repository that issues DOIs and keeps checksums, and a second copy of anything hosted on a personal page.</span></p>
+        </article>
+      </div>
+      <h3 class="gap-group">What does it cover?</h3>
+      <div class="gaps">
+        <article class="gap">
+          <h4>Many IRs, few rooms</h4>
+          <p>The <span data-k="n_irs_words"></span> room IRs we indexed come from <span data-k="n_spaces"></span> spaces, and <span data-k="top3_share"></span> of them come from three single-room laboratory datasets (<span data-k="top3_names"></span>). Another <span data-k="n_anechoic_words"></span> IRs (MIRACLE) were measured in an anechoic chamber and hold no reverberation. Training on "millions of IRs" can mean training on a handful of rooms.</p>
+          <p class="help"><span>Helps</span><span>Breadth over density: many rooms, each measured at several source and receiver positions, as OK5 does for 25 spaces of one building. The MIT IR Survey covers 270 everyday places, but with one IR each.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Halls, churches and other large spaces</h4>
+          <p>Half of the measured rooms have a reverberation time below <span data-k="t30_median"></span>; only <span data-k="t30_gt2"></span> of <span data-k="n_t30"></span> ring longer than 2 s. Concert halls (<span data-k="cat_concert"></span>), theatres and auditoria (<span data-k="cat_theatre"></span>) and places of worship (<span data-k="cat_worship"></span>) are a small share of the spaces, yet they are the rooms music is made for.</p>
+          <p class="help"><span>Helps</span><span>Measurements of performance venues and worship spaces across stage and audience positions, with full-length decays.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Whose rooms?</h4>
+          <p><span data-k="europe_share"></span> of the datasets with a known origin were measured or made in Europe and <span data-k="namerica_share"></span> in North America. <span data-k="rest_words"></span> The performance spaces of most of the world's musical cultures are not in any public dataset.</p>
+          <p class="help"><span>Helps</span><span>Measurement campaigns and partnerships beyond Europe and North America, starting with the venues where music is played there.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Real life is not an empty, still room</h4>
+          <p>Few datasets cover vehicles (<span data-k="cat_vehicle"></span> spaces), rooms with people in them (SoundCam), changing furniture (Motus) or sources and listeners that move (trajectoRIR, the robot and transition datasets). Panels and absorbers that change are common, but only in lab rooms (Arni, dEchorate, UPV, SRIRACHA, BRUDEX).</p>
+          <p class="help"><span>Helps</span><span>Occupancy, doors, furniture and movement recorded as variables, with the same positions measured under each condition.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Rooms without a description</h4>
+          <p>Room volume is published for <span data-k="spaces_volume"></span> of the <span data-k="n_spaces"></span> spaces. Only <span data-k="n_geometry"></span> datasets publish a full 3-D model or scan of their rooms, and only <span data-k="n_materials"></span> list the surface materials in full. Without them an IR cannot be tied to the room that made it, which simulation, inverse problems and room-aware generative models all need.</p>
+          <p class="help"><span>Helps</span><span>Dimensions or a floor plan, volume, materials and photos for every room, and a 3-D model where possible.</span></p>
+        </article>
+      </div>
+      <h3 class="gap-group">Can I trust it and learn from it?</h3>
+      <div class="gaps">
+        <article class="gap">
+          <h4>Files that are not what they seem</h4>
+          <p>We found IRs cut before the decay ends (TAU-SRIR about 0.3 s, UPV 0.37 s, C4DM 2 s for a 2.4 s hall), content that stops at 12 to 16 kHz inside 48 kHz files (dEchorate), <span data-k="tau_dups"></span> byte-identical duplicates in TAU-SRIR, and counts that do not match the files (dataset lists cite 344 IRs for the Aachen AIR database, whose release 1.4 holds 107 two-channel records; SRIRACHA's files hold half of the 2.65 million its abstract announces).</p>
+          <p class="help"><span>Helps</span><span>Publish raw, full-length IRs at their true sampling rate, and check counts and checksums before each release.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Splits that leak</h4>
+          <p>Most datasets measure one room at many positions, and some rooms appear in several datasets: Arni in three, the Alamire lab in MYRiAD and trajectoRIR, the Room Transition rooms again in ERTD's simulation. Split the IRs at random and the test set holds rooms the model has already heard, so the scores measure memory rather than generalisation.</p>
+          <p class="help"><span>Helps</span><span>A room ID on every IR that stays the same across releases and datasets, a suggested split by room plus a held-out dataset, and a published list of duplicates and shared rooms.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Every dataset sounds like its equipment</h4>
+          <p>In an audio embedding (CLAP) of the analysed IRs, 99% sit closest to an IR from their own dataset. Loudspeaker, microphones, sweep and processing leave a mark on every file, so a model trained on a few datasets can learn the recording chain instead of the room.</p>
+          <p class="help"><span>Helps</span><span>The loudspeaker and microphone responses and the processing steps published with the IRs, and results reported on a held-out dataset as well as on held-out positions.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Simulation without ground truth</h4>
+          <p>Simulated datasets are large (GWA: 2 million IRs in about 19,000 rooms; SpaDenRIR: 5.3 million, first 100 ms only), but none of the large ones comes with measurements of the same rooms. Measured and simulated IRs of the same space exist only in small studies: heritage spaces (York Minster's Chapter House, Ely's Lady Chapel, Aachen's St Nicholas Chapel, Sant Climent de Taüll, three Italian Renaissance theatres), a racquetball court at Stanford, a hearing-aid lab in Nancy (BinauRec) and the two rooms of ERTD. BRAS, Motus and FLAIR publish the geometry, materials or point cloud needed to simulate their rooms. None of the simulated sets has been analysed here yet.</p>
+          <p class="help"><span>Helps</span><span>Simulated and measured IRs at the same positions in many rooms, released with the geometry and materials used for the simulation, so simulators can be checked and models trained on simulation can be tested on real rooms.</span></p>
+        </article>
+        <article class="gap">
+          <h4>The bass end</h4>
+          <p>In the typical analysed dataset, <span data-k="lf63"></span> of IRs give a valid T30 in the 63 Hz octave band and <span data-k="lf125"></span> at 125 Hz, against <span data-k="lf1k"></span> at 1 kHz. Short files, background noise and small loudspeakers all cut off the bass. In small rooms the lowest octaves also fall below the Schroeder frequency, where a few room modes dominate and one T30 per octave says less.</p>
+          <p class="help"><span>Helps</span><span>Long or averaged sweeps, a source with real output below 100 Hz, quiet conditions (ventilation off), and files long enough for the bass decay to reach the noise floor.</span></p>
+        </article>
+        <article class="gap">
+          <h4>Levels that cannot be compared</h4>
+          <p>None of the analysed datasets publishes a calibration or a free-field reference that holds across the set, so sound strength (G) and late lateral level, two ISO 3382-1 parameters that describe how loud and enveloping a hall is, cannot be computed from public data. Where files are normalised one by one, the level differences between positions are lost too.</p>
+          <p class="help"><span>Helps</span><span>One gain for the whole set, stated; the microphone and amplifier calibration, or a free-field measurement of the source; and the silence before the direct sound kept, so arrival times survive.</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="storing" aria-labelledby="storing-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Storing and sharing</p>
+        <h2 id="storing-h">How to store and share reverb data</h2>
+        <p>The field does not need one giant download. It needs each dataset published so that it lasts, and one shared catalogue that points to all of them, with their licences and checksums. Audio stays where it was published; the catalogue, small enough for git, does the joining.</p>
+      </div>
+      <h3>A shared catalogue for the field</h3>
+      <p class="muted small" style="margin-top:0">How this guide's catalogue is built, and how we propose to keep it.</p>
+      <figure class="diagram">
+        <div class="diagram-scroll" tabindex="0" role="region" aria-label="Diagram: how the catalogue is built (scrolls sideways)">
+        <svg viewBox="0 0 1000 470" role="img" aria-label="Datasets stay with their publishers. A small catalogue in git records each dataset's facts, licence and the checksum of every file. Audio is fetched into local storage and verified against those checksums, then indexed and analysed. The catalogue table, per-IR metrics and this guide are published with a DOI; audio is mirrored only where the licence allows redistribution.">
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+            <marker id="arw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill: var(--accent)"/></marker>
+          </defs>
+          <g font-size="13" fill="currentColor">
+            <text x="10" y="18" font-size="11.5" font-weight="700" letter-spacing=".06em" style="fill: var(--muted)">PUBLISHED BY AUTHORS</text>
+            <text x="300" y="18" font-size="11.5" font-weight="700" letter-spacing=".06em" style="fill: var(--muted)">SHARED CATALOGUE (GIT)</text>
+            <text x="760" y="18" font-size="11.5" font-weight="700" letter-spacing=".06em" style="fill: var(--muted)">PUBLISHED OUTPUTS (WITH A DOI)</text>
+            <text x="10" y="278" font-size="11.5" font-weight="700" letter-spacing=".06em" style="fill: var(--muted)">YOUR STORAGE</text>
+
+            <rect x="10" y="34" width="220" height="64" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="24" y="57" font-weight="700">Repositories</text>
+            <text x="24" y="75" style="fill: var(--ink-2)">Zenodo, DepositOnce, figshare</text>
+            <text x="24" y="91" style="fill: var(--ink-2)">DOI and checksum per file</text>
+            <rect x="10" y="108" width="220" height="50" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="24" y="130" font-weight="700">GitHub, Hugging Face</text>
+            <text x="24" y="148" style="fill: var(--ink-2)">versioned, mostly no DOI</text>
+            <rect x="10" y="168" width="220" height="50" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="24" y="190" font-weight="700">Lab and company websites</text>
+            <text x="24" y="208" style="fill: var(--ink-2)">no checksum, can vanish</text>
+
+            <rect x="300" y="34" width="220" height="184" rx="6" style="fill: var(--accent-wash); stroke: var(--accent)"/>
+            <text x="314" y="57" font-weight="700">datasets.yaml</text>
+            <text x="314" y="74" style="fill: var(--ink-2)">facts, licence, permissions,</text>
+            <text x="314" y="90" style="fill: var(--ink-2)">what is known about the rooms</text>
+            <line x1="314" y1="102" x2="506" y2="102" style="stroke: var(--rule-strong)"/>
+            <text x="314" y="123" font-weight="700">locks</text>
+            <text x="314" y="140" style="fill: var(--ink-2)">every file's URL and checksum</text>
+            <line x1="314" y1="152" x2="506" y2="152" style="stroke: var(--rule-strong)"/>
+            <text x="314" y="173" font-weight="700">manifests</text>
+            <text x="314" y="190" style="fill: var(--ink-2)">every extracted file and its hash</text>
+            <text x="314" y="208" font-size="12" style="fill: var(--muted)">about 11 MB for 60 registry entries</text>
+
+            <line x1="230" y1="66" x2="296" y2="80" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <line x1="230" y1="133" x2="296" y2="126" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <line x1="230" y1="193" x2="296" y2="172" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <text x="240" y="236" font-size="12" style="fill: var(--muted)">resolve: URL, size, checksum</text>
+
+            <rect x="10" y="290" width="220" height="100" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="24" y="313" font-weight="700">Local copy of the audio</text>
+            <text x="24" y="331" style="fill: var(--ink-2)">raw files, about 0.5 TB</text>
+            <text x="24" y="348" style="fill: var(--ink-2)">a cache: can be re-fetched</text>
+            <text x="24" y="365" style="fill: var(--ink-2)">and verified from the locks</text>
+            <path d="M120 218 V 286" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <text x="128" y="262" font-size="12" style="fill: var(--muted)">fetch, verify</text>
+
+            <rect x="300" y="290" width="220" height="100" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="314" y="313" font-weight="700">Index and analysis</text>
+            <text x="314" y="331" style="fill: var(--ink-2)">one row per IR (Parquet)</text>
+            <text x="314" y="348" style="fill: var(--ink-2)">ISO 3382 metrics, quality</text>
+            <text x="314" y="365" style="fill: var(--ink-2)">audit, duplicates</text>
+            <path d="M230 340 H 296" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+
+            <rect x="760" y="34" width="230" height="64" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="774" y="57" font-weight="700">Catalogue table</text>
+            <text x="774" y="75" style="fill: var(--ink-2)">CSV or Parquet,</text>
+            <text x="774" y="91" style="fill: var(--ink-2)">one row per dataset</text>
+            <path d="M520 66 H 756" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <text x="560" y="58" font-size="12" style="fill: var(--muted)">compile</text>
+
+            <rect x="760" y="118" width="230" height="64" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="774" y="141" font-weight="700">This guide</text>
+            <text x="774" y="159" style="fill: var(--ink-2)">regenerated from the</text>
+            <text x="774" y="175" style="fill: var(--ink-2)">catalogue and the metrics</text>
+            <path d="M520 150 H 756" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <text x="560" y="142" font-size="12" style="fill: var(--muted)">generate</text>
+
+            <rect x="760" y="290" width="230" height="64" rx="6" style="fill: var(--surface); stroke: var(--rule-strong)"/>
+            <text x="774" y="313" font-weight="700">Per-IR metrics</text>
+            <text x="774" y="331" style="fill: var(--ink-2)">Parquet, under 1 GB; each row</text>
+            <text x="774" y="347" style="fill: var(--ink-2)">keeps its source licence</text>
+            <path d="M520 322 H 756" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+            <text x="560" y="314" font-size="12" style="fill: var(--muted)">publish</text>
+            <path d="M875 290 V 186" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#arw)"/>
+
+            <rect x="760" y="384" width="230" height="72" rx="6" style="fill: var(--surface); stroke: var(--accent); stroke-width: 1.5"/>
+            <text x="774" y="407" font-weight="700">Audio mirror</text>
+            <text x="774" y="425" style="fill: var(--ink-2)">only where the licence allows</text>
+            <text x="774" y="441" style="fill: var(--ink-2)">it; everything else is linked</text>
+            <path d="M120 390 V 420 H 756" fill="none" style="stroke: var(--accent)" stroke-width="1.6" marker-end="url(#arw-a)"/>
+            <text x="134" y="412" font-weight="700" style="fill: var(--accent)">licence check: is redistribution allowed?</text>
+          </g>
+        </svg>
+        </div>
+        <ol class="diagram-list">
+          <li><b>Published by authors.</b> Repositories (DOI and checksum per file), GitHub and Hugging Face, lab and company websites.</li>
+          <li><b>Shared catalogue in git, about 11 MB.</b> datasets.yaml (facts, licence, permissions, rooms), locks (every file's URL and checksum), manifests (every extracted file and its hash).</li>
+          <li><b>Your storage.</b> A local copy of the audio (about 0.5 TB), fetched and verified from the locks, then indexed and analysed.</li>
+          <li><b>Published outputs, with a DOI.</b> The catalogue table, per-IR metrics, this guide, and an audio mirror only where the licence allows it.</li>
+        </ol>
+        <figcaption>The catalogue is small and versioned. The audio stays with its publishers; the locks record each file's URL, version and checksum, so a new download can be verified. Data that lives only on a website can still disappear. Only audio whose licence allows it is mirrored.</figcaption>
+      </figure>
+
+      <ul class="principles">
+        <li><b>One record per dataset, readable by machines.</b><span>Fill the repository's DataCite fields completely: every creator with an ORCID, the licence with its SPDX identifier, and links to the paper and to earlier versions. Add schema.org Dataset or Croissant metadata so search engines and ML tools can find the data. This guide's registry adds the three permissions in plain words and what is known about the rooms.</span></li>
+        <li><b>Checksums and versions for every file.</b><span>Record the version DOI and a SHA-256 for every file (Zenodo lists MD5), for example in a SHA256SUMS file, so a new download can be proved identical. Data that lives only on a website can still disappear: keep a preservation copy and ask the authors to deposit it.</span></li>
+        <li><b>Derived data travels, audio stays.</b><span>Scalar parameters and quality flags for the <span data-k="n_metrics"></span> IRs analysed here take a few hundred MB, against 0.5 TB of audio. Publish them as Parquet with their own DOI, one file per source-licence family, each row giving its source DOI and licence. Publish embeddings, and anything derived from EchoThief, the MIT IR Survey or TAU-SRIR, only with the authors' agreement.</span></li>
+        <li><b>Mirror what the licence allows, link the rest.</b><span>Mirror each redistributable dataset as its own record that keeps its licence, notices and authors and links the original DOI. Mirror non-commercial data for non-commercial use only and Voxengo only as the complete set; do not mirror datasets whose terms grant no distribution (EchoThief, S3A, TAU-SRIR).</span></li>
+      </ul>
+
+      <h3 style="margin-top:40px">If you publish a dataset</h3>
+      <ol class="checklist">
+        <li><div><b>Deposit it where it gets a DOI.</b><span>Zenodo, DepositOnce or your institution's repository keep the files, publish checksums and survive website moves. Zenodo takes 100 files and 50 GB per record (up to 200 GB on request): zip small files and split large sets into linked records. Data already on GitHub or Hugging Face can get a DOI there too.</span></div></li>
+        <li><div><b>Choose a standard licence, with its version.</b><span>CC BY 4.0 or CC0 are the simplest to reuse. Add one sentence on machine-learning use. Put the same licence in the record, the README and the files' own licence fields, such as SOFA's GLOBAL:License, whose default ("No license provided") caused one of the conflicts above.</span></div></li>
+        <li><div><b>Use open formats.</b><span>WAV or FLAC for single IRs; SOFA (AES69) with a standard convention (SingleRoomSRIR, SingleRoomMIMOSRIR, MultiSpeakerBRIR) for binaural, Ambisonic and array IRs with their positions; HDF5 with a documented layout for dense grids.</span></div></li>
+        <li><div><b>Keep the whole decay.</b><span>Do not cut, fade or denoise the IRs you publish. If you also release processed versions, publish the raw ones alongside them. Keep some noise floor after the decay so others can check it.</span></div></li>
+        <li><div><b>Keep the levels.</b><span>Do not normalise each file on its own: apply one gain to the whole set and state it, and publish the calibration (or a free-field measurement of the source) so that sound strength and level differences can be computed. Keep the silence before the direct sound.</span></div></li>
+        <li><div><b>State the real sampling rate and bandwidth.</b><span>Do not upsample. If content stops at 16 kHz, say so.</span></div></li>
+        <li><div><b>One metadata row per IR.</b><span>A CSV or JSON table: file, a room ID that stays the same across releases, condition, source and receiver positions and orientations, source type and directivity, microphone type, excitation signal, processing applied, background-noise level, occupancy, date, temperature and humidity. Measure some positions twice so others can estimate the uncertainty, and suggest a train/test split by room.</span></div></li>
+        <li><div><b>Describe every room.</b><span>Dimensions or a floor plan, volume, surface materials with their absorption per octave band where known, photos, a 3-D model if you have one, and the reverberation times you measured per octave band, with the method.</span></div></li>
+        <li><div><b>Write the README as a datasheet.</b><span>Why the data was made, how it was measured, what is in it (with counts that match the files), known issues, and what it should not be used for. Version the release and keep a changelog when you fix something.</span></div></li>
+        <li><div><b>Let people fetch only the IRs.</b><span>Split large releases into parts, as MYRiAD's 200 MB "econ" archive does next to its 31 GB full release.</span></div></li>
+        <li><div><b>Prefer safe, plain files.</b><span>Avoid Python pickles (loading one can run code; GTU-RIR, and MRTD before version 3, ship only a pickle) and MATLAB object files; use simple file names without spaces or brackets.</span></div></li>
+      </ol>
+
+      <h3 style="margin-top:40px">Which format for what</h3>
+      <div class="fmt-scroll" tabindex="0" role="region" aria-label="Table: which format for what (scrolls sideways)">
+        <table class="fmt">
+          <thead><tr><th scope="col">What you are storing</th><th scope="col">Use</th><th scope="col">Avoid</th></tr></thead>
+          <tbody>
+            <tr><td>Single IRs, mono or stereo</td><td>WAV (24-bit or 32-bit float; RF64 or W64 above 4 GB) or FLAC (24-bit; FLAC has no floating-point format), at the recorded sampling rate</td><td>MP3 or AAC; upsampled or faded files</td></tr>
+            <tr><td>Binaural, Ambisonic and array IRs</td><td>SOFA (AES69), which stores positions and orientations with the IRs; state the Ambisonic channel order and normalisation</td><td>Channel orders that are only in a paper</td></tr>
+            <tr><td>Dense grids of 10,000 IRs or more</td><td>HDF5 (or Zarr) with a documented, chunked layout, split into parts</td><td>One huge zip; MATLAB v7.3 object references</td></tr>
+            <tr><td>Per-IR metadata</td><td>CSV or JSON; Parquet for large tables</td><td>Information that only lives in file names or PDFs</td></tr>
+            <tr><td>Room descriptions</td><td>Dimensions, volume and materials as a table; 3-D model as OBJ, glTF or IFC; photos</td><td>Pictures of tables</td></tr>
+            <tr><td>Loading code</td><td>A short Python or MATLAB loader in the same record</td><td>Pickled Python objects</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:40px">How this guide's corpus is stored</h3>
+      <div class="ours" id="ours">
+        <div><b>11 MB</b><span>registry, locks and manifests in git</span></div>
+        <div><b>0.5 TB</b><span>raw audio of <span data-k="n_analysed"></span> datasets, on scratch and research storage; re-fetchable and verifiable from the locks</span></div>
+        <div><b>≈ 7 GB</b><span>index, metrics, features, audit and embeddings</span></div>
+        <div><b>26 MB</b><span>committed snapshot of the core metrics, in case the rest is lost</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="glossary" aria-labelledby="glossary-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Glossary</p>
+        <h2 id="glossary-h">Words used in this guide</h2>
+      </div>
+      <dl class="gloss">
+        <div><dt>Impulse response (IR, RIR)</dt><dd>The response of a space, and of the equipment, to a single instantaneous click. Convolving a dry sound with it places that sound in the space.</dd></div>
+        <div><dt>BRIR</dt><dd>Binaural room impulse response: an IR recorded at the two ears of a person or a dummy head.</dd></div>
+        <div><dt>SRIR</dt><dd>Spatial room impulse response: an IR that keeps the direction each reflection arrives from, recorded with an Ambisonic microphone or an array.</dd></div>
+        <div><dt>Ambisonics (FOA, HOA)</dt><dd>A way of recording the full sphere of sound. First order (FOA, B-format) uses 4 channels; higher orders (HOA) use more channels for sharper directions. A-format is the raw capsule signals.</dd></div>
+        <div><dt>Microphone array</dt><dd>Several microphones in a known layout: a line, a plane, a sphere such as the 32-capsule Eigenmike, or a grid scanned by a robot.</dd></div>
+        <div><dt>Reverberation time (RT60, T30, T20)</dt><dd>How long sound takes to fall by 60 dB once the source stops. It is read from the smoothed decay curve of the IR: T30 fits a line from −5 to −35 dB and doubles that 30 dB time; T20 fits −5 to −25 dB and triples it. ISO 3382-1 keeps the bottom of the fit at least 10 dB above the noise floor, so T30 needs 45 dB of clean decay and T20 35 dB.</dd></div>
+        <div><dt>EDT</dt><dd>Early decay time: the first 10 dB of the decay (0 to −10 dB), multiplied by six. Closer to how reverberant a room sounds.</dd></div>
+        <div><dt>Clarity (C50, C80)</dt><dd>Energy in the first 50 or 80 ms against the rest, in dB. High values sound clear and dry. C50 is used for speech, C80 for music.</dd></div>
+        <div><dt>DRR</dt><dd>Direct-to-reverberant ratio: how loud the direct sound is compared with everything after it. It falls as you move away from the source.</dd></div>
+        <div><dt>Octave band</dt><dd>A frequency range one octave wide, named by its centre: 63, 125, 250 Hz … 8 kHz. Rooms decay at different rates in each band.</dd></div>
+        <div><dt>Sampling rate and bandwidth</dt><dd>Samples per second (48 kHz is common). Content can stop well below half the sampling rate if the recording was resampled, or if the sweep, loudspeaker or microphone did not go higher.</dd></div>
+        <div><dt>Mid frequencies</dt><dd>The average of the 500 Hz and 1 kHz octave bands, the usual single-number value in ISO 3382-1.</dd></div>
+        <div><dt>Definition (D50)</dt><dd>The share of the sound energy that arrives in the first 50 ms. High values mean clear speech.</dd></div>
+        <div><dt>STI</dt><dd>Speech transmission index, from 0 (unintelligible) to 1 (perfect). Here it is computed from the IR alone, without background noise.</dd></div>
+        <div><dt>Noise floor</dt><dd>The level of noise left in an IR once the decay has died away, from background noise and the measuring equipment. Decay times can only be read down to about 10 dB above it.</dd></div>
+        <div><dt>SOFA (AES69)</dt><dd>An open file format for spatial acoustic data that stores IRs together with source and receiver positions.</dd></div>
+        <div><dt>DOI</dt><dd>Digital Object Identifier: a permanent link to a dataset that keeps working when a website moves.</dd></div>
+        <div><dt>SPDX identifier</dt><dd>A standard short name for a licence, such as CC-BY-4.0, that software can read.</dd></div>
+        <div><dt>Creative Commons</dt><dd>BY: credit the authors. SA: share adaptations under the same licence. NC: non-commercial use only. ND: share only unmodified copies. CC0: the authors waive their rights as far as the law allows (credit is still good practice). The version matters: 4.0 licences also cover European database rights, which most earlier versions did not.</dd></div>
+        <div><dt>Dense grid</dt><dd>Many closely spaced positions in one room, for studying how the sound field changes from point to point.</dd></div>
+        <div><dt>Convolution reverb</dt><dd>An audio effect that applies a measured IR to any sound, the most common musical use of these datasets.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="method" aria-labelledby="method-h">
+    <div class="wrap">
+      <div class="section-head prose">
+        <p class="eyebrow">Method</p>
+        <h2 id="method-h">How this guide was made</h2>
+      </div>
+      <div class="prose">
+        <ol class="steps">
+          <li><b>Registry.</b> One YAML entry per dataset with its source, licence, capture formats, counts and what it says about its rooms.</li>
+          <li><b>Search.</b> In October 2026 we searched research repositories, papers, curated lists and non-English sources for datasets missing from the registry. A second, independent pass checked each new find against its own pages (repository record, paper or website) before it was added.</li>
+          <li><b>Download and verify.</b> <span data-k="n_analysed_words"></span> were fetched. <span data-k="n_provider_checksum"></span> were checked against their publishers' checksums; for the <span data-k="n_own_checksum"></span> whose hosts publish none, we recorded our own. Every extracted file was hashed.</li>
+          <li><b>Index.</b> <span data-k="n_indexed"></span> IR records in one table: <span data-k="n_irs"></span> from <span data-k="n_spaces"></span> real spaces and <span data-k="n_anechoic"></span> from anechoic chambers.</li>
+          <li><b>Analyse.</b> ISO 3382-1 parameters per octave band (reverberation times, clarity, definition), DRR and STI, computed with <a href="https://pyfar.org" target="_blank" rel="noopener">pyfar</a> and <a href="https://pyrato.readthedocs.io" target="_blank" rel="noopener">pyrato</a> with explicit noise-floor handling and validity rules, on <span data-k="n_metrics"></span> IRs: all of each sparse dataset and a fixed one-in-sixteen sample of the dense ones. T30 matches OpenAIR's published tables on average (median ratio 0.99 to 1.00 from 250 Hz to 4 kHz; 69 to 76% of spaces within 10%) and the ACE Challenge ground truth (75 to 93% of IRs within 10% from 500 Hz to 2 kHz; DRR within 0.2 dB on average). EDT and C80 scatter more, as they change from seat to seat. Parameters come from the omnidirectional channel where there is one, otherwise from a dummy-head ear or one capsule of a spherical array, so the early parameters of those datasets are not strictly ISO 3382-1 values. STI is computed from the IR alone, without background noise.</li>
+          <li><b>Audit.</b> The <span data-k="n_audited"></span> analysed IRs of real spaces were checked for truncation, upsampling, duplicates, tonal noise, sweep residue and dropouts.</li>
+        </ol>
+        <p><b>What the counts mean.</b> An IR record is one source position heard at one receiver position: the channels of a binaural or Ambisonic capture count once, while dense single-microphone grids count every microphone. A space is a room, hall or outdoor site as its dataset names it; a variable-acoustics room counts once, whatever its configurations. Kinds of space are assigned from names and checked by hand where the names misled the rules; a room indexed under several datasets (the ACE rooms, the Arni room) counts once. The ACE Challenge's single-microphone and array recordings are one entry here.</p>
+        <p><b>Licences.</b> Licence terms are as stated by the publishers' records, checked on <span data-k="checked"></span>. The three permissions are a plain-language reading, not legal advice.</p>
+        <p><b>Code and data.</b> The pipeline (<span class="mono">rirdb</span>), the registry and the tables behind this page are in <a href="https://github.com/ilias-audio/room-impulse-responses" target="_blank" rel="noopener">github.com/ilias-audio/room-impulse-responses</a>. To report an error or a missing dataset, open an issue there.</p>
+        <p><b>Cite as</b></p>
+        <p class="cite">Ibnyahya, I. (2026). Reverb Dataset Field Guide: public room impulse response datasets, their licences and their gaps (version 1.0, facts checked <span data-k="checked"></span>). DMRN+21 Workshop, King's College London.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Reverb Dataset Field Guide · generated <span data-k="generated"></span> from the rirdb registry and analysis (analyser <span data-k="analyzer"></span>) · data checked <span data-k="checked"></span>.</p>
+  </div>
+</footer>
+
+<div id="tip" role="tooltip" hidden></div>
+<p id="nodata" hidden>The guide's data did not load.</p>
+
+<script>
+(function () {
+'use strict';
+const G = /*GUIDE_JSON*/null;
+if (!G) { document.getElementById('nodata').hidden = false; return; }
+
+/* ================================================================ helpers */
+const $ = (sel, el) => (el || document).querySelector(sel);
+const $$ = (sel, el) => Array.from((el || document).querySelectorAll(sel));
+const NS = 'http://www.w3.org/2000/svg';
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(Infinity)) if (c != null && c !== false) el.append(c.nodeType ? c : document.createTextNode(String(c)));
+  return el;
+}
+function s(tag, attrs, ...kids) {
+  const el = document.createElementNS(NS, tag);
+  if (attrs) for (const k in attrs) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'text') el.textContent = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v);
+  }
+  for (const c of kids.flat(Infinity)) if (c != null && c !== false) el.append(c.nodeType ? c : document.createTextNode(String(c)));
+  return el;
+}
+function icon(kind) { return s('svg', { 'aria-hidden': 'true', viewBox: '0 0 16 16' }, s('use', { href: '#i-' + kind })); }
+const NF = new Intl.NumberFormat('en-GB');
+const fmt = n => (n == null || !isFinite(n)) ? '–' : NF.format(Math.round(n));
+function compact(n) {
+  if (n == null || !isFinite(n)) return '–';
+  if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '') + ' M';
+  if (n >= 1e4) return Math.round(n / 1e3) + 'k';
+  return NF.format(Math.round(n));
+}
+function bytes(b) {
+  if (!b) return null;
+  const u = ['B', 'kB', 'MB', 'GB', 'TB']; let i = 0;
+  while (b >= 1000 && i < u.length - 1) { b /= 1000; i++; }
+  return (b >= 100 || i === 0 ? Math.round(b) : b.toFixed(1)) + ' ' + u[i];
+}
+const pct = (x, d) => (x == null || !isFinite(x)) ? '–' : (x * 100).toFixed(d || 0) + '%';
+const secs = t => (t == null || !isFinite(t)) ? '–' : (t < 1 ? t.toFixed(2) : t.toFixed(1)) + ' s';
+const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const words = n => n < WORDS.length ? WORDS[n] : fmt(n);
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+const uniq = a => Array.from(new Set(a));
+const median = a => { const v = a.filter(x => x != null && isFinite(x)).sort((x, y) => x - y); if (!v.length) return null; const m = v.length >> 1; return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2; };
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+/* ================================================================ vocabulary */
+const FAM = { mono_omni: 'mono', stereo: 'stereo', binaural: 'binaural', foa_fuma: 'ambisonic', foa_ambix: 'ambisonic',
+  hoa_sh: 'ambisonic', em32_raw: 'ambisonic', sma_raw: 'ambisonic', tetra_raw: 'ambisonic', array_raw: 'array', sdm_array: 'array' };
+const FAM_LABEL = { mono: 'Mono', stereo: 'Stereo', binaural: 'Binaural', ambisonic: 'Ambisonic / spherical', array: 'Microphone array' };
+const FAM_ORDER = ['mono', 'stereo', 'binaural', 'ambisonic', 'array'];
+const TYPE_LABEL = { measured: 'Measured', simulated: 'Simulated', production: 'Production library', hybrid: 'Measured + simulated' };
+const CLASSES = [
+  { key: 'open', label: 'Open', color: 'var(--series-1)', text: 'Use for anything, including products and model training. Credit the authors.',
+    perms: [['yes', 'Products: yes'], ['yes', 'ML training: yes'], ['yes', 'Share audio: yes, with credit']] },
+  { key: 'share_alike', label: 'Share-alike', color: 'var(--series-2)', text: 'Like open, but if you share the IRs, or versions you have changed, they must carry the same licence. Papers and measured results are not affected; whether a track or a model made with the IRs counts as an adaptation is not settled.',
+    perms: [['yes', 'Products: yes'], ['part', 'ML training: yes, but a shared model may need the same licence'], ['part', 'Share audio: under the same licence']] },
+  { key: 'non_commercial', label: 'Non-commercial', color: 'var(--series-3)', text: 'Any use that is not mainly for money: research, teaching, personal and non-profit projects. No products, paid services or commercially used models; work done for a company may count as commercial. S3A (academic only) and TAU-SRIR (experimental use) are narrower.',
+    perms: [['no', 'Products: no'], ['part', 'ML training: non-commercial only'], ['part', 'Share audio: non-commercially']] },
+  { key: 'conflict', label: 'Conflicting statements', color: 'var(--series-4)', text: 'The record, the files or the paper give different licences. Follow the stricter one until the authors confirm.',
+    perms: [['no', 'Products: no, until the authors confirm'], ['part', 'ML training: non-commercial only'], ['part', 'Share audio: with conditions']] },
+  { key: 'custom', label: 'Custom terms', color: 'var(--series-5)', text: 'The publisher\'s own conditions. Read them: some allow music-making but forbid redistribution or AI training.',
+    perms: [['unk', 'Products: read the terms'], ['unk', 'ML training: read the terms'], ['unk', 'Share audio: read the terms']] },
+  { key: 'mixed', label: 'Per space', color: 'var(--series-6)', text: 'A different licence for each room, chosen by each contributor (OpenAIR).',
+    perms: [['unk', 'Products: check each space'], ['unk', 'ML training: check each space'], ['unk', 'Share audio: check each space']] },
+  { key: 'unspecified', label: 'Not stated', color: 'var(--other)', text: 'No licence anywhere. By default all rights are reserved: there are no terms to read, so ask the authors first.',
+    perms: [['unk', 'Products: ask the authors'], ['unk', 'ML training: ask the authors'], ['unk', 'Share audio: ask the authors']] },
+];
+const CLASS = Object.fromEntries(CLASSES.map(c => [c.key, c]));
+const SPDX_LABEL = {
+  'LicenseRef-unspecified': 'No licence stated', 'LicenseRef-per-space': 'Per space (mostly CC BY-SA)',
+  'LicenseRef-EchoThief': 'EchoThief licence', 'LicenseRef-Voxengo-IR': 'Voxengo terms',
+  'LicenseRef-TAU-NonCommercial': 'Non-commercial (custom)', 'LicenseRef-Treble-NonCommercial': 'Non-commercial (custom)',
+  'LicenseRef-S3A-academic': 'Academic use (custom)', 'LicenseRef-GWA': 'GWA terms', 'LicenseRef-CC-PublicDomain': 'Public domain',
+  'GPL-3.0-only': 'GPL 3.0', 'ODC-By-1.0': 'ODC-By 1.0', 'Apache-2.0': 'Apache 2.0', 'MIT': 'MIT', 'CC0-1.0': 'CC0',
+};
+function spdxLabel(id) {
+  if (!id) return 'Not stated';
+  if (SPDX_LABEL[id]) return SPDX_LABEL[id];
+  if (id.slice(0, 3) === 'CC-') { const m = /^CC-(.*?)(?:-(\d\.\d))?$/.exec(id); return 'CC ' + m[1] + (m[2] ? ' ' + m[2] : ''); }
+  return id.replace(/^LicenseRef-/, '').replace(/-/g, ' ');
+}
+const HOST_LABEL = { zenodo: 'Zenodo', depositonce: 'DepositOnce', figshare: 'Figshare', github: 'GitHub', hf: 'Hugging Face',
+  huggingface: 'Hugging Face', http: 'Website', wget_mirror: 'Website', wayback: 'Wayback Machine', manual: 'Website', openslr: 'OpenSLR' };
+// hosting platform families for the chart
+function hostFamily(host) {
+  const t = (host || '').toLowerCase();
+  if (/zenodo/.test(t)) return 'Zenodo';
+  if (/depositonce|figshare|dataverse|dryad|mendeley|repository|stanford digital|4tu|osf|dataport|b2share|data commons|fairdata|phaidra|eprints/.test(t)) return 'Other research repository';
+  if (/github|gitlab/.test(t)) return 'GitHub';
+  if (/hugging/.test(t)) return 'Hugging Face';
+  if (/freesound/.test(t)) return 'Freesound';
+  if (/wayback|archive/.test(t)) return 'Internet Archive';
+  if (/openslr/.test(t)) return 'OpenSLR';
+  return 'Lab, company or personal website';
+}
+const PERM_TEXT = {
+  commercial: { yes: ['yes', 'Commercial use'], no: ['no', 'No commercial use'], no_until: ['no', 'No commercial use until the authors confirm'], unclear: ['unk', 'Commercial use not stated'], ask: ['unk', 'Commercial use: ask the authors'] },
+  training: { allowed: ['yes', 'ML training'], same_licence: ['part', 'ML training (a shared model may need the same licence)'], non_commercial_only: ['part', 'ML training, non-commercial only'], prohibited: ['no', 'No ML training'], unclear: ['unk', 'ML training not stated'], ask: ['unk', 'ML training: ask the authors'] },
+  redistribute: { yes: ['yes', 'Share the audio'], same_licence: ['part', 'Share under the same licence'], nc: ['part', 'Share non-commercially'], nc_same: ['part', 'Share non-commercially, same licence'], ask: ['unk', 'Sharing: ask the authors'], unaltered_only: ['part', 'Share unaltered files only'], no: ['no', 'Do not share the audio'], unknown: ['unk', 'Sharing not stated'], unclear: ['unk', 'Sharing not stated'] },
+};
+const AVAIL = {
+  open: ['open', 'Open download'], free_registration: ['gated', 'Free registration'], registration: ['gated', 'Free registration'],
+  on_request: ['gated', 'On request'], manual: ['gated', 'Manual download'], archived: ['gone', 'Archive only'],
+  broken: ['gone', 'Broken download'], offline: ['gone', 'Offline'],
+};
+const INFO_FIELDS = [['dimensions', 'Dimensions'], ['volume', 'Volume'], ['geometry', '3-D model'], ['materials', 'Materials'],
+  ['positions', 'Positions'], ['images', 'Photos or plans'], ['reference_acoustics', 'Reference acoustics'], ['conditions', 'Changing conditions']];
+
+/* ================================================================ data */
+const MERGE = { ace_arrays: 'ace' };
+// spaces (one row per indexed space); anechoic chambers, devices, scale and computer models are not spaces
+const NOT_SPACE = ['anechoic', 'virtual', 'device', 'scale_model'];
+const ALL_SPACES = G.spaces || [];
+// IR records of real spaces per dataset (the spaces table carries the guide's kind corrections)
+const SPACE_IRS = {};
+for (const r of ALL_SPACES) if (NOT_SPACE.indexOf(r.ir_kind) < 0) SPACE_IRS[r.dataset_id] = (SPACE_IRS[r.dataset_id] || 0) + (r.n_irs || 0);
+const ANECHOIC_IRS = ALL_SPACES.filter(r => r.ir_kind === 'anechoic').reduce((a, r) => a + (r.n_irs || 0), 0);
+// one row per physical room: the same room indexed under several datasets or lines counts once
+const SPACES = (() => {
+  const groups = new Map();
+  for (const r of ALL_SPACES) {
+    if (NOT_SPACE.indexOf(r.ir_kind) >= 0) continue;
+    const k = r.physical_id || r.room_id;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  }
+  return Array.from(groups, ([k, rows]) => {
+    const base = rows.find(r => r.room_id === k) || rows[0];
+    const measured = rows.find(r => r.t30 != null || r.t30_or_t20 != null);
+    return measured && base.t30 == null && base.t30_or_t20 == null
+      ? Object.assign({}, base, { t30: measured.t30, t30_or_t20: measured.t30_or_t20, share_valid_t30: measured.share_valid_t30 }) : base;
+  });
+})();
+// reverberation time of a room: T30 where most of its clean IRs allow it, else the T30-or-T20 median
+const roomT = r => r.t30 != null && (r.share_valid_t30 == null || r.share_valid_t30 >= 0.5) ? r.t30 : (r.t30_or_t20 != null ? r.t30_or_t20 : null);
+const ROOM_T30 = SPACES.filter(r => r.ir_kind === 'room' && roomT(r) != null).map(roomT);
+const ROOM_T20_USED = SPACES.filter(r => r.ir_kind === 'room' && roomT(r) != null && roomT(r) !== r.t30).length;
+
+// the plain reading of a licence: conditional sharing and training for share-alike and non-commercial terms,
+// the stricter reading where statements conflict, and no permission at all where no licence is stated
+function refine(l) {
+  const sa = /SA\b|GPL/.test((l.spdx || '') + ' ' + (l.label || ''));
+  if (l.cls === 'unspecified') { l.commercial = 'ask'; l.training = 'ask'; l.redistribute = 'ask'; return l; }
+  if (l.cls === 'conflict' && l.commercial === 'unclear') l.commercial = 'no_until';
+  // a conflict whose stricter side is share-alike or GPL reads as share-alike: no unconditional training or sharing
+  const copyleft = l.cls === 'share_alike' || (l.cls === 'conflict' && sa);
+  if (copyleft && l.training === 'allowed') l.training = 'same_licence';
+  if (l.redistribute === 'yes') {
+    if (copyleft && (l.cls === 'share_alike' || l.commercial === 'yes')) l.redistribute = 'same_licence';
+    else if (l.cls === 'non_commercial' || (l.cls === 'conflict' && l.commercial !== 'yes')) l.redistribute = sa ? 'nc_same' : 'nc';
+  }
+  return l;
+}
+function famsOf(list) { return new Set((list || []).map(f => FAM[f] || null).filter(Boolean)); }
+function decayOf(m) {
+  // T30 at mid frequencies where at least half the room IRs allow it; otherwise T30-or-T20
+  if (!m || !m.n_analysed) return null;
+  const share = m.valid_t30_mid_rooms != null ? m.valid_t30_mid_rooms : m.valid_t30_mid;
+  if (m.t30_p50 != null && share >= 0.5) return { kind: 'T30', p10: m.t30_p10, p50: m.t30_p50, p90: m.t30_p90, share };
+  if (m.t30_or_t20_p50 != null) return { kind: 'T20', p10: m.t30_or_t20_p10, p50: m.t30_or_t20_p50, p90: m.t30_or_t20_p90, share };
+  return null;
+}
+function fromRegistry(r) {
+  const ix = r.index || {}, m = r.metrics || {}, f = r.files || {}, sv = r.survey || {};
+  const lic = r.licence || {};
+  let avail = 'open';
+  if (r.status === 'broken') avail = 'broken';
+  else if (r.status === 'manual') avail = r.access === 'registration' ? 'registration' : 'manual';
+  else if (r.source_kind === 'wayback') avail = 'archived';
+  if (sv.availability) avail = sv.availability;
+  const fsList = ix.fs_found ? Object.keys(ix.fs_found).map(Number) : (r.fs_hz || []);
+  const analysedHere = !!(m && m.n_analysed);
+  return {
+    id: r.id, name: sv.name || r.name, year: r.year, type: r.type, status: r.status, registry: true,
+    analysed: analysedHere, avail,
+    fams: famsOf(r.capture_formats), fs: fsList.sort((a, b) => a - b),
+    nIRs: sv.n_irs_display != null ? sv.n_irs_display : ix.n_records != null ? ix.n_records : (sv.n_irs != null ? sv.n_irs : r.expected_irs),
+    nIndexed: ix.n_records != null ? ix.n_records : null, nSpacesIndexed: ix.n_spaces != null ? ix.n_spaces : null,
+    nSpaceIRs: analysedHere ? (SPACE_IRS[r.id] || 0) : null,
+    nSpaces: sv.n_rooms_display != null ? sv.n_rooms_display : ix.n_spaces != null ? ix.n_spaces : (sv.n_rooms != null ? sv.n_rooms : r.expected_rooms),
+    nAnalysed: m.n_analysed || 0,
+    nAB: m.n_analysed ? (m.grade_a || 0) + (m.grade_b || 0) : 0,
+    nValidMid: m.n_analysed && m.valid_t30_mid != null ? m.valid_t30_mid * m.n_analysed : 0,
+    providerChecksum: !!f.provider_checksum,
+    licence: refine({ spdx: lic.spdx, label: sv.licence_label || spdxLabel(lic.spdx), cls: sv.licence_class || lic.class,
+      commercial: sv.commercial || lic.commercial, training: sv.training || lic.training,
+      redistribute: sv.redistribute || lic.redistribute, creative: !!sv.creative, url: lic.url, note: sv.licence_note || lic.note }),
+    host: sv.host || HOST_LABEL[r.source_kind] || 'Website', homepage: sv.homepage || r.homepage, doi: sv.doi_is_paper ? null : r.doi, paper: r.paper,
+    content: sv.content || r.content, roomInfo: r.room_info || {}, roomInfoWhere: r.room_info_where,
+    t30: decayOf(m),
+    bwEff: m.bw_eff_p50, fileS: m.file_s_p50,
+    size: (f.download_bytes || f.disk_bytes) || (sv.size_bytes || null), sizeText: sv.size || null,
+    ext: f.extensions ? Object.keys(f.extensions).filter(e => !/^(ds_store|txt|pdf|md|png|jpg|jpeg|html|m|py|xlsx|csv|json|bib|ini|log|sh|yaml|yml|\(none\))$/.test(e)).slice(0, 4) : (sv.file_formats ? [sv.file_formats] : []),
+    country: sv.country || null, institution: sv.institution || null,
+    caveats: sv.caveats || [], subsampled: r.analysis_scope === 'subsample_v1',
+  };
+}
+function fromNew(n) {
+  return {
+    id: n.id, name: n.name, year: n.year, type: n.type || 'measured', status: 'new', registry: false,
+    analysed: false, avail: n.availability || 'open',
+    fams: new Set(n.fams || []), fs: n.fs_hz || [],
+    nIRs: n.n_irs, nSpaces: n.n_rooms, nIndexed: null, nSpacesIndexed: null, nSpaceIRs: null, nAnalysed: 0, nAB: 0, nValidMid: 0,
+    providerChecksum: false,
+    licence: refine({ spdx: n.licence_spdx || null, label: n.licence_label || n.licence || 'Not stated', cls: n.licence_class || 'unspecified',
+      commercial: n.commercial_use || 'unclear', training: n.ml_training || 'unclear', redistribute: n.redistribution || 'unclear',
+      creative: !!n.creative, url: n.licence_url, note: n.licence_note || null }),
+    host: n.host || 'Website', homepage: n.landing_url, doi: n.doi || null, paper: n.paper || null,
+    content: n.description, roomInfo: n.room_info || {}, roomInfoWhere: n.room_metadata || null,
+    t30: null, bwEff: null, fileS: null,
+    size: n.size_bytes || null, sizeText: n.size || null, ext: n.file_formats ? [n.file_formats] : [],
+    country: n.country || null, institution: n.institution || null, caveats: n.caveats || [], subsampled: false,
+  };
+}
+function mergeInto(a, b) {
+  a.nIRs = (a.nIRs || 0) + (b.nIRs || 0);
+  a.nIndexed = (a.nIndexed || 0) + (b.nIndexed || 0);
+  a.nSpaceIRs = (a.nSpaceIRs || 0) + (b.nSpaceIRs || 0);
+  a.nAnalysed += b.nAnalysed; a.nAB += b.nAB; a.nValidMid += b.nValidMid;
+  a.providerChecksum = a.providerChecksum && b.providerChecksum;
+  b.fams.forEach(x => a.fams.add(x));
+  a.fs = uniq(a.fs.concat(b.fs)).sort((x, y) => x - y);
+  a.caveats = a.caveats.concat(b.caveats.filter(c => a.caveats.indexOf(c) < 0));
+  a.size = (a.size || 0) + (b.size || 0);
+  a.ext = uniq(a.ext.concat(b.ext)).slice(0, 4);
+}
+const REG = {};
+const DS = [];
+for (const r of G.datasets) {
+  const d = fromRegistry(r);
+  if (MERGE[r.id]) continue;
+  REG[r.id] = d; DS.push(d);
+}
+for (const r of G.datasets) if (MERGE[r.id] && REG[MERGE[r.id]]) mergeInto(REG[MERGE[r.id]], fromRegistry(r));
+if (REG.ace) REG.ace.name = 'ACE Challenge corpus';
+for (const n of (G.new_datasets || [])) DS.push(fromNew(n));
+const CAT_GROUPS = [
+  ['Homes', ['domestic']],
+  ['Offices and meeting rooms', ['office_meeting']],
+  ['Classrooms and lecture halls', ['lecture_classroom']],
+  ['Shops, cafés and restaurants', ['hospitality_retail']],
+  ['Corridors, foyers and stairwells', ['circulation', 'stairwell']],
+  ['Studios and listening rooms', ['studio_booth']],
+  ['Acoustics laboratories', ['laboratory']],
+  ['Concert halls, theatres, auditoria', ['concert_hall', 'theatre_auditorium']],
+  ['Churches and places of worship', ['worship']],
+  ['Large halls and buildings', ['public_interior', 'large_structure', 'sports_leisure', 'industrial', 'transport_hub']],
+  ['Tunnels, caves and underground', ['tunnel_underpass', 'underground']],
+  ['Outdoors', ['outdoor']],
+  ['Vehicles', ['vehicle']],
+  ['Not labelled', ['unknown']],
+];
+const catCount = c => SPACES.filter(r => r.category === c).length;
+
+/* ================================================================ derived numbers */
+const analysed = DS.filter(d => d.analysed);
+const K = {};
+K.checked = '13 October 2026';
+if (G.survey_date) { const dt = new Date(G.survey_date + 'T12:00:00Z'); if (!isNaN(dt)) K.checked = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }); }
+K.generated = G.generated || '';
+K.analyzer = G.analyzer_version || '';
+K.n_datasets = fmt(DS.length);
+K.n_registry = fmt(DS.filter(d => d.registry).length);
+K.n_new = fmt(DS.filter(d => !d.registry).length);
+K.n_analysed = fmt(analysed.length);
+K.n_analysed_words = cap(words(analysed.length)) + ' datasets';
+const indexedIRs = analysed.reduce((a, d) => a + (d.nIndexed || 0), 0);
+const totalIRs = analysed.reduce((a, d) => a + (d.nSpaceIRs || 0), 0);
+K.n_indexed = fmt(indexedIRs);
+K.n_irs = fmt(totalIRs);
+K.n_irs_words = (totalIRs / 1e6).toFixed(1) + ' million';
+K.n_anechoic = fmt(ANECHOIC_IRS);
+K.n_anechoic_words = (ANECHOIC_IRS / 1e6).toFixed(2).replace(/0$/, '') + ' million';
+K.n_spaces = fmt(SPACES.length);
+K.n_metrics = fmt(analysed.reduce((a, d) => a + d.nAnalysed, 0));
+const top3 = analysed.slice().sort((a, b) => (b.nSpaceIRs || 0) - (a.nSpaceIRs || 0)).slice(0, 3);
+K.top3_share = pct(top3.reduce((a, d) => a + d.nSpaceIRs, 0) / totalIRs);
+K.top3_names = top3.map(d => d.name.replace(/ \(.*\)$/, '')).join(', ').replace(/, ([^,]*)$/, ' and $1');
+K.spaces_volume = fmt(SPACES.filter(r => r.volume_m3 != null).length);
+K.n_t30 = fmt(ROOM_T30.length);
+K.t30_median = secs(median(ROOM_T30));
+K.t30_gt2 = fmt(ROOM_T30.filter(t => t > 2).length);
+K.cat_concert = fmt(catCount('concert_hall'));
+K.cat_theatre = fmt(catCount('theatre_auditorium'));
+K.cat_worship = fmt(catCount('worship'));
+K.cat_vehicle = fmt(catCount('vehicle'));
+K.n_geometry = words(DS.filter(d => d.roomInfo && d.roomInfo.geometry === 'yes').length);
+K.n_materials = words(DS.filter(d => d.roomInfo && d.roomInfo.materials === 'yes').length);
+const VT = G.validity_t30 || {};
+K.lf63 = VT['63'] ? pct(VT['63'].dataset_median) : '–';
+K.lf125 = VT['125'] ? pct(VT['125'].dataset_median) : '–';
+K.lf1k = VT['1000'] ? pct(VT['1000'].dataset_median) : '–';
+const tauDup = (G.datasets.find(r => r.id === 'tau_srir') || {}).metrics;
+K.tau_dups = tauDup && tauDup.n_duplicates != null ? fmt(tauDup.n_duplicates) : '837';
+const noLic = DS.filter(d => d.licence.cls === 'unspecified').length;
+K.n_no_licence_words = cap(words(noLic)) + (noLic === 1 ? ' dataset' : ' datasets');
+const nConflict = DS.filter(d => d.licence.cls === 'conflict').length;
+K.n_conflict_words = words(nConflict);
+const webOnly = DS.filter(d => hostFamily(d.host) === 'Lab, company or personal website').length;
+K.n_web_only_words = cap(words(webOnly)) + (webOnly === 1 ? ' dataset is still hosted' : ' datasets are still hosted');
+const withChecksum = analysed.filter(d => d.providerChecksum).length;
+K.n_provider_checksum = fmt(withChecksum);
+K.n_own_checksum = fmt(analysed.length - withChecksum);
+K.n_audited = '200,686';
+K.spaces_commercial = fmt(SPACES.filter(r => { const d = REG[MERGE[r.dataset_id] || r.dataset_id]; return d && d.licence.commercial === 'yes' && (d.licence.training === 'allowed' || d.licence.training === 'same_licence'); }).length);
+const LIC_PHRASE = { open: 'open', share_alike: 'share-alike', non_commercial: 'non-commercial only', conflict: 'stated in two contradictory ways', custom: 'custom', mixed: 'set per space', unspecified: 'not stated' };
+const bigIR = analysed.slice().sort((a, b) => (b.nSpaceIRs || 0) - (a.nSpaceIRs || 0))[0];
+K.lic_ir_note = bigIR ? `${bigIR.name.replace(/ \(.*\)$/, '')} alone holds ${pct(bigIR.nSpaceIRs / totalIRs)} of the room IRs, and its licence is ${LIC_PHRASE[bigIR.licence.cls] || 'unclear'}.` : '';
+// origin
+const EUROPE = ['UK', 'United Kingdom', 'Germany', 'Finland', 'France', 'Italy', 'Spain', 'Belgium', 'Netherlands', 'Denmark', 'Czechia',
+  'Czech Republic', 'Iceland', 'Sweden', 'Norway', 'Austria', 'Switzerland', 'Poland', 'Portugal', 'Ireland', 'Greece', 'Hungary', 'Slovenia', 'Croatia', 'Estonia', 'Latvia', 'Lithuania'];
+const NAMERICA = ['USA', 'United States', 'Canada', 'Mexico'];
+const withCountry = DS.filter(d => d.country && !/unknown|multiple|various/i.test(d.country));
+const inSet = (d, set) => set.some(c => d.country.split(/[,/;]| and /).map(x => x.trim()).indexOf(c) >= 0);
+if (withCountry.length) {
+  const eu = withCountry.filter(d => inSet(d, EUROPE)).length, na = withCountry.filter(d => inSet(d, NAMERICA)).length;
+  K.europe_share = pct(eu / withCountry.length);
+  K.namerica_share = pct(na / withCountry.length);
+  const rest = withCountry.filter(d => !inSet(d, EUROPE) && !inSet(d, NAMERICA));
+  const rc = uniq(rest.map(d => d.country)).sort();
+  K.rest_words = rest.length ? `The other ${words(rest.length)} ${rest.length === 1 ? 'dataset comes' : 'datasets come'} from ${rc.join(', ').replace(/, ([^,]*)$/, ' and $1')}.` : 'None comes from anywhere else.';
+} else { K.europe_share = '–'; K.namerica_share = '–'; K.rest_words = ''; }
+for (const el of $$('[data-k]')) { const v = K[el.dataset.k]; if (v != null) el.textContent = v; }
+
+/* ================================================================ hero tiles */
+(function tiles() {
+  const oneRoom = top3.every(d => d.nSpacesIndexed === 1);
+  const T = [
+    [fmt(DS.length), 'public reverb datasets in the catalogue'],
+    [(totalIRs / 1e6).toFixed(1) + ' M', `room impulse responses in the ${analysed.length} datasets we downloaded`],
+    [fmt(SPACES.length), 'distinct spaces behind those IRs'],
+    [K.top3_share, oneRoom ? 'of those IRs come from three single-room labs' : 'of those IRs come from three datasets'],
+  ];
+  const dl = $('#tiles');
+  for (const [v, l] of T) dl.append(h('div', { class: 'tile' }, h('dt', { text: l }), h('dd', { text: v })));
+})();
+
+/* ================================================================ IR player */
+(function player() {
+  const PRESETS = [['Living room', 0.4], ['Classroom', 0.7], ['Concert hall', 2.0], ['Large church', 5.0]];
+  let cur = 2;
+  const box = $('#presets'), canvas = $('#ir-canvas'), cap = $('#ir-caption'), btn = $('#play');
+  PRESETS.forEach(([name, t], i) => {
+    const b = h('button', { class: 'chip', type: 'button', 'aria-pressed': String(i === cur), onclick: () => { cur = i; update(); play(); } },
+      name, h('span', { class: 'mono', text: t.toFixed(1) + ' s' }));
+    box.append(b);
+  });
+  function draw() {
+    const T60 = PRESETS[cur][1];
+    const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth, H = canvas.clientHeight;
+    if (!W || !H) return;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    const c = canvas.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    const wave = css('--wave'), ink = css('--ink'), muted = css('--muted'), grid = css('--grid'), ink2 = css('--ink-2');
+    const padL = 46, padR = 2, padT = 20, padB = 24, tMax = 6;
+    const pw = W - padL - padR, x = t => padL + t / tMax * pw;
+    const mid = padT + (H - padT - padB) / 2, amp = (H - padT - padB) / 2;
+    // level in dB mapped to half-height: 0 dB at the edge, -70 dB on the centre line (mirrored)
+    const range = 70, floorDb = -64, y = db => amp * Math.max(0, (db + range) / range);
+    const body = css('--font-body');
+    c.font = '12px ' + body; c.lineWidth = 1;
+    for (let k = 0; k <= tMax; k++) {
+      c.strokeStyle = grid; c.beginPath(); c.moveTo(Math.round(x(k)) + .5, padT); c.lineTo(Math.round(x(k)) + .5, H - padB); c.stroke();
+      c.fillStyle = muted; c.textAlign = k === tMax ? 'right' : 'center'; c.fillText(k + ' s', x(k), H - 6);
+    }
+    c.textAlign = 'right';
+    for (const db of [0, -20, -40, -60]) {
+      const yy = Math.round(mid - y(db)) + .5;
+      c.strokeStyle = grid; c.beginPath(); c.moveTo(padL, yy); c.lineTo(W - padR, yy); c.stroke();
+      c.fillStyle = muted; c.fillText((db === 0 ? '0' : '−' + (-db)) + ' dB', padL - 6, yy + 4);
+    }
+    // the decay: 60 dB per T60 from the direct sound, then a noise floor; drawn as a band 0-6 dB under the envelope
+    const rng = mulberry32(7), t0 = 0.012;
+    c.strokeStyle = wave; c.lineWidth = 1; c.beginPath();
+    for (let px = 0; px < pw; px++) {
+      const t = px / pw * tMax;
+      if (t < t0) continue;
+      const decay = -60 * (t - t0) / T60, lvl = Math.max(floorDb, decay);
+      const a = y(lvl - 6 * rng()), b = y(lvl - 6 * rng());
+      c.moveTo(padL + px + .5, mid - a); c.lineTo(padL + px + .5, mid + b);
+    }
+    c.stroke();
+    // direct sound
+    c.strokeStyle = ink; c.lineWidth = 2;
+    c.beginPath(); c.moveTo(x(0.006), mid - y(0)); c.lineTo(x(0.006), mid + y(0)); c.stroke();
+    // reverberation time: the decay has fallen 60 dB
+    const xt = x(Math.min(T60 + t0, tMax)), yt = mid - y(-60);
+    c.fillStyle = ink; c.beginPath(); c.arc(xt, yt, 3.5, 0, Math.PI * 2); c.fill();
+    const right = xt > W - 170;
+    c.textAlign = right ? 'right' : 'left';
+    const lx = right ? xt - 8 : xt + 8;
+    c.font = '700 13px ' + body; c.fillStyle = ink;
+    c.fillText('60 dB down after ' + T60.toFixed(1) + ' s', lx, yt - 22);
+    c.font = '12px ' + body; c.fillStyle = ink2;
+    c.fillText('= reverberation time', lx, yt - 7);
+    c.textAlign = 'left'; c.fillStyle = ink2;
+    c.fillText('direct sound', x(0.006) - 2, padT - 7);
+    if (T60 + t0 < tMax - 0.8) { c.textAlign = 'right'; c.fillStyle = muted; c.fillText('noise floor', W - padR - 4, mid - y(floorDb) - 6); }
+  }
+  function update() {
+    $$('.chip', box).forEach((b, i) => b.setAttribute('aria-pressed', String(i === cur)));
+    const [name, T60] = PRESETS[cur];
+    const n = ROOM_T30.filter(t => t >= T60).length;
+    canvas.setAttribute('aria-label', `Simulated impulse response of a ${name.toLowerCase()}: a direct sound, then a tail that falls by 60 dB in ${T60.toFixed(1)} seconds.`);
+    cap.textContent = '';
+    cap.append(`In a typical ${name.toLowerCase()} the sound takes about ${T60.toFixed(1)} s to fade by 60 dB: its reverberation time. `,
+      h('b', { text: `${fmt(n)} of the ${fmt(ROOM_T30.length)} rooms` }),
+      ` measured in the research datasets take at least this long. Simulated sound and picture; the level axis is in decibels, so the whole decay is visible.`);
+    btn.setAttribute('aria-label', `Play the simulated impulse response of a ${name.toLowerCase()}`);
+    draw();
+  }
+  let ac = null, src = null;
+  function makeIR(ctx, T60) {
+    const sr = ctx.sampleRate, len = Math.ceil(sr * Math.min(T60 * 1.1 + 0.15, 7));
+    const buf = ctx.createBuffer(2, len, sr), dec = 6.9078 / T60;
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch), rng = mulberry32(11 + ch * 31);
+      let lp = 0;
+      for (let n = 0; n < len; n++) {
+        const t = n / sr;
+        const nz = (rng() + rng() + rng() - 1.5) * 1.2;
+        const a = 0.12 + 0.8 * Math.exp(-t / (0.35 * T60));          // highs die faster than lows
+        lp += a * (nz - lp);
+        d[n] = lp * Math.exp(-dec * t) * Math.min(1, t / 0.015) * 0.32;
+      }
+      d[0] += 1;
+      const er = [[3.1, .5], [5.2, -.42], [7.7, .37], [10.9, -.33], [14.3, .29], [18.8, -.25], [23.6, .22], [29.9, -.19], [37.2, .16]];
+      const scale = 0.55 + 0.25 * Math.min(T60, 4);
+      for (const [ms, g] of er) { const i = Math.round(ms * scale * sr / 1000) + ch * 7; if (i < len) d[i] += g; }
+      let pk = 0; for (let n = 0; n < len; n++) pk = Math.max(pk, Math.abs(d[n]));
+      for (let n = 0; n < len; n++) d[n] *= 0.85 / pk;
+    }
+    return buf;
+  }
+    function stop() { if (src) { try { src.stop(); } catch (e) { /* already stopped */ } src = null; } btn.dataset.playing = 'false'; $('span', btn).textContent = 'Play'; }
+  function play() {
+    if (!ac && btn.dataset.ready !== 'true') return;
+    stop();
+    try {
+      if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+      if (ac.state === 'suspended') ac.resume();
+      const g = ac.createGain(); g.gain.value = 0.55; g.connect(ac.destination);
+      const me = ac.createBufferSource(); me.buffer = makeIR(ac, PRESETS[cur][1]); me.connect(g);
+      me.onended = () => { if (src === me) stop(); };
+      src = me;
+      me.start();
+      btn.dataset.playing = 'true'; $('span', btn).textContent = 'Stop';
+    } catch (e) { btn.disabled = true; $('span', btn).textContent = 'Sound unavailable'; }
+  }
+  btn.addEventListener('click', () => { btn.dataset.ready = 'true'; if (btn.dataset.playing === 'true') stop(); else play(); });
+  update();
+  new ResizeObserver(() => draw()).observe(canvas);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  window.__redrawIR = draw;
+})();
+
+/* ================================================================ catalogue */
+const USES = [
+  ['any', 'Anything', () => true],
+  ['product', 'Use it in a product', d => d.licence.commercial === 'yes'],
+  ['train', 'Train a model for a product', d => d.licence.commercial === 'yes' && d.licence.training === 'allowed'],
+  ['research', 'Do academic research', d => ['allowed', 'same_licence', 'non_commercial_only'].indexOf(d.licence.training) >= 0],
+  ['music', 'Make music or sound design', d => d.licence.commercial === 'yes' || d.licence.creative || d.licence.cls === 'non_commercial'],
+  ['spatial', 'Build spatial audio or VR', d => d.fams.has('binaural') || d.fams.has('ambisonic')],
+  ['acoustics', 'Study room acoustics', d => ['geometry', 'materials', 'reference_acoustics', 'dimensions'].some(f => hasInfo(d, f))],
+  ['share', 'Redistribute the audio freely', d => d.licence.redistribute === 'yes'],
+];
+const state = { use: 'any', q: '', type: '', fam: '', avail: '', sort: 'year', limit: 40 };
+const usesBox = $('#uses');
+for (const [k, label] of USES) usesBox.append(h('button', { class: 'chip', type: 'button', 'data-use': k, 'aria-pressed': String(k === state.use), onclick: () => { state.use = k; $$('.chip', usesBox).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.use === k))); renderCatalogue(); } }, label));
+$('#q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); renderCatalogue(); });
+for (const [id, key] of [['#f-type', 'type'], ['#f-fam', 'fam'], ['#f-avail', 'avail'], ['#f-sort', 'sort']]) $(id).addEventListener('change', e => { state[key] = e.target.value; renderCatalogue(); });
+
+function rtBar(t) {
+  const W = 112, H = 18, x = v => Math.max(2, Math.min(W - 2, (Math.log10(v) + 1) / 2 * W));
+  const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true' });
+  svg.append(s('line', { x1: 0, x2: W, y1: H / 2, y2: H / 2, style: 'stroke: var(--rule-strong)', 'stroke-width': 1 }));
+  for (const v of [0.1, 1, 10]) svg.append(s('line', { x1: x(v), x2: x(v), y1: H / 2 - 3, y2: H / 2 + 3, style: 'stroke: var(--rule-strong)', 'stroke-width': 1 }));
+  if (t) {
+    svg.append(s('rect', { x: x(t.p10), y: H / 2 - 3, width: Math.max(3, x(t.p90) - x(t.p10)), height: 6, rx: 3, style: 'fill: var(--series-1); opacity: .45' }));
+    svg.append(s('circle', { cx: x(t.p50), cy: H / 2, r: 4.5, style: 'fill: var(--series-1); stroke: var(--surface)', 'stroke-width': 2 }));
+  }
+  return svg;
+}
+(function rtKey() { const k = rtBar({ p10: 0.35, p50: 0.6, p90: 1.4 }); k.setAttribute('class', 'rtkey'); $('#rt-key').replaceWith(k); })();
+
+const PERM_SHORT = { commercial: 'Products', training: 'ML training', redistribute: 'Sharing' };
+// short chip in the table (the icon says allowed / conditional / no / not stated); full sentence for screen readers and in the details
+function permLine(kind, val, full) {
+  const [cls, label] = (PERM_TEXT[kind][val] || PERM_TEXT[kind].unclear || ['unk', 'Not stated']);
+  return full ? h('div', { class: 'perm ' + cls }, icon(cls), h('span', { text: label }))
+    : h('div', { class: 'perm ' + cls, title: label }, icon(cls), h('span', { 'aria-hidden': 'true', text: PERM_SHORT[kind] }), h('span', { class: 'sr-only', text: label }));
+}
+function availBadge(d) {
+  const a = AVAIL[d.avail];
+  if (!a || a[0] === 'open') return null;
+  return h('span', { class: 'badge ' + (a[0] === 'gone' ? 'bad' : 'warn'), text: a[1] });
+}
+function linkOut(href, text) { return h('a', { href, target: '_blank', rel: 'noopener', text }); }
+function doiUrl(doi) { return /^https?:/.test(doi) ? doi : 'https://doi.org/' + doi; }
+
+function detailOf(d) {
+  const left = h('div', null);
+  left.append(h('h4', { text: 'About' }), h('p', { text: d.content || '' }));
+  if (d.caveats.length) left.append(h('h4', { text: d.analysed ? 'What we found' : 'Worth knowing' }), h('ul', null, d.caveats.map(c => h('li', { text: c }))));
+  left.append(h('h4', { text: 'Licence: ' + d.licence.label }),
+    h('div', { class: 'perms full' }, permLine('commercial', d.licence.commercial, true), permLine('training', d.licence.training, true), permLine('redistribute', d.licence.redistribute, true)));
+  if (d.licence.note) left.append(h('p', { class: 'small', text: d.licence.note }));
+  const right = h('div', null);
+  right.append(h('h4', { text: 'About the rooms' }));
+  const ig = h('div', { class: 'info-grid' });
+  for (const [f, label] of INFO_FIELDS) {
+    const v = d.roomInfo[f] || 'unknown';
+    const k = v === 'yes' ? 'yes' : v === 'partial' ? 'part' : v === 'no' ? 'no' : 'unk';
+    ig.append(h('span', { class: 'info ' + (v === 'partial' ? 'partial' : v), title: `${label}: ${v === 'unknown' ? 'not checked' : v}` }, icon(k), label));
+  }
+  right.append(ig);
+  if (d.roomInfoWhere) right.append(h('p', { class: 'small muted', text: d.roomInfoWhere }));
+  const kv = h('dl', { class: 'kv' });
+  const add = (k, v) => { if (v != null && v !== '' && !(Array.isArray(v) && !v.length)) kv.append(h('dt', { text: k }), h('dd', null, v)); };
+  add('Type', TYPE_LABEL[d.type] || d.type);
+  add('Institution', d.institution);
+  add('Country', d.country);
+  add('Sampling rate', d.fs.length ? d.fs.map(f => (f / 1000) + ' kHz').join(', ') : null);
+  if (d.analysed) {
+    add('IRs analysed', fmt(d.nAnalysed) + (d.subsampled ? ' (one-in-sixteen sample)' : ''));
+    add('Decay measurable', d.nAnalysed ? pct(d.nAB / d.nAnalysed) + ' of IRs (T20 or T30 valid from 250 Hz to 2 kHz)' : null);
+    add('T30 at 500 Hz and 1 kHz', d.nAnalysed ? pct(d.nValidMid / d.nAnalysed) + ' of IRs' : null);
+    add('Typical file length', d.fileS != null ? secs(d.fileS) : null);
+    add('Content up to', d.bwEff != null ? (d.bwEff / 1000).toFixed(1) + ' kHz (median)' : null);
+  }
+  add('Files', d.ext.length ? d.ext.join(', ') : null);
+  add('Download size', d.size ? bytes(d.size) : d.sizeText);
+  if (d.paper && d.paper.url) add('Paper', linkOut(d.paper.url, d.paper.title || 'Paper'));
+  right.append(kv);
+  return h('div', { class: 'detail' }, left, right);
+}
+
+function rowOf(d, idx) {
+  const detId = 'det-' + idx;
+  const btn = h('button', { class: 'name-btn', type: 'button', 'aria-expanded': 'false', 'aria-controls': detId },
+    h('span', { class: 'caret', 'aria-hidden': 'true', text: '▸' }), d.name);
+  const origin = [d.year, d.institution, d.country].filter(Boolean).join(' · ');
+  const badges = h('div', { class: 'badges' },
+    d.analysed ? h('span', { class: 'badge measured-here', text: 'Analysed here' }) : null,
+    availBadge(d));
+  const c1 = h('td', { class: 'c-name' }, btn, origin ? h('div', { class: 'origin', text: origin }) : null, badges);
+  const fams = h('div', { class: 'fams' }, FAM_ORDER.filter(f => d.fams.has(f)).map(f => h('span', { class: 'fam', text: FAM_LABEL[f] })));
+  const counts = h('div', { class: 'counts' },
+    d.nIRs != null ? [h('b', { text: compact(d.nIRs) }), '\u00a0IRs'] : 'IRs not stated',
+    d.nSpaces != null ? [' · ', h('b', { text: fmt(d.nSpaces) }), d.nSpaces === 1 ? '\u00a0space' : '\u00a0spaces'] : null,
+    d.fs.length ? ' · ' + uniq(d.fs.map(x => (x / 1000).toString().replace(/\.0+$/, ''))).join('/') + '\u00a0kHz' : null);
+  const c2 = h('td', { 'data-label': 'What is inside', class: 'c-inside' }, h('div', { class: 'kind', text: TYPE_LABEL[d.type] || d.type }), fams, counts);
+  const c3 = h('td', { 'data-label': 'Reverb time (mid)', class: 'c-rt' }, d.t30
+    ? h('div', { class: 'rt', title: (d.t30.kind === 'T30' ? 'T30' : `T30 where measurable, otherwise T20 (T30 measurable in ${pct(d.t30.share)} of IRs)`) + `: 10th percentile ${secs(d.t30.p10)}, median ${secs(d.t30.p50)}, 90th percentile ${secs(d.t30.p90)}` }, rtBar(d.t30), h('span', { class: 'v' }, secs(d.t30.p50), d.t30.kind === 'T20' ? h('span', { class: 'rt-kind', text: ' T20' }) : null))
+    : h('span', { class: 'muted small', text: d.analysed ? 'not measurable (files too short or no room)' : 'not measured here' }));
+  const c4 = h('td', { 'data-label': 'Licence', class: 'c-lic' }, h('div', { class: 'lic-name', text: d.licence.label }),
+    h('div', { class: 'perms' }, permLine('commercial', d.licence.commercial), permLine('training', d.licence.training), permLine('redistribute', d.licence.redistribute)));
+  const links = [];
+  if (d.homepage) links.push(linkOut(d.homepage, 'Website'));
+  if (d.doi) links.push(linkOut(doiUrl(d.doi), 'DOI'));
+  const c5 = h('td', { 'data-label': 'Where to get it', class: 'get c-get' }, links, h('div', { class: 'host', text: [d.host, d.size ? bytes(d.size) : d.sizeText].filter(Boolean).join(' · ') }));
+  const tr = h('tr', { class: 'row closed' }, c1, c2, c3, c4, c5);
+  const more = h('tr', { class: 'more', id: detId, hidden: true }, h('td', { colspan: '5' }));
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    if (open && !more.firstChild.firstChild) more.firstChild.append(detailOf(d));
+    more.hidden = !open; tr.classList.toggle('closed', !open);
+  });
+  return [tr, more];
+}
+function filtered() {
+  const use = USES.find(u => u[0] === state.use)[2];
+  let out = DS.filter(d => use(d));
+  if (state.type) out = out.filter(d => d.type === state.type || (d.type === 'hybrid' && (state.type === 'measured' || state.type === 'simulated')));
+  if (state.fam) out = out.filter(d => d.fams.has(state.fam));
+  if (state.avail) out = out.filter(d => (AVAIL[d.avail] || ['open'])[0] === state.avail);
+  if (state.q) out = out.filter(d => [d.name, d.content, d.institution, d.country, d.licence.label, d.host].filter(Boolean).join(' ').toLowerCase().indexOf(state.q) >= 0);
+  const by = {
+    year: (a, b) => (b.year || 0) - (a.year || 0) || a.name.localeCompare(b.name),
+    irs: (a, b) => (b.nIRs || -1) - (a.nIRs || -1),
+    spaces: (a, b) => (b.nSpaces || -1) - (a.nSpaces || -1),
+    name: (a, b) => a.name.localeCompare(b.name),
+  }[state.sort];
+  return out.sort(by);
+}
+const PAGE = 40;
+function renderCatalogue(keepLimit) {
+  const rows = filtered(), body = $('#cat-body');
+  if (!keepLimit) state.limit = PAGE;
+  body.textContent = '';
+  rows.slice(0, state.limit).forEach((d, i) => body.append(...rowOf(d, i)));
+  if (!rows.length) body.append(h('tr', null, h('td', { colspan: '5', class: 'empty', text: 'No dataset matches these filters. Clear the search or choose "Anything" above.' })));
+  const shown = Math.min(rows.length, state.limit);
+  $('#count').textContent = rows.length === DS.length ? `${fmt(DS.length)} datasets` : `${fmt(rows.length)} of ${fmt(DS.length)} datasets match`;
+  const more = $('#cat-more');
+  more.hidden = shown >= rows.length;
+  $('#more-n').textContent = `Show ${Math.min(PAGE, rows.length - shown)} more`;
+  $('#more-all').textContent = `Show all ${fmt(rows.length)}`;
+  $('#cat-shown').textContent = `Showing ${fmt(shown)} of ${fmt(rows.length)}.`;
+  $('#copy-out').hidden = true;
+}
+$('#more-n').addEventListener('click', () => { state.limit += PAGE; renderCatalogue(true); });
+$('#more-all').addEventListener('click', () => { state.limit = Infinity; renderCatalogue(true); });
+renderCatalogue();
+
+$('#copy').addEventListener('click', () => {
+  const q = v => { const t = v == null ? '' : String(v); return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+  const head = ['name', 'year', 'type', 'measured_here', 'formats', 'irs', 'spaces', 'licence', 'commercial_use', 'ml_training', 'redistribute_audio', 'availability', 'host', 'website', 'doi', 'institution', 'country'];
+  const lines = [head.join(',')].concat(filtered().map(d => [d.name, d.year, d.type, d.analysed ? 'yes' : 'no', FAM_ORDER.filter(f => d.fams.has(f)).join('|'), d.nIRs, d.nSpaces,
+    d.licence.label, d.licence.commercial, d.licence.training, d.licence.redistribute, (AVAIL[d.avail] || ['', 'Open download'])[1], d.host, d.homepage, d.doi ? doiUrl(d.doi) : '', d.institution, d.country].map(q).join(',')));
+  const text = lines.join('\n'), btn = $('#copy'), out = $('#copy-out');
+  const fallback = () => { out.hidden = false; out.value = text; out.focus(); out.select(); btn.textContent = 'Select all and copy'; };
+  try {
+    navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied ' + (lines.length - 1) + ' rows'; setTimeout(() => { btn.textContent = 'Copy table as CSV'; }, 2500); }, fallback);
+  } catch (e) { fallback(); }
+});
+
+/* ================================================================ tooltip */
+const tip = $('#tip');
+function showTip(evt, title, value, sub, rows) {
+  tip.textContent = '';
+  tip.append(h('strong', { text: value }), h('div', { text: title }));
+  if (sub) tip.append(h('div', { class: 't-sub', text: sub }));
+  if (rows) for (const [label, v, color] of rows) tip.append(h('div', { class: 'row' }, h('span', { class: 'key', style: 'background:' + color }), h('span', { text: `${label}: ${v}` })));
+  tip.hidden = false;
+  let x, y;
+  if (evt && evt.clientX != null && evt.type.indexOf('pointer') === 0) { x = evt.clientX; y = evt.clientY; }
+  else { const r = evt.currentTarget.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top; }
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(window.innerWidth - tw - 8, x + 14)) + 'px';
+  tip.style.top = Math.max(8, (y - th - 12 < 8 ? y + 18 : y - th - 12)) + 'px';
+}
+function hideTip() { tip.hidden = true; }
+// a chart mark: hover and keyboard focus show the same tooltip; arrow keys move between marks (see rove)
+function hoverable(el, label, fn) {
+  el.setAttribute('tabindex', '-1');
+  el.setAttribute('role', 'img');
+  el.setAttribute('aria-label', label);
+  el.classList.add('mark');
+  el.addEventListener('pointermove', e => fn(e));
+  el.addEventListener('pointerdown', e => fn(e));
+  el.addEventListener('pointerleave', hideTip);
+  el.addEventListener('focus', e => fn(e));
+  el.addEventListener('blur', hideTip);
+}
+function rove(svg) {
+  const marks = $$('.mark', svg);
+  if (!marks.length) return;
+  marks[0].setAttribute('tabindex', '0');
+  svg.addEventListener('keydown', e => {
+    const i = marks.indexOf(document.activeElement);
+    if (i < 0) return;
+    const j = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: marks.length - 1 }[e.key];
+    if (j == null) return;
+    e.preventDefault();
+    const k = Math.max(0, Math.min(marks.length - 1, j));
+    marks[i].setAttribute('tabindex', '-1'); marks[k].setAttribute('tabindex', '0'); marks[k].focus();
+  });
+}
+window.addEventListener('scroll', hideTip, { passive: true });
+
+/* ================================================================ chart kit */
+function tableView(fig, head, rows) {
+  const body = $('.tv-body', fig); body.textContent = '';
+  const t = h('table', null, h('thead', null, h('tr', null, head.map((c, i) => h('th', { scope: 'col', class: i ? 'n' : null, text: c })))),
+    h('tbody', null, rows.map(r => h('tr', null, r.map((c, i) => h('td', { class: i ? 'n' : null, text: c }))))));
+  body.append(t);
+}
+function legend(fig, items) {
+  const ul = $('.legend', fig); if (!ul) return; ul.textContent = '';
+  for (const [label, color] of items) ul.append(h('li', null, h('span', { class: 'sw', style: 'background:' + color }), label));
+}
+function chart(fig, render) {
+  const plot = $('.plot', fig);
+  let lastW = 0;
+  const run = () => {
+    const w = Math.floor(plot.clientWidth);
+    if (!w || w === lastW) return;
+    lastW = w; plot.textContent = ''; render(plot, w);
+    $$('svg', plot).forEach(rove);
+  };
+  new ResizeObserver(run).observe(plot);
+  run();
+}
+function txt(x, y, str, attrs) { return s('text', Object.assign({ x, y, style: 'fill: var(--ink-2)', 'font-size': 12 }, attrs || {}), str); }
+// axis maximum and tick count with round steps (whole numbers for counts)
+function scaleOf(v, integer) {
+  if (!(v > 0)) return { max: 1, ticks: 1 };
+  const raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+  let step = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+  if (integer) step = Math.max(1, Math.ceil(step));
+  const max = Math.ceil(v / step - 1e-9) * step;
+  return { max, ticks: Math.max(1, Math.round(max / step)) };
+}
+// rounded data-end, square at the baseline (horizontal)
+function barPath(x, y, len, th) { const r = Math.min(4, len / 2, th / 2); return `M${x},${y}H${x + len - r}Q${x + len},${y} ${x + len},${y + r}V${y + th - r}Q${x + len},${y + th} ${x + len - r},${y + th}H${x}Z`; }
+// rounded data-end at the top (vertical)
+function colPath(x, yTop, w, hgt) { const r = Math.min(4, w / 2, hgt / 2); const yb = yTop + hgt; return `M${x},${yb}V${yTop + r}Q${x},${yTop} ${x + r},${yTop}H${x + w - r}Q${x + w},${yTop} ${x + w},${yTop + r}V${yb}Z`; }
+
+// horizontal bars, one series, value at the tip
+function barsH(plot, W, rows, o) {
+  o = o || {};
+  const narrow = W < 520, rowH = narrow ? 42 : 30, labelW = narrow ? 0 : Math.min(230, W * 0.42), valW = 54;
+  const H = rows.length * rowH + 4, max = Math.max(...rows.map(r => r.value), 1);
+  const x0 = labelW + (narrow ? 0 : 10), bw = W - x0 - valW;
+  const svg = s('svg', { width: W, height: H, role: 'group', 'aria-label': o.aria || '' });
+  rows.forEach((r, i) => {
+    const y = i * rowH, by = narrow ? y + 20 : y + 7, len = Math.max(r.value > 0 ? 3 : 0, r.value / max * bw);
+    const val = o.fmt ? o.fmt(r.value) : fmt(r.value);
+    const g = s('g', null);
+    g.append(s('rect', { class: 'hit', x: 0, y, width: W, height: rowH, rx: 4, fill: 'transparent' }));
+    g.append(txt(narrow ? 0 : labelW, narrow ? y + 14 : y + 19, r.label, { 'text-anchor': narrow ? 'start' : 'end', style: 'fill: var(--ink)', 'font-size': 13 }));
+    g.append(s('path', { d: barPath(x0, by, len, 16), style: 'fill: ' + (r.color || 'var(--series-1)') }));
+    g.append(txt(x0 + len + 6, by + 12.5, val, { 'font-size': 12.5, style: 'fill: var(--ink-2); font-variant-numeric: tabular-nums' }));
+    hoverable(g, `${r.label}: ${val}`, e => showTip(e, r.label, val, r.sub));
+    svg.append(g);
+  });
+  plot.append(svg);
+}
+// vertical columns, one or more stacked series
+function columns(plot, W, cats, series, o) {
+  o = o || {};
+  const H = o.height || 230, padL = 38, padB = 28, padT = o.refs ? 34 : 16;
+  const totals = cats.map((_, i) => series.reduce((a, sr) => a + (sr.values[i] || 0), 0));
+  const sc = o.max ? { max: o.max, ticks: o.ticks || 4 } : scaleOf(Math.max(...totals, 1), o.integer !== false);
+  const max = sc.max;
+  const iw = W - padL - 6, band = iw / cats.length, cw = Math.max(3, Math.min(24, band * 0.72));
+  const y = v => padT + (H - padT - padB) * (1 - v / max);
+  const svg = s('svg', { width: W, height: H, role: 'group', 'aria-label': o.aria || '' });
+  for (let i = 0; i <= sc.ticks; i++) {
+    const v = max * i / sc.ticks, yy = y(v);
+    svg.append(s('line', { x1: padL, x2: W - 6, y1: yy, y2: yy, style: 'stroke: ' + (i ? 'var(--grid)' : 'var(--axis)'), 'stroke-width': 1 }));
+    svg.append(txt(padL - 6, yy + 4, o.yfmt ? o.yfmt(v) : fmt(v), { 'text-anchor': 'end', 'font-size': 11.5, style: 'fill: var(--muted); font-variant-numeric: tabular-nums' }));
+  }
+  const every = Math.ceil(cats.length / Math.max(1, Math.floor(iw / 44)));
+  cats.forEach((c, i) => {
+    const cx = padL + band * i + band / 2, g = s('g', null);
+    g.append(s('rect', { class: 'hit', x: cx - band / 2, y: padT, width: band, height: H - padT - padB, fill: 'transparent' }));
+    let acc = 0;
+    series.forEach((sr, k) => {
+      const v = sr.values[i] || 0; if (!v) return;
+      const top = y(acc + v), bot = y(acc), last = series.slice(k + 1).every(s2 => !(s2.values[i] || 0));
+      const hh = Math.max(1, bot - top - (acc > 0 ? 2 : 0));
+      g.append(last ? s('path', { d: colPath(cx - cw / 2, top, cw, hh), style: 'fill: ' + sr.color })
+        : s('rect', { x: cx - cw / 2, y: top, width: cw, height: hh, style: 'fill: ' + sr.color }));
+      acc += v;
+    });
+    const total = o.vfmt ? o.vfmt(totals[i]) : fmt(totals[i]);
+    if (o.labels && totals[i]) g.append(txt(cx, y(totals[i]) - 5, total, { 'text-anchor': 'middle', 'font-size': 11.5, style: 'fill: var(--ink-2); font-variant-numeric: tabular-nums' }));
+    if (o.xLabels !== false && (cats.length - 1 - i) % every === 0) g.append(txt(cx, H - padB + 16, String(c), { 'text-anchor': 'middle', 'font-size': 11.5, style: 'fill: var(--muted)' }));
+    const rows = series.length > 1 ? series.map(sr => [sr.label, o.vfmt ? o.vfmt(sr.values[i] || 0) : fmt(sr.values[i] || 0), sr.color]) : null;
+    const name = o.catLabel ? o.catLabel(c) : String(c);
+    hoverable(g, `${name}: ${total}` + (rows ? ' (' + rows.map(r => r[0] + ' ' + r[1]).join(', ') + ')' : ''), e => showTip(e, name, total, o.sub ? o.sub(i) : null, rows));
+    svg.append(g);
+  });
+  if (o.refs) o.refs.forEach((r, k) => {
+    const cx = r.x(padL, band), right = cx > W - 130;
+    svg.append(s('line', { x1: cx, x2: cx, y1: padT - 22 + (k % 2) * 14, y2: H - padB, style: 'stroke: var(--ink-2)', 'stroke-width': 1 }));
+    if (r.label) svg.append(txt(cx + (right ? -4 : 4), padT - 13 + (k % 2) * 14, r.label, { 'text-anchor': right ? 'end' : 'start', 'font-size': 11.5, style: 'fill: var(--ink-2)' }));
+  });
+  if (o.ticksX) for (const [cx, label] of o.ticksX(padL, band)) svg.append(txt(cx, H - padB + 16, label, { 'text-anchor': 'middle', 'font-size': 11.5, style: 'fill: var(--muted)' }));
+  plot.append(svg);
+}
+// 100 % stacked horizontal bars; a segment is labelled inside only when its percentage fits
+function stacked100(plot, W, rows, keys, o) {
+  o = o || {};
+  const narrow = W < 560, labelW = narrow ? 0 : (o.labelW || 150), rowH = narrow ? 50 : 38, th = 22;
+  const H = rows.length * rowH + 2, x0 = labelW + (narrow ? 0 : 12), bw = W - x0 - 2;
+  const svg = s('svg', { width: W, height: H, role: 'group', 'aria-label': o.aria || '' });
+  rows.forEach((r, i) => {
+    const y = i * rowH, by = narrow ? y + 20 : y + (rowH - th) / 2;
+    const total = keys.reduce((a, k) => a + (r.values[k.key] || 0), 0) || 1;
+    svg.append(txt(narrow ? 0 : labelW, narrow ? y + 14 : by + 15, r.label, { 'text-anchor': narrow ? 'start' : 'end', style: 'fill: var(--ink)', 'font-size': 13 }));
+    let acc = 0;
+    keys.forEach(k => {
+      const v = r.values[k.key] || 0; if (!v) return;
+      const x = x0 + acc / total * bw, w = v / total * bw - 2;
+      const g = s('g', null), share = pct(v / total), val = o.vfmt ? o.vfmt(v) : fmt(v);
+      g.append(s('rect', { x, y: by, width: Math.max(1, w), height: th, rx: 2, style: 'fill: ' + k.color }));
+      if (w > share.length * 7.6 + 10) g.append(txt(x + 6, by + 15.5, share, { 'font-size': 12, style: 'fill: ' + (k.ink || 'var(--on-fill)') + '; font-variant-numeric: tabular-nums; font-weight: 700' }));
+      hoverable(g, `${r.label}, ${k.label}: ${share} (${val})`, e => showTip(e, `${r.label}: ${k.label}`, `${share} (${val})`, k.sub));
+      svg.append(g);
+      acc += v;
+    });
+  });
+  plot.append(svg);
+}
+// log-log scatter with a 24px hit area per dot
+function scatterLog(plot, W, pts, o) {
+  const H = o.height || 300, padL = 46, padB = 34, padT = 12, padR = 12;
+  const lx = v => Math.log10(v), [xa, xb] = o.xr, [ya, yb] = o.yr;
+  const X = v => padL + (lx(v) - lx(xa)) / (lx(xb) - lx(xa)) * (W - padL - padR);
+  const Y = v => padT + (1 - (lx(v) - lx(ya)) / (lx(yb) - lx(ya))) * (H - padT - padB);
+  const svg = s('svg', { width: W, height: H, role: 'group', 'aria-label': o.aria || '' });
+  for (let e = Math.ceil(lx(xa)); e <= lx(xb); e++) { const v = Math.pow(10, e); svg.append(s('line', { x1: X(v), x2: X(v), y1: padT, y2: H - padB, style: 'stroke: var(--grid)' })); svg.append(txt(X(v), H - padB + 16, compact(v), { 'text-anchor': 'middle', 'font-size': 11.5, style: 'fill: var(--muted)' })); }
+  for (let e = Math.ceil(lx(ya)); e <= lx(yb); e++) { const v = Math.pow(10, e); svg.append(s('line', { x1: padL, x2: W - padR, y1: Y(v), y2: Y(v), style: 'stroke: var(--grid)' })); svg.append(txt(padL - 6, Y(v) + 4, compact(v), { 'text-anchor': 'end', 'font-size': 11.5, style: 'fill: var(--muted)' })); }
+  svg.append(txt(W - padR, H - 4, o.xlabel, { 'text-anchor': 'end', 'font-size': 12, style: 'fill: var(--ink-2)' }));
+  const d0 = Math.max(xa, ya), d1 = Math.min(xb, yb);
+  svg.append(s('line', { x1: X(d0), y1: Y(d0), x2: X(d1), y2: Y(d1), style: 'stroke: var(--rule-strong)', 'stroke-width': 1 }));
+  svg.append(txt(X(d1) - 4, Y(d1) + 16, 'one IR per space', { 'text-anchor': 'end', 'font-size': 11.5, style: 'fill: var(--muted)' }));
+  if (o.note) svg.append(txt(X(o.note.x) + 10, Y(o.note.y) + 4, o.note.text, { 'font-size': 12, style: 'fill: var(--ink)' }));
+  for (const p of pts) {
+    const g = s('g', null), cx = X(p.x), cy = Y(p.y);
+    g.append(s('circle', { class: 'hit', cx, cy, r: 12, fill: 'transparent' }));
+    g.append(s('circle', { cx, cy, r: 5, style: `fill: ${p.color}; stroke: var(--paper)`, 'stroke-width': 2 }));
+    if (p.label) g.append(txt(cx + (p.anchor === 'end' ? -9 : 9), cy + 4, p.label, { 'text-anchor': p.anchor || 'start', 'font-size': 12, style: 'fill: var(--ink)' }));
+    const v = `${fmt(p.y)} IRs, ${fmt(p.x)} ${p.x === 1 ? 'space' : 'spaces'}`;
+    hoverable(g, `${p.name}: ${v}`, e => showTip(e, p.name, v, p.sub));
+    svg.append(g);
+  }
+  plot.append(svg);
+}
+
+/* ================================================================ licence section */
+(function licences() {
+  const grid = $('#lic-grid');
+  const byClass = k => DS.filter(d => d.licence.cls === k);
+  const permNames = ['Products', 'ML training', 'Share audio'];
+  for (const c of CLASSES) {
+    const list = byClass(c.key);
+    if (!list.length) continue;
+    const ex = list.slice().sort((a, b) => (b.nIRs || 0) - (a.nIRs || 0)).slice(0, 4).map(d => d.name.replace(/ \(.*\)$/, ''));
+    grid.append(h('div', { class: 'lic-card' },
+      h('div', { class: 'top-line' }, h('h3', null, h('span', { class: 'sw', style: 'background:' + c.color }), c.label), h('span', { class: 'count', title: 'datasets', text: fmt(list.length) })),
+      h('p', { text: c.text }),
+      h('div', { class: 'perms full' }, c.perms.map(([p, t]) => h('div', { class: 'perm ' + p }, icon(p), h('span', { text: t })))),
+      h('p', { class: 'examples', text: 'e.g. ' + ex.join(ex.some(x => x.indexOf(',') >= 0) ? '; ' : ', ') + (list.length > 4 ? '…' : '') })));
+  }
+  const fig = $('#ch-lic');
+  const keys = CLASSES.map(c => ({ key: c.key, label: c.label, color: c.color, ink: c.key === 'open' || c.key === 'mixed' ? 'var(--on-s1)' : c.key === 'unspecified' ? 'var(--ink)' : 'var(--on-fill)' }));
+  // spaces per licence type: each physical space counted once, under the licence of the dataset that holds it
+  const DS_OF = id => REG[MERGE[id] || id];
+  const dsVals = {}, irVals = {}, spVals = {};
+  for (const c of CLASSES) { dsVals[c.key] = byClass(c.key).length; irVals[c.key] = byClass(c.key).filter(d => d.analysed).reduce((a, d) => a + (d.nSpaceIRs || 0), 0); spVals[c.key] = 0; }
+  for (const r of SPACES) { const d = DS_OF(r.dataset_id); if (d) spVals[d.licence.cls] = (spVals[d.licence.cls] || 0) + 1; }
+  legend(fig, CLASSES.map(c => [c.label, c.color]));
+  chart(fig, (plot, W) => stacked100(plot, W, [{ label: 'Datasets', values: dsVals }, { label: 'Room IRs', values: irVals }, { label: 'Spaces', values: spVals }], keys,
+    { aria: 'Share of datasets, of indexed room IRs and of spaces per licence type', vfmt: v => fmt(v) }));
+  tableView(fig, ['Licence type', 'Datasets', 'Room IRs', 'Spaces'], CLASSES.map(c => [c.label, fmt(dsVals[c.key]), fmt(irVals[c.key]), fmt(spVals[c.key])]));
+
+  const commercialTrain = DS.filter(d => d.licence.commercial === 'yes' && d.licence.training === 'allowed').length;
+  const saTrain = DS.filter(d => d.licence.commercial === 'yes' && d.licence.training === 'same_licence').length;
+  const ow = G.openair_licences || {};
+  const owBySA = Object.keys(ow).filter(k => /^CC-BY-SA/.test(k)).reduce((a, k) => a + ow[k], 0);
+  const owBY = Object.keys(ow).filter(k => /^CC-BY(-\d|$)/.test(k)).reduce((a, k) => a + ow[k], 0);
+  const owNC = Object.keys(ow).filter(k => /NC/.test(k)).reduce((a, k) => a + ow[k], 0);
+  const owPD = ow['LicenseRef-CC-PublicDomain'] || 0, owNone = ow['LicenseRef-unspecified'] || 0;
+  const short = d => d.name.replace(/ \(.*\)$/, '').replace(/ SRIR dataset: .*/, ' robot SRIRs');
+  const conflicts = DS.filter(d => d.licence.cls === 'conflict').map(short);
+  const listWords = a => { const sep = a.some(x => x.indexOf(',') >= 0) ? '; ' : ', '; return a.length > 1 ? a.slice(0, -1).join(sep) + (sep === '; ' ? '; and ' : ' and ') + a[a.length - 1] : a.join(''); };
+  const SW = { 'MIT': 'MIT', 'Apache-2.0': 'Apache 2.0', 'BSD-2-Clause': 'BSD', 'BSD-3-Clause': 'BSD' };
+  const swDs = DS.filter(d => SW[d.licence.spdx] && d.licence.cls === 'open'), sw = swDs.map(short), swNames = uniq(swDs.map(d => SW[d.licence.spdx]));
+  const swPhrase = swNames.length > 1 ? 'software licences (' + swNames.slice(0, -1).join(', ') + ' or ' + swNames[swNames.length - 1] + ')' : 'the ' + swNames[0] + ' licence';
+  const F = [
+    [`${fmt(commercialTrain)} of ${fmt(DS.length)} datasets`, `allow commercial use and model training, most asking only for credit. ${cap(words(saTrain))} more are share-alike: you may train on them, but a model you share may have to carry the same licence.`],
+    [`${cap(words(noLic))} state no licence`, 'including the widely used MIT IR Survey. Without a licence all rights are reserved by default: ask before reusing or redistributing.'],
+    ['Only two licences mention AI', 'EchoThief allows artistic use, such as convolution reverb, and forbids training AI models. SoundSpaces treats trained models as data derived from its scenes, so they fall under the scenes\' non-commercial terms. No other licence says anything explicit about machine learning.'],
+    [`${cap(words(conflicts.length))} datasets give contradictory terms`, `${listWords(conflicts)}. SRIRACHA's record says CC BY-SA 4.0 while its preprint says CC BY-NC-SA 4.0; OpenSLR 28 is labelled Apache 2.0 but repackages RWCP recordings licensed for research only. When one release states two licences, follow the stricter. (RIR-Mega is different: its Zenodo copy is CC BY 4.0 and its Hugging Face copy CC BY-NC 4.0, so download from Zenodo.)`],
+    ['One collection, two sets of terms', `OpenAIR's original pages gave each space its own licence (${owBySA} CC BY-SA, ${owBY} CC BY, ${owPD} public domain, ${owNC} non-commercial, ${owNone} not stated); the later pages, archived in 2026 before the site went offline, say CC BY 4.0 for every space.`],
+    [`${cap(words(sw.length))} datasets use a software licence`, `${listWords(sw)} put ${swPhrase}, written for code, on audio. These are permissive, but a data licence such as CC BY 4.0 or CC0 is clearer for recordings; keep a software licence for the loading code.`],
+  ];
+  const ul = $('#lic-findings');
+  for (const [b, t] of F) ul.append(h('li', null, h('b', { text: b }), t));
+})();
+
+/* ================================================================ landscape charts */
+const TYPE_SERIES = [['measured', 'Measured', 'var(--series-1)'], ['simulated', 'Simulated', 'var(--series-2)'], ['production', 'Production library', 'var(--series-3)'], ['hybrid', 'Measured + simulated', 'var(--series-4)']];
+const typeKey = t => TYPE_SERIES.some(s => s[0] === t) ? t : 'measured';
+
+(function years() {
+  const fig = $('#ch-years');
+  const withY = DS.filter(d => d.year);
+  const y0 = Math.min(...withY.map(d => d.year)), y1 = Math.max(...withY.map(d => d.year));
+  const cats = []; for (let y = y0; y <= y1; y++) cats.push(y);
+  const series = TYPE_SERIES.map(([k, label, color]) => ({ label, color, values: cats.map(y => withY.filter(d => d.year === y && typeKey(d.type) === k).length) }));
+  legend(fig, TYPE_SERIES.map(t => [t[1], t[2]]));
+  chart(fig, (plot, W) => columns(plot, W, cats, series, { aria: 'Datasets released per year, by type' }));
+  tableView(fig, ['Year'].concat(TYPE_SERIES.map(t => t[1])), cats.map((y, i) => [String(y)].concat(series.map(s2 => fmt(s2.values[i])))).filter(r => r.slice(1).some(v => v !== '0')));
+  const recent = withY.filter(d => d.year >= y1 - 4).length;
+  $('.note', fig).textContent = `${fmt(recent)} of ${fmt(withY.length)} dated datasets appeared from ${y1 - 4} to ${y1}. ${fmt(DS.length - withY.length)} undated library or archive collections are not shown.`;
+})();
+
+(function scatter() {
+  const fig = $('#ch-scatter');
+  const pts = analysed.filter(d => d.nSpaceIRs && d.nSpacesIndexed).map(d => ({ x: d.nSpacesIndexed, y: d.nSpaceIRs, name: d.name, color: TYPE_SERIES.find(t => t[0] === typeKey(d.type))[2], sub: TYPE_SERIES.find(t => t[0] === typeKey(d.type))[1] }));
+  // the largest sets all sit at one space: one note for the cluster instead of three colliding labels
+  const big = pts.slice().sort((a, b) => b.y - a.y).slice(0, 3);
+  const short = n => n.replace(/ \(.*\)$/, '').replace(/ RIR dataset$| dataset$| impulse response library$/i, '');
+  const many = pts.slice().sort((a, b) => b.x - a.x).slice(0, 2);
+  for (const p of many) { p.label = short(p.name); p.anchor = 'end'; }
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+  const xr = [1, Math.pow(10, Math.ceil(Math.log10(Math.max(...xs) * 1.2)))], yr = [Math.pow(10, Math.floor(Math.log10(Math.min(...ys)))), Math.pow(10, Math.ceil(Math.log10(Math.max(...ys) * 1.2)))];
+  const note = big.every(p => p.x === 1) ? { x: 1, y: big[0].y, text: big.map(p => short(p.name)).join(', ') + ': one space each' } : null;
+  legend(fig, TYPE_SERIES.filter(t => pts.some(p => p.sub === t[1])).map(t => [t[1], t[2]]));
+  chart(fig, (plot, W) => scatterLog(plot, W, pts, { xr, yr, xlabel: 'spaces →', aria: 'IRs against spaces per analysed dataset, log scales', note }));
+  tableView(fig, ['Dataset', 'Spaces', 'IRs'], pts.slice().sort((a, b) => b.y - a.y).map(p => [p.name, fmt(p.x), fmt(p.y)]));
+})();
+
+(function categories() {
+  const fig = $('#ch-cats');
+  const rows = CAT_GROUPS.map(([label, cats]) => ({ label, value: cats.reduce((a, c) => a + catCount(c), 0) })).filter(r => r.value > 0);
+  const last = rows.filter(r => r.label === 'Not labelled');
+  const main = rows.filter(r => r.label !== 'Not labelled').sort((a, b) => b.value - a.value);
+  const all = main.concat(last);
+  chart(fig, (plot, W) => barsH(plot, W, all.map(r => Object.assign({}, r, { color: r.label === 'Not labelled' ? 'var(--other)' : 'var(--series-1)' })), { aria: 'Number of distinct spaces by kind' }));
+  tableView(fig, ['Kind of space', 'Spaces'], all.map(r => [r.label, fmt(r.value)]));
+  const excluded = (G.spaces || []).filter(r => NOT_SPACE.indexOf(r.ir_kind) >= 0).length;
+  const music = ['concert_hall', 'theatre_auditorium', 'worship'].reduce((a, c) => a + catCount(c), 0);
+  $('.note', fig).textContent = `${fmt(music)} of the ${fmt(SPACES.length)} spaces (${pct(music / SPACES.length)}) are concert halls, theatres, auditoria or places of worship. Kinds are assigned from the names the datasets use and checked by hand where names misled; ${fmt(excluded)} anechoic chambers, devices, scale models and computer models are left out. "Not labelled" spaces are mostly lab or test rooms known only by a code.`;
+})();
+
+(function t30hist() {
+  const fig = $('#ch-t30');
+  const lo = 0.05, hi = 10, nb = 26, edges = []; for (let i = 0; i <= nb; i++) edges.push(lo * Math.pow(hi / lo, i / nb));
+  const counts = new Array(nb).fill(0);
+  for (const t of ROOM_T30) { let i = Math.floor(Math.log(t / lo) / Math.log(hi / lo) * nb); i = Math.max(0, Math.min(nb - 1, i)); counts[i]++; }
+  const cats = edges.slice(0, -1).map((e, i) => i);
+  const lab = i => `${secs(edges[i])} – ${secs(edges[i + 1])}`;
+  const refs = [['living room', 0.4], ['classroom', 0.7], ['concert hall', 2.0], ['large church', 5.0]];
+  chart(fig, (plot, W) => {
+    // bins are equal on a log axis, so a time maps to a position across the bins
+    const xOf = (padL, band) => t => padL + Math.log(t / lo) / Math.log(hi / lo) * nb * band;
+    columns(plot, W, cats, [{ label: 'rooms', color: 'var(--series-1)', values: counts }], {
+      aria: 'Histogram of reverberation time per measured room', height: 250, catLabel: i => 'T30 ' + lab(i),
+      sub: () => 'measured rooms', xLabels: false,
+      refs: refs.map(([l, t]) => ({ label: `${l} ${t} s`, x: (padL, band) => xOf(padL, band)(t) })),
+      ticksX: (padL, band) => [0.1, 0.2, 0.5, 1, 2, 5, 10].map(v => [xOf(padL, band)(v), v + ' s']),
+    });
+  });
+  tableView(fig, ['T30 range', 'Rooms'], cats.filter(i => counts[i]).map(i => [lab(i), fmt(counts[i])]));
+  $('.note', fig).textContent = `${fmt(ROOM_T30.length)} rooms in the research datasets, median ${secs(median(ROOM_T30))}; for ${fmt(ROOM_T20_USED)} of them most files are too short for T30, so T20 is used. ${pct(ROOM_T30.filter(t => t < 0.5).length / ROOM_T30.length)} are below 0.5 s and ${pct(ROOM_T30.filter(t => t > 2).length / ROOM_T30.length)} above 2 s. EchoThief's library spaces are not included. The reference lines are typical values, not data.`;
+})();
+
+(function formats() {
+  const fig = $('#ch-formats');
+  const rows = FAM_ORDER.map(f => ({ label: FAM_LABEL[f], value: DS.filter(d => d.fams.has(f)).length })).sort((a, b) => b.value - a.value);
+  chart(fig, (plot, W) => barsH(plot, W, rows, { aria: 'Datasets per capture format' }));
+  tableView(fig, ['Capture format', 'Datasets'], rows.map(r => [r.label, fmt(r.value)]));
+})();
+
+(function rates() {
+  const fig = $('#ch-fs');
+  const counts = {};
+  for (const d of DS) for (const f of uniq(d.fs.map(Number).filter(Boolean))) counts[f] = (counts[f] || 0) + 1;
+  const cats = Object.keys(counts).map(Number).sort((a, b) => a - b);
+  const kHz = f => (f / 1000).toString().replace(/\.0+$/, '') + ' kHz';
+  const num = f => (f / 1000).toString().replace(/\.0+$/, '');
+  chart(fig, (plot, W) => columns(plot, W, cats.map(num), [{ label: 'datasets', color: 'var(--series-1)', values: cats.map(f => counts[f]) }], { aria: 'Datasets per sampling rate', labels: true, height: 220, catLabel: c => c + ' kHz' }));
+  tableView(fig, ['Sampling rate', 'Datasets'], cats.map(f => [kHz(f), fmt(counts[f])]));
+  // by room IRs: each analysed dataset's room IRs spread over its sampling rates in proportion to its index counts
+  const byFs = {};
+  for (const r of G.datasets) {
+    if (!r.metrics || !r.index || !r.index.fs_found) continue;
+    const n = SPACE_IRS[r.id] || 0, tot = Object.values(r.index.fs_found).reduce((a, b) => a + b, 0);
+    for (const [fv, c] of Object.entries(r.index.fs_found)) byFs[fv] = (byFs[fv] || 0) + n * c / tot;
+  }
+  const totFs = Object.values(byFs).reduce((a, b) => a + b, 0), top = Object.entries(byFs).sort((a, b) => b[1] - a[1])[0];
+  const unknown = DS.filter(d => !d.fs.length).length;
+  if (top) $('.note', fig).textContent = `Counted by room IRs the picture changes: ${pct(top[1] / totFs)} are ${kHz(top[0])} files and ${pct((byFs['48000'] || 0) / totFs)} are 48 kHz. ${cap(words(unknown))} datasets that state no rate are not shown.`;
+})();
+
+(function roominfo() {
+  const fig = $('#ch-roominfo');
+  const keys = [{ key: 'yes', label: 'Published', color: 'var(--ord-3)', ink: 'var(--on-ord3)' }, { key: 'partial', label: 'Partly', color: 'var(--ord-2)', ink: 'var(--on-ord2)' },
+    { key: 'no', label: 'Not published', color: 'var(--ord-1)', ink: 'var(--on-ord1)' }, { key: 'unchecked', label: 'Not checked', color: 'var(--other)', ink: 'var(--ink)' }];
+  const checked = DS.filter(d => INFO_FIELDS.some(([f]) => d.roomInfo[f]));
+  const rows = INFO_FIELDS.map(([f, label]) => {
+    const v = { yes: 0, partial: 0, no: 0, unchecked: 0 };
+    for (const d of checked) { const x = d.roomInfo[f]; v[x === 'yes' ? 'yes' : x === 'partial' ? 'partial' : x === 'no' ? 'no' : 'unchecked']++; }
+    return { label, values: v };
+  }).sort((a, b) => (b.values.yes + b.values.partial / 2) - (a.values.yes + a.values.partial / 2));
+  legend(fig, keys.map(k => [k.label, k.color]));
+  chart(fig, (plot, W) => stacked100(plot, W, rows, keys, { aria: 'What datasets publish about their rooms', labelW: 140, vfmt: v => fmt(v) + ' datasets' }));
+  tableView(fig, ['Room information', 'Published', 'Partly', 'Not published', 'Not checked'], rows.map(r => [r.label, fmt(r.values.yes), fmt(r.values.partial), fmt(r.values.no), fmt(r.values.unchecked)]));
+  $('.note', fig).textContent = `Over the ${fmt(checked.length)} datasets for which at least one of these was checked. "Not checked" marks fields nobody has looked for yet, so the published shares are lower bounds.`;
+})();
+
+(function lowfreq() {
+  const fig = $('#ch-lowfreq');
+  const bands = ['63', '125', '250', '500', '1000', '2000', '4000', '8000'].filter(b => VT[b]);
+  const lab = b => +b >= 1000 ? (+b / 1000) + ' kHz' : b + ' Hz';
+  chart(fig, (plot, W) => columns(plot, W, bands.map(lab), [{ label: 'valid', color: 'var(--series-1)', values: bands.map(b => VT[b].dataset_median) }],
+    { aria: 'Share of IRs with a valid T30 per octave band, typical dataset', max: 1, yfmt: v => pct(v), vfmt: v => pct(v), labels: true, height: 220, sub: i => `all IRs pooled: ${pct(VT[bands[i]].ir)}; rooms with at least one valid IR: ${pct(VT[bands[i]].space)}` }));
+  tableView(fig, ['Octave band', 'Typical dataset', 'All IRs pooled', 'Rooms with one valid IR'], bands.map(b => [lab(b), pct(VT[b].dataset_median), pct(VT[b].ir), pct(VT[b].space)]));
+})();
+
+(function countries() {
+  const fig = $('#ch-countries');
+  const counts = {};
+  for (const d of withCountry) for (const c of uniq(d.country.split(/[,/;]| and /).map(x => x.trim()).filter(Boolean))) counts[c] = (counts[c] || 0) + 1;
+  let rows = Object.keys(counts).map(c => ({ label: c, value: counts[c] })).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+  if (rows.length > 14) { const rest = rows.slice(13); rows = rows.slice(0, 13).concat([{ label: `${rest.length} other countries`, value: rest.reduce((a, r) => a + r.value, 0), color: 'var(--other)', sub: rest.map(r => `${r.label} ${r.value}`).join(', ') }]); }
+  if (!rows.length) { $('.plot', fig).append(h('p', { class: 'muted', text: 'Origins not available yet.' })); return; }
+  chart(fig, (plot, W) => barsH(plot, W, rows, { aria: 'Datasets by country' }));
+  tableView(fig, ['Country', 'Datasets'], Object.keys(counts).sort((a, b) => counts[b] - counts[a]).map(c => [c, fmt(counts[c])]));
+  $('.note', fig).textContent = `${fmt(withCountry.length)} of ${fmt(DS.length)} datasets with a known origin; a dataset measured in two countries counts in both. OpenAIR, counted as UK, also has spaces in the USA, Argentina, Ireland, Belgium, Finland and Iceland.`;
+})();
+
+(function hosts() {
+  const fig = $('#ch-hosts');
+  const counts = {};
+  for (const d of DS) { const f = hostFamily(d.host); counts[f] = (counts[f] || 0) + 1; }
+  const rows = Object.keys(counts).map(k => ({ label: k, value: counts[k] })).sort((a, b) => b.value - a.value);
+  chart(fig, (plot, W) => barsH(plot, W, rows, { aria: 'Datasets by hosting platform' }));
+  tableView(fig, ['Platform', 'Datasets'], rows.map(r => [r.label, fmt(r.value)]));
+  const withDoi = DS.filter(d => d.doi).length;
+  $('.note', fig).textContent = `${fmt(withDoi)} of ${fmt(DS.length)} datasets have a DOI. Problems found when we checked the links in October 2026: OpenAIR's website and the original ACE site are offline, UCL's server for eBrIRD did not respond, the Fokke van Saane site is gone (Wayback Machine only), and the DRR-scaled BRIR archive on Zenodo is truncated.`;
+})();
+
+/* ================================================================ theme changes */
+const redraw = () => { if (window.__redrawIR) window.__redrawIR(); };
+try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redraw); } catch (e) { /* old browsers */ }
+new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+})();
+</script>

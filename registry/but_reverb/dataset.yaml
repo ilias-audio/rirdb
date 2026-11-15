@@ -1,0 +1,30 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: but_reverb
+name: BUT Speech@FIT Reverb Database
+year: 2019
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni, array_raw]
+content: Mono RIRs recorded in 9 rooms (offices, a meeting room, lecture rooms, a hall and a stairwell at BUT, plus a hotel conference room and a hotel room) with 31 microphones per source position.
+expected: {n_irs: 1426, n_rooms: 9, note: "homepage table for release 19_06: 31 microphones x 46 source positions in 9 rooms (the 2018 paper counted 8 rooms and about 1,300 RIRs); the archive holds 54 source sessions (1,674 RIRs): L227 has 10 source positions where the table lists 5, and L207 has three positions measured twice"}
+room_info: {dimensions: "yes", volume: "yes", materials: "yes", images: "yes", positions: "yes", where: "env_meta.txt per room (dimensions, volume, wall/floor/ceiling materials, background noise); mic/speaker metadata; room photos"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: http, urls: ["http://merlin.fit.vutbr.cz/ReverbDB/BUT_ReverbDB_rel_19_06_RIR-Only.tgz"]}
+adapter:
+  name: wav_tree
+  params: {pattern: '(?P<room>[^/]+)/(?P<rcv>MicID\d+)/SpkID(?P<src>\d+)_[^/]+/(?P<label>\d+)/RIR/[^/]+\.v00\.wav$'}
+keep_archive: false
+wave: 1
+homepage: https://speech.fit.vutbr.cz/software/but-speech-fit-reverb-database
+paper: {title: "Building and evaluation of a real room impulse response dataset", url: "https://ieeexplore.ieee.org/document/8717722"}
+status: active
+notes: "Space labels: the nine spaces show as \"01 (...)\" because the adapter took the microphone folder number (01 to 31) as the room label. The rooms are the BUT offices Q301, L207 and L212, the stairwell L227, the lecture rooms E112 and D105, the meeting room C236, and a hotel room (R112) and conference room (CR2) of Hotel Skalsky Dvur. The labels will be corrected once the adapter pattern no longer uses that number as the label and the dataset is re-indexed."
+web_check:
+  checked: '2026-10-14'
+  institution: Brno University of Technology
+  country: Czechia
+  host: Lab website (BUT)
+  caveats:
+  - 16 kHz only.
+  - Room dimensions, volume and materials in an env_meta.txt file per room.

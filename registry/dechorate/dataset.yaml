@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dechorate
+name: dEchorate
+year: 2021
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: 1800 annotated RIRs from 6 arrays of 5 microphones, 6 sources and 11 acoustic conditions (reflective panels on/off) of one room; echo timings annotated (processed RIR file only).
+expected: {n_irs: 1800, n_rooms: 1, note: "11 acoustic conditions"}
+room_info: {dimensions: "yes", volume: "yes", positions: "yes", conditions: "yes", where: "load_positions_and_plot.py in the record: room size (5.705 x 5.965 x 2.355 m) and the positions of the 30 microphones, 6 arrays and the sources; 10 wall-panel configurations; echo and image-source annotations in the full release (dechorate.hdf5, 84 GB, not fetched)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["5562386"], include: ["dechorate_rir_processed.hdf5", "load_positions_and_plot.py"]}
+adapter:
+  name: ndarray
+  # one array per room condition ("000000" ... "011111"): [20000 samples, 30 mics, 7 sources] at 48 kHz
+  params: {glob: "dechorate_rir_processed.hdf5", container: h5, array_pattern: '[01]{6}', time_axis: 0,
+           record_axes: [1, 2], fs: 48000, room_default: dechorate-room}
+wave: 2
+homepage: https://zenodo.org/records/5562386
+paper: {title: "dEchorate: a Calibrated Room Impulse Response Dataset for Echo-aware Signal Processing", url: "https://arxiv.org/abs/2104.13168"}
+doi: 10.5281/zenodo.5562386
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Inria and Bar-Ilan University
+  country: France, Israel
+  caveats:
+  - Content stops at 12 to 16 kHz inside the 48 kHz files (resampled from 24 or 32 kHz, or band-limited by the sweep).
+  - Steady tones in 70 IRs.
+  - Comes with annotated echo timings.

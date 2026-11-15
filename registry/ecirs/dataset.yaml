@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ecirs
+name: 'ECIRS: Ecophon Classroom Impulse Response Set'
+year: 2025
+type: measured
+status: catalogued
+content: 414 mono IRs measured in one real classroom under 23 configurations of Ecophon ceiling and wall absorbers
+  and diffusers, each with 2 source and 9 receiver positions (WAV).
+expected:
+  n_irs: 414
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: partial
+  positions: 'no'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'yes'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/16947513
+doi: 10.5281/zenodo.16947513
+web_check:
+  checked: '2026-10-14'
+  found_as: 'ECIRS: Ecophon Classroom Impulse Response Set'
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 108 MB
+  file_formats: WAV in ZIP, XLSX configuration table, PNG plots
+  institution: Saint-Gobain Ecophon; Universidad Politécnica de Madrid
+  country: Unknown
+  evidence_urls:
+  - https://zenodo.org/records/16947513
+  - https://zenodo.org/api/records/16947513
+  - https://zenodo.org/records/16947513/preview/ECIRS_FullDatabase_ImpulseResponses.zip
+  - https://zenodo.org/records/16947513/files/ECIRS_IR_Configurations_Description.xlsx
+  - https://zenodo.org/records/16947513/files/Plots%20Disclaimer.txt
+  confidence: high
+  caveats:
+  - The record does not state the sample rate, the room size or where the classroom is.
+  - Receivers are only labelled (ER1-ER8 and room centre); no coordinates are given.
+  - The T20 and C50 plots show one source-receiver case only.

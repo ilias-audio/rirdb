@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: mp_rir
+name: MP-RIR
+year: 2024
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+content: 68,736 RIRs on a dense 3D grid in a complex-shaped room, measured by a robot moving a vertical linear array of 8 omni mics; 4 sources at 8 positions.
+expected: {n_irs: 68736, n_rooms: 1}
+room_info: {dimensions: "partial", positions: "yes", where: "Mxyz.npy (x, y, z of every microphone position); Setup.npz (loudspeaker positions and azimuths, and the x, y coordinates of the 4 room corners); Zenodo record description (checked 2026-11-06)"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source: {kind: zenodo, records: ["11148712"]}
+adapter:
+  name: ndarray
+  # S<n>_Mrir.npy = [1074 positions, 8 mics, 100096 samples] at 48 kHz (fs from Setup.npz)
+  params: {glob: "S*_Mrir.npy", container: npy, time_axis: 2, record_axes: [0, 1], fs: 48000,
+           pattern: '(?P<src>S\d)_Mrir\.npy$', room_default: mp-rir-room}
+wave: 3
+analysis: {scope: subsample_v1}
+cap: 4330   # preview only: the most v1 measured per group; step 5 removes this cap
+homepage: https://zenodo.org/records/11148712
+paper: {title: "Multi-Purpose Room Impulse Response Dataset Measured on a 3D Spatial Grid", url: "https://aes2.org/publications/elibrary-page/?id=22515"}
+doi: 10.5281/zenodo.11148712
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Fraunhofer IIS
+  country: Germany
+  caveats:
+  - About half the IRs have little content above 10 kHz.

@@ -1,0 +1,31 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tau_srir
+name: TAU Spatial Room Impulse Response Database
+year: 2022
+type: measured
+ir_kinds: [room]
+capture_formats: [foa_ambix, tetra_raw]
+fs_hz: [24000]
+content: SRIRs from 9 spaces of Tampere University (fixed receiver, many source positions along trajectories), first-order Ambisonics and tetrahedral array formats derived from Eigenmike em32, downsampled to 24 kHz.
+expected: {n_rooms: 9}
+room_info: {positions: "yes", conditions: "yes", where: "measinfo.mat (source trajectories at several heights and distances)"}
+license: {spdx: LicenseRef-TAU-NonCommercial, redistribute_audio: unaltered_only, note: "Zenodo licence 'other-nc'; see LICENSE.txt in the record."}
+access: open
+source: {kind: zenodo, records: ["6408611"], include: ["TAU-SRIR_DB.z0*", "TAU-SRIR_DB.zip", "README.md", "LICENSE.txt"]}
+adapter: {name: tau_srir, params: {format: foa}}
+keep_archive: false
+wave: 2
+homepage: https://zenodo.org/records/6408611
+doi: 10.5281/zenodo.6408611
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Tampere University
+  country: Finland
+  licence_note: Free for experimental and non-commercial use with the copyright notice and credit to the Audio Research
+    Group, Tampere University. All commercial use is forbidden, including selling results or services made with
+    the data.
+  caveats:
+  - Downsampled to 24 kHz and about 0.3 s long, so decay parameters are mostly out of reach.
+  - 837 IRs (2.2%) are exact copies of the IR at the neighbouring direction on the same trajectory, so one of each
+    pair carries the wrong direction label. Drop the copies before training a localisation model (list in reports/corpus/duplicates.csv).

@@ -1,0 +1,38 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ace
+name: ACE Challenge corpus (single-mic + ground truth)
+year: 2015
+type: measured
+ir_kinds: [room]
+capture_formats: [mono_omni]
+fs_hz: [48000]
+content: Single-microphone RIRs from 7 rooms (2 positions each) with the published per-band T60 and DRR ground truth. Multichannel arrays are in ace_arrays.
+expected: {n_rooms: 7}
+room_info: {positions: "partial", reference_acoustics: "yes", where: "ground-truth T60 and DRR CSVs; ACE_Corpus_instructions and Microphone_arrangements PDFs"}
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+access: open
+source:
+  kind: zenodo
+  records: ["6257551"]
+  include: ["ACE_Corpus_RIRN_Single.tbz2", "ACE_Corpus_Data.tbz2", "ACE_Corpus_Speech.tbz2", "ACE_Corpus_instructions_v01.pdf", "ACE_Corpus_Microphone_arrangements_v02.pdf", "ACE_TASLP_ref.bib"]
+adapter:
+  name: wav_tree
+  params: {pattern: 'Single/(?P<room>[^/]+)/(?P<rcv>\d)/Single_[^/]+_RIR\.wav$'}
+wave: 1
+# the original site (www.ee.ic.ac.uk/naylor/ACEweb/) times out (checked 2026-11-06); Wayback copy:
+# http://web.archive.org/web/20260329001213/http://www.ee.ic.ac.uk/naylor/ACEweb/index.html
+homepage: https://zenodo.org/records/6257551
+paper: {title: "Estimation of room acoustic parameters: The ACE challenge", url: "https://ieeexplore.ieee.org/document/7336912"}
+doi: 10.5281/zenodo.6257551
+status: active
+web_check:
+  checked: '2026-10-14'
+  institution: Imperial College London
+  country: UK
+  content: Single-microphone and multichannel-array RIRs (mobile phone, laptop, cruciform, linear and Eigenmike
+    arrays) from 7 rooms at Imperial College London, with published per-band reverberation time and DRR ground truth.
+  caveats:
+  - The IRs are windowed to 0.5 to 1 s in most rooms (the lobby files are 5 s long, one office file 3 s), so the
+    tails are shortened.
+  - The original ACE website is offline (the Wayback Machine has a copy); the data is on Zenodo.
+  - Published reverberation time and DRR ground truth for every IR.

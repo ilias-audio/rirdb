@@ -1,0 +1,21 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: smard
+name: SMARD (Aalborg)
+year: 2014
+type: measured
+ir_kinds: [room]
+capture_formats: [array_raw]
+fs_hz: [48000]
+content: Single- and multichannel recordings in a listening room (48 configurations of 3 loudspeakers and up to 22 microphones in single, linear, circular and orthogonal arrays), with estimated IRs for every loudspeaker-microphone pair.
+expected: {n_rooms: 1, note: "48 configurations; estimated IRs ship as one WAV zip per configuration (checked 2026-10-13)"}
+license: {spdx: LicenseRef-unspecified, redistribute_audio: unknown, note: "No licence; the site only asks users to cite Nielsen et al., IWAENC 2014 (checked 2026-10-13)."}
+access: manual
+source: {kind: manual, instructions: "Estimated IRs: https://shares01.portal.aau.dk/smard/data/<config>_estimated_ir.zip for the 48 configurations listed at https://www.es.aau.dk/research/audio-analysis-lab/smard/download (raw recordings in <config>.zip, about 18 GB)."}
+homepage: https://www.es.aau.dk/research/audio-analysis-lab/smard
+status: manual
+web_check:
+  checked: '2026-10-14'
+  institution: Aalborg University
+  country: Denmark
+  host: Aalborg University website
+  availability: open

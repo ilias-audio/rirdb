@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: dtu_three_channel_doa
+name: DTU three-channel RIR dataset for DOA estimation 2020
+year: 2021
+type: measured
+status: catalogued
+content: 152 room impulse responses measured with a three-microphone array (8.5 cm spacing) in a furnished DTU classroom,
+  for sources every 10° from -90° to 90° at 1.5 m plus off-grid and off-range positions.
+expected:
+  n_irs: 152
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+license:
+  spdx: LicenseRef-unspecified
+  note: The dataset page gives no licence; only the IEEE site footer carries a copyright notice.
+homepage: https://ieee-dataport.org/open-access/dtu-three-channel-room-impulse-response-dataset-direction-arrival-estimation-2020
+doi: 10.21227/c5cn-jv76
+web_check:
+  checked: '2026-10-14'
+  found_as: DTU three-channel RIR dataset for DOA estimation 2020 (IEEE DataPort)
+  availability: free_registration
+  families:
+  - array
+  host: IEEE DataPort
+  size: 379 MB
+  file_formats: ZIP containing MAT (RIRs_DTU.mat), JPG photos and a PDF description
+  institution: Technical University of Denmark (with UC San Diego and Bar-Ilan University)
+  country: Denmark
+  evidence_urls:
+  - https://ieee-dataport.org/open-access/dtu-three-channel-room-impulse-response-dataset-direction-arrival-estimation-2020
+  - https://doi.org/10.21227/c5cn-jv76
+  - https://ieee-dataport.org/comment/2445
+  confidence: medium
+  caveats:
+  - Download requires logging in to IEEE DataPort; the page says open-access files are available to all logged-in
+    users.
+  - No licence is stated on the dataset page.
+  - The sampling rate is not given on the page (details are in the PDF inside the download).

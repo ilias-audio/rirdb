@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: sbsbrir
+name: SBSBRIR
+year: 2014
+type: measured
+status: catalogued
+content: Measured BRIRs from a B&K head-and-torso simulator at 15 listener positions in the University of Salford's
+  ITU-R BS.1116 listening room, for 12 loudspeakers in a ring, with the head turned in 2° steps.
+expected:
+  n_irs: 64800
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: partial
+  materials: 'no'
+  positions: 'yes'
+  images: partial
+  reference_acoustics: partial
+  conditions: partial
+license:
+  spdx: CC-BY-NC-SA-4.0
+homepage: https://data.bbcarp.org.uk/sbsbrir/
+web_check:
+  checked: '2026-10-14'
+  found_as: 'SBSBRIR: Salford-BBC Spatially-sampled Binaural Room Impulse Responses'
+  availability: open
+  families:
+  - binaural
+  host: BBC Audio Research Partnership website; SOFA database mirror
+  size: about 14.3 GB (15 SOFA files, summed from server headers)
+  file_formats: SOFA (MultiSpeakerBRIR); also 720-channel WAV and MIRO (MATLAB) as tar.gz per position
+  institution: University of Salford and BBC R&D
+  country: UK
+  evidence_urls:
+  - https://data.bbcarp.org.uk/sbsbrir/
+  - https://data.bbcarp.org.uk/sbsbrir/sofa/
+  - https://sofacoustics.org/data/database/sbsbrir/LICENCE.txt
+  - https://data.bbcarp.org.uk/docs/Poster_DAGA2014.pdf
+  confidence: high
+  caveats:
+  - 'Large: 15 SOFA files of about 0.95 GB each; the WAV and MIRO versions are about 1 GB per position.'
+  - Non-commercial, share-alike licence.
+  - 'Not the same as the BBC R&D BRIR set: this one was measured in Salford''s listening room (average reverberation
+    time 0.27 s).'

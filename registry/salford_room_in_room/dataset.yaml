@@ -1,0 +1,34 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: salford_room_in_room
+name: Salford room-in-room effect data (AES 141)
+year: 2016
+type: measured
+status: catalogued
+content: 'Supporting data for a listening test on the room-in-room effect: measured first-order B-format IRs of
+  various environments and BRIR sets used to build the stimuli, plus MATLAB code and listener responses.'
+license:
+  spdx: CC-BY-4.0
+homepage: https://salford.figshare.com/articles/dataset/Data_and_supporting_information_for_AES_141_convention_paper_The_room-in-room_effect_and_its_influence_on_perceived_room_size_in_spatial_audio_reproduction_/3457733
+doi: 10.17866/rd.salford.3457733.v1
+web_check:
+  checked: '2026-10-14'
+  found_as: Room-in-room effect data (Salford, AES 141 convention paper)
+  availability: open
+  families:
+  - ambisonic
+  - binaural
+  host: figshare
+  size: 11.7 GB
+  file_formats: One ZIP archive (measurement data, audio, MATLAB code); IR file formats not listed
+  institution: University of Salford
+  country: UK
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/3457733
+  - https://api.figshare.com/v2/articles/3457733/files
+  - https://ndownloader.figshare.com/files/6055677
+  - https://salford.figshare.com/articles/dataset/Data_and_supporting_information_for_AES_141_convention_paper_The_room-in-room_effect_and_its_influence_on_perceived_room_size_in_spatial_audio_reproduction_/3457733
+  confidence: medium
+  caveats:
+  - Everything is in one 11.7 GB zip, together with the listening-test stimuli, code and responses.
+  - The page does not say how many IRs there are or which spaces they cover.
+  - It was made for a perception study, not as a general-purpose RIR collection.

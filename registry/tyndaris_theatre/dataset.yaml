@@ -1,0 +1,40 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tyndaris_theatre
+name: Tyndaris ancient theatre IRs
+year: 2023
+type: measured
+status: catalogued
+content: 26 WAV IRs measured in September 2015 in the ancient open-air theatre of Tyndaris, Sicily, with a dodecahedron
+  loudspeaker (2 source positions) and firecrackers (1 position) at up to 9 receivers.
+expected:
+  n_irs: 26
+  n_rooms: 1
+room_info:
+  volume: 'no'
+  positions: partial
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/7928804
+doi: 10.5281/zenodo.7928804
+web_check:
+  checked: '2026-10-14'
+  found_as: Acoustic measurements in the ancient open-air theatre of Tyndaris
+  availability: open
+  host: Zenodo
+  size: 57 MB
+  file_formats: WAV (26 individual files)
+  institution: Politecnico di Torino
+  country: Italy
+  evidence_urls:
+  - https://zenodo.org/records/7928804
+  - https://zenodo.org/api/records/7928804
+  - https://zenodo.org/records/7928804/files/S1_R1_dodecahedron.wav
+  - https://api.crossref.org/works/10.3390/app10165680
+  confidence: high
+  caveats:
+  - Microphone, sample rate and position layout are not on the record; they are in the linked Applied Sciences 2020
+    paper (Astolfi et al.).
+  - Firecracker files vary in length (1.7 to 13.8 MB), while every dodecahedron IR has the same length, so the firecracker
+    files may need trimming.
+  - Individual WAV files, no ZIP (about 57 MB in total).

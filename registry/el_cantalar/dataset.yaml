@@ -1,0 +1,43 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: el_cantalar
+name: La Escena (El Cantalar) balloon IRs
+year: 2026
+type: measured
+status: catalogued
+content: Balloon-burst IRs (one WAV plus Room EQ Wizard project files), raw audio, reflection-delay tables and images
+  from La Escena, an open-air Bronze Age rock site at El Cantalar, Alicante, Spain.
+fs_hz:
+- 48000
+expected:
+  n_irs: 3
+  n_rooms: 1
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  materials: 'no'
+  positions: partial
+  reference_acoustics: partial
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/18913642
+doi: 10.5281/zenodo.18913642
+web_check:
+  checked: '2026-10-14'
+  found_as: 'FAIR dataset: acoustic reverberation study at La Escena (El Cantalar)'
+  availability: open
+  host: Zenodo
+  size: 42.7 MB
+  file_formats: WAV, TXT IR exports, REW .mdat projects, CSV/TXT tables, JPG images (one ZIP)
+  institution: La Compañía del Erizo (independent research team)
+  country: Spain
+  evidence_urls:
+  - https://zenodo.org/records/18913642
+  - https://zenodo.org/api/records/18913642
+  - https://zenodo.org/records/18913642/preview/FAIR_Reverberation_LaEscena_Cantalar.zip
+  - https://zenodo.org/api/records/18912036
+  confidence: medium
+  caveats:
+  - 'Very small: only the 45 m balloon IR is a WAV file; the 10 m and 30 m measurements are only in Room EQ Wizard
+    project files.'
+  - Equipment and channel count are not documented; the 48 kHz rate comes from a file name.
+  - Supplements a report on Zenodo (10.5281/zenodo.18912036) that explains the analysis.

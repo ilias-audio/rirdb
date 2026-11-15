@@ -1,0 +1,48 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: epfl_rectangular_room
+name: Room Impulse Response measurements of a rectangular room
+year: 2018
+type: measured
+status: catalogued
+content: 132 RIRs (one source, 132 microphone positions) measured in a real rectangular room of about 3 x 5.6 x
+  3.53 m at EPFL, stored as transfer functions with MATLAB scripts; made for low-frequency room-mode estimation.
+fs_hz:
+- 4000
+expected:
+  n_irs: 132
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  volume: 'no'
+  geometry: 'no'
+  materials: partial
+  positions: 'yes'
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://zenodo.org/records/1169161
+doi: 10.5281/zenodo.1169161
+web_check:
+  checked: '2026-10-14'
+  found_as: EPFL room impulse response measurements of a rectangular room
+  availability: open
+  families:
+  - mono
+  host: Zenodo
+  size: 44 MB
+  file_formats: MATLAB .mat (transfer functions and x/y/z microphone positions), MATLAB scripts, PDF guidelines
+  institution: EPFL
+  country: Switzerland
+  evidence_urls:
+  - https://zenodo.org/records/1169161
+  - https://zenodo.org/api/records/1169161
+  - https://zenodo.org/records/1169161/files/RIR_main.m?download=1
+  - https://arxiv.org/abs/1802.05879
+  - https://ar5iv.labs.arxiv.org/html/1802.05879
+  - https://github.com/epfl-lts2/joint_estimation_of_room_geometry_and_modes
+  confidence: high
+  caveats:
+  - The data are transfer functions in a MATLAB .mat file. The supplied MATLAB scripts turn them into RIRs.
+  - The original sampling rate is 4 kHz, so the data suit low-frequency (room-mode) work, not full-band reverb.
+  - The companion GitHub code has no licence file. The data on Zenodo are CC BY 4.0.

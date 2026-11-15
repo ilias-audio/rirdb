@@ -1,0 +1,258 @@
+{% extends "analysis_base.html" %}
+{% import "_macros.html" as m %}
+{% set C = data.corpus %}
+{% block page_css %}
+<style>
+.ftbl td.info { min-width: 260px; max-width: 560px; }
+.ftbl th[scope="row"] { white-space: nowrap; }
+.ftbl th .sub.m-only { white-space: normal; margin-top: 4px; color: var(--ink-2); font-size: .84rem; }
+@media (max-width: 600px) {
+  .ftbl th, .ftbl td { padding: 8px 5px; }
+  .ftbl thead th, .ftbl thead th.n { white-space: normal; vertical-align: bottom; }
+  .ftbl th[scope="row"] { white-space: normal; min-width: 140px; }
+  .ftbl th[scope="row"] code { overflow-wrap: anywhere; }
+  .steps th, .steps td { padding: 8px 5px; }
+  .steps thead th, .steps thead th.n { white-space: normal; vertical-align: bottom; }
+  .steps th[scope="row"] { min-width: 140px; }
+}
+.steps th .sub.m-only { margin-top: 4px; font-weight: 400; color: var(--ink-2); font-size: .84rem; }
+.pairs tr.exrow td { padding-top: 0; }
+.pairs tr.has-ex > * { border-bottom: 0; }
+.ftbl caption { font: 700 1.02rem/1.3 var(--font-body); padding: 10px 10px 4px; color: var(--ink); }
+.ftbl caption span { display: block; font-weight: 400; font-size: .88rem; color: var(--ink-2); margin-top: 2px; }
+#heat { font-size: .78rem; }
+#heat th, #heat td { padding: 4px 6px; }
+#heat td.h { text-align: center; padding: 5px 2px; min-width: 32px; border-bottom: 1px solid var(--surface); border-right: 1px solid var(--surface); font-variant-numeric: tabular-nums; }
+#heat td.h.zero { color: var(--muted); opacity: .5; }
+#clean .code pre { white-space: pre-wrap; overflow-wrap: anywhere; padding-right: 72px; }
+#heat td.h.gs, #heat th.fl.gs { border-left: 2px solid var(--rule-strong); }
+#heat thead th.fl { vertical-align: bottom; padding: 6px 2px 4px; min-width: 32px; text-align: center; }
+#heat thead th.fl span { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; display: inline-block; font-weight: 600; }
+#heat thead th.fl[data-sort]::after { display: block; margin: 4px auto 0; }
+#heat thead tr.gh th { position: static; text-align: center; font-size: .74rem; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--rule); }
+#heat td.name { min-width: 160px; max-width: 220px; }
+@media (min-width: 760px) {
+  #heat td.name, #heat thead tr:last-child th:first-child { position: sticky; left: 0; background: var(--surface); z-index: 2; box-shadow: 1px 0 0 var(--rule); }
+  #heat tbody tr:hover td.name { background: color-mix(in srgb, var(--sunk) 60%, var(--surface)); }
+}
+#heat tbody tr:hover td.h { outline: 1px solid var(--rule-strong); outline-offset: -1px; }
+.heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; font-size: .78rem; color: var(--ink-2); margin: 0 0 10px; }
+.heat-legend span.c { display: inline-block; min-width: 46px; text-align: center; padding: 3px 4px; border-radius: 3px; font-variant-numeric: tabular-nums; }
+.heat-legend .lab { margin-right: 8px; }
+.audit details.box { margin-bottom: 10px; }
+.audit summary { font-weight: 700; color: var(--accent); }
+.audit summary span { font-weight: 400; color: var(--ink-2); }
+.audit .pills { margin: 6px 0 10px; }
+.audit .pills a { text-decoration: none; min-width: 0; max-width: 100%; }
+.audit .pills .pill { white-space: normal; }
+.audit .pills a:hover .pill { background: var(--accent-wash); color: var(--accent); }
+.audit td.file { max-width: 520px; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: .78rem; }
+.case h3 { margin-bottom: .3em; }
+.case dl { margin: 0; }
+.case dt { font-weight: 700; font-size: .86rem; color: var(--muted); margin-top: .5em; }
+.case dd { margin: 0; font-size: .94rem; }
+td.ex { font-family: var(--font-mono); font-size: .76rem; overflow-wrap: anywhere; }
+td.ex .small { font-family: var(--font-body); }
+#duplicates .tbl th[scope="row"] { min-width: 150px; }
+</style>
+{% endblock %}
+{% block lede %}
+<p class="lede">Before any number is trusted, rirdb checks that each file is a usable impulse response: no sweep left over from the measurement, no hum, no gaps, a steady noise floor, and content up to the frequency the file claims. This page shows what the checks look for and how often each one fires in each dataset.</p>
+<ul class="onpage" aria-label="On this page">
+  <li><a href="#checks">The checks</a></li><li><a href="#heat-h">Flags per dataset</a></li><li><a href="#integrity">Signal integrity</a></li>
+  <li><a href="#audit">Examples</a></li><li><a href="#duplicates">Exact duplicates</a></li><li><a href="#clean">Clean measured rooms</a></li>
+</ul>
+{% endblock %}
+{% block body %}
+
+<section class="section" id="checks" aria-labelledby="checks-h">
+  <div class="wrap">
+    <h2 id="checks-h">What the checks look for</h2>
+    <div class="prose">
+      <p>Two sets of checks raise flags. The analyzer flags properties of the file and of the decay (clipping, short files, no noise floor, curved decays and so on). The signal audit runs afterwards on the same onset-cropped channel and asks whether the file is an impulse response at all: it looks for straight time-frequency ridges (sweep residue), sustained spectral lines (hum, birdsong, tones), envelopes that do not decay, runs of exact zeros, a noise floor that is not steady, and a spectrum that stops well below the file's Nyquist frequency. The audit covered {{ integrity.audited | int if integrity else "–" }} IRs.</p>
+      <p>A flag describes an IR; it does not delete it. Only the four <strong>content</strong> flags take an IR out of the <a href="#clean">clean measured rooms</a>, because the file then holds something other than a room decay. Counts below are over the {{ n_ok | int }} analysed IRs of {{ n_datasets }} datasets.</p>
+    </div>
+    {% for g in groups %}
+    <div class="tbl-wrap"><table class="tbl ftbl">
+      <caption>{{ g.label }} flags<span>{{ g.text }}</span></caption>
+      <thead><tr><th scope="col">Flag</th><th scope="col" class="d-only">What it means</th><th scope="col" class="n">IRs flagged</th><th scope="col" class="n">Share of analysed IRs</th><th scope="col" class="n">Datasets</th></tr></thead>
+      <tbody>
+      {% for f in g.flags %}<tr><th scope="row">{{ f.label }}<span class="sub"><code>{{ f.flag }}</code></span><span class="sub m-only">{{ f.info }}</span></th><td class="info d-only">{{ f.info }}</td><td class="n">{{ f.n | int }}</td><td class="n">{{ f.share_text }}</td><td class="n">{{ f.nds | int }}</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    {% endfor %}
+    {% if never %}<p class="small muted">Never raised in the corpus: {{ never | join(", ") }}.</p>{% endif %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="heat-h">
+  <div class="wrap wide">
+    <h2 id="heat-h">Flags per dataset</h2>
+    <p class="prose">Share of each dataset's analysed IRs that raise each flag, in per cent. Only the {{ cols | length }} flags that fire somewhere are shown, grouped as above. Hover a cell for the count; click a heading to sort. A rate near 100&nbsp;% usually describes how the dataset was made (short files, a non-omni microphone, files that end before the noise floor) rather than a fault.</p>
+    <div class="heat-legend" aria-hidden="true"><span class="lab">Shade (square-root scale):</span>{% for l in heat_legend %}<span class="c heat-c" style="{{ l.style }}">{{ l.t }}</span>{% endfor %}</div>
+    <div class="tbl-wrap"><table class="tbl" id="heat">
+      <caption class="sr-only">Share of analysed IRs raising each flag, per dataset, in per cent</caption>
+      <thead>
+        <tr class="gh"><th scope="colgroup" colspan="2"></th>{% for g in col_groups %}<th scope="colgroup" colspan="{{ g.n }}">{{ g.label }}</th>{% endfor %}</tr>
+        <tr>
+          <th scope="col" data-sort="text">Dataset</th>
+          <th scope="col" class="n" data-sort="num">IRs</th>
+          {% for f in cols %}<th scope="col" class="fl{% if loop.first or cols[loop.index0 - 1].group != f.group %} gs{% endif %}" data-sort="num" title="{{ f.info }}"><span>{{ f.label }}</span></th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in heat %}
+      <tr>
+        <td class="name"><a href="{{ root }}d/{{ r.id }}.html#flags">{{ r.name }}</a></td>
+        <td class="n">{{ r.n | int }}</td>
+        {% for c in r.cells %}<td class="h{% if c.zero %} zero{% endif %}{% if c.style %} heat-c{% endif %}{% if loop.first or cols[loop.index0 - 1].group != cols[loop.index0].group %} gs{% endif %}" data-v="{{ c.v }}" data-tip="{{ c.tip }}"{% if c.style %} style="{{ c.style }}"{% endif %}>{{ c.text }}</td>{% endfor %}
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+    <p class="tbl-foot"><span>“&lt;1” means fewer than 1&nbsp;% but at least one IR. Per-dataset counts for every flag are in the per-dataset files, for example <a href="{{ root }}data/ds/openair.json">data/ds/openair.json</a> (<code>analysis.flags</code>).</span></p>
+  </div>
+</section>
+
+{% if integrity %}
+{% set I = integrity %}
+<section class="section" id="integrity" aria-labelledby="integrity-h">
+  <div class="wrap">
+    <h2 id="integrity-h">Signal integrity across the corpus</h2>
+    <dl class="kv" style="margin-bottom:1.4em">
+      <dt>Pre-delay in the files</dt><dd>{{ I.share_10 | pct(1) }} of the {{ I.n_all | int }} analysed IRs have more than 10 ms before the direct sound, {{ I.share_100 | pct(1) }} more than 100 ms; {{ I.n_zero | int }} start on the direct sound. The analysis crops every IR at its ISO 3382-1 onset (20 dB below the peak); the source files are not changed.</dd>
+      <dt>Digital silence</dt><dd>{{ I.lead | pct }} of the files start with exact digital silence and {{ I.trail | pct }} end with it (zero padding). Both are trimmed before the analysis.</dd>
+      <dt>Noise floor</dt><dd>{% for e in I.edc_items[:3] %}{{ e.label }}: {{ e.value | int }}{{ "; " if not loop.last else "." }}{% endfor %} Where a file ends before any noise floor, plain Schroeder integration is the right method, and the analyzer uses it.</dd>
+      {% if I.resampled %}<dt>Upsampled files</dt><dd>{% for r in I.resampled %}{{ r.n | int }} IRs hold {{ r.fs | fs }} content{{ "; " if not loop.last else "" }}{% endfor %}, stored at a higher sample rate (a brick-wall cut-off at the source's Nyquist frequency).</dd>{% endif %}
+      <dt>Coverage</dt><dd>Bandwidth measured on {{ I.bw_audited | int }} IRs; the content audit ran on {{ I.audited | int }}.</dd>
+    </dl>
+    <div class="chart-grid">
+      {% if I.onset_svg %}
+      {% set ot %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">IRs per pre-delay bin</caption><thead><tr><th scope="col" class="n">From (ms)</th><th scope="col" class="n">To (ms)</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Share</th></tr></thead><tbody>
+{% for b in I.onset_rows %}<tr><td class="n">{{ b.lo }}</td><td class="n">{{ b.hi }}</td><td class="n">{{ b.n | int }}</td><td class="n">{{ b.share | pct(1) }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart("Time before the direct sound in the files", I.onset_svg, sub=(I.onset_n | int) ~ " IRs with a pre-delay · log axis", caption="Measured from the start of the file to the ISO 3382-1 onset. IRs that start on the direct sound are left out of the log axis.", table=Markup(ot)) }}
+      {% endif %}
+      {% set et %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">IRs per noise-floor method</caption><thead><tr><th scope="col">Method</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Share</th></tr></thead><tbody>
+{% for e in I.edc_items %}<tr><th scope="row">{{ e.label }}</th><td class="n">{{ e.value | int }}</td><td class="n">{{ (e.value / I.edc_total) | pct(1) }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart("Broadband noise-floor method per IR", I.edc_chart, sub=(I.edc_total | int) ~ " analysed IRs", caption="Lundeby's iteration finds the noise floor and compensates the decay curve for it. Files that end while still decaying (cut or faded) have no floor to find. No broadband decay is analysed for anechoic responses. Multichannel IRs where channels took different paths are counted once.", table=Markup(et)) }}
+      {% for h in I.hists %}
+      {% set ht %}
+<div class="tbl-wrap"><table class="tbl"><caption class="sr-only">{{ h.title }}</caption><thead><tr><th scope="col" class="n">From</th><th scope="col" class="n">To ({{ h.unit }})</th><th scope="col" class="n">IRs</th><th scope="col" class="n">Share</th></tr></thead><tbody>
+{% for b in h.rows %}<tr><td class="n">{{ b.lo }}</td><td class="n">{{ b.hi }}</td><td class="n">{{ b.n | int }}</td><td class="n">{{ b.share | pct(1) }}</td></tr>{% endfor %}
+</tbody></table></div>
+      {% endset %}
+      {{ m.chart(h.title, h.svg, sub=h.sub, caption=h.caption, table=Markup(ht)) }}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if audit %}
+<section class="section audit" id="audit" aria-labelledby="audit-h">
+  <div class="wrap">
+    <h2 id="audit-h">Where the audit flags fire, with examples</h2>
+    <p class="prose">For each audit flag: the datasets it fires in, and up to {{ n_examples_max }} flagged files, a few from each dataset, with the measures that raised it. The spectrograms of every flag group were reviewed by hand before the content flags were allowed to exclude IRs.</p>
+    {% for a in audit %}
+    <details class="box"{% if loop.first %} open{% endif %}>
+      <summary>{{ a.label }} <span>· {{ a.n | int }} IRs in {{ a.by | length }} dataset{{ "s" if a.by | length != 1 else "" }}{% if a.group == "content" %} · excluded from clean rooms{% endif %}</span></summary>
+      <p class="small" style="margin:.2em 0 0">{{ a.info }}</p>
+      <div class="pills">{% for b in a.by %}<a href="{{ root }}d/{{ b.id }}.html#flags"><span class="pill">{{ b.name }} · {{ b.n | int }}</span></a>{% endfor %}</div>
+      {% if a.examples %}
+      <div class="tbl-wrap"><table class="tbl"><caption class="sr-only">Example files raising {{ a.label }}</caption><thead><tr><th scope="col">Dataset</th><th scope="col">File (and record inside it)</th><th scope="col">Measured</th></tr></thead><tbody>
+      {% for e in a.examples %}<tr><td><a href="{{ root }}d/{{ e.id }}.html">{{ e.name }}</a></td><td class="file">{{ e.file }}</td><td>{{ e.vals or "–" }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% if a.n_examples > a.examples | length %}<p class="small muted">{{ a.examples | length }} of {{ a.n_examples }} listed examples shown; the full list is in the <a href="{{ root }}overview/index.html">corpus overview</a>.</p>{% endif %}
+      {% endif %}
+    </details>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section" id="duplicates" aria-labelledby="duplicates-h">
+  <div class="wrap">
+    <h2 id="duplicates-h">Exact duplicates</h2>
+    <div class="prose">
+      <p>Two IRs are duplicates when their decoded samples are identical (same SHA-1 of the sample data, whatever the file name or format). The de-duplicated view <code>corpus_dedup</code> keeps one IR of each group and marks the others with <code>dup_of</code>: {{ n_dup | int }} copies across the corpus. Every corpus figure, and every training or evaluation split built on rirdb, should use that view.</p>
+      <p>{% if n_cross %}{{ n_cross | int }} IRs belong to groups that span two datasets.{% else %}No group spans two datasets: every duplicate is a copy inside its own dataset.{% endif %}</p>
+    </div>
+    {% if dup_rows %}
+    <div class="tbl-wrap"><table class="tbl">
+      <caption class="sr-only">Exact duplicates per dataset</caption>
+      <thead><tr><th scope="col">Dataset</th><th scope="col" class="n">Copies set aside</th><th scope="col" class="n">Share of its IRs</th><th scope="col" class="n">IRs analysed</th><th scope="col" class="n">Groups of identical IRs</th><th scope="col" class="n">IRs in those groups</th><th scope="col">Shared with other datasets</th></tr></thead>
+      <tbody>
+      {% for r in dup_rows %}<tr><th scope="row"><a href="{{ root }}d/{{ r.id }}.html">{{ r.name }}</a></th><td class="n">{{ r.copies | int }}</td><td class="n">{{ r.share | pct(1) }}</td><td class="n">{{ r.n | int }}</td><td class="n">{{ r.groups | int }}</td><td class="n">{{ r.in_groups | int }}</td><td>{% if r.cross_with %}{% for c in r.cross_with %}<a href="{{ root }}d/{{ c.id }}.html">{{ c.name }}</a> ({{ c.n | int }}){{ ", " if not loop.last else "" }}{% endfor %}{% else %}no{% endif %}</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    {% endif %}
+    {% if pairs %}
+    <h3>Groups in the duplicates list</h3>
+    <p class="small">The corpus report lists every group of identical IRs in <a href="{{ repo_blob('reports/corpus/duplicates.csv') }}">reports/corpus/duplicates.csv</a>. Summarised per dataset{{ " or dataset pair" if pairs | selectattr("cross") | list else "" }}:</p>
+    <div class="tbl-wrap"><table class="tbl pairs">
+      <caption class="sr-only">Groups of identical IRs per dataset or dataset pair, with example files</caption>
+      <thead><tr><th scope="col">Dataset(s)</th><th scope="col" class="n">Groups</th><th scope="col" class="n">Redundant copies</th></tr></thead>
+      <tbody>
+      {% for p in pairs %}<tr{% if p.examples %} class="has-ex"{% endif %}><th scope="row">{% for i in p.ids %}<a href="{{ root }}d/{{ i.id }}.html">{{ i.name }}</a>{{ " + " if not loop.last else "" }}{% endfor %}</th><td class="n">{{ p.groups | int }}</td><td class="n">{{ p.extra | int }}</td></tr>
+      {% if p.examples %}<tr class="exrow"><td colspan="3" class="ex"><span class="small muted">Examples, “=” joins identical files:</span><br>{% for e in p.examples %}{{ e }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td></tr>{% endif %}{% endfor %}
+      </tbody>
+    </table></div>
+    {% endif %}
+    {% if dup_cases %}
+    <div class="cols-2">
+      {% for c in dup_cases %}
+      <div class="card case">
+        <h3><a href="{{ root }}d/{{ c.id }}.html">{{ c.name }}</a></h3>
+        <dl>
+          <dt>Finding</dt><dd>{{ c.finding }}</dd>
+          {% if c.evidence %}<dt>Evidence</dt><dd>{{ c.evidence }}</dd>{% endif %}
+          {% if c.handling %}<dt>Handling</dt><dd>{{ c.handling }}</dd>{% endif %}
+        </dl>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="small muted">From <a href="{{ root }}methods/findings.html">the dataset findings</a> (<a href="{{ repo_blob('docs/decisions/dataset-findings.md') }}">docs/decisions/dataset-findings.md</a>).</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" id="clean" aria-labelledby="clean-h">
+  <div class="wrap">
+    <h2 id="clean-h">What the clean measured rooms leave out, and why</h2>
+    <div class="prose">
+      <p>The corpus distributions, the per-band reference and the CLAP-map scores use the <strong>clean measured rooms</strong>: {{ n_clean | int }} IRs. The aim is a sample of real rooms in which no file that is not a room decay, and no position counted twice, shifts the reference. The predicate over the de-duplicated corpus:</p>
+    </div>
+    {% if clean_sql %}{{ m.code(clean_sql, "clean-sql") }}{% endif %}
+    {% if steps %}
+    <div class="tbl-wrap"><table class="tbl steps">
+      <caption class="sr-only">What each step from all analysed IRs to the clean measured rooms leaves out</caption>
+      <thead><tr><th scope="col">Step</th><th scope="col" class="n">IRs left out</th><th scope="col" class="n">Spaces left out</th><th scope="col" class="n">Datasets left out</th><th scope="col" class="d-only">What is left out</th></tr></thead>
+      <tbody>
+      {% for s in steps %}<tr><th scope="row">{{ s.from }} → {{ s.to }}<span class="sub m-only">{{ s.why }}</span></th><td class="n">{{ s.drop | int }}</td><td class="n">{{ s.drop_rooms | int }}</td><td class="n">{{ s.drop_ds | int }}</td><td class="d-only">{{ s.why }}</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+    {% endif %}
+    {% if kinds_all %}<p class="small">Kinds of IR among all analysed IRs: {% for k, n in kinds_all.items() %}{{ k | kindlabel }} {{ n | int }}{{ ", " if not loop.last else "." }}{% endfor %}</p>{% endif %}
+    <div class="notes">
+      <div class="card">
+        <h3>Left out: content flags</h3>
+        <ul>{% for f in content_flags %}<li><strong>{{ f.label }}</strong>: {{ f.info }}</li>{% endfor %}</ul>
+      </div>
+      <div class="card">
+        <h3>Left out: repeats</h3>
+        <p>Many datasets publish the same position in several formats (OpenAIR's B-format and its mono copy, for example). Only the preferred representation counts, so a position is not counted twice. Exact duplicate copies are left out for the same reason.</p>
+      </div>
+      <div class="card">
+        <h3>Kept: everything else</h3>
+        <p>Signal, decay and spatial flags stay in. The validity rules already drop the values a short file or a high noise floor cannot support, and the flags are there to filter on when a property matters for a use: an unsteady noise floor for noise studies, an upsampled file for bandwidth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

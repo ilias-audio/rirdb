@@ -1,0 +1,42 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: avil_living_room_model
+name: Living-room model and simulated IRs (DTU AVIL, ODEON)
+year: 2019
+type: simulated
+status: catalogued
+content: 21 room impulse responses of a living room simulated in ODEON (7 azimuths x 3 distances) and rendered with
+  the LoRA toolbox for DTU's 64-channel loudspeaker lab, with the ODEON room model and outputs.
+expected:
+  n_irs: 21
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  positions: 'yes'
+  images: 'no'
+  conditions: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://data.dtu.dk/articles/dataset/A_room_acoustics_model_and_simulated_impulse_responses_of_a_living_room/9746324
+doi: 10.11583/DTU.9746324
+web_check:
+  checked: '2026-10-14'
+  found_as: DTU simulated living-room IRs for the Audio-Visual Immersion Lab (ODEON)
+  availability: open
+  families:
+  - array
+  host: figshare (DTU Data)
+  size: 62 MB
+  file_formats: 'Two ZIP archives: loudspeaker IRs; ODEON room model and raw ODEON output files'
+  institution: Technical University of Denmark (DTU), Hearing Systems
+  country: Denmark
+  evidence_urls:
+  - https://api.figshare.com/v2/articles/9746324
+  - https://ndownloader.figshare.com/files/17458448
+  - https://ndownloader.figshare.com/files/17458403
+  - https://doi.org/10.11583/DTU.9746324
+  confidence: high
+  caveats:
+  - The IRs are loudspeaker feeds for DTU's 64-channel lab (AVIL), not mono or binaural IRs.
+  - Using the room model needs ODEON, a commercial program.
+  - The record does not say which file format the IRs are stored in.

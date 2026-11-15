@@ -1,0 +1,45 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: cornaro_lodge
+name: Cornaro's Lodge acoustic dataset
+year: 2024
+type: measured
+status: catalogued
+content: 24 mono IRs (WAV, 48 kHz/32-bit) measured at listening positions in the courtyard of the Renaissance Loggia
+  Cornaro in Padua (1524), with a SketchUp 3D model and a measurement-layout image.
+fs_hz:
+- 48000
+expected:
+  n_irs: 24
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'yes'
+  positions: partial
+  images: partial
+  reference_acoustics: 'no'
+license:
+  spdx: CC-BY-4.0
+homepage: https://data.mendeley.com/datasets/s455ww48zp/1
+doi: 10.17632/s455ww48zp.1
+web_check:
+  checked: '2026-10-14'
+  found_as: Acoustic dataset of the Cornaro's Lodge in Padua (Italy, 1524)
+  availability: open
+  families:
+  - mono
+  host: Mendeley Data
+  size: 105 MB
+  file_formats: WAV (48 kHz/32-bit), SKP/SKB (SketchUp 2017), JPG
+  institution: University of Bologna (Department of Industrial Engineering)
+  country: Italy
+  evidence_urls:
+  - https://data.mendeley.com/datasets/s455ww48zp/1
+  - https://api.datacite.org/dois/10.17632/s455ww48zp.1
+  - https://data.mendeley.com/public-api/datasets/s455ww48zp/files?folder_id=139be4ec-08b2-4355-aed1-75b5707e5950&version=1
+  - https://www.eaa-saat.eu/SAAT2022/proc.php?Id=57
+  - https://api.openalex.org/works/doi:10.58874/SAAT.2022.206
+  confidence: high
+  caveats:
+  - Source and receiver positions are coded in file names (S1-S3, R1-R9) and shown in a layout image.
+  - Measurement details are in the SAAT 2022 proceedings paper, not in the dataset.
+  - IR count is from the file list.

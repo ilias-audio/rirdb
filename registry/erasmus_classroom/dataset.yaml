@@ -1,0 +1,41 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: erasmus_classroom
+name: Virtual Classroom Environment (Erasmus MC)
+year: 2025
+type: measured
+status: catalogued
+content: 13 first-order Ambisonic (FuMa B-format) RIRs measured in an unoccupied Dutch primary-school classroom,
+  shared with babble-noise recordings, photos and a 3D model of the room for hearing research in VR.
+expected:
+  n_irs: 13
+  n_rooms: 1
+room_info:
+  geometry: 'yes'
+  positions: partial
+  images: 'yes'
+  conditions: partial
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/15178235
+doi: 10.5281/zenodo.15178235
+web_check:
+  checked: '2026-10-14'
+  found_as: Virtual Classroom Environment with Babble Noise and RIR Recordings (Erasmus MC)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 182 MB ZIP + 0.6 MB PDF
+  file_formats: WAV (FOA, FuMa B-format); also Blender/OBJ 3D model, JPG photos, PDF description
+  institution: Erasmus MC University Medical Center Rotterdam (Dept. of Otorhinolaryngology)
+  country: Netherlands
+  evidence_urls:
+  - https://zenodo.org/records/15178235
+  - https://zenodo.org/api/records/15178235
+  - https://zenodo.org/records/15178235/preview/classroom.zip
+  - https://arxiv.org/abs/2504.18343
+  confidence: high
+  caveats:
+  - Only 13 RIRs from a single classroom; most of the 182 MB ZIP is babble noise, photos and the 3D model.
+  - Non-commercial use only (CC BY-NC 4.0).
+  - Positions and measurement details are explained only in the accompanying PDF description document.

@@ -1,0 +1,5 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+cr1,CR1 coupled rooms (laboratory + reverberation chamber),laboratory,room,,,,,,,coupled-volume scene,
+cr2,CR2 small room (seminar room),lecture_classroom,room,,,,,,,,
+cr3,CR3 medium room (chamber music hall),concert_hall,room,,,,,,,,
+cr4,CR4 large room (auditorium),theatre_auditorium,room,,,,,,,,

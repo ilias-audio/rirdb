@@ -1,0 +1,52 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: svrd
+name: Surrey Vislab RIR Dataset (SVRD)
+year: 2014
+type: measured
+status: catalogued
+content: Measured RIRs from a 60-loudspeaker circular array to 864 microphone positions in densely sampled zones
+  of the University of Surrey's Vislab, 48 kHz, in three SOFA files, from the POSZ sound-zone project.
+fs_hz:
+- 48000
+expected:
+  n_irs: 51840
+  n_rooms: 1
+room_info:
+  dimensions: partial
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: partial
+  reference_acoustics: 'no'
+  conditions: partial
+license:
+  spdx: BSD-3-Clause
+  note: 'Registration requires accepting the POSZ Resource Licence Agreement, a BSD 3-clause text: keep the copyright
+    notice and do not use Surrey or Bang & Olufsen names to endorse products.'
+homepage: https://cvssp.org/soundzone/resource/VislabRIR/index.html
+web_check:
+  checked: '2026-10-14'
+  found_as: Surrey 'Vislab' sound-zone RIR dataset (Coleman)
+  availability: free_registration
+  families:
+  - array
+  host: University repository
+  size: about 12 GB
+  file_formats: SOFA
+  institution: University of Surrey (with Bang & Olufsen)
+  country: UK
+  evidence_urls:
+  - https://cvssp.org/soundzone/resource/VislabRIR/index.html
+  - https://cvssp.org/soundzone/resource/VislabRIR/webdoc.html
+  - https://cvssp.org/soundzone/resource/VislabRIR/register.html
+  - https://cvssp.org/soundzone/resource/register.php
+  - https://cvssp.org/soundzone/resource/
+  - https://cvssp.org/soundzone/resource/VislabRIR/Data/index.html
+  - http://cvssp.org/data/s3a/
+  confidence: medium
+  caveats:
+  - Free registration with manual checking; login details arrive by email and the data folder is password-protected,
+    so we could not test the download.
+  - The 2014-15 pages are marked 'under construction' and disagree on details (Vislab vs 'PATS Studio 2'; two vs
+    three zones); a sibling Studio 2 set (SS2RD) is on the same site.
+  - 51,840 IRs is derived from 60 loudspeakers x 864 microphones; each RIR is 32,767 samples at 48 kHz.

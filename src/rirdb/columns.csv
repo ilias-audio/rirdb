@@ -1,0 +1,182 @@
+table,name,type,unit,allowed,min,max,applies_when,empty_means,meaning,origin
+irs,ir_id,string,,,,,always,never empty,"<dataset>-<16 hex>: the dataset id and the first 16 hex digits of the BLAKE2b hash of file#item (of file alone when item is empty). Unique, and recomputed from file and item by a check",index
+irs,dataset,string,,,,,always,never empty,The dataset id (also its folder name in registry/),index
+irs,space,string,,,,,always,never empty,"<dataset>/<slug>: the room, hall, car or simulated room",index
+irs,condition,string,,,,,always,the dataset has one state of the space,"The state of the space during the measurement, as the dataset names it: a panel setting, a furniture layout, a door open or closed",index
+irs,source,string,,,,,always,the dataset does not name source positions,"The source position, as the dataset names it",index
+irs,receiver,string,,,,,always,the dataset does not name receiver positions,"The receiver position, as the dataset names it",index
+irs,is_primary,bool,,,,,always,never empty,"True for the one layout per space that counts in statistics. A selection without --format takes primary rows only",build
+irs,duplicate_of,string,,,,,always,no other IR in the table has the same audio_hash,"The ir_id of the original of an exact duplicate: the IR from the earliest dataset by year, then the smallest id",build
+irs,file,string,,,,,always,never empty,"The path inside the dataset's files. Two paths joined by | when a response spans two files",index
+irs,item,string,,,,,always,the file holds one IR,"The position of the IR inside the file (an index or a key, as the reader names it)",index
+irs,download,string,,,,,always,never empty,The download that holds the file (a key of downloads.parquet),pin
+irs,audio_hash,string,,,,,the file is readable,the file cannot be read (defect_corrupt_samples),"First 32 hex digits of a hash of the decoded samples (float32, channel after channel): in 0.9 the SHA-1 of the samples, from analyser v1; from 1.0 the SHA-256 of the sample rate, the channel count and the samples. get checks every IR it cuts against it",measure
+irs,fs,int,Hz,,4000,768000,always,never empty,Sample rate of the file,index
+irs,channels,int,,,1,256,always,never empty,Number of channels in this response,index
+irs,duration_s,float,s,,0,3600,always,never empty,Length of the response as published,index
+irs,sample_format,string,,int8|int16|int24|int32|float32|float64,,,always,the container does not say,How the samples are stored in the file,index
+irs,measured_on,string,,,,,the file is readable,no value could be measured (defect_corrupt_samples),"The channels the room values describe: L+R (mean of two ears or a stereo pair), W (Ambisonic omni), ch0 (one reference capsule or the mono channel)",measure
+irs,origin,string,,measured|simulated|device,,,always,never empty,"How the IR came to exist. The dataset's origin, unless its space states its own",registry
+irs,format,string,,mono|stereo|binaural|ambisonic|array,,,always,never empty,The channel format of the response,registry
+irs,layout,string,,mono_omni|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,The capture format: which device or arrangement recorded the channels,registry
+irs,space_type,string,,anechoic|circulation|concert_hall|device|domestic|hospitality_retail|industrial|laboratory|large_structure|lecture_classroom|office_meeting|outdoor|public_interior|scale_model|sports_leisure|stairwell|studio_booth|theatre_auditorium|transport_hub|tunnel_underpass|underground|vehicle|virtual|worship|unknown,,,always,never empty (unknown when the dataset does not say),The kind of space. The space's own type in spaces.csv; otherwise the dataset's default,registry
+irs,volume_m3,float,m3,,0,10000000,always,the dataset does not state the volume,"Volume of the space, as the dataset or its paper states it",registry
+irs,distance_m,float,m,,0,10000,always,the dataset gives no positions,Source-receiver distance,index
+irs,src_x,float,m,,-10000,10000,always,the dataset gives no source position,"Source x, in the dataset's own frame",index
+irs,src_y,float,m,,-10000,10000,always,the dataset gives no source position,"Source y, in the dataset's own frame",index
+irs,src_z,float,m,,-10000,10000,always,the dataset gives no source position,"Source z, in the dataset's own frame",index
+irs,rcv_x,float,m,,-10000,10000,always,the dataset gives no receiver position,"Receiver x, in the dataset's own frame",index
+irs,rcv_y,float,m,,-10000,10000,always,the dataset gives no receiver position,"Receiver y, in the dataset's own frame",index
+irs,rcv_z,float,m,,-10000,10000,always,the dataset gives no receiver position,"Receiver z, in the dataset's own frame",index
+irs,licence,string,,,,,always,never empty (LicenseRef-unspecified when no licence was found),"The licence id (SPDX where one exists): the space's licence, else the dataset's. Must have a row in licences.csv",registry
+irs,licence_conditions,string,,,,,always,the licence sets no condition,"The licence's conditions joined by +, from: attribution, share_alike, non_commercial, no_derivatives",build
+irs,use_research,string,,yes|no|unknown,,,always,never empty,May the audio be used in research? Read from licences.csv,build
+irs,use_commercial,string,,yes|no|unknown,,,always,never empty,May the audio be used in a commercial product or service? Read from licences.csv,build
+irs,use_training,string,,yes|no|unknown,,,always,never empty,May the audio be used to train a machine-learning model? Read from licences.csv,build
+irs,redistribute,string,,yes|unaltered_only|no|unknown,,,always,never empty,May the audio be passed on to others? Read from licences.csv,build
+irs,is_processed,bool,,,,,always,never empty,"True when any proc_* column is documented, detected or both. False means no tag was found among those assessed",build
+irs,proc_windowed,string,,no|documented|detected|both,,,always,not assessed,Faded at the end. 0.9: documented by the authors only,build
+irs,proc_truncated,string,,no|documented|detected|both,,,always,not assessed (no broadband noise floor was found),Cut before the noise floor without a fade (processing.truncated),build
+irs,proc_denoised,string,,no|documented|detected|both,,,always,not assessed,Noise removed or the tail replaced. Documented by the authors only (deferred.md item 5),build
+irs,proc_equalised,string,,no|documented|detected|both,,,always,not assessed,Corrected for the loudspeaker or microphone. Documented by the authors only (deferred.md item 5),build
+irs,proc_resampled,string,,no|documented|detected|both,,,always,not assessed,"The content stops at another rate's Nyquist (processing.resampled). Detected counts as a minor defect",build
+irs,proc_bit_depth_reduced,string,,no|documented|detected|both,,,always,not assessed (0.9: analyser v1 does not measure the effective bit depth),"Fewer bits used than the container holds. Detected counts as a minor defect",build
+irs,proc_format_derived,string,,no|documented|detected|both,,,always,not assessed,"Converted from another layout, e.g. binaural decoded from Ambisonics. Documented by the authors only",build
+irs,grade,string,,S|A|B|C|D,,,space_type is not anechoic,the space is anechoic: there is no decay to grade,"Quality of the decay, capped by defects (grades in thresholds.yaml). --grade A means A or better",build
+irs,defects_major,int,,,0,6,always,never empty,Number of true major defect columns,build
+irs,defects_minor,int,,,0,7,always,never empty,"Number of true minor defect columns, plus proc_resampled and proc_bit_depth_reduced when detected",build
+irs,defect_clipping,bool,,,,,the file is readable,not assessed,Major. Samples held at the peak level (defects.clipping),build
+irs,defect_dropouts,bool,,,,,the file is readable,not assessed,Major. A run of exact zeros inside the signal (defects.dropouts),build
+irs,defect_no_decay,bool,,,,,the file is readable,not assessed,"Major. The level does not fall: T60 above 30 s, or not an IR (defects.no_decay)",build
+irs,defect_sweep_residue,bool,,,,,the file is readable,not assessed,Major. A sweep or chirp left in the response (defects.sweep_residue),build
+irs,defect_tonal_interference,bool,,,,,the file is readable,not assessed,"Major. Sustained spectral lines: hum, tones, birdsong (defects.tonal_interference)",build
+irs,defect_corrupt_samples,bool,,,,,always,never empty,"Major. Non-finite or all-zero samples, or a file that cannot be read",build
+irs,defect_band_limited,bool,,,,,the file is readable,not assessed,Minor. Little or no content in the upper audible band (defects.band_limited),build
+irs,defect_quantisation_floor,bool,,,,,the file is readable,not assessed,Minor. The decay sinks below the quantisation step (defects.quantisation_floor),build
+irs,defect_dc_offset,bool,,,,,the file is readable,not assessed,Minor. A constant offset in a channel (defects.dc_offset),build
+irs,defect_high_noise_floor,bool,,,,,the file is readable,not assessed,"Minor. peak_to_noise_db below defects.high_noise_floor (a decay into exact digital silence has no noise floor, so no defect)",build
+irs,defect_inverted_channel,bool,,,,,format is stereo or binaural,"the format is not stereo or binaural, or not assessed (0.9: analyser v1 does not measure it)",Minor. Two channels of one IR with opposite polarity. Never applied to Ambisonic signals,build
+irs,usable_top_hz,float,Hz,,0,384000,the file is readable,not measured (0.9: analyser v1 does not measure it),Upper edge of the highest third-octave band whose early level rises at least 20 dB above both its tail noise and its quantisation floor,measure
+irs,effective_bits,float,bits,,1,64,the file is readable,not measured (0.9: analyser v1 does not measure it),"The bit depth the samples really use: 16-bit content in a 24-bit or float file shows as 16",measure
+irs,peak_to_noise_db,float,dB,,-100,,the file is readable,no noise floor: the decay runs into exact digital silence,"Peak level over the broadband noise floor",measure
+irs,edt_mid,float,s,,0,120,the file is readable,EDT not valid in the 500 Hz or 1 kHz octave (validity.edt); see decay_range_mid_db,Early decay time: mean of the 500 Hz and 1 kHz octaves,measure
+irs,t20_mid,float,s,,0,120,the file is readable,T20 not valid in the 500 Hz or 1 kHz octave (validity.t20); see decay_range_mid_db,T20: mean of the 500 Hz and 1 kHz octaves,measure
+irs,t30_mid,float,s,,0,120,the file is readable,T30 not valid in the 500 Hz or 1 kHz octave (validity.t30); see decay_range_mid_db,T30: mean of the 500 Hz and 1 kHz octaves,measure
+irs,rt_mid,float,s,,0,120,the file is readable,neither T30 nor T20 is valid in both mid octaves,"The reverberation time: t30_mid where valid, otherwise t20_mid. Used by --balance t30 and the examples",build
+irs,rt_mid_from,string,,T30|T20,,,the file is readable,rt_mid is empty,Which decay time rt_mid is,build
+irs,decay_range_mid_db,float,dB,,-100,,the file is readable,"the decay reaches exact digital silence in a mid octave (no noise floor), or the decay analysis failed",The smaller of the 500 Hz and 1 kHz decay ranges (peak level over the noise floor): says why a mid value is empty,measure
+irs,rt_broadband,float,s,,0,120,the file is readable,neither T30 nor T20 of the broadband signal is valid,"The same rule as rt_mid, measured on the whole signal (limited to the analysed range: 63 Hz to 8 kHz in analyser v1). Equals the broadband row of bands",build
+irs,rt_broadband_from,string,,T30|T20,,,the file is readable,rt_broadband is empty,Which decay time rt_broadband is,build
+irs,decay_range_broadband_db,float,dB,,-100,,the file is readable,"the decay reaches exact digital silence (no noise floor), or the decay analysis failed",Decay range of the broadband signal,measure
+irs,c50_mid,float,dB,,-150,150,the file is readable,not valid in the 500 Hz or 1 kHz octave (validity.energy),Clarity C50: mean of the 500 Hz and 1 kHz octaves,measure
+irs,c80_mid,float,dB,,-150,150,the file is readable,not valid in the 500 Hz or 1 kHz octave (validity.energy),Clarity C80: mean of the 500 Hz and 1 kHz octaves,measure
+irs,d50_mid,float,,,0,1,the file is readable,not valid in the 500 Hz or 1 kHz octave (validity.energy),Definition D50: mean of the 500 Hz and 1 kHz octaves,measure
+irs,ts_mid,float,s,,0,120,the file is readable,not valid in the 500 Hz or 1 kHz octave (validity.energy),Centre time: mean of the 500 Hz and 1 kHz octaves,measure
+irs,drr_db,float,dB,,-150,150,the file is readable,no direct sound could be found,"Direct-to-reverberant ratio: full band, direct sound within +-8 ms of its peak, noise subtracted (ACE convention)",measure
+irs,sti,float,,,0,1,the file is readable,"not valid (validity.sti): the sample rate is too low, or the broadband decay failed, is truncated or too short",Speech transmission index (IEC 60268-16:2020 indirect method; room only),measure
+irs,iacc_early,float,,,0,1,format is binaural,not binaural,"Early interaural cross-correlation IACC_E3: 0 to 80 ms, lags up to 1 ms, mean of the 500 Hz, 1 kHz and 2 kHz octaves",measure
+irs,lateral_fraction,float,,,0,1,format is ambisonic and the orientation is documented,"not Ambisonic, the orientation is not documented, or not measured (0.9: v1 measured it on first-order Ambisonics only)",Early lateral fraction from the W and Y channels,measure
+irs,bass_ratio,float,,,0,100,the file is readable,a needed octave has no valid T30 or T20,"Bass ratio: (T125 + T250) / (T500 + T1000), each band T30 where valid, else T20",measure
+irs,treble_ratio,float,,,0,100,the file is readable,a needed octave has no valid T30 or T20,"Treble ratio: (T2000 + T4000) / (T500 + T1000), each band T30 where valid, else T20",measure
+irs,mixing_time_ms,float,ms,,0,10000,the file is readable,the echo density never reaches 1,Mixing time: where the normalised echo density first reaches 1 (Abel and Huang 2006),measure
+irs,t30_31,float,s,,0,120,the file is readable,"not valid (validity.t30), or the band is not measured (0.9: analyser v1 has no 31.5 Hz octave)",T30 in the 31.5 Hz octave. Equals the octave row of bands,build
+irs,t30_63,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 63 Hz octave. Equals the octave row of bands,build
+irs,t30_125,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 125 Hz octave. Equals the octave row of bands,build
+irs,t30_250,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 250 Hz octave. Equals the octave row of bands,build
+irs,t30_500,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 500 Hz octave. Equals the octave row of bands,build
+irs,t30_1000,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 1 kHz octave. Equals the octave row of bands,build
+irs,t30_2000,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 2 kHz octave. Equals the octave row of bands,build
+irs,t30_4000,float,s,,0,120,the file is readable,not valid (validity.t30),T30 in the 4 kHz octave. Equals the octave row of bands,build
+irs,t30_8000,float,s,,0,120,the file is readable,"not valid (validity.t30), or the band lies above 0.9 x Nyquist",T30 in the 8 kHz octave. Equals the octave row of bands,build
+irs,t30_16000,float,s,,0,120,the file is readable,"not valid (validity.t30), the band lies above 0.9 x Nyquist, or not measured (0.9: analyser v1 has no 16 kHz octave)",T30 in the 16 kHz octave. Equals the octave row of bands,build
+bands,ir_id,string,,,,,always,never empty,The IR (a key of irs),measure
+bands,series,string,,octave|third_octave|broadband,,,always,never empty,Which band series the row belongs to. Every query names it: both series have a 125 Hz band,measure
+bands,band_hz,float,Hz,,20,20000,series is octave or third_octave,the row is the broadband row,Nominal centre frequency of the band,measure
+bands,edt,float,s,,0,120,always,not valid (validity.edt),Early decay time,measure
+bands,t20,float,s,,0,120,always,not valid (validity.t20),T20,measure
+bands,t30,float,s,,0,120,always,not valid (validity.t30),T30,measure
+bands,c50,float,dB,,-150,150,always,not valid (validity.energy),Clarity C50,measure
+bands,c80,float,dB,,-150,150,always,not valid (validity.energy),Clarity C80,measure
+bands,d50,float,,,0,1,always,not valid (validity.energy),Definition D50,measure
+bands,ts,float,s,,0,120,always,not valid (validity.energy),Centre time,measure
+bands,decay_range_db,float,dB,,-100,,always,"the decay reaches exact digital silence (no noise floor), or the decay analysis failed","Smoothed peak level over the noise floor: says why a decay value is empty. Values of hundreds of dB mean a floor near digital silence (float files)",measure
+bands,floor,string,,acoustic|quantisation|digital_zero|none,,,always,not measured (0.9: analyser v1 does not classify the floor),"What ends the decay: real noise, the quantisation step, exact zeros, or nothing (the decay runs to the end)",measure
+bands,iacc_early,float,,,0,1,series is octave and format is binaural,not binaural or not an octave row,"Early interaural cross-correlation in this band: 0 to 80 ms, lags up to 1 ms",measure
+bands,lateral_fraction,float,,,0,1,series is octave and format is ambisonic with a documented orientation,"not Ambisonic, orientation not documented, or not an octave row",Early lateral fraction in this band,measure
+spaces,space,string,,,,,always,never empty,<dataset>/<slug>,index
+spaces,dataset,string,,,,,always,never empty,The dataset id,index
+spaces,label,string,,,,,always,the dataset gives no readable name,"The name of the space, as the dataset gives it",index
+spaces,space_type,string,,anechoic|circulation|concert_hall|device|domestic|hospitality_retail|industrial|laboratory|large_structure|lecture_classroom|office_meeting|outdoor|public_interior|scale_model|sports_leisure|stairwell|studio_booth|theatre_auditorium|transport_hub|tunnel_underpass|underground|vehicle|virtual|worship|unknown,,,always,never empty,The kind of space (as irs.space_type),registry
+spaces,origin,string,,measured|simulated|device,,,always,never empty,How its IRs came to exist (as irs.origin),registry
+spaces,volume_m3,float,m3,,0,10000000,always,the dataset does not state the volume,Volume of the space,registry
+spaces,licence,string,,,,,always,never empty,"The licence of the space's IRs: its own, else the dataset's",registry
+spaces,redistribute,string,,yes|unaltered_only|no|unknown,,,always,never empty,May its audio be passed on to others? Read from licences.csv,build
+spaces,attribution,string,,,,,always,the licence asks for no attribution line of its own,"The attribution line the licence asks for, as written by the authors",registry
+spaces,same_as,string,,,,,always,not linked to a space of another dataset,The same room in another dataset (a space id). Filled for obvious cases only,registry
+spaces,n_irs,int,,,0,,always,never empty,Rows of this space in irs,build
+spaces,n_irs_found,int,,,0,,always,never empty,IRs of this space found in the pinned files,build
+datasets,dataset,string,,,,,always,never empty,The dataset id,registry
+datasets,name,string,,,,,always,never empty,The dataset's name,registry
+datasets,year,int,,,1950,2100,always,not known,Year of publication,registry
+datasets,origin,string,,measured|simulated|device,,,always,never empty,The default origin of its IRs,registry
+datasets,status,string,,,,,always,never empty,"How far the dataset is: catalogued, pinned, indexed, measured, released, or why not (as rirdb dev status)",build
+datasets,licence,string,,,,,always,never empty (LicenseRef-unspecified when no licence was found),"The dataset's licence: where statements conflict, the strictest",registry
+datasets,licence_statements,int,,,0,,always,never empty,Number of licence statements found (more than one: they conflict; see the registry file),registry
+datasets,use_research,string,,yes|no|unknown,,,always,never empty,As irs.use_research,build
+datasets,use_commercial,string,,yes|no|unknown,,,always,never empty,As irs.use_commercial,build
+datasets,use_training,string,,yes|no|unknown,,,always,never empty,As irs.use_training,build
+datasets,redistribute,string,,yes|unaltered_only|no|unknown,,,always,never empty,As irs.redistribute,build
+datasets,citation_keys,string,,,,,always,the dataset names no paper,The keys of references.bib to cite for this dataset (joined by +),registry
+datasets,homepage,string,,,,,always,none known,The dataset's landing page,registry
+datasets,doi,string,,,,,always,the dataset has no DOI,The dataset's DOI,registry
+datasets,paper_title,string,,,,,the authors describe the dataset in a paper,no paper is recorded,"The title of the paper that describes the dataset (references.bib cites it)",registry
+datasets,paper_url,string,,,,,the authors describe the dataset in a paper,no paper is recorded,The link to that paper,registry
+datasets,reader,string,,,,,the dataset is pinned,not pinned yet,The reader that lists its IRs,registry
+datasets,reader_settings,string,,,,,the dataset is measured,not measured yet,"The reader's settings, as JSON ({} when it has none). With readers.<dataset>, what get needs to cut one IR out of a published file",registry
+datasets,pinned_version,string,,,,,the dataset is pinned,not pinned yet,The version of the files that is pinned,pin
+datasets,analyser,string,,,,,the dataset is measured,not measured yet,The analyser version of its measurements,measure
+datasets,cap,int,,,1,,always,every IR is measured (no sample),"IRs measured per space, condition and layout. Set only for datasets above 100,000 IRs",registry
+datasets,n_irs_stated,int,,,0,,always,the authors state no count,Number of IRs the authors state,registry
+datasets,n_irs_found,int,,,0,,the dataset is indexed,not indexed yet,Number of IRs found in the pinned files,build
+datasets,n_irs,int,,,0,,the dataset is indexed,not indexed yet,Number of rows in irs,build
+datasets,known_issues,string,,,,,always,none recorded,The known issues from the findings log,registry
+datasets,reference_check,string,,checked|published_not_checked|none_published,,,always,never empty,Whether our values were compared with values the authors publish,build
+datasets,reference_median_ratio,float,,,0,10,reference_check is checked,not checked,Median ratio of our value to the published one,build
+downloads,dataset,string,,,,,always,never empty,The dataset id,pin
+downloads,download,string,,,,,always,never empty,The download id (one archive or file),pin
+downloads,source_rank,int,,,1,,always,never empty,"Order to try the sources: 1 is the original, then mirrors, then archive copies",pin
+downloads,url,string,,,,,always,never empty,Where to fetch it,pin
+downloads,size_bytes,int,bytes,,0,,always,not known before the first download,Size of the download,pin
+downloads,checksum,string,,,,,always,not known before the first download,"Checksum of this source's copy (a re-packed mirror differs, so each source has its own)",pin
+downloads,algo,string,,md5|sha256|manifest,,,always,no checksum is known,"The checksum's algorithm: md5 as the repository publishes it, sha256 recorded by rirdb, or manifest (a web folder: every file is checked against files/<dataset>.parquet)",pin
+downloads,version,string,,,,,always,the source names no version,The version the source names,pin
+downloads,extract_to,string,,,,,always,the download is not an archive,"The folder under the dataset's files that the archive is unpacked into (. for the top folder). Kept, so that a later download never moves a path",pin
+files,dataset,string,,,,,always,never empty,The dataset id,pin
+files,file,string,,,,,always,never empty,The path inside the dataset's files (as irs.file),pin
+files,size_bytes,int,bytes,,0,,always,never empty,Size of the file,pin
+files,sha256,string,,,,,always,never empty,"Checksum of the file. Every file is verified, whatever the source",pin
+files,download,string,,,,,always,the file is in no pinned download (added by hand),The download that holds it,pin
+files,role,string,,ir|metadata|document|other_audio|excluded|unreadable,,,always,never empty,"What the file is. other_audio: sweeps, speech, noise. excluded and unreadable give a reason",index
+files,role_reason,string,,,,,role is excluded or unreadable,the role needs no reason,Why the file is excluded or cannot be read,index
+files,n_irs_found,int,,,0,,always,never empty,IRs the reader found in the file,index
+all_irs,ir_id,string,,,,,always,never empty,As irs.ir_id,index
+all_irs,dataset,string,,,,,always,never empty,The dataset id,index
+all_irs,space,string,,,,,always,never empty,As irs.space,index
+all_irs,condition,string,,,,,always,the dataset has one state of the space,As irs.condition,index
+all_irs,source,string,,,,,always,the dataset does not name source positions,As irs.source,index
+all_irs,receiver,string,,,,,always,the dataset does not name receiver positions,As irs.receiver,index
+all_irs,layout,string,,mono_omni|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,As irs.layout,registry
+all_irs,file,string,,,,,always,never empty,As irs.file,index
+all_irs,item,string,,,,,always,the file holds one IR,As irs.item,index
+all_irs,src_x,float,m,,-10000,10000,always,the dataset gives no source position,As irs.src_x,index
+all_irs,src_y,float,m,,-10000,10000,always,the dataset gives no source position,As irs.src_y,index
+all_irs,src_z,float,m,,-10000,10000,always,the dataset gives no source position,As irs.src_z,index
+all_irs,rcv_x,float,m,,-10000,10000,always,the dataset gives no receiver position,As irs.rcv_x,index
+all_irs,rcv_y,float,m,,-10000,10000,always,the dataset gives no receiver position,As irs.rcv_y,index
+all_irs,rcv_z,float,m,,-10000,10000,always,the dataset gives no receiver position,As irs.rcv_z,index
+all_irs,sampled,bool,,,,,always,never empty,True when the IR is in the cap sample and so has a row in irs,index
+readers,ir_id,string,,,,,always,never empty,As irs.ir_id: one row per row of irs,index
+readers,locator,string,,,,,always,never empty,"Where the IR is in the dataset's files, as JSON: the reader's own keys (relpath, or files; a channel or an index inside a container)",index
+readers,channel_roles,string,,,,,always,never empty,"The role of each channel as published, comma-separated (W,X,Y,Z; L,R; capsule names)",index
+readers,reference_role,string,,,,,always,"no channel is named: the analyser's default","The channel the measurements are taken on, where the reader names one: an omni capsule, W, or mean (the average of all capsules)",index
+readers,sh_norm,string,,FuMa|SN3D|N3D,,,"layout is Ambisonic (foa_fuma, foa_ambix, hoa_sh)","not Ambisonic, or the authors do not state it","The normalisation of the Ambisonic channels as published: get converts FuMa and N3D to SN3D (AmbiX)",index

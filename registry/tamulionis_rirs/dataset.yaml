@@ -1,0 +1,47 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tamulionis_rirs
+name: Room-Impulse-Response-dataset (tamulionism)
+year: 2021
+type: measured
+status: catalogued
+content: 50 measured RIRs (2 Genelec 8010A loudspeakers x 25 receiver points on a 0.5 m grid) in one 5.36 x 5.85
+  x 2.86 m room, shared as 44.1 kHz/24-bit WAV files on GitHub.
+fs_hz:
+- 44100
+expected:
+  n_irs: 50
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'yes'
+  images: partial
+  reference_acoustics: 'no'
+  conditions: 'no'
+license:
+  spdx: LicenseRef-unspecified
+  note: There is no LICENSE file; the README only invites people to download the data and use it for their research.
+homepage: https://github.com/tamulionism/Room-Impulse-Response-dataset
+web_check:
+  checked: '2026-10-14'
+  found_as: Room-Impulse-Response-dataset (GitHub, tamulionism)
+  availability: open
+  families:
+  - mono
+  host: GitHub
+  size: 13.6 MB
+  file_formats: WAV (24-bit, 44.1 kHz, 2-channel)
+  institution: Unknown (GitHub user tamulionism; commits by Mantas Tamulionis)
+  country: Unknown
+  evidence_urls:
+  - https://github.com/tamulionism/Room-Impulse-Response-dataset
+  - https://raw.githubusercontent.com/tamulionism/Room-Impulse-Response-dataset/HEAD/README.md
+  - https://api.github.com/repos/tamulionism/Room-Impulse-Response-dataset
+  - https://api.github.com/repos/tamulionism/Room-Impulse-Response-dataset/contents/Source1
+  confidence: high
+  caveats:
+  - No licence; the README only invites use for research.
+  - Small single-room set (50 IRs, about 13.6 MB), with no stated institution.
+  - The WAV files have 2 channels, although the README lists only one measurement microphone (Sonarworks XREF 20).

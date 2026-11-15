@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: ely_lady_chapel
+name: The Acoustics of Ely Cathedral's Lady Chapel
+year: 2021
+type: hybrid
+status: catalogued
+content: 8 measured and 24 simulated B-format RIRs (one source, eight receivers; models of its 14th-century, 1930
+  and 2019 states) of the Lady Chapel of Ely Cathedral, from York's Cathedral Acoustics project.
+expected:
+  n_irs: 32
+  n_rooms: 1
+room_info:
+  geometry: 'no'
+  images: 'no'
+license:
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo licence field
+  - licence: CC-BY-NC-SA-4.0
+    where: Zenodo record description (the LICENCE.txt inside the ZIP was not checked)
+  note: Zenodo's licence field says CC BY 4.0 but the record text says CC BY-NC-SA 4.0 (the LICENCE.txt inside the
+    ZIP was not checked); follow the stricter NC-SA terms.
+homepage: https://zenodo.org/records/5150020
+doi: 10.5281/zenodo.5150020
+web_check:
+  checked: '2026-10-14'
+  found_as: The Acoustics of Ely Cathedral's Lady Chapel (dataset)
+  availability: open
+  families:
+  - ambisonic
+  host: Zenodo
+  size: 125 MB
+  file_formats: WAV (B-format) in ZIP; TXT readme, metadata and licence
+  institution: University of York; Universidad de Sevilla
+  country: UK
+  evidence_urls:
+  - https://zenodo.org/api/records/5150020
+  - https://zenodo.org/records/5150020/preview/CA-PUB-EC-LC-DataSet-v1.0.zip
+  - https://eprints.whiterose.ac.uk/id/eprint/198111/
+  confidence: high
+  caveats:
+  - 'Licence conflict: Zenodo''s licence field says CC BY 4.0 but the description says CC BY-NC-SA 4.0; treat it
+    as non-commercial.'
+  - 'Small set: one source and eight receivers, measured once and simulated for three historical states.'
+  - Sampling rate and positions are not given on the record; see the text files in the ZIP and the I3DA 2021 paper.

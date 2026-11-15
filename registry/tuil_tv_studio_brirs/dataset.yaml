@@ -1,0 +1,46 @@
+# Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
+id: tuil_tv_studio_brirs
+name: Position-dynamic auditory AR BRIRs (TV studio)
+year: 2018
+type: measured
+status: catalogued
+content: KEMAR BRIRs for six loudspeakers (5.0 surround plus one) at nine positions in a 4 x 4 m area, head turned
+  360° in 5° steps, in a TU Ilmenau TV studio (19.5 x 11.5 x 5.5 m, RT60 about 0.7 s); MATLAB files.
+expected:
+  n_irs: 3888
+  n_rooms: 1
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  geometry: 'no'
+  materials: 'no'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'no'
+license:
+  spdx: CC-BY-NC-4.0
+homepage: https://zenodo.org/records/1321996
+doi: 10.5281/zenodo.1321996
+web_check:
+  checked: '2026-10-14'
+  found_as: Measured BRIRs for a position-dynamic auditory augmented reality application
+  availability: open
+  families:
+  - binaural
+  host: Zenodo
+  size: 5.7 GB
+  file_formats: MAT (MATLAB) in 9 ZIPs; MATLAB loader script; JPG photo and PNG layout scheme
+  institution: TU Ilmenau (with minaLORD)
+  country: Germany
+  evidence_urls:
+  - https://zenodo.org/records/1321996
+  - https://zenodo.org/api/records/1321996
+  - https://zenodo.org/records/1321996/files/description.txt
+  - https://zenodo.org/records/1321996/files/BRIR_loader.m
+  - https://zenodo.org/records/1321996/preview/101.zip
+  confidence: high
+  caveats:
+  - Non-commercial licence (CC BY-NC 4.0).
+  - Nine ZIPs of about 640 MB each, MATLAB files only; the sampling rate is not stated on the record.
+  - 'IR count derived from the stated design: 6 loudspeakers x 9 positions x 72 head angles.'
