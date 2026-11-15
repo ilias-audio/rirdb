@@ -3,17 +3,18 @@ id: eurecat_arir
 name: Ambisonic Room Impulse Responses (Eurecat)
 year: 2018
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1417727"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"groups": [{"pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>.+?)_eigenmike\\.sofa$", "pattern_on": "path", "capture_format": "hoa_sh", "sh_norm": "SN3D"}, {"pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>(?!.*_eigenmike).+?)(?:_ambeo|_soundfield)?\\.sofa$", "pattern_on": "path", "capture_format": "foa_ambix", "sh_norm": "SN3D", "roles": ["W", "Y", "Z", "X"]}]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Ambisonic RIRs in SOFA (AmbisonicsDRIR convention) from rooms and outdoor spots of the Fundació Miró (Barcelona),
   the Alte Pinakothek (Munich) and St Andrews Castle (Scotland).
 expected:
   n_rooms: 20
 room_info:
   images: 'no'
+  where: 'the SOFA files'' metadata and the paper'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://zenodo.org/records/1417727

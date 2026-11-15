@@ -1,3 +1,5 @@
 relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
-Photo Collage.pdf	https://zenodo.org/api/records/20037928/files/Photo%20Collage.pdf/content	2043810	md5	ecc6930688cdb163d182972de7f75783	zenodo:20037928	2026-11-15T20:37:49Z	-
-Measurement Overview.jpg	https://zenodo.org/api/records/20037928/files/Measurement%20Overview.jpg/content	712873	md5	56058023ed7a3448b4d79ef24efb4fba	zenodo:20037928	2026-11-15T20:37:49Z	-
+19496982/ROAM-JIL-Omnidirectional.sofa	https://zenodo.org/api/records/19496982/files/ROAM-JIL-Omnidirectional.sofa/content	71015319	md5	bfa34477ad59db9e763b9fe9d6e80c0e	zenodo:19496982	2026-11-15T22:17:31Z	-
+19497219/ROAM-JIL-Open.zip	https://zenodo.org/api/records/19497219/files/ROAM-JIL-Open.zip/content	1365587381	md5	535dfaa51d529546b9289652dc100ab6	zenodo:19497219	2026-11-15T22:17:31Z	19497219/ROAM-JIL-Open
+19497219/ROAM-JIL-Closed.zip	https://zenodo.org/api/records/19497219/files/ROAM-JIL-Closed.zip/content	1365399022	md5	a30ca31063e3dc413281648dcb8b601e	zenodo:19497219	2026-11-15T22:17:31Z	19497219/ROAM-JIL-Closed
+19497219/ROAM-JIL-Gallery.zip	https://zenodo.org/api/records/19497219/files/ROAM-JIL-Gallery.zip/content	221428332	md5	1e3cbf2338f3a577dc9d6105ddd66e37	zenodo:19497219	2026-11-15T22:17:31Z	19497219/ROAM-JIL-Gallery

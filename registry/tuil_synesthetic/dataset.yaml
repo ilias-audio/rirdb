@@ -3,11 +3,12 @@ id: tuil_synesthetic
 name: Synesthetic Room Impulse Responses Dataset
 year: 2025
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+space_type: virtual
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["17503961"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^(?P<room>RIR_\\d+)_(?P<cond>case\\d+)\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 17,640 simulated shoebox-room RIRs (48 kHz, 3 s WAV) with varied size, source-receiver positions and band
   absorption, made with pyroomacoustics (image-source plus ray tracing) to train energy-decay-curve prediction.
 fs_hz:
@@ -24,6 +25,7 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'the Zenodo record''s description'
 license:
   spdx: CC-BY-4.0
   note: The RIRs are CC BY 4.0, but the room-feature CSV that describes them sits in a GitHub repo whose LICENSE

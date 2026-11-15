@@ -3,11 +3,11 @@ id: tyndaris_theatre
 name: Tyndaris ancient theatre IRs
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["7928804"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^(?P<src>S\\d)_(?P<rcv>R\\d)_(?P<src_2>firecracker|dodecahedron)", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 26 WAV IRs measured in September 2015 in the ancient open-air theatre of Tyndaris, Sicily, with a dodecahedron
   loudspeaker (2 source positions) and firecrackers (1 position) at up to 9 receivers.
 expected:
@@ -17,6 +17,7 @@ room_info:
   volume: 'no'
   positions: partial
   reference_acoustics: partial
+  where: 'the Zenodo record''s description'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/7928804

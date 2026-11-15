@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+sauna-irs,"Sauna, TUAS building, Aalto University, Espoo",sports_leisure,,,,,,,,"measured as the sauna warmed up; channel 1 the near-field and channel 2 the far-field microphone; condition 1s marks the first 998 IRs, measured with 1 s sweeps",

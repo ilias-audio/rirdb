@@ -3,11 +3,11 @@ id: sauna_irs
 name: Dataset of sauna impulse responses
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["14851522"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.wav", "pattern": "^(?:(?P<cond>1s)_)?IRs_02_2025/", "room_from": "dataset", "roles": {"2": ["near", "far"]}, "channel_formats": {"2": "array_raw"}, "reference_roles": {"2": "near"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 5,199 IRs measured with a loudspeaker and two microphones in a sauna at Aalto University (Espoo) as it
   warmed up, with logs from seven temperature and humidity sensors, a position diagram and a photo.
 expected:
@@ -19,6 +19,7 @@ room_info:
   positions: partial
   images: 'yes'
   conditions: 'yes'
+  where: 'sauna.png (positions) and the temperature and humidity table (xlsx)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/14851522

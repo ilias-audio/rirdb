@@ -3,11 +3,11 @@ id: oldenburg_pub
 name: Pub environment (Oldenburg)
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5886987"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "Pub/*_IR/**/*.wav", "pattern": "^Pub/(?:HATS|FOA|OMNI)_IR/R\\d/IR_pos-(?P<src>[^_]+)_.+?_(?P<rcv>R\\d)_(?:HATS|FOA|omni\\d?)", "room_from": "dataset", "sh_norm": "FuMa", "roles": {"2": ["L", "R"]}, "channel_formats": {"2": "binaural", "4": "foa_fuma"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 'Audio-visual model of a pub in Oldenburg with measured IRs for one listening scene: head-and-torso binaural,
   first-order Ambisonic (tetrahedral mic) and omni, plus geometry, photos and a positions table.'
 expected:
@@ -18,6 +18,7 @@ room_info:
   materials: partial
   positions: 'yes'
   images: 'yes'
+  where: 'Pub Environment Description Document v0.6.pdf, MISC/20-10_OLs-positions.xlsx, ACOUSTIC_MODEL/'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://zenodo.org/records/5886987

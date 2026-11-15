@@ -3,11 +3,11 @@ id: fabian_21ch_brirs
 name: FABIAN BRIRs of a 21-channel loudspeaker array
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["19683680"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset", "room_default": "tu-studio-small"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: FABIAN head-and-torso simulator BRIRs for 21 loudspeakers of the TU Studio Small dome at TU Berlin, with
   the head turned on the torso (yaw ±60°, pitch ±30°, 2° steps); one SOFA file.
 expected:
@@ -15,6 +15,7 @@ expected:
 room_info:
   positions: partial
   images: 'no'
+  where: 'the Zenodo record and the SOFA file''s metadata'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/19683680

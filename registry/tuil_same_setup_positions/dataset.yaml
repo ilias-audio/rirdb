@@ -3,11 +3,11 @@ id: tuil_same_setup_positions
 name: 'BRIRs: same listener-source setup at different positions'
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["163617"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "^confroom_(?P<rcv>pos\\d)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR BRIRs at five positions in a small conference room (10.3 x 5.8 x 3.1 m, RT 0.65 s), with a Genelec
   loudspeaker kept in the same relation to the listener and the head turned in 5° steps; SOFA files.
 expected:
@@ -20,6 +20,7 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'Room description.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/163617

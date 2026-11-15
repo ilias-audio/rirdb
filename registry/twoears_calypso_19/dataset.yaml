@@ -3,11 +3,11 @@ id: twoears_calypso_19
 name: 'Two!Ears KEMAR BRIRs: Calypso 19-loudspeaker array'
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["160754"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "^QU_KEMAR_Calypso_loudspeaker_array(?:_(?P<cond>AKG_K601))?\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR BRIRs for each of 19 loudspeakers in a linear array (about 15 cm apart) in TU Berlin's Calypso studio
   room, head turned -90° to 90° in 1° steps, repeated with AKG K601 headphones worn.
 expected:
@@ -19,6 +19,7 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'measurement_setup_sketch.pdf'
 license:
   spdx: CC-BY-SA-4.0
   note: Zenodo lists CC BY-SA 4.0 while the Two!Ears database documentation lists CC BY-SA 3.0 for the same files;

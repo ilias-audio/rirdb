@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+low,"Simulated low-reverberation room, rendered for DTU's AVIL loudspeaker array",virtual,virtual,,,,,,,LoRA rendering to the 64 loudspeakers of DTU's Audio-Visual Immersion Lab,
+mid,"Simulated mid-reverberation room, rendered for DTU's AVIL loudspeaker array",virtual,virtual,,,,,,,LoRA rendering to the 64 loudspeakers of DTU's Audio-Visual Immersion Lab,
+high,"Simulated high-reverberation room, rendered for DTU's AVIL loudspeaker array",virtual,virtual,,,,,,,LoRA rendering to the 64 loudspeakers of DTU's Audio-Visual Immersion Lab,

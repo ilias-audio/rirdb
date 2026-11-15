@@ -3,11 +3,11 @@ id: tuil_eigenmike_kemar
 name: Eigenmike DRIRs and KEMAR BRIRs in a small conference room
 year: 2019
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["2593714"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"glob": "BRIR_SOFAfiles/*.sofa", "pattern": "^(?P<rcv>Pos\\d)_LS_(?P<cond>\\d+)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR BRIRs (5° steps), 32-channel Eigenmike DRIRs and omni RIRs at 5 listening positions in a 182 m³ conference
   room, loudspeaker 2.5 m away facing the listener or turned away, plus 360° photos.
 fs_hz:
@@ -24,6 +24,7 @@ room_info:
   images: 'yes'
   reference_acoustics: 'yes'
   conditions: 'no'
+  where: 'the Zenodo record''s description'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/2593714

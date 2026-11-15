@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+concert,Virtual concert scene reproduced on loudspeakers,virtual,virtual,,,,,,,"KEMAR in the Oldenburg lab; conditions are the 2D/3D rendering methods",
+speech,Virtual speech scene reproduced on loudspeakers,virtual,virtual,,,,,,,"KEMAR in the Oldenburg lab; conditions are the 2D/3D rendering methods",
+street,Virtual street scene reproduced on loudspeakers,virtual,virtual,,,,,,,"KEMAR in the Oldenburg lab; conditions are the 2D/3D rendering methods",

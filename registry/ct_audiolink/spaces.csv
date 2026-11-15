@@ -1,0 +1,8 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+aka,"Kuyumjoglou Museum, room A (Thrace)",public_interior,,,,,,,,the record's code AKA,
+akb,"Kuyumjoglou Museum, room B (Thrace)",public_interior,,,,,,,,"code AKB; not in the record's list, read as the museum's second room like IMA and IMB",
+am,AM (a heritage building of Thrace the record does not name),unknown,,,,,,,,the record lists no building for the code AM,
+ep,Church of Panagia (Thrace),worship,,,,,,,,the record's code EP,
+gj,Yeni Mosque (Thrace),worship,,,,,,,,the record's code GJ (Yenni Mosque),
+ima,"Imaret of Komotini, room A",public_interior,,,,,,,,,
+imb,"Imaret of Komotini, room B",public_interior,,,,,,,,,

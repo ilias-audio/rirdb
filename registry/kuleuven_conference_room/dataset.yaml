@@ -3,11 +3,11 @@ id: kuleuven_conference_room
 name: U-shaped Conference Room RIRs (KU Leuven / Televic)
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["19068723"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset", "channel_formats": {"23": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^src(?P<src>\\d)_rirs_(?P<cond>up|towards_desk|towards_center)_(?P<cond_2>with|without)_curtains\\.wav$", "room_from": "dataset", "channel_formats": {"23": "array_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: RIRs from 5 source positions to 23 microphone positions in a U-shaped conference room, for 3 microphone
   configurations, with and without curtains; raw recordings and sweeps included as WAV.
 expected:
@@ -16,6 +16,7 @@ room_info:
   positions: 'yes'
   images: partial
   conditions: 'yes'
+  where: 'README.pdf and positions.csv'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/19068723

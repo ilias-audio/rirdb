@@ -3,11 +3,11 @@ id: tuil_individual_brtfs
 name: Measured Binaural Room Transfer Functions of Individuals
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["61083"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "^(?P<rcv>\\d{3})_(?P<room>[A-Za-z0-9]+)_(?P<cond>\\d+)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: BRIRs of 25 people measured at TU Ilmenau in a listening lab and an empty seminar room (182 m³, T60 2.0
   s), plus for some people an acoustically enhanced seminar room and a small lecture hall; SOFA files.
 expected:
@@ -21,6 +21,7 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'the Zenodo record''s description'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://zenodo.org/records/61083

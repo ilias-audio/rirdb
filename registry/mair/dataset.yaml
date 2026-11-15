@@ -3,11 +3,11 @@ id: mair
 name: MAIR (Microphone Array Impulse Response) library
 year: 2017
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["2639677"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "channel_formats": {"2": "binaural"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*/*Arrays/**/*.wav", "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|/AmbisonicsDecoded/", "join": "_(?:M(?P<ch>\\d+)_)?S\\d+_(?P<ch_2>[A-Za-z]+)\\.wav$", "pattern": "/(?P<cond>[^/]+)/[A-Za-z]+_[^_]+_(?:M\\d+_)?(?P<src>S\\d+)_[A-Za-z]+\\.wav$", "room_from": "dataset", "format_from_regex": {"Bformat/": "foa_fuma", "KU100": "binaural"}, "sh_norm": "FuMa", "channel_formats": {"2": "stereo"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Impulse responses from 13 stage loudspeakers in St Paul's concert hall, Huddersfield, captured with 39
   microphone setups (stereo pairs to 9-channel 3D arrays, dummy head, FOA), plus an 8-speaker 360° layout.
 fs_hz:
@@ -23,6 +23,7 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'MAIR Technical Descriptions and User Guide.pdf'
 license:
   spdx: CC-BY-4.0
   note: Zenodo's licence field reads 'Other (Open)', but the README, licence.txt and the user guide all state CC

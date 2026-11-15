@@ -1,0 +1,5 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+1-printerroom,"Printer room, University of Milan",office_meeting,,,,,,,,,
+2-meetingroom,"Meeting room, University of Milan",office_meeting,,,,,,,,,
+3-classroom,"Classroom, University of Milan",lecture_classroom,,,,,,,,,
+4-undergroundparking,"Underground car park, University of Milan",underground,,,,,,,,,

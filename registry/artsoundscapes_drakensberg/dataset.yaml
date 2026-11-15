@@ -3,7 +3,11 @@ id: artsoundscapes_drakensberg
 name: Artsoundscapes Drakensberg rock-art IRs
 year: 2024
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
+access: open
+wave: 3   # tier A
+source: {kind: dataverse, records: ["dataverse.csuc.cat/doi:10.34810/data1398"]}
+adapter: {"name": "wav_tree", "params": {"glob": "SA_Omni_IR/*.wav", "pattern": "/(?P<room>[A-Za-z]+[0-9IV]*)_T\\d+_(?P<src>S\\d{2})\\d?_?(?P<rcv>R\\d+)_W_(?:[Tt]ake|test)\\d+_rec\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 140 mono IRs measured in April-May 2022 at 27 rock-art sites in the Kamberg and Giant's Castle areas of
   the Drakensberg, South Africa (MicW N201 mic, EASERA), as WAV and .etm files with a parameter table.
 expected:
@@ -17,6 +21,7 @@ room_info:
   positions: partial
   images: 'no'
   reference_acoustics: 'yes'
+  where: 'Readme.txt and SA_AcParam.xlsx'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://dataverse.csuc.cat/dataset.xhtml?persistentId=doi:10.34810/data1398

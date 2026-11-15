@@ -3,11 +3,11 @@ id: datares
 name: DataRES
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15737243"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 2, "condition_level": 4, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "DataRES/data/**/*.wav", "pattern": "/data/(?P<room>GLivelab-Helsinki|GLivelab-Tampere|ImmersiveLab|Otala)(?:_(?P<cond>[A-Z0-9_]+))?/RIRs/(?P<src>Stage|System)(?P<rcv>System|Audience)(?:-(?P<rcv_2>Array|Mono|Binaural))?/(?P<src_2>E\\d+)_(?P<rcv_3>R\\d+)_(?P<rcv_4>M\\d+)\\.wav$", "format_from_regex": {"-Binaural/": "binaural", "-Array/": "array_raw"}, "roles": {"1": ["omni"], "2": ["L", "R"]}, "channel_formats": {"1": "mono_omni", "2": "binaural", "4": "array_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: RIRs measured in rooms with an active reverberation enhancement system (GLivelab Helsinki and Tampere,
   ImmersiveLab, Otala), split into stage, system-microphone, loudspeaker and audience paths.
 expected:
@@ -16,6 +16,7 @@ room_info:
   geometry: partial
   positions: 'yes'
   images: partial
+  where: 'DataRES/data/<room>/Images (floor plans) and RIRs/*/rirsInfo.json'
 license:
   spdx: CC-BY-NC-SA-2.0
   note: Zenodo lists CC BY-NC-SA 2.0 for every version, while Aalto's research portal lists CC BY-NC-SA 4.0; both

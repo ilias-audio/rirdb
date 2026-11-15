@@ -3,11 +3,11 @@ id: airchive
 name: AIRCHIVE IR library
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["23091674"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(excitation|raw)/", "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*/ir/*.wav", "pattern": "/ir/(?P<room>DK|FB|TN)_IR_(?P<src>SWP|BAL)_(?P<rcv>\\d+)_(?:mono|xy)\\.wav$", "roles": {"1": ["omni"], "2": ["L", "R"]}, "channel_formats": {"1": "mono_omni", "2": "stereo"}, "preferred_regex": "_mono\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 24 sine-sweep and balloon IRs (each mono and XY stereo, 48 kHz) from the Salzburg Cathedral crypt, a disused
   railway tunnel and the Schloss Frohnburg entrance hall, with photos and acoustic parameters.
 fs_hz:
@@ -24,6 +24,7 @@ room_info:
   images: 'yes'
   reference_acoustics: 'yes'
   conditions: partial
+  where: 'README.md (sites, dates, positions) and TECHNICAL_NOTE.md; data/metadata.json'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/23091674

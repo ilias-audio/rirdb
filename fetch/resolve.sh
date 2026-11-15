@@ -66,10 +66,48 @@ resolve_figshare() {
     done
 }
 
+# Dataverse: records are "<host>/<persistent id>", e.g. dataverse.csuc.cat/doi:10.34810/data151.
+resolve_dataverse() {
+    local rec host pid
+    for rec in $(split_list "$D_RECORDS"); do
+        host=${rec%%/*}; pid=${rec#*/}
+        curl_json "https://$host/api/datasets/:persistentId/?persistentId=$pid" \
+        | jq -r --arg host "$host" '.data.latestVersion as $v | $v.files[] | select(.restricted | not)
+              | [((.directoryLabel // "") | if . == "" then "" else . + "/" end) + (.dataFile.originalFileName // .dataFile.filename),
+                 "https://\($host)/api/access/datafile/\(.dataFile.id)?format=original",
+                 ((.dataFile.originalFileSize // .dataFile.filesize)|tostring),
+                 (if .dataFile.originalFileName then "sha256", "-" else "md5", .dataFile.md5 end), "dataverse:\($v.datasetPersistentId // "")@\($v.versionNumber).\($v.versionMinorNumber)"] | @tsv' \
+        | while IFS=$'\t' read -r name url size algo checksum version; do
+            selected "$name" || continue
+            emit "$(rel_for "$rec" "$name")" "$url" "$size" "$algo" "$checksum" "$version"
+        done
+    done
+}
+
+# Mendeley Data: records are "<dataset id>@<version>", e.g. s455ww48zp@1; every folder is listed.
+resolve_mendeley() {
+    local rec id ver api=https://data.mendeley.com/public-api/datasets folder fname
+    for rec in $(split_list "$D_RECORDS"); do
+        id=${rec%@*}; ver=${rec#*@}
+        { echo "root	"; curl_json "$api/$id/folders/$ver" | jq -r '.[] | [.id, .name] | @tsv'; } \
+        | while IFS=$'\t' read -r folder fname; do
+            curl_json "$api/$id/files?folder_id=$folder&version=$ver" \
+            | jq -r --arg dir "$fname" --arg v "mendeley:$id@$ver" '.[] | [(if $dir == "" then "" else $dir + "/" end) + .filename,
+                  .content_details.download_url, (.size|tostring), "sha256", (.content_details.sha256_hash // "-"), $v] | @tsv'
+        done \
+        | while IFS=$'\t' read -r name url size algo checksum version; do
+            selected "$name" || continue
+            emit "$(rel_for "$rec" "$name")" "$url" "$size" "$algo" "$checksum" "$version"
+        done
+    done
+}
+
+# Plain links. A link whose file name is not in its path names it after "#", e.g. .../download#cube.zip
 resolve_http() {
     local url name
     for url in $(split_list "$D_URLS"); do
         name=$(urldecode "$(basename "${url%%\?*}")")
+        [[ "$url" == *"#"* ]] && { name=${url##*#}; url=${url%%#*}; }
         selected "$name" || continue
         emit "$name" "$url" "$(http_size "$url")" "sha256" "-" "$(http_version "$url")"
     done
@@ -127,6 +165,8 @@ resolve_one() {
             depositonce) resolve_depositonce ;;
             figshare) resolve_figshare ;;
             http) resolve_http ;;
+            dataverse) resolve_dataverse ;;
+            mendeley) resolve_mendeley ;;
             github) resolve_github ;;
             wget_mirror) resolve_wget_mirror ;;
             *) die "$D_ID: source kind '$D_KIND' not implemented yet" ;;

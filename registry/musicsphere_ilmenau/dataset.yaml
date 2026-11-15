@@ -3,10 +3,11 @@ id: musicsphere_ilmenau
 name: MusicSphere ROAM-JIL (St. Jakobus Church, Ilmenau)
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
-source: {kind: zenodo, records: ["20037928"]}
+source: {kind: zenodo, records: ["19496982", "19497219"]}   # Part 1 (omni RIRs) and Part 2 (spatial RIRs); 20037928 is the umbrella record, without audio
+adapter: {"name": "sofa", "params": {"groups": [{"glob": "19496982/*.sofa", "capture_format": "array_raw", "room_from": "dataset", "room_default": "st-jakobus-ilmenau"}, {"glob": "19497219/**/*.sofa", "pattern": "ROAM-JIL-(?P<cond>Closed|Open|Gallery)-(?P<rcv>\\d+)\\.sofa$", "capture_format": "sdm_array", "room_from": "dataset", "room_default": "st-jakobus-ilmenau"}]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Omnidirectional RIRs (9 mics in and around the organ) and robot-measured spatial RIRs (7-mic array, 43
   positions, rear glass wall open and closed) in St. Jakobus Church, Ilmenau; SOFA files.
 expected:
@@ -17,6 +18,7 @@ room_info:
   images: 'yes'
   reference_acoustics: 'no'
   conditions: partial
+  where: 'Measurement Overview.jpg and Photo Collage.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/20037928

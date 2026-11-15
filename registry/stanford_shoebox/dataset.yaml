@@ -3,11 +3,11 @@ id: stanford_shoebox
 name: Shoe-box room IR generation comparison (Stanford)
 year: 2025
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15739328"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "Impulse Responses/**/*.wav", "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|/_Archive/|/EQs/|/Listening Study IRs/|_ireq\\.wav$|_irss\\.wav$", "pattern": "^Impulse Responses/(?P<cond>[^/]+)/(?:[^/]+/)?(?:(?P<cond_2>[PN])_)?(?P<rcv>\\d{3})_", "room_from": "dataset", "ir_kind_from_regex": {"/(Image Method|Modal|Hybrid FEM\\+IM|SDN|Sabine|Ray Tracing)/": "virtual"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Measured (balloon pop, sine sweep) and synthesised IRs of a 6.1 x 12.2 x 6.1 m racquetball court at Stanford,
   from image method, ODEON ray tracing, SDN, FEM, modal and Sabine-NED models, for a method comparison.
 fs_hz:
@@ -22,6 +22,7 @@ room_info:
   materials: 'yes'
   positions: 'yes'
   reference_acoustics: partial
+  where: 'Impulse Responses/Dictionary.txt and Guide to Source Receiver Locations.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/15739328

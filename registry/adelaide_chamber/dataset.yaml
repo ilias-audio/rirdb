@@ -3,11 +3,11 @@ id: adelaide_chamber
 name: Adelaide reverberation chamber RIRs on a 50 cm grid
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: figshare, records: ["32109118"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset", "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^test2_RIR_(?P<rcv>\\d+)\\.wav$", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 63 room impulse responses measured with an ambisonic microphone on a mobile robot at 50 cm grid points
   in Adelaide University's reverberation chamber, plus the raw A-format and B-format sweep recordings.
 fs_hz:
@@ -24,6 +24,7 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'the grid diagram (grid diagram 50cmx50cm.png); the paper gives the chamber'
 license:
   spdx: CC-BY-4.0
 homepage: https://adelaide.figshare.com/articles/media/Raw_A-format_ambisonic_recording_converted_B-format_10-s_exponential_sine_sweep_and_63_extracted_spatial_room-impuse_responses_RIRs_from_the_reverberation_chamber_of_Adelaide_University/32109118

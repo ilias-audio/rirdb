@@ -3,11 +3,11 @@ id: oldenburg_2d_3d
 name: Oldenburg 2D/3D rendering comparison IRs
 year: 2023
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["10037482"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "IRs/IRs/ir_*.wav", "pattern": "/ir_(?P<room>concert|speech|street)_(?P<cond>.+)_(?P<src>[^_]+)\\.wav$", "roles": {"2": ["L", "R"]}, "channel_formats": {"2": "binaural"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 24 binaural KEMAR IRs of virtual concert, speech and street scenes reproduced with eight 2D/3D loudspeaker
   rendering methods (HOA, VBAP, NSP) in an Oldenburg lab, plus recordings of the scenes.
 fs_hz:
@@ -24,6 +24,7 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: partial
+  where: 'the Zenodo record and the paper'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/10037482

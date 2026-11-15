@@ -11,7 +11,7 @@ import numpy as np
 import soundfile as sf
 
 from rirdb.adapters.base import IRRecord, slug
-from rirdb.adapters.wav_tree import DEFAULT_EXCLUDE
+from rirdb.adapters.wav_tree import DEFAULT_EXCLUDE, field
 
 
 # ---------------------------------------------------------------- OpenAIR
@@ -204,6 +204,23 @@ class OpenSLR28Adapter:
         return x.T, int(fs)
 
 
+def sofa_axes(d) -> str:
+    """The axes of a SOFA Data.IR as letters, from its netCDF dimension names: "MRN", "MRNE" or "MREN"."""
+    try:
+        names = "".join(d.dims[k][0].name.strip("/")[:1].upper() for k in range(d.ndim))
+    except Exception:          # no dimension scales attached: the SOFA 1 order
+        names = ""
+    if sorted(names) == sorted("MRNE"[:d.ndim]) and names[:2] == "MR":
+        return names
+    return "MRNE"[:d.ndim]
+
+
+def sofa_shape(d) -> tuple:
+    """Data.IR's shape as (M, R, N) or (M, R, N, E), whatever order the file stores its axes in."""
+    order = sofa_axes(d)
+    return tuple(d.shape[order.index(a)] for a in "MRNE"[:d.ndim])
+
+
 def spherical_to_xyz(p: np.ndarray) -> np.ndarray:
     """SOFA spherical positions (azimuth and elevation in degrees, distance in metres) -> x, y, z in metres."""
     az, el, r = np.radians(p[:, 0]), np.radians(p[:, 1]), p[:, 2]
@@ -222,8 +239,12 @@ class SofaAdapter:
       sh_norm, orientation_known, m_select (list of m indices, e.g. [0] = frontal head
       orientation for rotation-dense BRIR sets), first_per_source (keep only the first
       measurement at each distinct SourcePosition: drops repeated measurements), m_is (src
-      (default) | rcv: what the measurement index enumerates), ir_kind. An all-zero
+      (default) | rcv: what the measurement index enumerates; with a pattern's rcv, the two are
+      joined, e.g. a position and a head orientation), pattern_on (name (default) | path: the
+      relative path, so folders can name the room or source), ir_kind. An all-zero
       SourcePosition is treated as unpublished.
+    The axes of Data.IR come from its netCDF dimension names (M, R, N, E in any order): SOFA 2
+    conventions such as MultiSpeakerBRIR store (M, R, E, N).
     Loading reads one slice lazily via h5py.
     """
 
@@ -241,13 +262,13 @@ class SofaAdapter:
                     continue
                 g = {}
                 if pattern is not None:
-                    m_ = pattern.search(f.name)
+                    m_ = pattern.search(rel if p.get("pattern_on") == "path" else f.name)
                     if m_ is None:
                         continue
                     g = m_.groupdict()
                 try:
                     with h5py.File(f, "r") as h:
-                        shape = h["Data.IR"].shape
+                        shape = sofa_shape(h["Data.IR"])
                         fs = int(np.ravel(h["Data.SamplingRate"][()])[0])
                         src = np.asarray(h["SourcePosition"]) if "SourcePosition" in h else None
                         src_type = h["SourcePosition"].attrs.get("Type", b"cartesian") if src is not None else b""
@@ -267,15 +288,16 @@ class SofaAdapter:
                 roles = p.get("roles") or [f"mic_{i}" for i in range(R)]
                 if len(roles) != R:
                     roles = [f"mic_{i}" for i in range(R)]
-                room_from = p.get("room_from") or ("pattern" if g.get("room") else "file")
+                room_from = p.get("room_from") or ("pattern" if field(g, "room") else "file")
                 if room_from == "pattern":
-                    room = g.get("room")
+                    room = field(g, "room")
                 elif room_from == "dataset":
                     room = p.get("room_default") or dataset.id
                 elif room_from == "parent":
                     room = Path(rel).parent.name
                 else:
                     room = Path(rel).stem
+                rcv_m = p.get("m_is") == "rcv"
                 ms = p.get("m_select") or range(M)
                 first_per_source = bool(p.get("first_per_source")) and src is not None and src.ndim == 2 \
                     and src.shape[0] == M
@@ -294,15 +316,17 @@ class SofaAdapter:
                         key = f"{rel}#{m}" + (f"#{e}" if e is not None else "")
                         yield IRRecord(
                             dataset_id=dataset.id, local_key=key, room_key=slug(room),
+                            room_label=g.get("label") or str(room).replace("_", " "),
                             capture_format=p.get("capture_format", "array_raw"), channel_roles=tuple(roles), fs=fs,
                             n_samples=int(N), locator={"relpath": rel, "container": "sofa", "m": int(m), "e": e},
-                            src_key=f"e{e}" if e is not None else (g.get("src") or (
+                            src_key=field(g, "src") or (f"e{e}" if e is not None else None) or ((
                                 "src_" + "_".join(f"{v:g}" for v in np.round(src[m], 2)) if first_per_source
                                 else None if p.get("m_is") == "rcv" else f"m{m}")),
-                            rcv_key=g.get("rcv") or (f"m{m}" if e is not None or p.get("m_is") == "rcv" else None),
-                            condition_key=g.get("cond"), src_pos=sp, rcv_pos=lp, sh_norm=p.get("sh_norm"),
+                            rcv_key="_".join(k for k in (field(g, "rcv"), f"m{m}" if e is not None or rcv_m else None)
+                                             if k) or None,
+                            condition_key=field(g, "cond"), src_pos=sp, rcv_pos=lp, sh_norm=p.get("sh_norm"),
                             orientation_known=bool(p.get("orientation_known", True)),
-                            room_label=str(room).replace("_", " "), ir_kind=p.get("ir_kind", "room"),
+                            ir_kind=p.get("ir_kind", "room"),
                             extra={"sofa_conventions": conv, "reference_role": p.get("reference_role"),
                                    "preferred": bool(p.get("preferred", True))})
 
@@ -311,7 +335,13 @@ class SofaAdapter:
 
         with h5py.File(root / locator["relpath"], "r") as h:
             d = h["Data.IR"]
-            x = d[locator["m"], :, :, locator["e"]] if locator.get("e") is not None else d[locator["m"]]
+            order = sofa_axes(d)
+            if locator.get("e") is None:
+                x = d[locator["m"]]
+            elif order.index("E") == 2:                 # (M, R, E, N)
+                x = d[locator["m"], :, locator["e"], :]
+            else:                                       # (M, R, N, E)
+                x = d[locator["m"], :, :, locator["e"]]
             fs = int(np.ravel(h["Data.SamplingRate"][()])[0])
         return np.atleast_2d(np.asarray(x, dtype=np.float64)), fs
 

@@ -1,0 +1,5 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+glivelab-helsinki,GLivelab Helsinki,laboratory,,,,,,,,"a room with an active reverberation enhancement system; sources and receivers are named by path (stage, system, audience)",
+glivelab-tampere,GLivelab Tampere,laboratory,,,,,,,,"a room with an active reverberation enhancement system; sources and receivers are named by path (stage, system, audience)",
+immersivelab,ImmersiveLab,laboratory,,,,,,,,"a room with an active reverberation enhancement system; conditions T1 to T3 are its settings",
+otala,Otala,laboratory,,,,,,,,"a room with an active reverberation enhancement system; conditions C1, P1, T1 ... are its settings",

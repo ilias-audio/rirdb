@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+IEM_ProduktionsStudio_KU100.zip	https://phaidra.kug.ac.at/api/object/o:76742/comp/COMP000001	144992453	sha256	4b024905290cf74ff85ac1ed090731f0350be8fef4046e89523ae7856ae84702	etag=;last-modified=	2026-11-15T22:17:31Z	.
+ReadME_IEMPS.pdf	https://phaidra.kug.ac.at/api/object/o:76742/comp/COMP000002	252523	sha256	49b2ca66712ed1f090538c31a4816164d3b0673fec84fb2f4e230e6b291eacce	etag=;last-modified=	2026-11-15T22:17:31Z	-

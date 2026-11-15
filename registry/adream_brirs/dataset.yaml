@@ -3,11 +3,11 @@ id: adream_brirs
 name: BRIRs of an apartment-like environment (ADREAM)
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["49357"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"glob": "BRIRs/*.sofa", "exclude": "(^|/)(__MACOSX|\\._)|_posall\\.sofa$", "pattern": "_(?P<rcv>pos\\d|trajectory)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 'KEMAR dummy-head BRIRs in a mock apartment at LAAS-CNRS, Toulouse: 4 loudspeakers x 4 listener positions
   with head turns of ±78° in 2° steps, plus 20 positions along a path; SOFA files.'
 fs_hz:
@@ -22,6 +22,7 @@ room_info:
   positions: 'yes'
   images: 'yes'
   reference_acoustics: 'no'
+  where: 'doc/ (photos) and the SOFA files'' metadata'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/49357

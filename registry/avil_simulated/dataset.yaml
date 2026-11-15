@@ -3,11 +3,12 @@ id: avil_simulated
 name: AVIL simulated IR database and scene constructor (DTU)
 year: 2017
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+space_type: virtual
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["10834971"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma", "8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"glob": "**/irdb/lora_avil_*.sofa", "pattern": "^lora_avil_(?P<room>low|mid|high)_", "capture_format": "array_raw"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Simulated impulse responses for low-, mid- and high-reverberation environments, rendered for DTU's Audiovisual
   Immersion Lab and stored as SOFA files, with a MATLAB scene constructor (COCOHA project).
 expected:
@@ -15,6 +16,7 @@ expected:
 room_info:
   positions: 'yes'
   conditions: 'no'
+  where: 'IR_database_description.pdf and WP1_SceneConstructor/irdb/info.txt'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/10834971

@@ -3,7 +3,11 @@ id: artsoundscapes_altai
 name: Artsoundscapes Altai rock-art IRs
 year: 2021
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
+access: open
+wave: 3   # tier A
+source: {kind: dataverse, records: ["dataverse.csuc.cat/doi:10.34810/data151"]}
+adapter: {"name": "wav_tree", "params": {"glob": "*/*.wav", "pattern": "RawDataPaper_(?P<room>.+?)_ZYLIA_A_test_(?P<rcv>\\d+)_W_WY\\.wav$", "roles": {"2": ["W", "Y"]}, "channel_formats": {"2": "array_raw"}, "reference_roles": {"2": "W"}, "orientation_known": false}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 17 IRs measured in 2019 at three open-air rock-art sites in the Russian Altai (Kalbak-Tash I and II, Adyr-Kan)
   with a Zylia microphone; stereo WAVs hold the W and Y Ambisonic channels, plus a parameter table.
 expected:
@@ -16,6 +20,7 @@ room_info:
   materials: 'no'
   images: 'no'
   reference_acoustics: 'yes'
+  where: 'Readme.txt and Chuya_AcParam_WY.xlsx'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://dataverse.csuc.cat/dataset.xhtml?persistentId=doi:10.34810/data151

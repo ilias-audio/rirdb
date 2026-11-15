@@ -3,11 +3,12 @@ id: asc_26
 name: ASC-26
 year: 2026
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+space_type: virtual
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["21771185"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "wav/*.wav", "pattern": "^wav/(?P<room>[a-z_]+?_\\d{4})_(?P<rcv>r\\d+)\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 5,000 simulated mono RIRs at 16 kHz (pyroomacoustics image-source method plus ray tracing) balanced across
   10 room types, from office to cathedral and outdoor forest, each labelled with RT60, EDT, C80, D50, Ts and DRR.
 fs_hz:
@@ -19,6 +20,7 @@ room_info:
   images: 'no'
   reference_acoustics: 'yes'
   conditions: 'no'
+  where: 'manifest.csv and features.csv (room type and acoustic labels per file); ASC-26_dataset_datasheet.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/21771185

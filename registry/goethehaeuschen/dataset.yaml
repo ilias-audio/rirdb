@@ -3,11 +3,11 @@ id: goethehaeuschen
 name: O'er all the Hilltops is Loud Now (Goethehäuschen)
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15013522"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "(?P<rcv>\\d+_-?[\\d.]+X_-?[\\d.]+Y|stair_\\d+|downstair|upstair|outside)\\.sofa$", "room_from": "parent", "capture_format": "sdm_array"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Spatial RIRs from a 7-microphone array at 57 positions in and outside the Goethehäuschen, a small historic
   wooden cabin on Kickelhahn mountain in Ilmenau, with 8 fixed loudspeakers; SOFA files.
 expected:
@@ -19,6 +19,7 @@ room_info:
   images: 'yes'
   reference_acoustics: 'no'
   conditions: partial
+  where: 'measuremenr arrangement.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/15013522

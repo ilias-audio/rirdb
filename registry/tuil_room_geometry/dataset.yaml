@@ -3,11 +3,12 @@ id: tuil_room_geometry
 name: (RIR) Dataset for Neural Room Geometry Estimation
 year: 2025
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+space_type: virtual
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["14901307"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "rir_dataset_part1/**/*.wav", "room_from": "file"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 50,000 simulated RIRs made with the RIR Generator tool at TU Ilmenau for training models that estimate
   room dimensions from audio on embedded devices; one 785 MB ZIP of WAV files with little documentation.
 expected:
@@ -15,6 +16,7 @@ expected:
 room_info:
   images: 'no'
   conditions: 'no'
+  where: 'rir_dataset_part*/annotations_part*.csv (room geometry per file)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/14901307

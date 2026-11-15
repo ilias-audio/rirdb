@@ -161,3 +161,52 @@ def test_wav_tree_room_from_a_folder_and_tokens_from_file_names(tmp_path):
     assert got["HallA/RIRs/curtains shut/Src2-Mic3.wav"] == ("halla", "curtains shut", "Src2", "Mic3")
     assert got["HallB/RIRs/curtains open/KU100 LS 16-2.wav"][2] == "LS16"
     assert got["HallB/RIRs/curtains open/Room3.wav"][2:] == (None, None)     # "Room3" is not a receiver token
+
+
+def test_sofa_axes_from_dimension_names(tmp_path):
+    """MultiSpeakerBRIR stores Data.IR as (M, R, E, N): the reader takes the order from the dimension names, not
+    the SOFA 1 order (M, R, N, E). Read the other way, every sample became a loudspeaker (Two!Ears, Eurecat)."""
+    ir = np.random.default_rng(5).standard_normal((3, 2, 4, 20))          # 3 head orientations, 2 ears, 4 speakers
+    with h5py.File(tmp_path / "brir.sofa", "w") as h:
+        for name, n in zip("MREN", ir.shape):
+            h[name] = np.arange(n, dtype=float)
+            h[name].make_scale(name)
+        h["Data.IR"] = ir
+        for k, name in enumerate("MREN"):
+            h["Data.IR"].dims[k].attach_scale(h[name])
+        h["Data.SamplingRate"] = np.array([44100.0])
+    params = {"glob": "*.sofa", "capture_format": "binaural", "roles": ["L", "R"]}
+    ds = SimpleNamespace(id="toy", ir_kinds=["room"], adapter=SimpleNamespace(name="sofa", params=params),
+                         analysis=SimpleNamespace(reference_role=None))
+    ad = get_adapter("sofa", params)
+    recs = list(ad.iter_records(ds, tmp_path))
+    assert len(recs) == 12 and {r.n_samples for r in recs} == {20}
+    assert {r.src_key for r in recs} == {"e0", "e1", "e2", "e3"} and recs[0].rcv_key == "m0"
+    rec = next(r for r in recs if r.locator["m"] == 2 and r.locator["e"] == 3)
+    x, _ = ad.load(rec.locator, tmp_path)
+    np.testing.assert_array_equal(x, ir[2, :, 3, :])
+
+
+def test_wav_tree_joins_channel_files_and_reads_keys_in_parts(tmp_path):
+    """join: files that differ only in the channel are one IR; src and src_2 make one key; max_s leaves out
+    recordings; format_from_regex names the format from the path."""
+    import soundfile as sf
+    for rel, n in (("Main/ESMA/Main_ESMA_M01_S01_FL.wav", 100), ("Main/ESMA/Main_ESMA_M02_S01_FR.wav", 100),
+                   ("Main/Bformat/VR_Bformat_S01_W.wav", 100), ("Main/Bformat/VR_Bformat_S01_X.wav", 100),
+                   ("Main/Bformat/VR_Bformat_S01_Y.wav", 100), ("Main/Bformat/VR_Bformat_S01_Z.wav", 100),
+                   ("Main/ESMA/sweep_take.wav", 8000 * 70)):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(str(tmp_path / rel), np.full(n, 0.1 if rel.endswith("FR.wav") else 0.0), 8000)
+    params = {"join": r"_(?:M(?P<ch>\d+)_)?S\d+_(?P<ch_2>[A-Za-z]+)\.wav$", "max_s": 60,
+              "pattern": r"/(?P<cond>[^/]+)/[A-Za-z]+_[^_]+_(?:M\d+_)?(?P<src>S)(?P<src_2>\d+)_", "room_from": "dataset",
+              "format_from_regex": {"Bformat/": "foa_fuma"}, "sh_norm": "FuMa"}
+    ds = SimpleNamespace(id="toy", ir_kinds=["room"], adapter=SimpleNamespace(name="wav_tree", params=params))
+    ad = get_adapter("wav_tree")
+    recs = {r.condition_key: r for r in ad.iter_records(ds, tmp_path)}
+    assert set(recs) == {"ESMA", "Bformat"}                         # the 70 s recording is left out
+    esma, bf = recs["ESMA"], recs["Bformat"]
+    assert esma.channel_roles == ("01_FL", "02_FR") and esma.src_key == "S_01"
+    assert bf.channel_roles == ("W", "X", "Y", "Z") and bf.capture_format == "foa_fuma" and bf.sh_norm == "FuMa"
+    assert esma.local_key == "Main/ESMA/Main_ESMA_M01_S01_FL.wav|Main/ESMA/Main_ESMA_M02_S01_FR.wav"
+    x, fs = ad.load(esma.locator, tmp_path)
+    assert x.shape == (2, 100) and fs == 8000 and x[1, 0] == pytest.approx(0.1, abs=1e-3)   # 16-bit WAV

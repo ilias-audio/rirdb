@@ -3,11 +3,11 @@ id: doubleecho
 name: RIR samples Darmstadt and Helsinki 2018 (DoubleEcho)
 year: 2018
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1434786"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "**/*_cutrir.wav", "pattern": "/(?P<room>darmstadt|helsinki)_[^/]+/(?:L\\d+/)?recorded_(?:(?:of|office)(?P<room_2>41\\d\\d)|(?P<room_3>[A-Za-z]+?\\d*[A-Za-z]*?))(?:L\\d+(?:again\\d*)?)?_(?:emitter_(?P<src>[^_]+)_)?(?P<rcv>[^_]+)_\\d+_cutrir\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Sweep recordings plus deconvolved, cropped mono RIRs captured with smartphones and tablets in 20 rooms
   (offices, kitchens, corridors, homes) in Darmstadt and Helsinki to test the DoubleEcho copresence check.
 fs_hz:
@@ -23,6 +23,7 @@ room_info:
   images: 'no'
   reference_acoustics: 'yes'
   conditions: 'no'
+  where: 'the CSV beside each IR and the paper'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/1434786

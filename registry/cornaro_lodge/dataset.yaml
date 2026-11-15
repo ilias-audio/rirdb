@@ -3,7 +3,11 @@ id: cornaro_lodge
 name: Cornaro's Lodge acoustic dataset
 year: 2024
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
+access: open
+wave: 3   # tier A
+source: {kind: mendeley, records: ["s455ww48zp@1"], exclude: ["*.skp"]}
+adapter: {"name": "wav_tree", "params": {"glob": "WAV/*.wav", "pattern": "Loggia\\s+(?P<src>S\\d+)(?P<rcv>R\\d+)(?P<cond>A\\d+)\\.wav$", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 24 mono IRs (WAV, 48 kHz/32-bit) measured at listening positions in the courtyard of the Renaissance Loggia
   Cornaro in Padua (1524), with a SketchUp 3D model and a measurement-layout image.
 fs_hz:
@@ -17,6 +21,7 @@ room_info:
   positions: partial
   images: partial
   reference_acoustics: 'no'
+  where: 'the Mendeley record and the paper (Acoustics of Ancient Theatres 2022)'
 license:
   spdx: CC-BY-4.0
 homepage: https://data.mendeley.com/datasets/s455ww48zp/1

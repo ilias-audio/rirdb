@@ -3,11 +3,11 @@ id: twoears_calypso_surround
 name: Calypso 5.0 surround BRIRs (Two!Ears)
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["160761"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "_Surround(?:_(?P<cond>Large))?_(?P<rcv>X[-+][\\d.]+m_Y[-+][\\d.]+m)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR dummy-head BRIRs of a 5.0 surround loudspeaker setup at 9 listening positions in TU Berlin's Calypso
   listening room (83 m³), with head rotation over ±90° in 1° steps; SOFA files.
 expected:
@@ -19,6 +19,7 @@ room_info:
   positions: 'yes'
   images: 'yes'
   reference_acoustics: partial
+  where: 'doc/setup_calypso_surround_*.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/160761

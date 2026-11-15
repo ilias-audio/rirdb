@@ -3,11 +3,11 @@ id: twoears_spirit
 name: 'Two!Ears KEMAR BRIRs: TU Berlin meeting room Spirit'
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["160751"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"capture_format": "binaural", "roles": ["L", "R"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR dummy-head BRIRs for 3 loudspeakers around a table in 'Spirit', a small meeting room at TU Berlin,
   with the head turned from -90° to 90° in 1° steps (Two!Ears project).
 expected:
@@ -21,6 +21,7 @@ room_info:
   images: partial
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'the SOFA file''s metadata'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/160751

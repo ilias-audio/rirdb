@@ -3,7 +3,11 @@ id: iem_ku100_studio
 name: BRIRs_KU100_IEMProductionStudio
 year: 2018
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
+access: open
+wave: 3   # tier A
+source: {kind: http, urls: ["https://phaidra.kug.ac.at/api/object/o:76742/comp/COMP000001#IEM_ProduktionsStudio_KU100.zip", "https://phaidra.kug.ac.at/api/object/o:76742/comp/COMP000002#ReadME_IEMPS.pdf"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.wav", "pattern": "_(?P<rcv>\\d+Yaw)_(?P<src>\\d+_[A-Za-z]+)\\.wav$", "room_from": "dataset", "roles": {"2": ["L", "R"]}, "channel_formats": {"2": "binaural"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Binaural RIRs of a Neumann KU100 dummy head for each loudspeaker of the IEM production studio in Graz (127
   m³, T60 about 0.4 s), measured with swept sines in 1° orientation steps; WAV files.
 expected:
@@ -17,6 +21,7 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'ReadME_IEMPS.pdf'
 license:
   spdx: CC-PDM-1.0
   note: PHAIDRA labels the files with the Public Domain Mark 1.0 (a public-domain label rather than a licence) and

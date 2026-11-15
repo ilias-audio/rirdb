@@ -3,11 +3,11 @@ id: ir64_car
 name: IR64-CAR
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15168578"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset", "channel_formats": {"64": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^IR64CAR_(?P<src>\\d+)\\.wav$", "room_from": "dataset", "channel_formats": {"64": "array_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 64-channel IRs from an Eigenmike em64 at the centre of a parked Peugeot 208's cabin, with one loudspeaker
   outside the car at 8 azimuths (every 45 degrees); 8 WAV files at 48 kHz/24-bit, trimmed to 1 s.
 fs_hz:
@@ -23,6 +23,7 @@ room_info:
   positions: partial
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'README.txt'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/15168578

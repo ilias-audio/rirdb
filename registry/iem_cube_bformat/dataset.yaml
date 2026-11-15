@@ -3,7 +3,11 @@ id: iem_cube_bformat
 name: CUBE B-format RIR dataset (Soundfield ST450 MKII)
 year: 2020
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
+access: open
+wave: 3   # tier A
+source: {kind: http, urls: ["https://phaidra.kug.ac.at/api/object/o:104435/download#cube_soundfield.zip"]}
+adapter: {"name": "sofa", "params": {"capture_format": "foa_fuma", "sh_norm": "FuMa", "roles": ["W", "X", "Y", "Z"], "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: '720 first-order Ambisonic (B-format) RIRs measured in the IEM CUBE in Graz with Soundfield ST450 MKII
   microphones: 30 receiver positions on a 1 m grid x 24 hemispherical source positions, as SOFA.'
 expected:
@@ -11,6 +15,7 @@ expected:
   n_rooms: 1
 room_info:
   positions: partial
+  where: 'cube_soundfield_doku.pdf'
 license:
   spdx: CC-PDM-1.0
   note: The data carry the Public Domain Mark 1.0 (no known copyright restrictions), not a licence.

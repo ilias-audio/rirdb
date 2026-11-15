@@ -3,11 +3,11 @@ id: incar_mcvampire
 name: In-Car McVAMPIRE
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["12806684"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(driving_noise)/", "room_from": "dataset", "channel_formats": {"14": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "ir/*.wav", "pattern": "^ir/ir_(?P<src>.+)\\.wav$", "room_from": "dataset", "channel_formats": {"14": "array_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: IRs measured in a minivan from a mouth simulator at 8 seats and 11 orientations, and from the 6 built-in
   car loudspeakers, to 14 overhead microphones; includes driving-noise recordings at 0-150 km/h.
 expected:
@@ -17,6 +17,7 @@ room_info:
   geometry: partial
   positions: partial
   images: partial
+  where: 'In-Car_McVAMPIRE docu.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/12806684

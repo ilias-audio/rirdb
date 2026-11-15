@@ -3,11 +3,11 @@ id: tuil_kemar_positions
 name: KEMAR BRIRs at several positions and head orientations
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["206860"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "^(?P<src>[AB])/(?P<rcv>\\d+)\\.sofa$", "pattern_on": "path", "m_is": "rcv", "room_from": "dataset", "capture_format": "binaural", "roles": ["L", "R"]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: KEMAR BRIRs at 25 points of a 0.5 m grid in an unnamed reverberant room, for two loudspeakers 1 m from
   the grid, with the head turned 360° in 5° steps at every point; SOFA files.
 expected:
@@ -22,6 +22,7 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'README.txt'
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/206860

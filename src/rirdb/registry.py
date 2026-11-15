@@ -49,7 +49,7 @@ CaptureFormat = Literal[
 ]
 Redistribute = Literal["yes", "unaltered_only", "no", "unknown"]
 SourceKind = Literal[
-    "zenodo", "depositonce", "figshare", "http", "wget_mirror", "github", "hf", "wayback", "manual"
+    "zenodo", "depositonce", "figshare", "dataverse", "mendeley", "http", "wget_mirror", "github", "hf", "wayback", "manual"
 ]
 Access = Literal["open", "registration", "manual", "broken"]
 Status = Literal["catalogued", "planned", "active", "manual", "broken", "deferred"]
@@ -155,7 +155,7 @@ class License(_Strict):
 class Source(_Strict):
     kind: SourceKind
     # zenodo: record ids; depositonce: item uuids; figshare: article ids;
-    # github: "owner/repo@ref"; hf: "org/name@revision"
+    # github: "owner/repo@ref"; hf: "org/name@revision"; dataverse: "host/doi:..."; mendeley: "id@version"
     records: list[str] = Field(default_factory=list)
     urls: list[str] = Field(default_factory=list)      # http / wget_mirror / wayback
     include: list[str] = Field(default_factory=list)   # fnmatch globs on file names; empty = all
@@ -165,7 +165,7 @@ class Source(_Strict):
 
     @model_validator(mode="after")
     def _check(self) -> "Source":
-        needs_records = {"zenodo", "depositonce", "figshare", "github", "hf"}
+        needs_records = {"zenodo", "depositonce", "figshare", "dataverse", "mendeley", "github", "hf"}
         needs_urls = {"http", "wget_mirror", "wayback"}
         if self.kind in needs_records and not self.records:
             raise ValueError(f"source kind {self.kind!r} needs `records`")

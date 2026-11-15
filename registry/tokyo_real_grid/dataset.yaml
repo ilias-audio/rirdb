@@ -3,11 +3,11 @@ id: tokyo_real_grid
 name: Real Grid RIR Dataset
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["14717170"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "grid*/**/RIR*.wav", "join": "/RIR(?P<ch>\\d+)\\.wav$", "pattern": "^(?P<cond>grid\\d+)/(?P<rcv>mic\\d+_\\d+)/(?P<src>newrir\\d+)/", "room_from": "dataset", "channel_formats": {"8": "array_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Eight-channel RIRs measured with sine sweeps in one meeting room (about 5.9 x 6.9 x 2.9 m, RT60 0.60 s),
   with a loudspeaker moved over a 98-point floor grid; three subsets vary source direction and mic position.
 expected:
@@ -21,6 +21,7 @@ room_info:
   images: partial
   reference_acoustics: partial
   conditions: 'no'
+  where: 'the Zenodo record''s description'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/14717170

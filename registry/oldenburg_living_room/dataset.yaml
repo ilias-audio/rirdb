@@ -3,11 +3,11 @@ id: oldenburg_living_room
 name: Living room environment (Oldenburg)
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5747753"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "channel_formats": {"2": "binaural", "32": "array_raw", "6": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "*/[HOE][AMI]*/*.wav", "pattern": "/(?:HATS|OMNI|EIGEN)/IR_pos-(?P<src>S-RT-\\d+|[A-Z0-9]+)_(?:[A-Za-z0-9]+_)?(?P<rcv>R-RT-\\d+|R\\d+)_[A-Z]+_(?P<cond>F_[A-Z])\\.wav$", "room_from": "dataset", "format_from_regex": {"/HATS/": "array_raw"}, "channel_formats": {"2": "binaural", "6": "array_raw", "32": "em32_raw"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 'Audio-visual model of the Oldenburg living-room lab (with kitchen) with 100 measured IR files for two
   scenes: head-and-torso binaural, spherical-array and omni, plus geometry and absorption data.'
 expected:
@@ -18,6 +18,7 @@ room_info:
   materials: 'yes'
   positions: partial
   images: partial
+  where: '21-11_repo-v2/Living Room Documentation_v0.6.pdf and ACOUSTIC_MODEL/'
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/5747753

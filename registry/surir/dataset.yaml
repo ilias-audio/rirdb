@@ -3,11 +3,11 @@ id: surir
 name: SuRIR
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["21494888"]}
-adapter: {"name": "sofa"}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "sofa", "params": {"pattern": "^(?P<room>Room[AB])_(?P<cond>.+)\\.sofa$", "capture_format": "array_raw"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 15,360 RIRs (6 microphones, 2 loudspeakers, 48 kHz SOFA) measured repeatedly, seconds apart, in a furnished
   living room and an unfurnished room with three people standing or sitting, still or moving, plus a mannequin.
 fs_hz:
@@ -19,6 +19,7 @@ room_info:
   positions: partial
   images: 'yes'
   conditions: partial
+  where: 'RoomA_floorplan.pdf and RoomB_floorplan.pdf'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/21494888

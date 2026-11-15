@@ -3,11 +3,11 @@ id: sant_climent_taull
 name: Model of Sant Climent de Taüll
 year: 2019
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (reports/onboarding/notes.tsv)
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3558319"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma", "9": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {"name": "wav_tree", "params": {"glob": "ImpulseResponses/**/*.[wW][aA][vV]", "pattern": "/(?P<cond>Church|ModelA|ModelB)/[^/]+/(?:Model[AB]-|Taull_)?(?P<src>Source\\d)_(?P<rcv>Receiver\\d)(?:_(?P<cond_2>Omni|Cardi))?", "room_from": "dataset", "ir_kind_from_regex": {"/Model[AB]/": "virtual"}, "format_from_regex": {"/A-Format/": "tetra_raw", "/B-Format/": "foa_fuma", "/FuMa 2OA/": "hoa_sh", "/Binaural/": "binaural"}, "sh_norm": "FuMa", "preferred_regex": "/(B-Format|FuMa 2OA)/"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 12 measured B-format RIRs (3 sources x 4 receivers) in the Romanesque church of Sant Climent de Taüll,
   Catalonia, plus 96 ODEON-simulated binaural and 2nd-order Ambisonic IRs of two model states.
 expected:
@@ -21,6 +21,7 @@ room_info:
   positions: 'no'
   images: 'no'
   reference_acoustics: 'no'
+  where: 'the Zenodo record and the paper'
 license:
   spdx: CC-BY-2.0
 homepage: https://zenodo.org/records/3558319
