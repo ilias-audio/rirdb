@@ -32,6 +32,7 @@ BALANCES = ["none", "space", "dataset", "t30"]
 CHANNELS_OUT = {"mono": 1, "stereo": 2, "binaural": 2}   # ambisonic: as published (4 for first order)
 T30_BINS = np.geomspace(0.1, 10, 21)                     # --balance t30: 20 bins of rt_mid, equal in log time
 PROVIDES = ["dimensions", "volume", "geometry", "materials", "positions", "images", "reference_acoustics", "conditions"]
+KINDS = ["indoor", "outdoor", "anechoic", "simulated", "device"]   # --kind: what kind of space, from type and origin
 
 
 @dataclass
@@ -50,6 +51,7 @@ class Query:
     space_type: list[str] = field(default_factory=list)   # any of these room types
     t30: str | None = None                                 # rt_mid from MIN up to MAX seconds, "1.2-2.5"; "2.5-": no top
     provides: list[str] = field(default_factory=list)     # the authors provide all of these (yes or partly)
+    kind: list[str] = field(default_factory=list)         # any of these kinds of space (KINDS)
 
     def check(self, datasets: pd.DataFrame) -> None:
         for name, value, allowed in (("use", self.use, [None, *USES]), ("format", self.format, [None, *FORMATS]),
@@ -65,6 +67,9 @@ class Query:
         bad = sorted(set(self.space_type) - set(allowed_values("irs", "space_type")))
         if bad:
             raise ValueError(f"space type {', '.join(bad)} is not one of {', '.join(allowed_values('irs', 'space_type'))}")
+        bad = sorted(set(self.kind) - set(KINDS))
+        if bad:
+            raise ValueError(f"kind {', '.join(bad)} is not one of {', '.join(KINDS)}")
         bad = sorted(set(self.provides) - set(PROVIDES))
         if bad:
             raise ValueError(f"provides {', '.join(bad)} is not one of {', '.join(PROVIDES)}")
@@ -88,6 +93,8 @@ def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) 
         keep &= irs["grade"].isin(GRADES[:GRADES.index(q.grade) + 1])
     if q.space_type:
         keep &= irs["space_type"].isin(q.space_type)
+    if q.kind:
+        keep &= kind_of(irs["space_type"], irs["origin"]).isin(q.kind)
     if q.t30:
         lo, hi = t30_range(q.t30)
         rt = irs["rt_mid"]
@@ -106,6 +113,17 @@ def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) 
     else:
         keep &= irs["is_primary"].astype(bool)
     return irs[keep]
+
+
+def kind_of(space_type: pd.Series, origin: pd.Series) -> pd.Series:
+    """The kind of each space: a device or plugin, a simulated room (or a scale model), an anechoic room, outdoors,
+    or indoors (every other real space: rooms and halls, but also caves, tunnels and vehicle cabins)."""
+    kind = pd.Series("indoor", index=space_type.index)
+    kind[space_type.eq("outdoor")] = "outdoor"
+    kind[space_type.eq("anechoic")] = "anechoic"
+    kind[origin.eq("simulated") | space_type.isin(["virtual", "scale_model"])] = "simulated"
+    kind[origin.eq("device") | space_type.eq("device")] = "device"
+    return kind
 
 
 def t30_range(text: str) -> tuple[float, float | None]:
@@ -212,11 +230,11 @@ def select(use: str | None = None, format: str | None = None, origin: str = "any
            dataset: list[str] | str | None = None, exclude_dataset: list[str] | str | None = None,
            include_unknown: bool = False, fs: int | None = None, n: int | None = None, balance: str = "none",
            seed: int = 0, space_type: list[str] | str | None = None, t30: str | None = None,
-           provides: list[str] | str | None = None) -> Selection:
+           provides: list[str] | str | None = None, kind: list[str] | str | None = None) -> Selection:
     """The IRs of the release that match, one row each, drawn to n with a balance (Python's `rirdb get`)."""
     as_list = lambda v: [v] if isinstance(v, str) else list(v or [])
     q = Query(use, format, origin, grade, as_list(dataset), as_list(exclude_dataset), include_unknown, fs,
-              n, balance, seed, as_list(space_type), t30, as_list(provides))
+              n, balance, seed, as_list(space_type), t30, as_list(provides), as_list(kind))
     datasets = client.table("datasets")
     q.check(datasets)
     return Selection(q, draw(matching(client.table("irs"), q, datasets), q).reset_index(drop=True))

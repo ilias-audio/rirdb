@@ -44,13 +44,12 @@ def home(search: dict) -> str:
     n_measured = sum(d["status"] == "measured" for d in ds)
     n_irs = sum(d["n"] for d in ds)
     fmt_count = Counter(f for d in ds for f in d["formats"])
-    type_count = Counter(s["type"] for s in sp)
-    types = [t for t, _ in type_count.most_common() if t not in ("unknown", "device", "virtual", "laboratory")][:7]
+    kind_count = Counter(s["kind"] for s in sp)
     use_count = Counter(u for d in ds for u, v in d["uses"].items() if v in ("yes", "unaltered_only"))
     prov_count = Counter(p for d in ds for p in d["provides"])
     browse = [
         ("By format", [(f"datasets.html?format={f}", words.FORMATS[f], f"{fmt_count[f]} datasets") for f in words.SEARCH_FORMATS]),
-        ("By room", [(f"rooms.html?type={t}", words.ROOM_TYPES[t], plural(type_count[t], "room")) for t in types]),
+        ("By kind of space", [(f"rooms.html?kind={k}", label, plural(kind_count[k], "room")) for k, label in words.KINDS.items()]),
         ("By what you may do", [
             ("datasets.html?use=commercial", "Commercial use allowed", f'{use_count["commercial"]} datasets'),
             ("datasets.html?use=training", "Machine learning allowed", f'{use_count["training"]} datasets'),
@@ -61,7 +60,8 @@ def home(search: dict) -> str:
     browse_html = "".join(
         f'<div><h3>{e(title)}</h3><ul>' + "".join(f'<li><a href="{href}">{e(label)}</a><span>{e(count)}</span></li>'
                                                   for href, label, count in items) + "</ul></div>" for title, items in browse)
-    presets = [("datasets.html?format=binaural&use=commercial", "Binaural, commercial use allowed"),
+    presets = [("rooms.html?kind=indoor", "Real rooms only"),
+               ("datasets.html?format=binaural&use=commercial", "Binaural, commercial use allowed"),
                ("rooms.html?type=concert_hall&type=worship", "Concert halls and churches"),
                ("datasets.html?format=ambisonic&status=measured", "Ambisonic, measured"),
                ("datasets.html?provides=positions", "With source and receiver positions")]

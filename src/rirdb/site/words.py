@@ -30,18 +30,21 @@ ROOM_TYPES = {
     "virtual": "Simulated room", "device": "Device or plugin", "unknown": "Not stated",
 }
 
-# The kind of a room, for the colours of the plots: rooms, outdoor sites, devices; simulated rooms are drawn hollow.
+# The kind of a space, for the main filter and the colours of the plots (select.kind_of, `--kind`, for one space):
+# a device or plugin, a simulated room, an anechoic room, outdoors, or indoors (rooms and halls, caves, tunnels,
+# vehicle cabins).
 def kind_of(space_type: str, origin: str) -> str:
     if origin == "device" or space_type == "device":
         return "device"
     if origin == "simulated" or space_type in ("virtual", "scale_model"):
         return "simulated"
-    if space_type in ("outdoor", "underground", "tunnel_underpass"):
-        return "outdoor"
-    return "room"
+    if space_type in ("anechoic", "outdoor"):
+        return space_type
+    return "indoor"
 
 
-KINDS = {"room": "Rooms", "outdoor": "Outdoor and underground", "device": "Devices and plugins", "simulated": "Simulated"}
+KINDS = {"indoor": "Indoor rooms", "outdoor": "Outdoor", "anechoic": "Anechoic", "simulated": "Simulated",
+         "device": "Devices and plugins"}
 
 PROVIDES = {"positions": "Source and receiver positions", "dimensions": "Room dimensions", "volume": "Room volume",
             "geometry": "Geometry: a 3D model or plans", "materials": "Surface materials", "images": "Photos",

@@ -27,6 +27,10 @@ jobs:
       OMP_NUM_THREADS: "1"
     steps:
       - uses: actions/checkout@v4
+      - name: Keep the environment in the checkout
+        # .pixi/config.toml detaches the environments to Apocrita's scratch (docs/hpc.md), a path this runner
+        # cannot write; without it pixi installs into .pixi/envs as usual.
+        run: rm -f .pixi/config.toml
       - name: Free disk space for the environment
         run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
       - uses: prefix-dev/setup-pixi@v0.8.1

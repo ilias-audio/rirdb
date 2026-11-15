@@ -156,3 +156,21 @@ def test_space_type_t30_and_provides_filters():
     for bad in ("1.2", "2-1", "a-b"):
         with pytest.raises(ValueError, match="not a range"):
             t30_range(bad)
+
+
+def test_kind_of_space():
+    irs = pd.DataFrame({"ir_id": list("abcdef"), "space": list("abcdef"), "format": "mono", "is_primary": True,
+                        "grade": "A", "dataset": "d",
+                        "space_type": ["concert_hall", "outdoor", "anechoic", "virtual", "device", "underground"],
+                        "origin": ["measured", "measured", "measured", "measured", "device", "measured"]})
+    assert matching(irs, Query(kind=["indoor"]))["ir_id"].tolist() == ["a", "f"]        # caves, tunnels: indoors
+    assert matching(irs, Query(kind=["outdoor", "anechoic"]))["ir_id"].tolist() == ["b", "c"]
+    assert matching(irs, Query(kind=["simulated", "device"]))["ir_id"].tolist() == ["d", "e"]
+
+
+def test_the_website_and_the_command_line_sort_spaces_the_same_way():
+    from rirdb.select import kind_of
+    from rirdb.site.words import ROOM_TYPES, kind_of as one
+    pairs = [(t, o) for t in ROOM_TYPES for o in ("measured", "simulated", "device")]
+    got = kind_of(pd.Series([t for t, _ in pairs]), pd.Series([o for _, o in pairs])).tolist()
+    assert got == [one(t, o) for t, o in pairs]

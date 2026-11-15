@@ -44,13 +44,13 @@ def rooms_page(search: dict) -> str:
     ds, sp = search["datasets"], search["spaces"]
     types = room_types(sp)
     facets = "".join([
-        facet("type", "Room type", [(t, words.ROOM_TYPES.get(t, t)) for t in types], multi=True, show=10),
+        facet("kind", "Kind of space", list(words.KINDS.items()), multi=True),
         facet("format", "Format", [(f, words.FORMATS[f]) for f in words.SEARCH_FORMATS]),
         facet("use", "The licence allows", [(u, words.USES[u]) for u in ("commercial", "training", "redistribute")]),
-        facet("origin", "Kind", list(words.ORIGINS.items())),
         facet("t30", "Reverberation time", [(k, label) for k, label, _, _ in words.REVERB], multi=True),
         facet("grade", "Decay quality", [("S", "S"), ("A", "A or better"), ("B", "B or better"), ("C", "C or better")]),
         facet("provides", "The authors provide", list(words.PROVIDES.items()), multi=True, hint="all ticked"),
+        facet("type", "Room type", [(t, words.ROOM_TYPES.get(t, t)) for t in types], multi=True, show=0),
     ])
     pts = points(search)
     rows = "".join(room_row(s, i, ds[s["d"]]) for i, s in enumerate(sp))

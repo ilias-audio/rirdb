@@ -109,3 +109,8 @@ def test_words():
     assert licence_short("CC-BY-NC-SA-4.0") == "CC BY-NC-SA 4.0" and licence_short("CC0-1.0") == "CC0"
     assert licence_short("LicenseRef-per-space") == "Varies per room"
     assert room_label("aula_carolina", "x/aula-carolina") == "Aula carolina" and room_label("", "x/hall") == "Hall"
+
+
+def test_the_guide_cites_the_paper(site):
+    guide = (site / "guide.html").read_text()
+    assert "@inproceedings{ibnyahya2026rirdb" in guide and "Reiss, Joshua D." in guide and "@software{rirdb" in guide

@@ -27,8 +27,9 @@ def facet(name: str, title: str, options: list[tuple[str, str]], multi: bool = F
         f'<label class="opt" for="{e(i)}"><input type="{kind}" id="{e(i)}" name="{e(name)}" value="{e(v)}"'
         f'{" checked" if not multi and not v else ""}><span>{e(label)}</span><span class="c" data-for="{e(i)}"></span></label>'
         for i, v, label in opts]
-    if show and len(labels) > show + 2:                        # fold the rest away
-        labels = labels[:show] + [f'<details class="more-opts"><summary>{len(labels) - show} more</summary>'
+    if show is not None and len(labels) > show + 2:            # fold the rest away
+        more = f"Show all {len(labels)}" if show == 0 else f"{len(labels) - show} more"
+        labels = labels[:show] + [f'<details class="more-opts"><summary>{more}</summary>'
                                   + "".join(labels[show:]) + "</details>"]
     rows = "".join(labels)
     return (f'<fieldset class="facet"><legend>{e(title)}{f" <small>{e(hint)}</small>" if hint else ""}</legend>'
@@ -70,18 +71,18 @@ def datasets_page(search: dict) -> str:
     types = room_types(search["spaces"])
     facets = "".join([
         facet("status", "Measured by RIRDB", [("measured", "Measured"), ("not", "Not measured yet")]),
+        facet("kind", "Kind of space", list(words.KINDS.items()), multi=True),
         facet("format", "Format", [(f, words.FORMATS[f]) for f in words.SEARCH_FORMATS]),
         facet("use", "The licence allows", [(u, words.USES[u]) for u in ("commercial", "training", "redistribute")]),
-        facet("origin", "Kind", list(words.ORIGINS.items())),
         facet("provides", "The authors provide", list(words.PROVIDES.items()), multi=True, hint="all ticked"),
         facet("t30", "Reverberation time", [(k, label) for k, label, _, _ in words.REVERB], multi=True,
               hint="measured only"),
         facet("type", "Room type", [(t, words.ROOM_TYPES.get(t, t)) for t in types], multi=True, hint="measured only",
-              show=8),
+              show=0),
         facet("grade", "Decay quality", [("S", "S"), ("A", "A or better"), ("B", "B or better"), ("C", "C or better")],
               hint="measured only"),
     ])
-    presets = [("format=binaural&use=commercial", "Binaural, commercial use allowed"),
+    presets = [("kind=indoor", "Real rooms only"), ("format=binaural&use=commercial", "Binaural, commercial use allowed"),
                ("format=ambisonic&status=measured", "Ambisonic, measured"),
                ("t30=hall&t30=live", "Halls and churches"), ("provides=positions", "With source and receiver positions"),
                ("provides=geometry&provides=materials", "With geometry and materials")]

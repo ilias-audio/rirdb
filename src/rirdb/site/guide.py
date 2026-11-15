@@ -10,6 +10,23 @@ from rirdb import __version__, client
 from rirdb.site import words
 from rirdb.site.layout import ISSUES, MAINTAINER, MAINTAINER_URL, REPO, copybox, e, page
 
+# How to cite RIRDB: its paper (DMRN+21), and the software for the release used.
+PAPER_BIB = """@inproceedings{ibnyahya2026rirdb,
+  author    = {Ibnyahya, Ilias and Reiss, Joshua D.},
+  title     = {{RIRDB}: A Database to Find and Explore Room Impulse Response Datasets},
+  booktitle = {Digital Music Research Network One-day Workshop (DMRN+21)},
+  address   = {London, UK},
+  month     = dec,
+  year      = {2026}
+}"""
+SOFTWARE_BIB = """@software{{rirdb,
+  author  = {{Ibnyahya, Ilias}},
+  title   = {{{{RIRDB}}: a database to find and explore room impulse response datasets}},
+  version = {{{version}}},
+  year    = {{2026}},
+  url     = {{{url}}}
+}}"""
+
 GLOSSARY = [
     ("T30, T20", "t30", "The reverberation time: how long the sound takes to fall by 60 dB, extrapolated from the decay "
      "between −5 and −35 dB (T30) or −5 and −25 dB (T20) of the energy decay curve. RIRDB's main value, rt_mid, is "
@@ -81,8 +98,10 @@ reference</a>.</p></section>
 
 <section id="cite"><h2>Cite</h2>
 <p>Cite the datasets you use: <code>rirdb get</code> writes their references into <code>references.bib</code>, and each
-dataset page links its paper. To cite RIRDB itself:</p>
-{copybox("@software{rirdb," + chr(10) + f"  author  = {{{MAINTAINER}}}," + chr(10) + "  title   = {RIRDB: a database to find and explore room impulse response datasets}," + chr(10) + f"  version = {{{__version__}}}," + chr(10) + "  year    = {2026}," + chr(10) + f"  url     = {{{REPO}}}" + chr(10) + "}")}
+dataset page links its paper. To cite RIRDB, cite its paper:</p>
+{copybox(PAPER_BIB)}
+<p>and, to name the exact release you used, the software:</p>
+{copybox(SOFTWARE_BIB.format(version=__version__, url=REPO))}
 </section>
 
 <section id="add"><h2>Add a dataset</h2>

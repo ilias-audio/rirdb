@@ -58,8 +58,8 @@
   const EDGES = D.t30_edges;
   // The reverberation-time ranges of the filter (words.REVERB): [low, high), high null = no limit.
   const REVERB = { dry: [0, 0.315], room: [0.315, 0.63], class: [0.63, 1.25], hall: [1.25, 2.5], live: [2.5, null] };
-  const MULTI = ["provides", "type", "t30"];
-  const IR_LEVEL = ["format", "use", "grade", "t30", "type", "origin"];   // filters read on each IR
+  const MULTI = ["provides", "type", "t30", "kind"];
+  const IR_LEVEL = ["format", "use", "grade", "t30", "type", "kind"];     // filters read on each IR
 
   // The rows of counts of each room, and the rooms of each dataset.
   const bySpace = D.spaces.map(function () { return []; });
@@ -112,7 +112,7 @@
   }
   function spaceKept(s, st) {
     if (st.type.length && !st.type.includes(s.type)) return false;
-    if (st.origin && s.origin !== st.origin) return false;
+    if (st.kind.length && !st.kind.includes(s.kind)) return false;
     return true;
   }
   function datasetKept(d, st) {                 // the filters on the dataset itself
@@ -145,7 +145,9 @@
       if (!datasetKept(d, st) || !textOk(d, st) || measuredOnly) return 0;
       if (st.format && !d.formats.includes(st.format)) return 0;
       if (st.use && d.uses[st.use] !== "yes") return 0;
-      if (st.origin && d.origin !== st.origin) return 0;
+      // Not measured yet: a simulated or device dataset has its kind; the rooms of the others are not sorted yet.
+      const kind = d.origin === "simulated" || d.origin === "device" ? d.origin : "";
+      if (st.kind.length && !st.kind.includes(kind)) return 0;
       return -1;                                 // kept, no IRs counted yet
     });
   }
@@ -154,7 +156,7 @@
     const parts = ["rirdb search"], notes = [];
     if (st.format) parts.push("--format " + st.format);
     if (st.use) parts.push("--use " + st.use);
-    if (st.origin) parts.push("--origin " + st.origin);
+    st.kind.forEach(function (k) { parts.push("--kind " + k); });
     if (st.grade) parts.push("--grade " + st.grade);
     st.type.forEach(function (t) { parts.push("--space-type " + t); });
     if (st.t30.length) {
@@ -262,10 +264,10 @@
         + fmt(irs) + "</b> IRs" : "");
       const left = $("#leftout");
       const notMeasured = D.datasets.filter(function (d) { return d.status !== "measured" && datasetKept(d, st) && textOk(d, st); }).length;
-      const hiddenNot = (st.grade || st.t30.length || st.type.length) && st.status !== "measured" ? notMeasured : 0;
+      const hiddenNot = (st.grade || st.t30.length || st.type.length || st.kind.length) && st.status !== "measured" ? notMeasured : 0;
       left.hidden = !hiddenNot;
-      left.textContent = hiddenNot + " datasets not measured yet are left out: reverberation time, room type and decay "
-        + "quality are known only for measured datasets.";
+      left.textContent = "Datasets not measured yet are left out where a filter needs measured rooms (kind of space, "
+        + "reverberation time, room type, decay quality): their rooms are not sorted yet.";
       keptIds = D.datasets.filter(function (d, i) { return kept[i] > 0; }).map(function (d) { return d.id; });
       if (!n) {
         left.hidden = false;

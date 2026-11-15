@@ -37,6 +37,8 @@ SPACE_TYPE = typer.Option(None, "--space-type", help="Only these kinds of room, 
                                                       "(repeat for several).")
 T30 = typer.Option(None, "--t30", help="Reverberation time (rt_mid) range in seconds, e.g. 1.2-2.5, or 2.5- for no "
                                        "upper limit.")
+KIND = typer.Option(None, "--kind", help="Only these kinds of space (repeat for several): indoor, outdoor, anechoic, "
+                                         "simulated, device. --kind indoor keeps real rooms only.")
 PROVIDES = typer.Option(None, "--provides", help="Only datasets whose authors provide this (repeat for several): "
                                                  "dimensions, volume, geometry, materials, positions, images, "
                                                  "reference_acoustics, conditions.")
@@ -45,13 +47,14 @@ PROVIDES = typer.Option(None, "--provides", help="Only datasets whose authors pr
 @app.command()
 def search(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str = GRADE,
            dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
-           fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES) -> None:
+           fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
+           kind: list[str] = KIND) -> None:
     """What a selection holds: IRs, spaces, datasets, licences, grades, and its download size. Nothing is downloaded."""
     from rirdb import client
     from rirdb.select import by_dataset, cap_of, grade_split, human, plural, size_text, select
 
     sel = select(use, format, origin, grade, dataset, exclude_dataset, include_unknown, fs, space_type=space_type,
-                 t30=t30, provides=provides)
+                 t30=t30, provides=provides, kind=kind)
     t = sel.table
     console.print(f"[bold]{plural(len(t), 'IR')}[/bold] in {plural(t['space'].nunique(), 'space')} from "
                   f"{plural(t['dataset'].nunique(), 'dataset')} (release {client.version()})")
@@ -150,6 +153,7 @@ def grid(counts: pd.DataFrame, label: str) -> Table:
 def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str = GRADE,
         dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
         fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
+        kind: list[str] = KIND,
         n: int = typer.Option(None, "--n", help="Draw this many IRs at random (see --balance)."),
         balance: str = typer.Option("none", "--balance", help="What the draw makes equally likely: space, dataset, "
                                                               "t30 (short and long reverbs), or none (every IR)."),
@@ -175,7 +179,7 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
         dataset = recorded["query"]["dataset"]
     whole = recorded.get("as_published") or (
         len(dataset or []) == 1 and not lock
-        and not (use or format or exclude_dataset or include_unknown or fs or n or space_type or t30 or provides)
+        and not (use or format or exclude_dataset or include_unknown or fs or n or space_type or t30 or provides or kind)
         and origin == "any" and grade == "any" and balance == "none")
     if whole:
         from rirdb import client
@@ -186,7 +190,7 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
         capped = dataset
     else:
         sel = from_lock(lock) if lock else select(use, format, origin, grade, dataset, exclude_dataset,
-                                                  include_unknown, fs, n, balance, seed, space_type, t30, provides)
+                                                  include_unknown, fs, n, balance, seed, space_type, t30, provides, kind)
         s = sel.sizes()
         size = s.download_bytes
         console.print(f"{plural(len(sel.table), 'IR')} from {plural(sel.table['dataset'].nunique(), 'dataset')}: "
