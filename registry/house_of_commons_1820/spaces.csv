@@ -1,0 +1,7 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+convocation-house,"Convocation House, Bodleian Library, Oxford",office_meeting,room,,18.55 x 8.4 x 7.63,,,,,"paper 5.1: University meeting room, where the House of Commons met in the 17th century; files named Bodleian_*",
+divinity-school,"Divinity School, Bodleian Library, Oxford",public_interior,room,,27.6 x 10.3 x 7,,,,,paper 5.2: 15th-century stone hall; one position,
+guildhall,"Council Chamber, York Guildhall",office_meeting,room,1327.24,15.23 x 10.04 x 8.68,openair/york-guildhall-council-chamber,,,,"the same 12 positions as OpenAIR (the file names match: councilchamber_sN_rM_ir_1, 48 kHz here, 96 kHz there); OpenAIR publishes its copy under CC-BY-SA-3.0",
+holywell-music-room,"Holywell Music Room, Oxford",concert_hall,room,1732.22,19.7 x 9.77 x 9,,,,,paper 5.4: concert room built in 1748,
+modern-house-of-commons,"House of Commons Chamber, Palace of Westminster",office_meeting,room,4839,21 x 16 x 14.7,,,,,paper 5.3: today's chamber (1950),
+house-of-commons-1820-34,"House of Commons Chamber, c. 1820-34 (computer model)",virtual,virtual,1823.5,18.6 x 11.4 x 8.6,,,,,"paper 3-4: reconstruction in ODEON and CATT-Acoustic (the condition); volume without furniture (1402 m3 with)",

@@ -3,24 +3,67 @@ id: house_of_commons_1820
 name: House of Commons Acoustic Reconstruction 1820-34
 year: 2023
 type: hybrid
-status: catalogued
+ir_kinds: [room, virtual]
+capture_formats: [mono_omni, foa_fuma, array_raw]
+status: active
 content: Measured RIRs (B-format and W-channel files) and auralisations from five UK spaces in Oxford, Westminster
-  and York, plus ODEON and CATT models and simulated IRs of the 1820-34 House of Commons chamber.
+  and York, plus ODEON and CATT models and simulated IRs of the 1820-34 House of Commons chamber; the dry
+  anechoic excerpt used for the auralisations (1.3 MB) not fetched.
 fs_hz:
+- 44100
 - 48000
 expected:
   n_irs: 84
   n_rooms: 6
+  note: "The record gives no count. 84 = 62 measured source-receiver positions in five spaces + 11 ODEON and 11 CATT
+    receivers of the 1820-34 model (paper, sections 4-5). Convocation House S1-R1 is in the download twice (the same
+    audio) and is counted once."
 room_info:
-  dimensions: partial
+  dimensions: 'yes'
+  volume: partial
   geometry: partial
   materials: partial
   positions: partial
-  images: 'no'
+  images: 'yes'
   reference_acoustics: partial
+  where: "paper, sections 3 and 5: size of every space, volume of four, photo and floor plan with the positions of
+    every space, T30, C50, EDT and Ts per octave band in figures; ODEON model/ and CATT model/: geometry, materials
+    and positions of the 1820-34 model only"
 license:
   spdx: CC-BY-4.0
+  redistribute_audio: 'yes'
+access: open
+source: {kind: zenodo, records: ["7560885"], exclude: ["Anechoic excerpt*.wav"]}
+adapter:
+  name: wav_tree
+  # Only the IR folders are read: "IRs w-channel" (also spelt "IR w-channel", "irs w-channel") in each measured space,
+  # "IRs B-format" (ODEON) and "irs - w-channel" (CATT). Left out, as they are not IRs or are copies:
+  #   - the auralisations in each space's top folder (the W channel convolved with a speech excerpt);
+  #   - Bodleian_BForm_S1_R1_a_1.wav, a second copy of Convocation House S1-R1 (the same samples);
+  #   - the 8 B-format WAVs in "ODEON model", another ODEON run of 8 of the 11 receivers, kept with the model files.
+  # Space: the top folder. ODEON and CATT model the same room, so they are one space with the software as the condition.
+  # Source and receiver: the numbers in S1-R1 (the model has one source; CATT names its receivers A2_01 to A2_12).
+  # Channels (SoundField ST450, paper section 5): 1 = the W (omni) signal; 4 = B-format W, X, Y, Z (FuMa: the
+  # SoundField convention, confirmed for ODEON only); 6 (modern House of Commons) = W, X on channels 1-2 and Y, Z on
+  # 5-6, with channels 3-4 silent, kept as published.
+  # Microphone orientation is not given, so the lateral energy (JLF) is flagged.
+  params:
+    glob: '**/*.[wW][aA][vV]'
+    pattern: '^(?:(?P<cond>ODEON|CATT)|(?P<room>[^/]+))/[^/]+/(?i:irs? w-channel|irs - w-channel|irs b-format)/[^/]*?(?:[Ss](?P<src>\d+)[-_][Rr]|version R|_W_A2_0?)(?P<rcv>\d+)(?:_a|_1|_ir_1_48000|\.BFormat01)?\.(?i:wav)$'
+    room_default: house-of-commons-1820-34
+    roles: {1: [omni], 4: [W, X, Y, Z], 6: [W, X, ch3, ch4, Y, Z]}
+    channel_formats: {1: mono_omni, 4: foa_fuma, 6: array_raw}
+    sh_norm: FuMa
+    orientation_known: false
+    ir_kind_from_regex: {"^(ODEON|CATT)/": virtual}   # the modelled 1820-34 chamber
+notes: "Measured with a SoundField ST450 and a Genelec loudspeaker, 2017-18 (AudioLab, University of York). The York
+  Guildhall positions are also in OpenAIR (96 kHz B-format); here they are the W channel at 48 kHz. The CATT IRs are
+  0.95 s long (the paper used CATT's suggested 0.73 s), about the 0.94 s T30 of the model, so their decays end early. The X+Y+Z to W
+  energy of the measured B-format files is about 3 times, where FuMa gives 2 (as ODEON's files do): the W gain of the
+  measured files is not certain."
+wave: 3
 homepage: https://zenodo.org/records/7560885
+paper: {title: "An Acoustic Reconstruction of the House of Commons, c. 1820-1834 (Acoustics, 2023)", url: "https://doi.org/10.3390/acoustics5010012"}
 doi: 10.5281/zenodo.7560885
 web_check:
   checked: '2026-10-14'

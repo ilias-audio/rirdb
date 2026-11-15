@@ -3,29 +3,67 @@ id: artsoundscapes_cadiz
 name: 'ERC Artsoundscapes: Cádiz rock-art sites'
 year: 2025
 type: measured
-status: catalogued
+ir_kinds: [outdoor]
+capture_formats: [mono_omni, hoa_sh, binaural]
+status: active
 content: Omni, 3rd-order Ambisonic (Zylia ZM-1) and binaural-rendered IRs measured in June 2021 at 10 rock-art sites
-  in Cádiz, Spain, by the ERC Artsoundscapes project; 256 WAV files at 48 kHz.
+  in Cádiz, Spain, by the ERC Artsoundscapes project; 256 WAV files at 48 kHz (one zip per site, all fetched).
 fs_hz:
 - 48000
 expected:
   n_irs: 84
   n_rooms: 10
+  note: "the authors give no count: 84 source-receiver positions, counted from the file names. They come as 80 omni,
+    88 Ambisonic and 88 binaural files, and rirdb indexes all 256. Omni is missing at the 4 Tajo de las Figuras
+    positions of source S3. The Ambisonic and binaural sets miss 2 positions of the Bacinete main shelter and
+    Horadada S1-R1, and hold 7 repeat takes at Horadada."
+# Rock-art shelters: the authors treat them as open-air spaces (Bacinete paper), so every space is outdoor.
+space_type: outdoor
 room_info:
-  dimensions: 'no'
+  dimensions: partial
   volume: 'no'
   geometry: 'no'
   materials: 'no'
   positions: 'no'
-  images: 'no'
-  reference_acoustics: 'no'
+  images: partial
+  reference_acoustics: partial
   conditions: 'no'
+  where: "Not in the download (WAV files only). The Tajo de las Figuras paper (I3DA 2023) gives that shelter's size,
+    photos, a map of the positions and T20 values; the other three papers were not read."
 license:
   spdx: CC-BY-NC-SA-4.0
-  note: Zenodo's licence field gives CC BY-NC-SA 4.0, but the description ends with '©Artsoundscapes project. All
-    rights reserved.'
+  note: "Zenodo's licence field gives CC BY-NC-SA 4.0, but the description ends with '©Artsoundscapes project. All
+    rights reserved.' The data statement of the Tajo de las Figuras paper (I3DA 2023) also gives CC BY-NC-SA 4.0, and a
+    licence stated in the dataset's paper may be used (Ilias, 14 November 2026), so CC BY-NC-SA 4.0 is used."
+  redistribute_audio: 'yes'
+access: open
+source: {kind: zenodo, records: ["15821383"]}
+adapter:
+  name: wav_tree
+  # <site>/<site>/{Omni,BIN,W_3AMBI}/CD_<site code>_T<test>_S<source>_R<receiver>_{Omni,ZM}_take<n>[_BIN|_W_3AMBI].wav
+  # Omni (micW n201, 2 s) and Zylia ZM-1 measured the same positions (Tajo paper): omni is preferred.
+  # W_3AMBI: 3rd order, 16 ch, AmbiX (ACN order, SN3D) as the record states, 0.5 s long; array orientation not stated.
+  # BIN: rendered from W_3AMBI with the IEM Binaural Decoder.
+  # Horadada names its files differently (CD_HR_S2_R3_T2_Omni_rec.wav, CD_HR_S2_TEST3_TAKE2_BIN.wav): its Zylia files
+  # name the test, not the receiver, so their receiver is TEST1 to TEST4.
+  params:
+    pattern: '^(?P<room>[^/]+)/[^/]+/(?:Omni|BIN|W_3AMBI)/CD_[A-Z0-9]+_(?:T\d_)?(?P<src>S\d)_(?P<rcv>R\d|TEST\d)_'
+    room_from: pattern
+    roles:
+      1: [omni]
+      2: [L, R]
+      16: [W, Y, Z, X, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15]
+    channel_formats: {1: mono_omni, 2: binaural, 16: hoa_sh}
+    orientation_known: false
+    preferred_regex: '/Omni/'
+wave: 3
 homepage: https://zenodo.org/records/15821383
+paper: {title: "The Bacinete Main Shelter: A Prehistoric Theatre? (Acoustics, 2023)", url: "https://doi.org/10.3390/acoustics5010018"}
 doi: 10.5281/zenodo.15821383
+notes: "A position is a source and a receiver (S1-R3); the test number (T1) is not part of it, and omni and Zylia
+  files of one position can carry different test and take numbers. Horadada's omni names suggest that TEST1 is
+  receiver R4 (source S1), and that TEST2, TEST3 and TEST4 are R3, R1 and R5 (source S2). The Ambisonic files are
+  0.5 s long (1 s at Horadada), so their decays are short; the omni files are 2 s."
 web_check:
   checked: '2026-10-14'
   found_as: 'ERC Artsoundscapes: acoustic measurements of rock-art sites in Cádiz'
@@ -36,7 +74,8 @@ web_check:
   - ambisonic
   host: Zenodo
   size: 154 MB
-  file_formats: 'WAV (32-bit, 48 kHz): 1-ch omni, 2-ch binaural, 16-ch 3rd-order Ambisonics; one ZIP per site'
+  file_formats: 'WAV, 48 kHz: 1-ch omni and 2-ch binaural (16-bit PCM), 16-ch 3rd-order Ambisonics (32-bit float); one ZIP
+    per site'
   institution: Universitat de Barcelona (ERC Artsoundscapes), with Universidad de Cádiz, Université de Bordeaux
     and ICREA
   country: Spain

@@ -3,12 +3,19 @@ id: haw_sound_lab
 name: Room Impulse Dataset HAW Sound Lab
 year: 2025
 type: measured
-status: catalogued
+ir_kinds: [room]
+capture_formats: [mono_omni, binaural]
+status: active
 content: 'Mono (Schoeps MK2) and binaural (Neumann KU 100) RIRs of the loudspeakers in two rooms of the HAW Hamburg
   Sound Lab: a mixing control room with 3 speaker pairs and a spatial-audio room with a 33-speaker dome.'
+fs_hz: [48000]
 expected:
   n_irs: 228
   n_rooms: 2
+  note: 'The record states no count. 228 = 146 mono RIRs (A1: 35 loudspeakers x 4 presets; R1: 6 loudspeakers)
+    + 82 binaural pairs (A1: 35 x 2 presets; R1: 6 x 2 head distances). Each binaural pair is two mono files
+    (-1 left ear, -2 right ear). Only the 146 mono RIRs are indexed: the wav_tree reader cannot yet join two
+    files into one binaural IR.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -18,10 +25,28 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: partial
+  where: 'file and folder names only: loudspeaker number or side; R1 dummy head 20 or 50 cm from the console;
+    A1 measured with "no Preset" and Presets A, C and E (not explained)'
 license:
   spdx: CC-BY-4.0
+  redistribute_audio: 'yes'
+access: open
+source: {kind: zenodo, records: ["17296511"]}
+wave: 3
+adapter:
+  name: wav_tree
+  # Mono RIRs (Schoeps MK2; one file per loudspeaker, microphone position not given); the source is the loudspeaker:
+  #   A1/A1/RIRs/<preset>/A1 LS<n> <preset>.wav  (35 loudspeakers x 4 presets; LS39 and LS40 are subwoofers)
+  #   R1/R1/RIRs/<speaker> <Left|Right>.wav       (Yamaha HS5, KH = Klein & Hummel O410, BW = B&W 801)
+  # Not indexed: the BRIRs/ folders (Neumann KU 100), one mono file per ear, see expected.note.
+  # The __MACOSX copies and .DS_Store files are skipped by the reader's default exclude.
+  params:
+    pattern: '^(?P<room>[AR]1)/[AR]1/RIRs/(?:(?P<cond>[^/]+)/A1 )?(?P<src>LS\d+|\w+ (?:Left|Right))(?: [^/]*)?\.wav$'
 homepage: https://zenodo.org/records/17296511
 doi: 10.5281/zenodo.17296511
+notes: 'All files are mono, 48 kHz, 24-bit. The mono RIRs are 48,001 samples (1.0 s) long and not cut short: they fall below -60 dB by about 0.6 s (A1) and 0.1 s (R1) and are zero after about 47,000 samples. The binaural ear files are 2.73 s long.
+  In A1, LS39 and LS40 are subwoofers, so their RIRs hold low frequencies only. The readme does not explain
+  the A1 Preset folders (no Preset, A, C, E); they are kept as conditions.'
 web_check:
   checked: '2026-10-14'
   found_as: Room Impulse Dataset HAW Sound Lab (Hamburg)

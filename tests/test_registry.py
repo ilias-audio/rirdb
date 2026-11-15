@@ -24,7 +24,8 @@ def allowed_space_types() -> set[str]:
 
 def test_all_222_datasets_are_in_the_registry():
     assert len(DATASETS) == 222
-    assert sum(d.status == "catalogued" for d in DATASETS) == 160
+    # 160 were only catalogued on 14 November 2026; step 3 registers them one by one, so the number only falls.
+    assert sum(d.status == "catalogued" for d in DATASETS) <= 160
 
 
 def test_every_folder_is_a_dataset():

@@ -1,0 +1,3 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+a1,"HAW Sound Lab A1 (spatial audio production room)",studio_booth,,,,,,,,"loudspeaker dome: 33 full-range loudspeakers (LS1 to LS36) and 2 subwoofers (LS39, LS40)",
+r1,"HAW Sound Lab R1 (mixing control room)",studio_booth,,,,,,,,"three loudspeaker pairs: Yamaha HS5, Klein & Hummel O410, Bowers & Wilkins 801",

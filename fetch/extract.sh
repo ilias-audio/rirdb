@@ -74,6 +74,17 @@ extract_dir() {
     esac
 }
 
+# Every archive the pin lists that was downloaded and verified (.ok) must be unpacked: else the dataset fails,
+# never "ok"
+# (in November 2026 a symlinked _archives folder made find see nothing, and extraction reported ok).
+check_all_extracted() { # okdir
+    local missing
+    missing=$(tail -n +2 "$(downloads_tsv "$D_ID")" | cut -f1 \
+        | { grep -E '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz)$' || true; } \
+        | while IFS= read -r rel; do [ ! -f "$1/$rel.ok" ] || [ -f "$1/$rel.extracted" ] || echo "$rel"; done)
+    [ -z "$missing" ] || die "extract $D_ID: downloaded but not extracted: $(echo $missing)"
+}
+
 extract_one() {
     load_row "$1"
     local raw files okdir arch total keep n_arch
@@ -87,10 +98,11 @@ extract_one() {
     n_arch=$(tail -n +2 "$(downloads_tsv "$D_ID")" | cut -f1 | { grep -cE '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz)$' || true; })
     if [ ! -d "$arch" ] || [ -z "$(ls -A "$arch" 2>/dev/null)" ]; then
         log "extract $D_ID: nothing to extract"
+        check_all_extracted "$okdir"
         state_set "$D_ID" extracted_at "$(now_json)"
         return 0
     fi
-    total=$(du -sb "$arch" | cut -f1)
+    total=$(du -sbD "$arch" | cut -f1)   # -D: _archives may be a symlink to scratch
     case "$D_KEEP" in
         1) keep=1 ;;
         0) keep=0 ;;
@@ -109,14 +121,15 @@ extract_one() {
         # some archives store directories without read/execute permission (e.g. Aalto robot set)
         chmod -R u+rwX "$files" 2>/dev/null || true
         date -u +%FT%TZ >"$okdir/$rel.extracted"
-    done < <(find "$arch" -type f ! -name '*.part' | sort)
+    done < <(find -H "$arch" -type f ! -name '*.part' | sort)
     if [ "$keep" -eq 0 ]; then
-        find "$arch" -type f ! -name '*.part' -print0 | while IFS= read -r -d '' a; do
+        find -H "$arch" -type f ! -name '*.part' -print0 | while IFS= read -r -d '' a; do
             rel=${a#"$arch/"}
             case "$rel" in *.z[0-9][0-9]) rel="${rel%.z[0-9][0-9]}.zip" ;; esac
             [ -f "$okdir/$rel.extracted" ] && rm -f "$a"
         done
     fi
+    check_all_extracted "$okdir"
     state_set "$D_ID" extracted_at "$(now_json)"
     log "extract $D_ID: ok"
 }

@@ -3,22 +3,51 @@ id: edura
 name: EduRa database
 year: 2021
 type: simulated
-status: catalogued
+ir_kinds: [room]
+capture_formats: [mono_omni, binaural]
+status: active
 content: Simulated RIRs plus adult and child dummy-head BRIRs for 5 representative shoebox school and preschool
-  rooms, derived from measurements in 27 rooms in Aachen; with position schematics and SketchUp models.
+  rooms, derived from measurements in 27 rooms in Aachen; with position schematics and SketchUp models (one zip,
+  all fetched).
+fs_hz: [44100]
 expected:
   n_irs: 120
   n_rooms: 5
+  note: 5 rooms x 8 sources x 3 receivers (omni, adult head, child head) at one listening position.
 room_info:
   dimensions: partial
   geometry: partial
   positions: partial
   images: 'no'
   conditions: 'no'
+  where: Cluster<n>_SourceReceiver_Schematics.pdf (8 sources on a 2 m circle around R1, distances to the walls);
+    SketchUp models cluster1-3.skp only; Description-EduRa_database_v20211201.pdf
+# Every space is a school or preschool room (the 5 clusters mix classrooms, playrooms, gyms, multi-purpose and sports rooms).
+space_type: lecture_classroom
 license:
   spdx: CC-BY-4.0
+  redistribute_audio: 'yes'
+access: open
+# version of 2021-12-01; record 5153556 is the earlier version (2021-08-02)
+source: {kind: zenodo, records: ["5747086"]}
+wave: 3
+adapter:
+  name: wav_tree
+  # Cluster<n>/<folder>/<folder>_R1S<n>.wav. The folders RIR and A-BRIR are swapped in the zip (see notes):
+  # the mono files (in A-BRIR/) are the omni RIRs and are preferred; the stereo files are BRIRs.
+  params:
+    pattern: '^(?P<room>Cluster\d)/(?P<cond>RIR|A-BRIR|C-BRIR)/(?:RIR|A-BRIR|C-BRIR)_(?P<rcv>R\d)(?P<src>S\d)\.wav$'
+    roles: {1: [omni], 2: [L, R]}
+    channel_formats: {1: mono_omni, 2: binaural}
+    preferred_regex: '/A-BRIR/'
 homepage: https://zenodo.org/records/5747086
 doi: 10.5281/zenodo.5747086
+paper: {title: "EduRA database: room models based on room acoustic measurements in primary and preschools (DAGA 2021 poster)",
+  url: "https://doi.org/10.18154/RWTH-2021-07429"}
+notes: "The folders RIR and A-BRIR are swapped in the published zip. The files in A-BRIR/ are mono with a single clean
+  direct sound (the omni RIRs); the files in RIR/ are stereo with interaural delays of up to 33 samples (0.75 ms), a little
+  larger than those of the child head in C-BRIR/ (29 samples), so they are the adult-head BRIRs. The condition column keeps
+  the published folder names. Read from the audio on 15 Nov 2026; the description PDF says the RIRs are mono."
 web_check:
   checked: '2026-10-14'
   found_as: 'EduRa database: school/preschool room models with simulated binaural RIRs'

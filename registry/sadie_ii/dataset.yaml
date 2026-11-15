@@ -3,9 +3,13 @@ id: sadie_ii
 name: SADIE II BRIRs
 year: 2018
 type: measured
-status: catalogued
+ir_kinds: [room]
+capture_formats: [binaural]
+status: active
 content: Binaural room impulse responses for 18 listeners and two dummy heads (KU100, KEMAR) from a 50-loudspeaker
-  Lebedev grid at 1.5 m, measured at the University of York AudioLab as part of SADIE II.
+  Lebedev grid at 1.5 m, measured in a treated listening room of the University of York AudioLab as part of
+  SADIE II; only the 20 BRIR SOFA zips (155 MB) fetched, with the licence and readme. The anechoic HRIR SOFA zips
+  (267 MB), the per-subject WAV zips (1.3 GB, HRIRs and BRIRs as WAV) and the 1.3 GB master zip are left out.
 fs_hz:
 - 44100
 - 48000
@@ -13,11 +17,35 @@ fs_hz:
 expected:
   n_irs: 1000
   n_rooms: 1
+  note: "20 heads x 50 loudspeakers = 1,000 BRIRs. Each head's set is published at 44.1, 48 and 96 kHz
+    (3,000 in the files); rirdb reads the 48 kHz files only."
 room_info:
   positions: partial
+  images: partial
+  reference_acoustics: partial
+  where: "SOFA source directions (azimuth, elevation, 1.5 m around the listener; no room coordinates); paper
+    section 3.3: photo of the rig (Figure 7) and a T60 of about 50 to 65 ms"
+space_type: studio_booth
 license:
   spdx: Apache-2.0
-homepage: https://zenodo.org/records/12092466
+  redistribute_audio: 'yes'
+access: open
+# version 2-2 (June 2024)
+source: {kind: zenodo, records: ["12092466"], include: ["*_BRIR_SOFA.zip", "LICENSE.txt", "SADIE II V2-2 README.pdf"]}
+wave: 3
+adapter:
+  name: sofa
+  # SingleRoomSRIR Data.IR[50 loudspeakers, 2 ears, 16384 samples], one file per head and sample rate.
+  # m = loudspeaker of the 50-point Lebedev grid (SourcePosition: azimuth, elevation, 1.5 m around the listener).
+  # Receiver = the head: D1 = Neumann KU100, D2 = KEMAR, H3 to H20 = human listeners (in-ear microphones).
+  # The 44.1, 48 and 96 kHz files hold the same measurements: read the 48 kHz (24-bit) files only.
+  # (The sweeps stopped at 24 kHz: the 96 kHz files have nothing above 24 kHz, -83 dB.)
+  # The BRIRs are cut at 0.3 s and zero-padded to 16384 samples (README); with a T60 of 50 to 65 ms nothing is lost.
+  params: {glob: "*_BRIR_SOFA/*_BRIR_SOFA/*_48K_24bit_0.3s_FIR_SOFA.sofa",
+           pattern: '^(?P<rcv>[DH]\d+)_48K_24bit_0\.3s_FIR_SOFA\.sofa$', roles: [L, R], capture_format: binaural,
+           room_from: dataset, room_default: "York AudioLab listening room"}
+homepage: https://www.york.ac.uk/sadie-project/database.html
+paper: {title: "A Perceptual Evaluation of Individual and Non-Individual HRTFs: A Case Study of the SADIE II Database (Applied Sciences, 2018)", url: "https://doi.org/10.3390/app8112029"}
 doi: 10.5281/zenodo.12092466
 web_check:
   checked: '2026-10-14'
@@ -39,5 +67,7 @@ web_check:
   confidence: high
   caveats:
   - Most of SADIE II is anechoic HRIRs; the BRIRs are separate per-head SOFA zips (about 8 MB each).
-  - The dataset pages do not describe the measurement room.
+  - The dataset pages do not describe the measurement room; the paper (section 3.3) does in one paragraph (a treated
+    listening room, the loudspeaker rig inside a thick curtain, T60 about 50 to 65 ms).
+  - The BRIRs are cut at 0.3 s (the file names say "0.3s_FIR"); with so short a T60 the whole decay is kept.
   - Use v2-2 (June 2024), which fixed a faulty zip in v2-1.

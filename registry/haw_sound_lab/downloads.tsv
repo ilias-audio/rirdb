@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+readme.txt	https://zenodo.org/api/records/17296511/files/readme.txt/content	943	md5	ca2d90245ab0048d9b67c8d949dd4a38	zenodo:17296511	2026-11-15T17:27:52Z	-
+A1.zip	https://zenodo.org/api/records/17296511/files/A1.zip/content	23276205	md5	7b356aa0e15c3b78a4f8da9b19b31d6b	zenodo:17296511	2026-11-15T17:27:52Z	A1
+R1.zip	https://zenodo.org/api/records/17296511/files/R1.zip/content	1357174	md5	e02d83625b79b35a0e8da90660db7a25	zenodo:17296511	2026-11-15T17:27:52Z	R1
