@@ -140,7 +140,8 @@ def dev_release(
 
 @dev_app.command("site")
 def dev_site(out: Path = typer.Option(Path("site"), "--out", help="The folder to write.")) -> None:
-    """The public website, from the release tables alone: index, datasets, one page per dataset, columns."""
+    """The public website, from the release tables alone: home, datasets and spaces (with a search), one page per
+    measured dataset, columns (src/rirdb/site/)."""
     from rirdb.site import build
 
     out = build(out)

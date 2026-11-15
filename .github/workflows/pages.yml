@@ -1,6 +1,6 @@
 # The website, on GitHub Pages: https://ilias-audio.github.io/rirdb/
 #
-# Built here, from the release tables alone (`rirdb dev site`, src/rirdb/site.py): every push to main rebuilds it.
+# Built here, from the release tables alone (`rirdb dev site`, src/rirdb/site/): every push to main rebuilds it.
 # A new tables release reaches the site through its lock commit on main (publish the tables first, then push).
 # Not on `release`: GitHub deploys to Pages only from main, so a run started by a release tag is refused.
 # Nothing is committed and no database is needed.
