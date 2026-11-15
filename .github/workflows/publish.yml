@@ -1,0 +1,48 @@
+# Publish rirdb to PyPI when a tag v<version> is pushed, with PyPI's trusted publishing (no token).
+#
+#   git tag v0.9.1 && git push origin v0.9.1
+#
+# One-time setup on pypi.org, in the project's Publishing settings: add a GitHub publisher with owner
+# ilias-audio, repository rirdb, workflow publish.yml, environment pypi.
+#
+# The release tables are built from the database on the maintainer's machine, so they are published from
+# there first (`rirdb dev release` prints the `gh release create` command): a package must never name tables
+# that do not exist, and the second step below refuses one that does.
+name: publish
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The tag is the package's version
+        run: test "${GITHUB_REF_NAME#v}" = "$(sed -n 's/^__version__ = "\([^"]*\)".*/\1/p' src/rirdb/__init__.py)"
+      - name: The tables of the lock are published
+        run: |
+          base=$(python -c "import json; print(json.load(open('src/rirdb/release.lock.json'))['base_url'])")
+          curl -sfIL "${base}release.json" > /dev/null || { echo "no release at ${base}: publish the tables first"; exit 1; }
+      - run: python -m pip install build twine && python -m build && twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
