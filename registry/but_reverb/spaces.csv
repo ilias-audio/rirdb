@@ -1,0 +1,10 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+hotel-skalskydvur-conferenceroom2,Hotel Skalsky Dvur conference room (CR2),office_meeting,,,,,,,,,
+hotel-skalskydvur-room112,Hotel Skalsky Dvur room 112,domestic,,,,,,,,,
+vut-fit-c236,BUT FIT meeting room C236,office_meeting,,,,,,,,,
+vut-fit-d105,BUT FIT lecture room D105,lecture_classroom,,,,,,,,,
+vut-fit-e112,BUT FIT lecture room E112,lecture_classroom,,,,,,,,,
+vut-fit-l207,BUT FIT office L207,office_meeting,,,,,,,,,
+vut-fit-l212,BUT FIT office L212,office_meeting,,,,,,,,,
+vut-fit-l227,BUT FIT stairwell L227,stairwell,,,,,,,,,
+vut-fit-q301,BUT FIT office Q301,office_meeting,,,,,,,,,

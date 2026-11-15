@@ -3,12 +3,14 @@ id: reverbfx
 name: ReverbFX (reverb plugin IRs)
 year: 2025
 type: production
+# Plugin presets, not rooms: no naming rule may type them (the "train" folder once made them vehicles).
+space_type: device
 ir_kinds: [digital_reverb]
 capture_formats: [stereo]
 fs_hz: [48000]
 content: 1,846 stereo IRs captured from four reverb plugins (Valhalla Supermassive, Protoverb, SkyNet, TAL-Reverb-4), 14 randomised versions of each preset (delay, low cut, ...), RT60 0.31-52 s; train/valid/test splits. Algorithmic reverbs, not rooms.
 expected: {n_irs: 1846, note: "the Zenodo archives hold 1,833 WAV IRs (train 1,434, valid 199, test 200), 13 fewer than the record states, plus one macOS metadata file (test/._Protoverb_40_04.wav, 263 bytes); the group-store copy holds the same files (valid and test checked by sha256 on 2026-11-06)"}
-adapter: {name: wav_tree, params: {glob: "*/*.wav", pattern: '^(?P<label>train|valid|test)/(?P<room>.+)_(?P<cond>\d+)\.wav$'}}
+adapter: {name: wav_tree, params: {glob: "*/*.wav", pattern: '^(?:train|valid|test)/(?P<room>.+)_(?P<cond>\d+)\.wav$'}}
 room_info: {conditions: "yes", where: "file names: <plugin>_<preset>_<version>; meta.tar (not group-readable) has the settings"}
 license:
   spdx: CC-BY-NC-SA-4.0
@@ -30,7 +32,7 @@ homepage: https://sp-uhh.github.io/reverbfx/
 paper: {title: "ReverbFX: A Dataset of Room Impulse Responses Derived from Reverb Effect Plugins for Singing Voice Dereverberation", url: "https://arxiv.org/abs/2505.20533"}
 doi: 10.5281/zenodo.16186381
 status: active
-notes: "Algorithmic reverbs, used by rirdb's author for evaluation only; Valhalla Supermassive is itself a modulated feedback delay network."
+notes: "Algorithmic reverbs, used by rirdb's author for evaluation only; Valhalla Supermassive is itself a modulated feedback delay network. Each space is one preset (<plugin>_<preset>); the authors' train, valid and test split is the first folder of each file path."
 web_check:
   checked: '2026-10-14'
   institution: University of Hamburg

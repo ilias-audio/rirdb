@@ -14,7 +14,7 @@ adapter:
   name: wav_tree
   # the same 90 positions with an omni and an em32: omni preferred; em32 analysed on the capsule mean (order 0)
   params:
-    pattern: '(?P<cond>OMNI|EIG)/(?P<src>S[CLR])_(?P<rcv>M[CLR])_(?:OMNI|EIG)_(?P<label>\d+)\.wav$'
+    pattern: '(?P<cond>OMNI|EIG)/(?P<src>S[CLR])_(?P<rcv>M[CLR])_(?:OMNI|EIG)_\d+\.wav$'
     room_from: pattern
     room_default: church-santi-marcellino-e-pietro-cremona
     roles: {1: [omni], 32: [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32]}
@@ -25,7 +25,7 @@ wave: 1
 homepage: https://zenodo.org/records/14901751
 doi: 10.5281/zenodo.14901751
 status: active
-notes: "Space label: the single space shows as \"1\" because the adapter took the number at the end of the file names as the room label; it is the church of Santi Marcellino e Pietro in Cremona. The label will be corrected once the adapter pattern no longer uses that number as the label and the dataset is re-indexed."
+notes: "The single space is the church of Santi Marcellino e Pietro in Cremona (its name in spaces.csv). Until tables 0.9.1 it showed as \"5\": the adapter took the number at the end of the file names as the room label."
 web_check:
   checked: '2026-10-14'
   institution: Politecnico di Milano

@@ -13,13 +13,13 @@ access: open
 source: {kind: http, urls: ["http://merlin.fit.vutbr.cz/ReverbDB/BUT_ReverbDB_rel_19_06_RIR-Only.tgz"]}
 adapter:
   name: wav_tree
-  params: {pattern: '(?P<room>[^/]+)/(?P<rcv>MicID\d+)/SpkID(?P<src>\d+)_[^/]+/(?P<label>\d+)/RIR/[^/]+\.v00\.wav$'}
+  params: {pattern: '(?P<room>[^/]+)/(?P<rcv>MicID\d+)/SpkID(?P<src>\d+)_[^/]+/\d+/RIR/[^/]+\.v00\.wav$'}
 keep_archive: false
 wave: 1
 homepage: https://speech.fit.vutbr.cz/software/but-speech-fit-reverb-database
 paper: {title: "Building and evaluation of a real room impulse response dataset", url: "https://ieeexplore.ieee.org/document/8717722"}
 status: active
-notes: "Space labels: the nine spaces show as \"01 (...)\" because the adapter took the microphone folder number (01 to 31) as the room label. The rooms are the BUT offices Q301, L207 and L212, the stairwell L227, the lecture rooms E112 and D105, the meeting room C236, and a hotel room (R112) and conference room (CR2) of Hotel Skalsky Dvur. The labels will be corrected once the adapter pattern no longer uses that number as the label and the dataset is re-indexed."
+notes: "The nine spaces are named in spaces.csv: the BUT offices Q301, L207 and L212, the stairwell L227, the lecture rooms E112 and D105, the meeting room C236, and a hotel room (R112) and conference room (CR2) of Hotel Skalsky Dvur. Until tables 0.9.1 they showed as numbers: the adapter took a folder number as the room label."
 web_check:
   checked: '2026-10-14'
   institution: Brno University of Technology

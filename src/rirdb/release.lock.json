@@ -1,6 +1,6 @@
 {
- "version": "0.9",
- "base_url": "https://github.com/ilias-audio/rirdb/releases/download/tables-0.9/",
+ "version": "0.9.1",
+ "base_url": "https://github.com/ilias-audio/rirdb/releases/download/tables-0.9.1/",
  "files": {
   "all_irs.meshgrid3d.parquet": {
    "sha256": "923dc9e42c560f8a0fa7737f518eae23a845a99f28c17238592bb11a0e821c1c",
@@ -215,8 +215,8 @@
    "size": 26610
   },
   "datasets.parquet": {
-   "sha256": "5bc058cf0f0c7c2483373b1969917b37f64defc80041b7dd73f073eb6ea86221",
-   "size": 47692
+   "sha256": "5bb59a9a3b9f0d179a6bdbe2ffa0c63e0028666f96cd87d4f6ee211654cce248",
+   "size": 47699
   },
   "downloads.parquet": {
    "sha256": "86db481a9f9e7ea5a403229fbfcc6fd610c3f29042bb58d789abe40e402aacf7",
@@ -407,8 +407,8 @@
    "size": 8645
   },
   "irs.parquet": {
-   "sha256": "c5eefd6daafa636c9cbc587f202ca5add67a92bdf603ab345600651576c14ef8",
-   "size": 27300572
+   "sha256": "d6c00edad583ebb817de214728242af6d2b3c560c02e5cc1d69ec85a99260b73",
+   "size": 27301378
   },
   "readers.aachen_air.parquet": {
    "sha256": "563323d8160cf06210cbf696d8647524541f970f42270b98b258465ff8c8c91c",
@@ -595,8 +595,8 @@
    "size": 4885
   },
   "release.json": {
-   "sha256": "b460c4b536ad6e5773d69dd217dde6e70e68642953c537ef010edbc3ea3ddc68",
-   "size": 15963
+   "sha256": "0cd0c3d0b9855f2b25e8dc921a544e8ee8347e0a5b8de594f421f0616c2fbcd8",
+   "size": 15965
   },
   "source_meta.aachen_air.parquet": {
    "sha256": "91d948e54585f56b944fc8d20a15820b1140e5f4affa6fb88f76de671e06ef60",
@@ -643,8 +643,8 @@
    "size": 41783
   },
   "spaces.parquet": {
-   "sha256": "6b7b1894a1bd92894feac55f89d1de1364fa26a910a6dde19a1102fbc3223ed4",
-   "size": 31454
+   "sha256": "2e40cb741895c327c05980a837b05c6d32ca3fda0c76fb4adbb554a6e7bff43f",
+   "size": 33717
   }
  }
 }
