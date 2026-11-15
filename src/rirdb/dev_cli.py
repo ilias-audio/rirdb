@@ -138,6 +138,15 @@ def dev_release(
                   f"--notes 'The release tables of RIRDB {version}.' {out}/*")
 
 
+@dev_app.command("site")
+def dev_site(out: Path = typer.Option(Path("site"), "--out", help="The folder to write.")) -> None:
+    """The public website, from the release tables alone: index, datasets, one page per dataset, columns."""
+    from rirdb.site import build
+
+    out = build(out)
+    console.print(f"wrote {out}: {len(list(out.rglob('*.html')))} pages")
+
+
 @dev_app.command()
 def verify(
     dataset_ids: list[str] = typer.Argument(None, help="Dataset ids (default: use --wave/--all)."),

@@ -7,6 +7,8 @@ ways their pages do not say. RIRDB catalogues them, measures every IR they conta
 (ISO 3382 decay parameters, per octave band, and a set of defect checks), and lets you select, download and
 verify IRs by licence, format, origin, quality and room.
 
+**Website:** https://ilias-audio.github.io/rirdb/ (every dataset, and every column of the tables).
+
 **Status: 0.9 preview.** It covers the 46 datasets measured so far (about 115,000 IRs in the table). Ids, rows
 and columns may still change before 1.0.
 
