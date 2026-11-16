@@ -3,7 +3,10 @@ id: rwth_continuous_brirs
 name: Quasi-Continuous BRIRs in the Horizontal Plane
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15490727"]}
 content: Binaural measurements of a stereo loudspeaker pair in RWTH Aachen's IKS|Lab with a KU100 dummy head turning
   continuously through 370°; BRIRs for any angle are extracted with the included MATLAB code.
 fs_hz:

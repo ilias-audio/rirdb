@@ -3,7 +3,11 @@ id: salford_room_in_room
 name: Salford room-in-room effect data (AES 141)
 year: 2016
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["3457733"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2, "channel_formats": {"2": "binaural", "8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: 'Supporting data for a listening test on the room-in-room effect: measured first-order B-format IRs of
   various environments and BRIR sets used to build the stimuli, plus MATLAB code and listener responses.'
 license:

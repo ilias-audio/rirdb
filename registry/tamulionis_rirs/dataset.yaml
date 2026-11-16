@@ -3,7 +3,10 @@ id: tamulionis_rirs
 name: Room-Impulse-Response-dataset (tamulionism)
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"github","records":["tamulionism/Room-Impulse-Response-dataset@main"]}
 content: 50 measured RIRs (2 Genelec 8010A loudspeakers x 25 receiver points on a 0.5 m grid) in one 5.36 x 5.85
   x 2.86 m room, shared as 44.1 kHz/24-bit WAV files on GitHub.
 fs_hz:

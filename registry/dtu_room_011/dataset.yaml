@@ -3,7 +3,10 @@ id: dtu_room_011
 name: RIR Dataset - ACT, DTU Elektro (011, IEC; plane, sphere)
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["14320166"], exclude: ["video_011.avi", "video_iec.avi"]}
 content: '1,612 RIRs (806 per room) measured with a robot-moved microphone on a plane and a sphere in two DTU rooms:
   a very reverberant shoebox room (011) and an IEC listening room; 44.1 kHz, HDF5.'
 fs_hz:

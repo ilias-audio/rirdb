@@ -3,7 +3,10 @@ id: otimp
 name: OTIMP
 year: 2019
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["5040465"], exclude: ["00_raw.zip"]}
 content: IRs from 29 loudspeakers on a sphere to a pair of behind-the-ear hearing aids worn by 46 individuals (people
   and mannequins) in a mildly reverberant listening room; raw and calibrated MATLAB files.
 expected:

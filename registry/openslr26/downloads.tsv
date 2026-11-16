@@ -1,0 +1,2 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+sim_rir_16k.zip	https://www.openslr.org/resources/26/sim_rir_16k.zip	178818025	sha256	7a2c2e78ce03302bc7dfc1bd5a8a737b21d0776e89b9015f6e2e42300212f731	etag="aa88be9-55aace78e3575";last-modified=Tue, 03 Oct 2017 23:32:29 GMT	2026-11-16T11:37:25Z	.

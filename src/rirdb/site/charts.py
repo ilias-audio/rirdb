@@ -122,32 +122,6 @@ def band_curve(values: list[float | None], names: list[str], lo: float = 0.1, hi
             f'y2="{y(1):.1f}"/>{marks}</svg>')
 
 
-def scatter(points: list[dict], label: str, w: int = 960, h: int = 420, x_lo: float = 0.05, x_hi: float = 25,
-            y_lo: float = -40, y_hi: float = 40) -> str:
-    """One dot per room at its median T30 (log) and median DRR, coloured by kind (class k-<kind>); simulated rooms
-    are hollow. Each dot links to its row on the dataset page and has data-i, its index in the search data, so
-    site.js can dim the dots a filter leaves out. Values beyond an axis sit on its edge."""
-    plot_w, base = w - LEFT - RIGHT, h - BOTTOM
-    x = _log_x(x_lo, x_hi, LEFT, plot_w)
-    y = lambda v: base - (base - TOP) * (min(max(v, y_lo), y_hi) - y_lo) / (y_hi - y_lo)
-    parts = []
-    for t in range(int(y_lo), int(y_hi) + 1, 10):
-        tick = "0" if t == 0 else f"{t:+d}"
-        parts.append(f'<line class="{"axis" if t == 0 else "grid"}" x1="{LEFT}" x2="{w - RIGHT}" y1="{y(t):.1f}" '
-                     f'y2="{y(t):.1f}"/><text x="{LEFT - 6}" y="{y(t) + 4:.1f}" text-anchor="end">{tick}</text>')
-    for t in (0.1, 0.3, 1, 3, 10):
-        parts.append(f'<line class="grid" x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{TOP}" y2="{base}"/>'
-                     f'<text x="{x(t):.1f}" y="{base + 15}" text-anchor="middle">{t:g} s</text>')
-    parts.append(f'<text x="{w - RIGHT}" y="{h - 3}" text-anchor="end">reverberation time T30, median of the room</text>'
-                 f'<text x="{LEFT}" y="{TOP - 5}">DRR, dB</text>')
-    for p in points:
-        cx, cy = x(p["t30"]), y(p["drr"])
-        parts.append(f'<a href="{escape(p["href"])}" class="pt k-{p["kind"]}" data-i="{p["i"]}">'
-                     f'<title>{escape(p["tip"])}</title><circle class="target" cx="{cx:.1f}" cy="{cy:.1f}" r="9"/>'
-                     f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="3.6"/></a>')
-    return _svg("".join(parts), label, w, h, cls="chart scatter")
-
-
 def mini_hist(counts: list[int]) -> str:
     """The small T30 histogram of a result card (the same bins as the dataset page)."""
     if not counts or not sum(counts):

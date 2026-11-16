@@ -1,0 +1,14 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+105.zip	https://zenodo.org/api/records/1321996/files/105.zip/content	638430738	md5	aff2e3113b5d71c902c163d0525147f2	zenodo:1321996	2026-11-16T11:01:15Z	105
+BRIR_loader.m	https://zenodo.org/api/records/1321996/files/BRIR_loader.m/content	1574	md5	3e6a95374dcf0afe4290a6c58b613add	zenodo:1321996	2026-11-16T11:01:15Z	-
+109.zip	https://zenodo.org/api/records/1321996/files/109.zip/content	638431229	md5	bd8245736fef36505eb98b73a3c0bc4a	zenodo:1321996	2026-11-16T11:01:15Z	109
+108.zip	https://zenodo.org/api/records/1321996/files/108.zip/content	638442076	md5	20589f5abf3250b75662c30c37e3d1fe	zenodo:1321996	2026-11-16T11:01:15Z	108
+107.zip	https://zenodo.org/api/records/1321996/files/107.zip/content	638460212	md5	85e4517330888c9f7e47f41321dcbf7a	zenodo:1321996	2026-11-16T11:01:15Z	107
+106.zip	https://zenodo.org/api/records/1321996/files/106.zip/content	638350038	md5	14756634ce7c3a6bacb7eb51e9029e00	zenodo:1321996	2026-11-16T11:01:15Z	106
+101.zip	https://zenodo.org/api/records/1321996/files/101.zip/content	638458582	md5	6cbf98ba4c2443eb9bda597984e18b08	zenodo:1321996	2026-11-16T11:01:15Z	101
+103.zip	https://zenodo.org/api/records/1321996/files/103.zip/content	638450095	md5	294b4ad6c6c28881f2fcf11ce9ccf97c	zenodo:1321996	2026-11-16T11:01:15Z	103
+102.zip	https://zenodo.org/api/records/1321996/files/102.zip/content	638399360	md5	41c4d9ee63d12d006c7363ddf9e767db	zenodo:1321996	2026-11-16T11:01:15Z	102
+104.zip	https://zenodo.org/api/records/1321996/files/104.zip/content	638411697	md5	865e517138a9296f19c141c3d842e719	zenodo:1321996	2026-11-16T11:01:15Z	104
+description.txt	https://zenodo.org/api/records/1321996/files/description.txt/content	2474	md5	6732e61981afe2f1b05bb16eb44313f7	zenodo:1321996	2026-11-16T11:01:15Z	-
+studio.jpg	https://zenodo.org/api/records/1321996/files/studio.jpg/content	526119	md5	0bee15325eb39f36ec7631fdc655343f	zenodo:1321996	2026-11-16T11:01:15Z	-
+scheme.png	https://zenodo.org/api/records/1321996/files/scheme.png/content	890361	md5	9c4112551e0969e5f61e2ca9b4fc2043	zenodo:1321996	2026-11-16T11:01:15Z	-

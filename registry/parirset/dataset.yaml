@@ -3,7 +3,10 @@ id: parirset
 name: PaRIRset
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"hf","records":["enricguso/parirset@main"],"exclude":["*_GP_ACE.wav","*_GP_MIT.wav","*_GP_SLR28.wav"]}
 content: Stereo RIRs from 40 concert venues in Spain (indoor and outdoor), measured through each venue's left/right
   PA at front of house with a reference mic and a Zylia ZM-1, for live-music source separation.
 fs_hz:

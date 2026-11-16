@@ -3,7 +3,11 @@ id: tuil_translation_seminar
 name: BRIRs for interactive listener translation (seminar room)
 year: 2020
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["3457798"]}
+adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset", "m_is": "src", "capture_format": "binaural", "roles": ["L", "R"]}}   # guessed by scripts/onboard/guess.py; see the review
 content: KEMAR 45BA BRIRs at 16 positions along a 7.5 m line in a seminar room (9.9 x 4.7 x 3.1 m, T60 1.0 s) for
   two loudspeakers, head turned in 4° steps, in two sessions, plus omni RIRs; MATLAB and SOFA.
 expected:

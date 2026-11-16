@@ -3,7 +3,10 @@ id: bricasti_m7_samplicity
 name: Samplicity Bricasti M7 IR Library
 year: 2010
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://cdn.samplicity.com/downloads/Samplicity%20-%20Bricasti%20IRs%20version%202023-10.zip"]}
 content: Free true-stereo impulse responses of the presets of a Bricasti M7 hardware reverb unit, captured by Samplicity
   and offered as quad-channel and dual-stereo WAV files at 44.1 and 48 kHz.
 fs_hz:

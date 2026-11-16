@@ -2,7 +2,10 @@
 id: farina_car_irs
 name: Farina 2x2 car-interior IRs (Cars+Sennheiser)
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Astra-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Audi80-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Audi100-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Bmw730-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Croma-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Dedra-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Evasion-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Passat-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Punto-2x2.WAV"]}
 content: Nine undocumented 2x2 IR files measured in car cabins (Astra, Audi 80, Audi 100, BMW 730, Croma, Dedra,
   Citroën Evasion, Passat, Punto) stored as short 2-channel WAVs in Angelo Farina's open web archive, Italy.
 fs_hz:

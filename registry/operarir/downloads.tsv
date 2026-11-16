@@ -1,0 +1,6 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+OperaRIR_layout.mat	https://zenodo.org/api/records/8096639/files/OperaRIR_layout.mat/content	2339	md5	e99528c28229dbd371fd4887dc52dcc4	zenodo:8096639	2026-11-16T11:01:15Z	-
+OperaRIR_control_points_rir.zip	https://zenodo.org/api/records/8096639/files/OperaRIR_control_points_rir.zip/content	2555959187	md5	3ad3b23111a35c8d8829bfe988dd7873	zenodo:8096639	2026-11-16T11:01:15Z	OperaRIR_control_points_rir
+OperaRIR_em32_microphones_48k.zip	https://zenodo.org/api/records/8096639/files/OperaRIR_em32_microphones_48k.zip/content	12783790157	md5	ce9f244ec9c9fc219a4eb7195c631c77	zenodo:8096639	2026-11-16T11:01:15Z	OperaRIR_em32_microphones_48k
+OperaRIR_hoa4_sn3d_48k.zip	https://zenodo.org/api/records/8096639/files/OperaRIR_hoa4_sn3d_48k.zip/content	7909474259	md5	bc6bfc2db14349d3439546862dc7dd84	zenodo:8096639	2026-11-16T11:01:15Z	OperaRIR_hoa4_sn3d_48k
+OperaRIR_measurement_layout.pdf	https://zenodo.org/api/records/8096639/files/OperaRIR_measurement_layout.pdf/content	88834	md5	b65425adbffd87fc9b57f9041b94e472	zenodo:8096639	2026-11-16T11:01:15Z	-

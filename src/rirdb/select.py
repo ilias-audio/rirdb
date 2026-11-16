@@ -55,6 +55,7 @@ class Query:
     kind: list[str] = field(default_factory=list)         # any of these kinds of space (KINDS)
     per_space: int | None = None   # at most this many IRs of each space, spread over its rt_mid (spread_per_space)
     max_archive: str | None = None  # leave out IRs whose download is larger, "2GB" (download_bytes)
+    year: str | None = None         # the dataset's year of publication: "2020-", "-2015", "2018-2020" or "2024"
 
     def check(self, datasets: pd.DataFrame) -> None:
         for name, value, allowed in (("use", self.use, [None, *USES]), ("format", self.format, [None, *FORMATS]),
@@ -82,6 +83,8 @@ class Query:
             raise ValueError(f"provides {', '.join(bad)} is not one of {', '.join(PROVIDES)}")
         if self.t30 is not None:
             t30_range(self.t30)
+        if self.year is not None:
+            year_range(self.year)
 
 
 def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) -> pd.DataFrame:
@@ -106,11 +109,16 @@ def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) 
         lo, hi = t30_range(q.t30)
         rt = irs["rt_mid"]
         keep &= rt.notna() & (rt >= lo) & (rt < hi if hi is not None else True)
+    ds = client.table("datasets") if datasets is None and (q.provides or q.year) else datasets
     if q.provides:
-        ds = client.table("datasets") if datasets is None else datasets
         ok = pd.Series(True, index=ds.index)
         for p in q.provides:
             ok &= ds[f"provides_{p}"].isin(["yes", "partial"])
+        keep &= irs["dataset"].isin(ds.loc[ok, "dataset"])
+    if q.year:                                   # a dataset whose year is not known is left out
+        lo, hi = year_range(q.year)
+        y = pd.to_numeric(ds["year"], errors="coerce")
+        ok = y.notna() & (y >= (lo or 0)) & (y <= (hi or 9999))
         keep &= irs["dataset"].isin(ds.loc[ok, "dataset"])
     if q.max_archive:                            # a download of unknown size (no file listed) is left out too
         keep &= download_bytes(irs) <= parse_size(q.max_archive)
@@ -147,6 +155,19 @@ def t30_range(text: str) -> tuple[float, float | None]:
     return out
 
 
+def year_range(text: str) -> tuple[int | None, int | None]:
+    """"2020-" -> (2020, None), "-2015" -> (None, 2015), "2018-2020" -> (2018, 2020), "2024" -> (2024, 2024): years
+    of publication, both ends kept."""
+    lo, sep, hi = str(text).strip().partition("-")
+    try:
+        out = (int(lo) if lo.strip() else None, int(hi) if hi.strip() else None) if sep else (int(lo), int(lo))
+    except ValueError:
+        out = (None, None)
+    if out == (None, None) or (None not in out and out[1] < out[0]):
+        raise ValueError(f"year {text!r} is not a year or a range of years such as 2020-, -2015 or 2018-2020")
+    return out
+
+
 def parse_size(text: str) -> float:
     """'20GB' -> 20e9 (also kB, MB, TB; powers of 1000)."""
     units = {"TB": 1e12, "GB": 1e9, "MB": 1e6, "KB": 1e3, "B": 1}
@@ -169,10 +190,10 @@ def download_sizes() -> dict[tuple[str, str], float]:
     for ds, g in d.groupby("dataset"):
         size = dict(zip(g["download"], g["size_bytes"].astype(float)))
         for z, s in size.items():
-            if z == "@mirror":
-                s = float(client.table(f"files.{ds}")["size_bytes"].sum())
-            elif np.isnan(s) and len(size) == 1:
-                s = float(client.table(f"files.{ds}")["size_bytes"].sum(min_count=1))
+            # a files table is read only here (each is a download); a dataset pinned but not measured yet has none
+            if z == "@mirror" or (np.isnan(s) and len(size) == 1):
+                s = (float(client.table(f"files.{ds}")["size_bytes"].sum(min_count=1))
+                     if client.has(f"files.{ds}.parquet") else np.nan)
             elif z.endswith(".zip"):
                 s += sum(v for p, v in size.items() if split_part_of(p, z))
             out[(ds, z)] = s
@@ -297,6 +318,10 @@ class Selection:
     def plan(self) -> pd.DataFrame:
         return download_plan(self.table)
 
+    def known_defects(self) -> list[str]:
+        """What to know before using these IRs: one line per known defect they have (irs.known_defect)."""
+        return defect_lines(self.table)
+
     def sizes(self) -> Sizes:
         p = self.plan()
         return Sizes(int(p["size_bytes"].fillna(0).sum()), len(p), int(p["size_bytes"].isna().sum()),
@@ -309,19 +334,28 @@ class Selection:
         return write_selection(self, Path(out), Path(from_dir) if from_dir else None, keep_archives)
 
 
+def defect_lines(t: pd.DataFrame) -> list[str]:
+    """One line per dataset and known defect of the rows (irs.known_defect): how many IRs, and what it is."""
+    if "known_defect" not in t:                   # tables made before 0.9.6
+        return []
+    hit = t[t["known_defect"].fillna("").ne("")]
+    return [f"{d}: {plural(len(g), 'IR')} with a known defect. {w}"
+            for (d, w), g in hit.groupby(["dataset", "known_defect"])]
+
+
 def select(use: str | None = None, format: str | None = None, origin: str = "any", grade: str = "any",
            dataset: list[str] | str | None = None, exclude_dataset: list[str] | str | None = None,
            include_unknown: bool = False, fs: int | None = None, n: int | None = None, balance: str = "none",
            seed: int = 0, space_type: list[str] | str | None = None, t30: str | None = None,
            provides: list[str] | str | None = None, kind: list[str] | str | None = None,
-           per_space: int | None = None, max_archive: str | None = None) -> Selection:
+           per_space: int | None = None, max_archive: str | None = None, year: str | None = None) -> Selection:
     """The IRs of the release that match, one row each, at most `per_space` of each space (spread over its
     reverberation times), then drawn to n with a balance (Python's `rirdb get`)."""
     as_list = lambda v: [v] if isinstance(v, str) else list(v or [])
     q = Query(use=use, format=format, origin=origin, grade=grade, dataset=as_list(dataset),
               exclude_dataset=as_list(exclude_dataset), include_unknown=include_unknown, fs=fs, n=n, balance=balance,
               seed=seed, space_type=as_list(space_type), t30=t30, provides=as_list(provides), kind=as_list(kind),
-              per_space=per_space, max_archive=max_archive)
+              per_space=per_space, max_archive=max_archive, year=year)
     datasets = client.table("datasets")
     q.check(datasets)
     rows = matching(client.table("irs"), q, datasets)

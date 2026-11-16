@@ -27,10 +27,13 @@ license:
 homepage: https://zenodo.org/records/3558319
 doi: 10.5281/zenodo.3558319
 notes: 'The 12 A-format files are raw sweep recordings (116.8 s) and are left out of the table. 8 of the binaural files
-  (ModelA and ModelB, Source1, omni) have one channel and are listed as mono. The ModelA and ModelB binaural and mono renders look stretched in time by a factor of
-  2: their decay times are twice those of the Ambisonic renders of the same models (2.6 against 1.35 s, 5.3 against
-  2.7 s), their files are twice as long, and the omni ones hold nothing above 12 kHz. Read their decay times with care;
-  the Ambisonic renders agree with the measured church (1.35-1.39 s).'
+  (ModelA and ModelB, Source1, omni) have one channel and are listed as mono. The Ambisonic renders agree with the
+  measured church (1.35-1.39 s); the binaural and mono renders do not (their defect, below).'
+defects:
+- what: 'The Model A and Model B binaural and mono renders look stretched in time by a factor of about 2: they decay
+    twice as slowly as the Ambisonic renders of the same models (2.6 against 1.35 s, 5.3 against 2.7 s), their files
+    are twice as long, and the omni ones hold nothing above 12 kHz. Their decay times are not those of the models.'
+  files: '/Model[AB]/Binaural/'
 web_check:
   checked: '2026-10-14'
   found_as: 'Model of Sant Climent de Taüll: impulse responses and auralisations'

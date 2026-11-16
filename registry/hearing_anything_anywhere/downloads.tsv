@@ -1,0 +1,16 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+hallwayPanel1.zip	https://zenodo.org/api/records/11195833/files/hallwayPanel1.zip/content	1385899232	md5	fd507542085f2006cc36ba81dbc456d9	zenodo:11195833	2026-11-16T11:05:53Z	hallwayPanel1
+hallwayPanel2.zip	https://zenodo.org/api/records/11195833/files/hallwayPanel2.zip/content	1448429717	md5	a9c462f65e4b5b63ae1fb260890dd8ae	zenodo:11195833	2026-11-16T11:05:53Z	hallwayPanel2
+hallwayPanel3.zip	https://zenodo.org/api/records/11195833/files/hallwayPanel3.zip/content	1446866883	md5	98d910aeb9a66ba139946861ed0d7db2	zenodo:11195833	2026-11-16T11:05:53Z	hallwayPanel3
+hallwayTranslation.zip	https://zenodo.org/api/records/11195833/files/hallwayTranslation.zip/content	1457900652	md5	0d6424cd7389515a7fcde9ed6017eb5f	zenodo:11195833	2026-11-16T11:05:53Z	hallwayTranslation
+dampenedPanel.zip	https://zenodo.org/api/records/11195833/files/dampenedPanel.zip/content	4527719754	md5	7ecccdaee8da4686ad1291abc483ff04	zenodo:11195833	2026-11-16T11:05:53Z	dampenedPanel
+hallwayRotation.zip	https://zenodo.org/api/records/11195833/files/hallwayRotation.zip/content	1453759646	md5	696e27ac14cc80a6606de9e173c392fa	zenodo:11195833	2026-11-16T11:05:53Z	hallwayRotation
+dampenedTranslation.zip	https://zenodo.org/api/records/11195833/files/dampenedTranslation.zip/content	2031406871	md5	fea5a177ed218e081bbb4940259c4cf1	zenodo:11195833	2026-11-16T11:05:53Z	dampenedTranslation
+dampenedRotation.zip	https://zenodo.org/api/records/11195833/files/dampenedRotation.zip/content	2134334979	md5	e3d2f51ecdc2968cab353bc482c4462c	zenodo:11195833	2026-11-16T11:05:53Z	dampenedRotation
+dampenedBase.zip	https://zenodo.org/api/records/11195833/files/dampenedBase.zip/content	5005177295	md5	9ed2a5231c0d33ea1db4e2a328d74103	zenodo:11195833	2026-11-16T11:05:53Z	dampenedBase
+hallwayBase.zip	https://zenodo.org/api/records/11195833/files/hallwayBase.zip/content	11633962835	md5	99ee819dad68708be87180b2f2ef8eb3	zenodo:11195833	2026-11-16T11:05:53Z	hallwayBase
+complexBase.zip	https://zenodo.org/api/records/11195833/files/complexBase.zip/content	7511911888	md5	d1358ed4d39ad498dd8a82381796de03	zenodo:11195833	2026-11-16T11:05:53Z	complexBase
+classroomBase.zip	https://zenodo.org/api/records/11195833/files/classroomBase.zip/content	5360706816	md5	8d21c72585257c33764c884a2f7def10	zenodo:11195833	2026-11-16T11:05:53Z	classroomBase
+complexTranslation.zip	https://zenodo.org/api/records/11195833/files/complexTranslation.zip/content	2409621452	md5	f1d98d2b33afe39f9473900f9e3151a3	zenodo:11195833	2026-11-16T11:05:53Z	complexTranslation
+complexRotation.zip	https://zenodo.org/api/records/11195833/files/complexRotation.zip/content	2409606128	md5	66a5a4d11472a8773419ba1e6475656d	zenodo:11195833	2026-11-16T11:05:53Z	complexRotation
+mic_calibrations.zip	https://zenodo.org/api/records/11195833/files/mic_calibrations.zip/content	64527	md5	b7b55d48571a5c1e83cd6dc455695488	zenodo:11195833	2026-11-16T11:05:53Z	mic_calibrations

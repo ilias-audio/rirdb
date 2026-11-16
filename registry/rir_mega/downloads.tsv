@@ -1,0 +1,7 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+README.md	https://zenodo.org/api/records/17387402/files/README.md/content	1547	md5	1994fb5aaa620c14deefc6e2cde554a1	zenodo:17387402	2026-11-16T11:05:53Z	-
+LICENSE-DATASET.txt	https://zenodo.org/api/records/17387402/files/LICENSE-DATASET.txt/content	9	md5	57e3d330091a296f8b8c62967790eb54	zenodo:17387402	2026-11-16T11:05:53Z	-
+rir_output_50k.zip	https://zenodo.org/api/records/17387402/files/rir_output_50k.zip/content	3409666240	md5	961e3b5c4c3649f20f4cab2c37c5ab20	zenodo:17387402	2026-11-16T11:05:53Z	rir_output_50k
+checksums.zip	https://zenodo.org/api/records/17387402/files/checksums.zip/content	552	md5	a3e84c2ff0d9da5a1a3c31490b48f4c7	zenodo:17387402	2026-11-16T11:05:53Z	checksums
+rir_output_8k_circ.zip	https://zenodo.org/api/records/17387402/files/rir_output_8k_circ.zip/content	484425584	md5	fc14fe6e334ff0d565d2b27bae811391	zenodo:17387402	2026-11-16T11:05:53Z	rir_output_8k_circ
+manifests.zip	https://zenodo.org/api/records/17387402/files/manifests.zip/content	4190866	md5	dbf2aed237e53aa7793c8becb70f06c7	zenodo:17387402	2026-11-16T11:05:53Z	manifests

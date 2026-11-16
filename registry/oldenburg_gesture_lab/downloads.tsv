@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+README.pdf	https://zenodo.org/api/records/3736487/files/README.pdf/content	411722	md5	f62da113350fbd3d587206f662d60718	zenodo:3736487	2026-11-16T11:01:15Z	-
+glabhrir.zip	https://zenodo.org/api/records/3736487/files/glabhrir.zip/content	80301795	md5	b1341911d0b43ccd4ebf378868a938d8	zenodo:3736487	2026-11-16T11:01:15Z	.

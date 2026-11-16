@@ -3,7 +3,10 @@ id: dtu_room_019
 name: RIR Dataset - ACT, DTU Electro (019)
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["25867705"]}
 content: '2,772 RIRs in a furnished, partly absorptive classroom at DTU (room 019): a robot arm moved one microphone
   over spheres and lines for each of two loudspeaker positions; 48 kHz, 5 s IRs in HDF5.'
 fs_hz:

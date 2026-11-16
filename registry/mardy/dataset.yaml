@@ -3,7 +3,10 @@ id: mardy
 name: MARDY
 year: 2006
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.commsp.ee.ic.ac.uk/~sap/uploads/data/MARDY.rar"]}
 content: 'Classic dereverberation set of multichannel RIRs: three loudspeakers (left, centre, right) to an 8-element
   microphone array at three distances, measured with MLS at York.'
 room_info:

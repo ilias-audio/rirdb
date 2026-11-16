@@ -313,6 +313,7 @@ def dataset_irs(dataset_id: str) -> dict:
     out["defects_major"] = n_major.to_numpy()
     out["defects_minor"] = n_minor.to_numpy()
     out = pd.concat([out, dfx], axis=1)
+    out["known_defect"] = known_defect(d, out["file"])
     out["usable_top_hz"] = np.nan                                  # measured from step 4
     out["effective_bits"] = np.nan                                 # measured from step 4
     out["peak_to_noise_db"] = finite(r["peak_to_noise_db"])
@@ -429,6 +430,15 @@ def what_it_is(d: Dataset) -> dict:
             "provides_where": d.room_info.where or "", "caveats": "\n".join(" ".join(c.split()) for c in w.caveats)}
 
 
+def known_defect(d: Dataset, files: pd.Series) -> pd.Series:
+    """The registry's known defects of each IR (`defects`, matched on its file): their words, or empty."""
+    out = pd.Series("", index=files.index, dtype=object)
+    for k in d.defects:
+        hit = files.str.contains(k.files, regex=True) if k.files else pd.Series(True, index=files.index)
+        out = out.where(~hit, (out + " " + " ".join(k.what.split())).str.strip())
+    return out
+
+
 def datasets_table(registry: list[Dataset], built: dict[str, dict]) -> pd.DataFrame:
     rows = []
     for d in registry:
@@ -456,7 +466,8 @@ def datasets_table(registry: list[Dataset], built: dict[str, dict]) -> pd.DataFr
             "pinned_version": pinned_version(d.id), "analyser": ANALYSER if b else "",
             "cap": d.cap, "n_irs_stated": d.expected.n_irs,
             "n_irs_found": b["n_found"] if b else None, "n_irs": len(b["irs"]) if b else None,
-            "known_issues": d.notes or "", "reference_check": "none_published", "reference_median_ratio": None,
+            "known_issues": d.notes or "", "known_defects": "\n".join(" ".join(k.what.split()) for k in d.defects),
+            "reference_check": "none_published", "reference_median_ratio": None,
         })
     out = pd.DataFrame(rows)
     for c in ("year", "cap", "n_irs_stated", "n_irs_found", "n_irs"):

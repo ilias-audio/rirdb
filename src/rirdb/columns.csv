@@ -56,6 +56,7 @@ irs,defect_quantisation_floor,bool,,,,,the file is readable,not assessed,Minor. 
 irs,defect_dc_offset,bool,,,,,the file is readable,not assessed,Minor. A constant offset in a channel (defects.dc_offset),build
 irs,defect_high_noise_floor,bool,,,,,the file is readable,not assessed,"Minor. peak_to_noise_db below defects.high_noise_floor (a decay into exact digital silence has no noise floor, so no defect)",build
 irs,defect_inverted_channel,bool,,,,,format is stereo or binaural,"the format is not stereo or binaural, or not assessed (0.9: analyser v1 does not measure it)",Minor. Two channels of one IR with opposite polarity. Never applied to Ambisonic signals,build
+irs,known_defect,string,,,,,always,no known defect,"A defect of the files as published that RIRDB cannot repair, in words (the dataset's registry `defects`). The IR stays in the table; rirdb search and get warn",registry
 irs,usable_top_hz,float,Hz,,0,384000,the file is readable,not measured (0.9: analyser v1 does not measure it),Upper edge of the highest third-octave band whose early level rises at least 20 dB above both its tail noise and its quantisation floor,measure
 irs,effective_bits,float,bits,,1,64,the file is readable,not measured (0.9: analyser v1 does not measure it),"The bit depth the samples really use: 16-bit content in a 24-bit or float file shows as 16",measure
 irs,peak_to_noise_db,float,dB,,-100,,the file is readable,no noise floor: the decay runs into exact digital silence,"Peak level over the broadband noise floor",measure
@@ -160,6 +161,7 @@ datasets,n_irs_stated,int,,,0,,always,the authors state no count,Number of IRs t
 datasets,n_irs_found,int,,,0,,the dataset is indexed,not indexed yet,Number of IRs found in the pinned files,build
 datasets,n_irs,int,,,0,,the dataset is indexed,not indexed yet,Number of rows in irs,build
 datasets,known_issues,string,,,,,always,none recorded,What to know about the dataset: its notes in the registry,registry
+datasets,known_defects,string,,,,,always,none known,"Defects of the files as published that RIRDB cannot repair, one per line, each with the IRs it concerns (irs.known_defect)",registry
 datasets,reference_check,string,,checked|published_not_checked|none_published,,,always,never empty,Whether our values were compared with values the authors publish,build
 datasets,reference_median_ratio,float,,,0,10,reference_check is checked,not checked,Median ratio of our value to the published one,build
 downloads,dataset,string,,,,,always,never empty,The dataset id,pin

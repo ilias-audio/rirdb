@@ -3,7 +3,10 @@ id: tuil_tv_studio_brirs
 name: Position-dynamic auditory AR BRIRs (TV studio)
 year: 2018
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["1321996"]}
 content: KEMAR BRIRs for six loudspeakers (5.0 surround plus one) at nine positions in a 4 x 4 m area, head turned
   360° in 5° steps, in a TU Ilmenau TV studio (19.5 x 11.5 x 5.5 m, RT60 about 0.7 s); MATLAB files.
 expected:

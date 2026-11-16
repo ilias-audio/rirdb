@@ -3,7 +3,10 @@ id: dtu_frequency_responses
 name: DTU acoustic frequency responses (classroom, cuboid room)
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["13315286"]}
 content: Room frequency responses measured by a robot-positioned microphone on dense planar grids in a DTU classroom
   (4,761 points) and an empty cuboid room (2,023 points), stored as HDF5.
 expected:

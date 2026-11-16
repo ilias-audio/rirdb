@@ -3,7 +3,10 @@ id: tuil_srir_rooms
 name: TU Ilmenau SRIR dataset in different rooms
 year: 2022
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["6541444"]}
 content: 'Spatial RIRs measured with a self-built SDM microphone array in 15 TU Ilmenau rooms (6 seminar rooms,
   6 offices, 3 lecture halls): 42 .mat measurements, with 360° photos and floor plans.'
 expected:

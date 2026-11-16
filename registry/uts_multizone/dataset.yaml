@@ -3,7 +3,10 @@ id: uts_multizone
 name: UTS RIR Database (multizone sound field reproduction)
 year: 2022
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Anechoic%20Room.zip#Anechoic_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Hemi-anechoic%20Room.zip#Hemi-anechoic_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Large%20Meeting%20Room.zip#Large_Meeting_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Medium%20Meeting%20Room.zip#Medium_Meeting_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Open-plan%20Office.zip#Open-plan_Office.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Shoe-box%20Room.zip#Shoe-box_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=Small%20Meeting%20Room.zip#Small_Meeting_Room.zip","https://data.research.uts.edu.au/api/object/open?id=arcp%3A%2F%2Fname%2Cuts_public_data_repo%2Ffad2f4b0c03d11ec91ce05dbccc55a63&path=readRIRintoMatlab.m#readRIRintoMatlab.m"]}
 content: 260,400 single-channel RIRs from a 60-loudspeaker circular array to two microphone arrays placed in 5 zones,
   measured with sine sweeps in 7 rooms (anechoic chamber to open-plan office) at UTS Tech Lab, Sydney.
 fs_hz:

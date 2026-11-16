@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+TheSpheresDataset-RIRs.zip	https://zenodo.org/api/records/17347681/files/TheSpheresDataset-RIRs.zip/content	23747209	md5	5d61f86a50fea7dcacb5485efdf0de61	zenodo:17347681	2026-11-16T11:10:01Z	TheSpheresDataset-RIRs
+TheSpheresDataset-StereoMix.zip	https://zenodo.org/api/records/17347681/files/TheSpheresDataset-StereoMix.zip/content	2796218501	md5	43a5f317d33645ea1446bbefbc931482	zenodo:17347681	2026-11-16T11:10:01Z	TheSpheresDataset-StereoMix
+TheSpheresDataset-Multichannel.zip	https://zenodo.org/api/records/17347681/files/TheSpheresDataset-Multichannel.zip/content	25251710813	md5	49917a61914c5a6e34262c263bb7b134	zenodo:17347681	2026-11-16T11:10:01Z	TheSpheresDataset-Multichannel

@@ -19,7 +19,7 @@ MAINTAINER_URL = "https://github.com/ilias-audio"
 LOGO = ('<svg viewBox="0 0 30 22" aria-hidden="true"><rect x="0" y="0" width="3" height="22" rx="1"/>'
         '<rect x="6" y="9" width="3" height="13" rx="1"/><rect x="12" y="13" width="3" height="9" rx="1"/>'
         '<rect x="18" y="16" width="3" height="6" rx="1"/><rect x="24" y="18.5" width="3" height="3.5" rx="1"/></svg>')
-NAV = [("datasets.html", "Datasets"), ("rooms.html", "Rooms"), ("guide.html", "Guide"), ("about.html", "About")]
+NAV = [("datasets.html", "Datasets"), ("index.html#guide", "Guide"), ("index.html#about", "About")]
 
 ICONS = {   # 16 px marks for yes / partly / no / not stated, drawn in currentColor
     "yes": '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/>'
@@ -55,14 +55,24 @@ def page(title: str, body: str, depth: int = 0, current: str = "", scripts: tupl
 <footer class="site-foot"><div class="wrap">
 <div><h4>RIRDB</h4><ul><li>Release {e(__version__)}, tables {e(client.version())}</li>
 <li>Maintained by <a href="{MAINTAINER_URL}">{MAINTAINER}</a></li><li>Catalogue and tables: CC BY 4.0. Code: MIT</li></ul></div>
-<div><h4>Use</h4><ul><li><a href="{up}guide.html">Get started</a></li><li><a href="{up}guide.html#glossary">Glossary</a></li>
+<div><h4>Use</h4><ul><li><a href="{up}index.html#start">Get started</a></li><li><a href="{up}index.html#glossary">Glossary</a></li>
 <li><a href="{up}reference.html">Data reference</a></li></ul></div>
-<div><h4>Cite and contribute</h4><ul><li><a href="{up}guide.html#cite">Cite RIRDB</a></li>
-<li><a href="{up}guide.html#add">Add a dataset</a></li><li><a href="{ISSUES}">Report a problem</a></li></ul></div>
+<div><h4>Cite and contribute</h4><ul><li><a href="{up}index.html#cite">Cite RIRDB</a></li>
+<li><a href="{up}index.html#add">Add a dataset</a></li><li><a href="{ISSUES}">Report a problem</a></li></ul></div>
 <div><h4>Elsewhere</h4><ul><li><a href="{REPO}">GitHub</a></li><li><a href="{PYPI}">PyPI</a></li></ul></div>
 </div></footer>
 </body></html>
 """
+
+
+def moved(to: str, add: str = "", section: str = "") -> str:
+    """The page at an old address: the browser goes on to `to`, keeping the ?query (plus `add`) and the #section
+    (else `section`); without JavaScript, a refresh to `to`."""
+    query = f"(location.search ? location.search + '&{add}' : '?{add}')" if add else "location.search"
+    target = f"{to}?{add}" if add else to
+    return (f'<!doctype html><meta charset="utf-8"><title>RIRDB</title><script>location.replace("{to}" + {query} + '
+            f'(location.hash || "{section}"));</script><meta http-equiv="refresh" content="0; url={target}{section}">'
+            f'<link rel="canonical" href="{to}"><a href="{target}{section}">{target}{section}</a>\n')
 
 
 def copybox(text: str) -> str:

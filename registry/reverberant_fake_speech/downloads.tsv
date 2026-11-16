@@ -1,0 +1,13 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+rir-syn-train_info.csv	https://zenodo.org/api/records/17180301/files/rir-syn-train_info.csv/content	7990454	md5	5037d8de877d17960a6cd6378b0960a5	zenodo:17180301	2026-11-16T11:07:57Z	-
+C1R1.tgz	https://zenodo.org/api/records/17180301/files/C1R1.tgz/content	3400322788	md5	dbebfb9a042d27d8e287fa3fe8915120	zenodo:17180301	2026-11-16T11:07:57Z	C1R1
+C1R2_info.csv	https://zenodo.org/api/records/17180301/files/C1R2_info.csv/content	4152131	md5	e02cbd82f1427fe32958aa0dca09cce4	zenodo:17180301	2026-11-16T11:07:57Z	-
+rir-syn-train.tgz	https://zenodo.org/api/records/17180301/files/rir-syn-train.tgz/content	805321893	md5	a8ea12eeedf702640fe063737b37c1fc	zenodo:17180301	2026-11-16T11:07:57Z	rir-syn-train
+DF_trial_metadata_C1.txt	https://zenodo.org/api/records/17180301/files/DF_trial_metadata_C1.txt/content	6911893	md5	23991bb6cd33bb184b09027f4a5023b1	zenodo:17180301	2026-11-16T11:07:57Z	-
+C1R1_info.csv	https://zenodo.org/api/records/17180301/files/C1R1_info.csv/content	2601019	md5	86a2f734242ea7cf603c97b9e5551f35	zenodo:17180301	2026-11-16T11:07:57Z	-
+rir-syn-test.tgz	https://zenodo.org/api/records/17180301/files/rir-syn-test.tgz/content	98710667	md5	8b6d18460c6e868f7fc3a775b7c018a6	zenodo:17180301	2026-11-16T11:07:57Z	rir-syn-test
+rir-syn-test_info.csv	https://zenodo.org/api/records/17180301/files/rir-syn-test_info.csv/content	1011629	md5	76c93acb0b9d1895e366bfda2289b9d0	zenodo:17180301	2026-11-16T11:07:57Z	-
+C1R2.tgz	https://zenodo.org/api/records/17180301/files/C1R2.tgz/content	3384962491	md5	9a8b63ef07786ec901b59c17c5fa7765	zenodo:17180301	2026-11-16T11:07:57Z	C1R2
+README.txt	https://zenodo.org/api/records/17180301/files/README.txt/content	1337	md5	249b5d797f97d4a241087276178e7665	zenodo:17180301	2026-11-16T11:07:57Z	-
+rir-real-train.tgz	https://zenodo.org/api/records/17180301/files/rir-real-train.tgz/content	2278463	md5	331a9ad88fcc2ea9bb0b30c6da9eae3b	zenodo:17180301	2026-11-16T11:07:57Z	rir-real-train
+rir-real-test.tgz	https://zenodo.org/api/records/17180301/files/rir-real-test.tgz/content	266958	md5	19a1bb642197e8dc744e6d027f5f0276	zenodo:17180301	2026-11-16T11:07:57Z	rir-real-test

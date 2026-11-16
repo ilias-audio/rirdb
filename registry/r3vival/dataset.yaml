@@ -3,7 +3,10 @@ id: r3vival
 name: R3VIVAL
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"github","records":["facebookresearch/R3VIVAL@main"]}
 content: '272 spatial RIRs of one variable-acoustics lab (9.7 x 5.5 x 2.7 m): 34 source positions x 8 absorber-panel
   settings, captured with a 7-mic open array for SDM, plus 360° stereoscopic videos.'
 expected:

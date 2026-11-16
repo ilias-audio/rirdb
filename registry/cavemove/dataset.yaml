@@ -3,7 +3,10 @@ id: cavemove
 name: CAVEMOVE
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["17404917"]}
 content: 8-channel IRs measured in parked cars (4 models in the paper) from a talk-box at the seats and from the
   car audio, with a compact dashboard array and distributed mics, plus driving and ventilation noise; 16 kHz WAV.
 fs_hz:

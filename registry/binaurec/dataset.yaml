@@ -3,7 +3,11 @@ id: binaurec
 name: BinauRec
 year: 2022
 type: hybrid
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["7256984"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(noise)/|(^|/)(sigrec|sweep|scene_|noise|ambien|excitation|truncated_)", "room_level": 1, "condition_level": 2}}   # guessed by scripts/onboard/guess.py; see the review
 content: Swept-sine RIRs from 4 loudspeakers to behind-the-ear hearing-aid mics, with and without a KEMAR head,
   in one room in Nancy, plus simulated RIRs of the same scenes and matching speech-in-noise recordings.
 fs_hz:

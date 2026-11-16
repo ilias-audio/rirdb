@@ -3,7 +3,10 @@ id: ulrich_diy_rooms
 name: Thatcher Ulrich DIY room IRs
 year: 2017
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://tulrich.com/recording/ir_capture/ir_bathroom1.wav","https://tulrich.com/recording/ir_capture/ir_bathroom2.wav","https://tulrich.com/recording/ir_capture/ir_bedroomfoyer.wav","https://tulrich.com/recording/ir_capture/ir_bedroomfoyer_1.wav","https://tulrich.com/recording/ir_capture/ir_diningroom.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_C.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_L.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_R.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_dL.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_dR.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_hall1.wav","https://tulrich.com/recording/ir_capture/ir_foyerbedroom_hall2.wav","https://tulrich.com/recording/ir_capture/ir_wire_scarlett2i2.wav"]}
 content: Sine-sweep IRs (13 WAV files) of the bathroom, bedroom/foyer and dining room of the author's apartment,
   from a DIY capture tutorial using PreSonus Eris 4.5 monitors and two Shure SM-81 mics.
 expected:

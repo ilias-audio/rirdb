@@ -3,7 +3,10 @@ id: dirha_wsj
 name: DIRHA English WSJ training IRs (FBK)
 year: 2017
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"github","records":["SHINE-FBK/DIRHA_English_wsj@master"]}
 content: Measured IRs from 3 loudspeaker positions to 63 microphones in the living room of the DIRHA project apartment,
   as MATLAB files with mic and source coordinates, shared in FBK's DIRHA English WSJ GitHub repo.
 expected:

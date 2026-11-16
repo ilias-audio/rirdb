@@ -111,10 +111,8 @@ table.ex td { white-space: nowrap; }
 .bigsearch input { flex: 1; min-width: 0; border: 0; font: inherit; font-size: 1.05rem; padding: 12px 14px; background: transparent; color: var(--ink); }
 .bigsearch input:focus { outline: none; } .bigsearch:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .bigsearch button { border: 0; background: var(--ink); color: var(--paper); font: 600 .95rem var(--sans); padding: 0 22px; cursor: pointer; }
-.collection, .browse, .how, .who { border-top: 1px solid var(--rule); padding-block: 40px; }
+.browse, .how, .band { border-top: 1px solid var(--rule); padding-block: 40px; }
 .section-head { display: grid; gap: 8px; max-width: 72ch; margin-bottom: 18px; }
-.plot { margin: 0; display: grid; gap: 10px; }
-.plot figcaption { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; justify-content: space-between; }
 .browse-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 28px 40px; margin-top: 18px; }
 .browse-grid ul { list-style: none; padding: 0; gap: 0; margin-top: 8px; }
 .browse-grid li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--rule); }
@@ -125,7 +123,6 @@ table.ex td { white-space: nowrap; }
 .terminal { margin: 0; background: #15171c; color: #e3e6ec; border-radius: 8px; padding: 18px 20px; overflow-x: auto;
   font-size: .82rem; line-height: 1.55; }
 .terminal .prompt { color: #9db4ff; } .terminal .faint { color: #8f95a1; }
-.who p { color: var(--ink-2); max-width: 72ch; }
 
 /* search pages */
 .find { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px; align-items: start; }
@@ -290,3 +287,77 @@ figcaption b { font-weight: 600; display: block; } figcaption span { color: var(
 .more-opts > .opt { margin-bottom: 5px; }
 .plotbox { overflow-x: auto; }
 @media (max-width: 700px) { .plotbox svg.scatter { min-width: 640px; } }
+
+/* home: the call to the tool, the numbers, the bar of sections that stays in view */
+.cta { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.button { display: inline-flex; align-items: center; background: var(--accent); color: var(--paper); text-decoration: none;
+  font-weight: 600; border-radius: 8px; padding: 10px 18px; }
+.button:hover { background: var(--accent-ink); color: var(--paper); }
+.numbers { margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 24px; max-width: 760px; }
+.numbers div { display: flex; flex-direction: column-reverse; gap: 2px; border-left: 2px solid var(--rule); padding-left: 12px; }
+.numbers dt { color: var(--ink-2); font-size: .86rem; } .numbers dd { margin: 0; font: 600 1.5rem/1.1 var(--serif); font-variant-numeric: tabular-nums; }
+.sectionbar { position: sticky; top: 0; z-index: 6; background: var(--paper); border-block: 1px solid var(--rule); }
+.sectionbar .wrap { display: flex; gap: 4px 20px; overflow-x: auto; padding-block: 9px; font-size: .9rem; white-space: nowrap; }
+.sectionbar a { color: var(--ink-2); text-decoration: none; } .sectionbar a:hover { color: var(--accent); }
+.band .section-head { margin-bottom: 4px; }
+.prose section h3 { font-size: 1.25rem; }
+.hero, .band, .how, section[id], .prose section[id], .glossary dt { scroll-margin-top: 52px; }
+
+/* the datasets page: two views, the table, the defect mark */
+.tabs { position: sticky; top: 0; z-index: 6; display: flex; gap: 4px; background: var(--paper); border-bottom: 1px solid var(--rule);
+  padding-top: 6px; }
+.tabs [role="tab"] { font: 600 .98rem var(--sans); color: var(--ink-2); background: none; border: 0; border-bottom: 3px solid transparent;
+  padding: 8px 12px 9px; cursor: pointer; margin-bottom: -1px; }
+.tabs [role="tab"][aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs [role="tab"]:hover { color: var(--accent); }
+.tabn { font-weight: 400; color: var(--ink-3); font-variant-numeric: tabular-nums; margin-left: 4px; }
+.tabpanel { display: grid; gap: 14px; min-width: 0; align-content: start; }
+.listctl { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: .88rem; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.seg button { font: inherit; font-size: .85rem; border: 0; background: var(--paper); color: var(--ink-2); padding: 4px 10px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--wash); color: var(--ink); font-weight: 600; }
+table.dstable td { vertical-align: top; } table.dstable td:first-child { min-width: 200px; }
+table.dstable tr.leftout { opacity: .5; } table.dstable tr.picked td:first-child a { font-weight: 600; }
+table.dstable .pill { margin-left: 6px; }
+table.dstable .picks { flex-wrap: nowrap; } table.dstable .pick { white-space: nowrap; }
+table.dstable td:nth-child(8), table.dstable td:nth-child(9) { white-space: nowrap; }
+.sortby { font: inherit; font-weight: 600; background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; text-decoration: underline dotted; }
+.sortby[aria-pressed="true"] { color: var(--accent); text-decoration: underline; }
+.pill.defect { background: color-mix(in srgb, var(--part) 16%, var(--paper)); color: var(--part); font-weight: 600; }
+.warnbox { border-left: 3px solid var(--part); background: color-mix(in srgb, var(--part) 7%, var(--paper)); padding: 12px 16px;
+  border-radius: 0 6px 6px 0; display: grid; gap: 8px; max-width: 76ch; margin-bottom: 18px; scroll-margin-top: 16px; }
+.warnbox h2 { font-size: 1.1rem; }
+.note.warn { display: block; border-left: 3px solid var(--part); padding-left: 12px; color: var(--ink); }
+
+/* the published years: a bar per year, the chosen ones dark */
+.yearbars { display: flex; align-items: flex-end; gap: 1px; height: 38px; border-bottom: 1px solid var(--rule); }
+.yearbars i { flex: 1; min-width: 2px; background: var(--corpus); border-radius: 1px 1px 0 0; }
+.yearbars i.in { background: var(--mark); }
+.yrs { display: flex; gap: 10px; font-size: .86rem; color: var(--ink-2); }
+.yr select { font: inherit; font-size: .86rem; padding: 3px 4px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); color: var(--ink); }
+
+/* What you get */
+.getctl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px 24px; padding: 14px 16px;
+  background: var(--wash); border-radius: 8px; }
+.getctl .facet { align-content: start; }
+.getctl .opt { font-size: .86rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px 20px; }
+.stat { display: grid; gap: 1px; border-left: 2px solid var(--accent); padding-left: 12px; }
+.stat b { font: 600 1.6rem/1.15 var(--serif); }
+.stat span { color: var(--ink-2); font-size: .88rem; }
+.getcharts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 28px 36px; }
+.getchart.wide { grid-column: 1 / -1; }
+.chartbox { min-width: 0; }
+svg .ghost { fill: none; stroke: var(--corpus); stroke-width: 1.5; }
+.hbars { list-style: none; padding: 0; display: grid; gap: 5px; font-size: .86rem; }
+.hbars li { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.hbars .hl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbars .hb { height: 10px; } .hbars .hb i { display: block; height: 100%; background: var(--mark); border-radius: 0 2px 2px 0; min-width: 2px; }
+.hbars li:hover .hb i { background: var(--mark-hover); }
+.hbars .hv { text-align: right; white-space: nowrap; }
+.getrooms { display: grid; gap: 8px; }
+@media (max-width: 900px) { .getctl { grid-template-columns: 1fr; } }
+.yearbars i.zero { height: 2px !important; background: var(--rule); }
+.yearaxis { display: flex; justify-content: space-between; font-size: .75rem; color: var(--ink-3); margin-top: -2px; }
+.aside > * { min-width: 0; }   /* a long command or value scrolls or wraps inside the panel, not the page */

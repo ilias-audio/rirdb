@@ -3,7 +3,10 @@ id: l3das_rirs
 name: L3DAS RIRs (L3DAS21/L3DAS22)
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.l3das.com/assets/file/L3DAS_RIRs.zip"]}
 content: First-order Ambisonic (B-format) RIRs from 252 loudspeaker positions to two Ambisonic microphones in a
   furnished office of about 6 x 5 x 3 m, used to build the L3DAS21 and L3DAS22 challenge datasets.
 expected:

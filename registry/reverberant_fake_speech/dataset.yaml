@@ -3,7 +3,10 @@ id: reverberant_fake_speech
 name: Synthetic Room Impulse Responses and Reverberant Fake Speech
 year: 2025
 type: hybrid
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["17180301"]}
 content: About 132,000 synthetic RIRs made by re-shaping the T60 and DRR of 264 MIT IR Survey recordings (500 variants
   each), plus those 264 originals and ASVspoof 2021 fake speech reverberated with them.
 expected:

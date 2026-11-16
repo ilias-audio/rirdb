@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+ASN_Database_3.2_MAT.zip	https://zenodo.org/api/records/8320987/files/ASN_Database_3.2_MAT.zip/content	9479688158	md5	61d719bcf568ea07669b4ad724dd4616	zenodo:8320987	2026-11-16T11:01:15Z	ASN_Database_3.2_MAT
+ASN_Database_3.2_BIN.zip	https://zenodo.org/api/records/8320987/files/ASN_Database_3.2_BIN.zip/content	4625842427	md5	f32455cbd498bcf1831ce36283090e57	zenodo:8320987	2026-11-16T11:01:15Z	ASN_Database_3.2_BIN
+ASN_Database_3.2_WAV.zip	https://zenodo.org/api/records/8320987/files/ASN_Database_3.2_WAV.zip/content	4632234751	md5	06183b2eaaefc9c7a5282df8d3a6a15b	zenodo:8320987	2026-11-16T11:01:15Z	ASN_Database_3.2_WAV

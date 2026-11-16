@@ -123,6 +123,23 @@ resolve_github() {
     done
 }
 
+# Hugging Face datasets: records are "<org>/<name>@<revision>"; every file of the revision, pinned to its commit, with
+# the LFS sha256 where the Hub has one (small files: trust on first use).
+resolve_hf() {
+    local spec repo rev
+    for spec in $(split_list "$D_RECORDS"); do
+        repo=${spec%@*}; rev=${spec#*@}
+        curl_json "https://huggingface.co/api/datasets/$repo/revision/$rev?blobs=true" \
+        | jq -r --arg repo "$repo" '.sha as $sha | .siblings[] | [.rfilename,
+              "https://huggingface.co/datasets/\($repo)/resolve/\($sha)/\(.rfilename | split("/") | map(@uri) | join("/"))",
+              (.size | tostring), "sha256", (.lfs.sha256 // "-"), "hf:\($repo)@\($sha)"] | @tsv' \
+        | while IFS=$'\t' read -r name url size algo checksum version; do
+            selected "$name" || continue
+            emit "$(rel_for "$spec" "$name")" "$url" "$size" "$algo" "$checksum" "$version"
+        done
+    done
+}
+
 resolve_wget_mirror() {
     local url
     for url in $(split_list "$D_URLS"); do
@@ -168,6 +185,7 @@ resolve_one() {
             dataverse) resolve_dataverse ;;
             mendeley) resolve_mendeley ;;
             github) resolve_github ;;
+            hf) resolve_hf ;;
             wget_mirror) resolve_wget_mirror ;;
             *) die "$D_ID: source kind '$D_KIND' not implemented yet" ;;
         esac

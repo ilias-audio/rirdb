@@ -1,0 +1,2 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+facebookresearch_R3VIVAL-0dca1929d6c1.tar.gz	https://codeload.github.com/facebookresearch/R3VIVAL/tar.gz/0dca1929d6c119641284ccb34c06abafa3e0edce	-	sha256	0e2b55c591bc9dd38bb58bcec70c27e0013a103dca14c0a7f891cddba3f8ebb5	github:facebookresearch/R3VIVAL@0dca1929d6c119641284ccb34c06abafa3e0edce	2026-11-16T11:37:25Z	.

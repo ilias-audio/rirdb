@@ -3,7 +3,10 @@ id: grap
 name: GRAP
 year: 2018
 type: simulated
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"depositonce","records":["bc297d68-9361-4257-9454-d72e4a35cdc0"],"include":["GRAP_DATABASE_V2.rar","Documentation.pdf"]}
 content: 35 virtual rooms (some modelled on real venues) simulated in RAVEN; each has one source and two receivers
   with a mono RIR and 360 BRIRs (1° head turns), plus 3D models, materials and listening-test scores.
 fs_hz:

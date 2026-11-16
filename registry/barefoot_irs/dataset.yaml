@@ -3,7 +3,10 @@ id: barefoot_irs
 name: Barefoot Recording Impulse Response Project
 year: 2021
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.dropbox.com/scl/fi/1adap9qop7xz2dkpwjbim/BF-TL-SPACE-LIBRARY.zip?rlkey=8dt6d8kx0sfsnkglovb7dfdc9&dl=1"]}
 content: 'Stereo IRs of Barefoot Recording, Eric Valentine''s studio: two recording rooms, an iso booth, two echo
   chambers, a lounge and two hallways, captured with 20 s sweeps and a Neumann KM184 pair for Avid Space.'
 expected:

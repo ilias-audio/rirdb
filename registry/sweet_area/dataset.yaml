@@ -3,7 +3,10 @@ id: sweet_area
 name: Sweet Area Impulse Response Database
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["13982751"]}
 content: KU 100 BRIRs and Eigenmike em32 IRs (raw and HOA) of a 42-loudspeaker setup, measured by robot arm at 121
   positions around the sweet spot of the Immersive Media Lab, Leibniz University Hannover.
 expected:

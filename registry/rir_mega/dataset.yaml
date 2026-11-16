@@ -11,11 +11,12 @@ expected: {n_irs: 58000, note: "Zenodo v1.2.1: 50,000 linear + 8,000 circular 8-
 license: {spdx: CC-BY-4.0, redistribute_audio: yes, note: "Zenodo record and paper: CC BY 4.0. The Hugging Face subset is tagged CC BY-NC 4.0, added later and apparently a template leftover; use the Zenodo copy (checked 2026-10-13)."}
 access: open
 source: {kind: zenodo, records: ["17387402"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 2, "channel_formats": {"8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 wave: 4
 homepage: https://zenodo.org/records/17387402
 paper: {title: "RIR-Mega: a large-scale simulated room impulse response dataset for machine learning and room acoustics modeling", url: "https://arxiv.org/abs/2510.18917"}
 doi: 10.5281/zenodo.17387402
-status: deferred
+status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
 web_check:
   checked: '2026-10-14'
   institution: Mandip Goswami (independent; Amazon affiliation)

@@ -3,7 +3,11 @@ id: avil_living_room_model
 name: Living-room model and simulated IRs (DTU AVIL, ODEON)
 year: 2019
 type: simulated
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["9746324"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset", "channel_formats": {"64": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: 21 room impulse responses of a living room simulated in ODEON (7 azimuths x 3 distances) and rendered with
   the LoRA toolbox for DTU's 64-channel loudspeaker lab, with the ODEON room model and outputs.
 expected:

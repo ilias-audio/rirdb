@@ -3,7 +3,10 @@ id: airwindows
 name: Airwindows Impulses
 year: 2007
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.airwindows.com/wp-content/uploads/2014/08/AirwindowsImpulses.zip"]}
 content: '19 free reverb IRs for convolution reverbs: synthetic rooms, a Concertgebouw-style hall, plates and prime-number
   reverbs, plus spaces made from explosions, naval guns, thunder and a Space Shuttle launch.'
 expected:

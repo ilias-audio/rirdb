@@ -3,7 +3,10 @@ id: tuburo
 name: TuBuRo (64-channel loudspeaker array RIRs and BRIRs)
 year: 2015
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"depositonce","records":["20da15a0-6ef9-4939-8f5d-5d5a1971fe60"],"include":["RIRs.zip","BRIRs.zip","AdditionalInformation.pdf"],"exclude":["pictures.zip"]}
 content: RIRs of a 64-loudspeaker square array in the University of Rostock Audio Lab at 3 receiver positions x
   4 absorber set-ups, plus KEMAR BRIRs (head ±80° in 2° steps) for 7 combinations, as SOFA.
 expected:

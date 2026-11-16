@@ -11,9 +11,10 @@ fs_hz: [48000]
 license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
 access: open
 source: {kind: github, records: ["jpcima/HybridReverb2-impulse-response-database@master"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(music|speech)/", "room_level": 2, "condition_level": 4}}   # guessed by scripts/onboard/guess.py; see the review
 wave: 4
 homepage: https://github.com/jpcima/HybridReverb2-impulse-response-database
-status: deferred
+status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
 web_check:
   checked: '2026-10-14'
   institution: Ruhr-Universitat Bochum

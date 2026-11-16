@@ -3,7 +3,10 @@ id: aalborg_low_frequency
 name: RIRs for Low-Frequency Sound Field Control
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["11098543"]}
 content: Low-frequency RIRs (15-600 Hz sweeps, stored at 1.2 kHz) measured in a multichannel room and a listening
   room at Aalborg University with sweeps of 36 ms to 15 s, as design and evaluation sets for sound zones.
 fs_hz:

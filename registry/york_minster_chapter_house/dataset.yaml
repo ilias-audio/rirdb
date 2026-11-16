@@ -3,7 +3,11 @@ id: york_minster_chapter_house
 name: York Minster Chapter House RIRs
 year: 2020
 type: hybrid
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["4040994"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2, "format_from_regex": {"(?i)fuma|b[ _-]?format": "foa_fuma"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
 content: Measured (18) and simulated (86, from two models) B-format RIRs of York Minster's 13th-century octagonal
   Chapter House, with energy-parameter spreadsheets; data for an Acoustics 2020 paper.
 expected:

@@ -3,7 +3,10 @@ id: wdr_studios
 name: WDR Broadcast Studios Spatial Audio IR Compilation
 year: 2020
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["3930833"], exclude: ["miro_wav_format_data.zip"]}   # the SOFA files are the IRs; the 15.5 GB zip holds them again as WAV and MIRO
 content: KU100 BRIRs (360 head directions in 1° steps) and VariSphear spherical-array DRIRs on Lebedev grids, measured
   in four WDR broadcast studios and control rooms in Cologne; SOFA plus a WAV archive.
 expected:

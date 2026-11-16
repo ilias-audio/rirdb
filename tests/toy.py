@@ -27,6 +27,7 @@ DUPLICATE = ("hall/s2_m1.wav", "hall/s1_m1.wav")      # (copy, original): identi
 DATASET_YAML = r"""
 id: toy
 name: Toy dataset (generated for the tests)
+year: 2021
 type: simulated
 ir_kinds: [room]
 capture_formats: [mono_omni, stereo]
@@ -38,6 +39,8 @@ adapter:
   name: wav_tree
   params: {pattern: '(?P<room>[^/]+)/s(?P<src>\d+)_m(?P<rcv>\w+)\.wav$'}
 status: active
+defects:
+- {what: "The booth files are too short to trust.", files: "^booth/"}
 """
 
 

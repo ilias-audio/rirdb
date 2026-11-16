@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+AdditionalInformation.pdf	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/e7bb232f-2574-46db-aa86-6d7c63795ac9/content	1452171	md5	401ce7fefbda6e814d912b7921d54fa0	depositonce:20da15a0-6ef9-4939-8f5d-5d5a1971fe60	2026-11-16T11:37:25Z	-
+RIRs.zip	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/a8498943-9eb9-4f09-b49b-175dfd9abdd8/content	146208682	md5	ca98e766d2a76bcca666355daec4f9a4	depositonce:20da15a0-6ef9-4939-8f5d-5d5a1971fe60	2026-11-16T11:37:25Z	RIRs
+BRIRs.zip	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/32c3f40d-1f23-4eee-ad5e-7f14b900c3fe/content	14125784824	md5	3a7d8ac182755fdf1f8d66e2978062c2	depositonce:20da15a0-6ef9-4939-8f5d-5d5a1971fe60	2026-11-16T11:37:25Z	BRIRs

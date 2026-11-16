@@ -3,7 +3,11 @@ id: voicehome
 name: voiceHome corpus (v0.2)
 year: 2016
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["1314196"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(noises)/", "room_level": 2, "channel_formats": {"8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: French distant-speech corpus that also ships room impulse responses and noise recorded with an 8-microphone
   device in real homes (12 rooms in 3 homes, according to a later paper that used them).
 expected:

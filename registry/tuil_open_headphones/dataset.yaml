@@ -3,7 +3,10 @@ id: tuil_open_headphones
 name: BRIRs for a Listener Wearing Open Headphones
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["5172098"]}
 content: KEMAR 45BA BRIRs measured in TU Ilmenau's listening lab while the dummy head wore seven open headphone
   models (or none), at 92 head angles, two distances and three repeats; MATLAB files at 48 kHz.
 fs_hz:

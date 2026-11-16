@@ -3,7 +3,10 @@ id: tuni_rcair
 name: TUNI-RCAIR
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["5242909"]}
 content: 7-microphone circular-array IRs measured in 7 Tampere University spaces (audio lab, offices, meeting rooms,
   glass stair corridor, anechoic chamber), the array rotated in 5° steps at 3 source distances.
 fs_hz:

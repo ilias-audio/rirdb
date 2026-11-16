@@ -14,7 +14,7 @@ source: {kind: zenodo, records: ["11195833"]}
 homepage: https://github.com/maswang32/hearinganythinganywhere
 paper: {title: "Hearing Anything Anywhere", url: "https://arxiv.org/abs/2406.07532"}
 doi: 10.5281/zenodo.11195833
-status: deferred
+status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
 web_check:
   checked: '2026-10-14'
   institution: Stanford University

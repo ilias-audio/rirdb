@@ -3,7 +3,10 @@ id: isobel
 name: ISOBEL Sound Field Dataset
 year: 2021
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["4501339"]}
 content: 23,174 measured single-channel RIRs on 32x32 horizontal grids (1 to 1.9 m high) covering four rooms in
   Denmark, two sources per room, plus ISO 3382-2 reverberation-time measurements.
 fs_hz:

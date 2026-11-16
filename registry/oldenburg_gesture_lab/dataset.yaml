@@ -3,7 +3,11 @@ id: oldenburg_gesture_lab
 name: Oldenburg Gesture Lab hearing-aid HRIRs
 year: 2020
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["3736487"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
 content: 8-channel head- and hearing-aid-related IRs (dummy-head in-ear mics plus 6 behind-the-ear dummy mics) for
   29 loudspeakers in Oldenburg's sound-treated Gesture Lab, with and without a platform.
 expected:

@@ -3,7 +3,10 @@ id: rwth_em64
 name: RWTH IKS Lab Eigenmike em64 IR Database
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15093935"]}
 content: 'Eigenmike em64 (64-channel spherical microphone array) RIRs in RWTH Aachen''s IKS|Lab listening room:
   36 loudspeakers x 63 array positions on a 3-level grid, 48 kHz, 1 s long; MATLAB files.'
 fs_hz:

@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+01_original_study.zip	https://zenodo.org/api/records/5040465/files/01_original_study.zip/content	303235875	md5	5ec7a149aedcd567b489ef512d4d859e	zenodo:5040465	2026-11-16T11:01:15Z	01_original_study
+03_merged_direct_path.zip	https://zenodo.org/api/records/5040465/files/03_merged_direct_path.zip/content	90146225	md5	9c0890194f7f0ded4aa50864b6861e4e	zenodo:5040465	2026-11-16T11:01:15Z	03_merged_direct_path
+02_default_calibrated.zip	https://zenodo.org/api/records/5040465/files/02_default_calibrated.zip/content	2402884885	md5	962ca889e98563bd18c7f2c2070bed23	zenodo:5040465	2026-11-16T11:01:15Z	02_default_calibrated

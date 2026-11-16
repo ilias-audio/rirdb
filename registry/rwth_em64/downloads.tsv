@@ -1,0 +1,5 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+LICENSE.txt	https://zenodo.org/api/records/15093935/files/LICENSE.txt/content	16934	md5	39038135b091a74b5a58a5ab94ce0260	zenodo:15093935	2026-11-16T11:04:20Z	-
+IR_000.zip	https://zenodo.org/api/records/15093935/files/IR_000.zip/content	412045785	md5	c3f42a8272a40dbcafba4b9b12d0f419	zenodo:15093935	2026-11-16T11:04:20Z	IR_000
+IKSLabIR.zip	https://zenodo.org/api/records/15093935/files/IKSLabIR.zip/content	25954828301	md5	ab8b2fa44a4aaf3e74be5c1702cb0118	zenodo:15093935	2026-11-16T11:04:20Z	IKSLabIR
+documentation.pdf	https://zenodo.org/api/records/15093935/files/documentation.pdf/content	1929975	md5	68821259288478a3318d941bf30e2455	zenodo:15093935	2026-11-16T11:04:20Z	-

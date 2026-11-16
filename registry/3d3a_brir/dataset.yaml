@@ -3,7 +3,10 @@ id: 3d3a_brir
 name: 3D3A Lab BRIR Dataset
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_50cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_55cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_60cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_65cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_70cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_75cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_80cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_85cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_90cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_95cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_100cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/README.md","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/Methods.txt","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/LICENSE.md"]}
 content: '68,376 BRIRs measured with a B&K HATS in a treated listening room at Princeton: 8 loudspeakers, 231 head
   positions on a 5 cm grid and 37 head rotations, stored as SOFA files.'
 fs_hz:

@@ -1,0 +1,6 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+RIR_main.m	https://zenodo.org/api/records/1169161/files/RIR_main.m/content	2568	md5	7bee444ffbfe0a53cbdb306848203571	zenodo:1169161	2026-11-16T11:03:49Z	-
+position_132mic.mat	https://zenodo.org/api/records/1169161/files/position_132mic.mat/content	1439	md5	917271d0af8b8ae9c82768708aff2c01	zenodo:1169161	2026-11-16T11:03:49Z	-
+Guidelines_official.pdf	https://zenodo.org/api/records/1169161/files/Guidelines_official.pdf/content	467037	md5	2c3a5f7579c57bb9fd288c7bee1c6139	zenodo:1169161	2026-11-16T11:03:49Z	-
+RIR_maker.m	https://zenodo.org/api/records/1169161/files/RIR_maker.m/content	2163	md5	3558233dca1cf0749c8550637ea00797	zenodo:1169161	2026-11-16T11:03:49Z	-
+TF_data.mat	https://zenodo.org/api/records/1169161/files/TF_data.mat/content	43952242	md5	ccded50b3e82dd813e05418e26c285f9	zenodo:1169161	2026-11-16T11:03:49Z	-

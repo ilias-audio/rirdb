@@ -3,7 +3,11 @@ id: 6drir_dl
 name: 6DRIR-DL
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["8038733"]}
+adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "pattern": "^(?P<room>[^/]+)/", "pattern_on": "path", "m_is": "src"}}   # guessed by scripts/onboard/guess.py; see the review
 content: RIRs from a 14 x 28 grid of 392 small loudspeakers (8 cm spacing) to nine 19-capsule Zylia ZM-1S spherical
   arrays in a steel-walled room, with and without absorbers; SOFA, 48 kHz.
 fs_hz:

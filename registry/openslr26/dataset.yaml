@@ -3,7 +3,10 @@ id: openslr26
 name: OpenSLR SLR26 simulated RIRs
 year: 2017
 type: simulated
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.openslr.org/resources/26/sim_rir_16k.zip"]}
 content: Simulated room impulse responses with various room configurations, released at 8 kHz and 16 kHz for reverberant-speech
   data augmentation in speech recognition (Ko et al., ICASSP 2017).
 fs_hz:

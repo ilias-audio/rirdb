@@ -3,7 +3,10 @@ id: reaper_blog_irs
 name: REAPER Blog free reverb IR library
 year: 2018
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://reaper.blog/wp-content/uploads/2018/11/reaperblog-IRs.zip"]}
 content: 48 synthetic reverb IRs made in REAPER (decays of 125-1000 ms, three fade/low-pass shapes, plain or with
   doubler, delay-widener or formant-shift effects); not captures of real spaces or devices.
 expected:

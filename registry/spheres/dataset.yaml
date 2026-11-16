@@ -3,7 +3,10 @@ id: spheres
 name: The Spheres Dataset (RIRs)
 year: 2025
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["17347681"], exclude: ["TheSpheresDataset-ClapsAndSweeps.zip"]}
 content: Measured RIRs from a loudspeaker at 17 instrument positions to the 23 studio microphones of an orchestral
   session in the main room of The Spheres studio (Italy), as NumPy arrays with plots.
 expected:

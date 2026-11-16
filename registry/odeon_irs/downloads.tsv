@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Auditorium21_IR.zip	https://odeon.dk/download/ImpulseResponses/Auditorium21_IR.zip	1756025	sha256	dee1175ee01eb07ed88400d3e1e30cf94f613c39af2a96879ab927f4c67f8ce7	etag=;last-modified=Wed, 23 Aug 2023 16:55:48 GMT	2026-11-16T11:37:56Z	Auditorium21_IR
+HagiaSofia_IR.zip	https://odeon.dk/download/ImpulseResponses/HagiaSofia_IR.zip	18323226	sha256	1225817a796a6cae397bbedd797f54eaf0fe952dd33e4e885475766c5ce0e123	etag=;last-modified=Wed, 23 Aug 2023 16:55:51 GMT	2026-11-16T11:37:56Z	HagiaSofia_IR
+corridor_flutter.zip	https://odeon.dk/wp-admin/download/ImpulseResponses/corridor_flutter.zip	574340	sha256	4cb4ca34f5e6ea0104ce463eb500ba73088ad46b958b29e6874443460b42d1ec	etag=;last-modified=Mon, 31 May 2021 09:33:08 GMT	2026-11-16T11:37:56Z	corridor_flutter

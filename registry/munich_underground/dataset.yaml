@@ -3,7 +3,11 @@ id: munich_underground
 name: Underground station environment (Munich Theresienstraße)
 year: 2022
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["6025631"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(EXCITATION_SIGNAL)/|(^|/)(sigrec|sweep|scene_|noise|ambien|excitation|truncated_)", "room_level": 1, "condition_level": 2, "max_s": 60, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma", "6": "array_raw", "5": "array_raw"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
 content: Laser-scan-calibrated audio-visual model of Munich's Theresienstraße underground station with measured
   binaural IRs at 17 positions, omni IRs and Eigenmike spherical-array sweeps, plus absorption data.
 expected:

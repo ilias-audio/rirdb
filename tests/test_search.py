@@ -9,7 +9,8 @@ from rirdb.cli import app
 import numpy as np
 import pandas as pd
 
-from rirdb.select import download_bytes, download_plan, human, licences_text, select, spread_per_space
+from rirdb.select import (download_bytes, download_plan, human, licences_text, select, spread_per_space,
+                          year_range)
 
 pytestmark = pytest.mark.xdist_group("toy")
 
@@ -106,3 +107,36 @@ def test_search_takes_the_options_of_get(user):
 def test_one_per_space_takes_the_typical_ir():
     rows = pd.DataFrame({"space": "s", "ir_id": [f"i{k}" for k in range(5)], "rt_mid": [0.3, 0.5, 0.6, 0.7, 2.0]})
     assert spread_per_space(rows, 1)["rt_mid"].tolist() == [0.6]                  # the median, not the driest
+
+
+def test_year_keeps_the_datasets_published_in_the_range(user):
+    every = select().table
+    assert select(year="2021").table.equals(every) and select(year="2020-").table.equals(every)   # toy: 2021
+    assert select(year="2022-").table.empty and select(year="-2020").table.empty
+    assert year_range("2018-2020") == (2018, 2020) and year_range("-2015") == (None, 2015)
+    with pytest.raises(ValueError, match="not a year"):
+        select(year="recent")
+    with pytest.raises(ValueError, match="not a year"):
+        select(year="2020-2018")
+
+
+def test_a_known_defect_is_kept_and_warned_about(user):
+    t = select().table
+    booth = t["file"].str.startswith("booth/")
+    assert booth.any() and t.loc[booth, "known_defect"].eq("The booth files are too short to trust.").all()
+    assert t.loc[~booth, "known_defect"].eq("").all()
+    assert select().known_defects() == [f"toy: {booth.sum()} IRs with a known defect. The booth files are too short "
+                                        "to trust."]
+    assert select(dataset="toy", t30="1-").known_defects() == []          # the hall and stairs only
+    out = CliRunner().invoke(app, ["search"])
+    assert "Warning toy: 2 IRs with a known defect" in out.output
+
+
+def test_a_pinned_dataset_not_measured_yet_keeps_its_unknown_size(monkeypatch):
+    """A GitHub tarball has no size until its files are listed, and only a measured dataset has a files table."""
+    import rirdb.select as s
+
+    downloads = pd.DataFrame({"dataset": ["gh"], "download": ["gh-abc.tar.gz"], "size_bytes": [np.nan], "source_rank": [0]})
+    monkeypatch.setattr(s.client, "table", lambda name: downloads if name == "downloads" else pytest.fail(name))
+    monkeypatch.setattr(s.client, "has", lambda name: False)
+    assert np.isnan(s.download_sizes()[("gh", "gh-abc.tar.gz")])

@@ -3,7 +3,10 @@ id: loudspeaker_orchestra
 name: Loudspeaker Orchestra with Multi-Channel Microphone Arrays
 year: 2022
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"depositonce","records":["bf819762-b4b4-455b-a556-7fdb19350e7b"],"include":["2_IR_BPH.zip","2_IR_BOL.zip","01_Documentation.pdf"],"exclude":["1_Recordings_*.zip","3_AdditionalData.zip"]}
 content: Measured IRs from each of 18 loudspeakers to 9 microphones (omni, two dummy heads, equatorial arrays, FOA/HOA
   mics) in the Berliner Philharmonie and the Berlin Open Lab, as SOFA files, with orchestra recordings.
 fs_hz:

@@ -192,6 +192,7 @@ class Analysis(_Strict):
     reference_role: str | None = None    # channel role analysed for arrays (e.g. "mic_0"); "mean": all channels
     subsample: dict | None = None
     keep_s: float | None = None          # analyse only this long from where the sound starts (run.analysed_part)
+    start_s: float | None = None         # analyse from this many seconds into the file: a recording whose impulse comes late
 
 
 class Paper(_Strict):
@@ -246,6 +247,13 @@ class WebCheck(_Strict):
     content: str | None = None             # a description to show instead of `content`
 
 
+class KnownDefect(_Strict):
+    """A defect of the files as published that RIRDB cannot repair. The IRs stay in the table, with the defect in
+    irs.known_defect; rirdb search, rirdb get and the website warn about it."""
+    what: str                      # one or two sentences, said to the user as they are
+    files: str | None = None       # a regex searched in each IR's file path; None: every IR of the dataset
+
+
 class Dataset(_Strict):
     id: str = Field(pattern=r"^[a-z0-9_]+$")
     name: str
@@ -275,6 +283,7 @@ class Dataset(_Strict):
     doi: str | None = None
     status: Status
     notes: str | None = None
+    defects: list[KnownDefect] = Field(default_factory=list)
     web_check: WebCheck | None = None
 
     @field_validator("content")

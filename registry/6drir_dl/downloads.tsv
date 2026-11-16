@@ -1,0 +1,3 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+6DRIR-DL-no-obstacles.zip	https://zenodo.org/api/records/8038733/files/6DRIR-DL-no-obstacles.zip/content	3785382939	md5	c1e7d52016c0363eba00eee2d2b137c9	zenodo:8038733	2026-11-16T11:01:15Z	6DRIR-DL-no-obstacles
+6DRIR-DL-wedges.zip	https://zenodo.org/api/records/8038733/files/6DRIR-DL-wedges.zip/content	3776524007	md5	8578863007af6d2c95803e2462ad4069	zenodo:8038733	2026-11-16T11:01:15Z	6DRIR-DL-wedges

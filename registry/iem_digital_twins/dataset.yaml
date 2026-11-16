@@ -3,7 +3,10 @@ id: iem_digital_twins
 name: IEM Audio-Visual Digital Twins
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"wget_mirror","urls":["https://users.iem.at/frank/temp/digitaltwins/"],"accept":["*.wav","*.sofa","*.mat"]}
 content: RIRs of five Graz venues (IEM meeting room and lecture hall, Graz Cathedral, IEM Experimentalstudio, Ligeti
   Hall) from omni mics, Eigenmike EM64 or Soundfield, with 3D scans and models for 6DoF rendering.
 fs_hz:

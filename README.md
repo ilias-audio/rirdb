@@ -22,11 +22,17 @@ rirdb get --dataset rochester                            # every file as publish
 rirdb get --use research --format binaural --grade A --balance space --n 500
 rirdb search --dataset arni --per-space 50              # 50 IRs per room, spread from its driest to its most reverberant
 rirdb get --format mono --per-space 20 --max-archive 2GB  # leave out IRs that come in a download above 2 GB
+rirdb search --year 2024- --format ambisonic               # datasets published in 2024 or later
 ```
 
-The [website](https://ilias-audio.github.io/rirdb/) writes these commands as you click: filters, then how many
-per room, the largest download, a draw, and the datasets you pick or leave out. `search` takes every option of
-`get`, so you can look before anything is downloaded.
+The [website](https://ilias-audio.github.io/rirdb/) writes these commands as you click: filters (the year of
+publication among them), the datasets you pick or leave out, then, under What you get, how many per room and a draw,
+with charts of what the command selects: its reverberation times, the IRs of each dataset and of each room. `search`
+takes every option of `get`, so you can look before anything is downloaded.
+
+A few datasets publish files with a defect RIRDB cannot repair (a damaged file, a recording where an IR should be).
+Their IRs stay in the table with the defect in words (column `known_defect`), and `search`, `get` and the website
+say so.
 
 `get` writes one folder (`--out`, default `rirdb-out/`):
 
@@ -44,6 +50,7 @@ The same selection in Python:
 import rirdb.select as rs
 sel = rs.select(use="research", format="binaural", grade="A", per_space=20, max_archive="2GB", balance="space", n=500)
 sel.table            # pandas DataFrame, one row per IR
+sel.known_defects()  # what to know before using them, if anything
 sel.download("irs/")
 ```
 

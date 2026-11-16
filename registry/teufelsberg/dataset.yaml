@@ -3,7 +3,10 @@ id: teufelsberg
 name: Balance Mastering Teufelsberg IRs
 year: 2015
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://3.onj.me/balance-mastering-teufelsberg-IRs-advanced-all-samplerates-bitdepths.zip"]}
 content: Six stereo reverb impulse responses of the main listening tower at the former NSA compound on Teufelsberg,
   Berlin, made by Balance Mastering; a copy survives as 44.1 kHz/24-bit WAV on the Internet Archive.
 fs_hz:

@@ -3,11 +3,12 @@ id: el_cantalar
 name: La Escena (El Cantalar) balloon recordings
 year: 2026
 type: measured
-status: deferred   # 16 Nov 2026: its only WAV is the unwindowed balloon recording; measurable once a reader can cut a window round the pop (plausibility review)
+status: active   # 16 Nov 2026: measured from the pop (analysis.start_s); the recording is a known defect (Ilias: "consider it as a defect ... and warn the user")
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["18913642"]}
-# adapter (left out on 16 Nov 2026): {"name": "wav_tree", "params": {"glob": "fair/01_DATA/IR_WAV/*.wav", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"glob": "fair/01_DATA/IR_WAV/*.wav", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+analysis: {start_s: 13.38, keep_s: 3.0}   # the pop is at 13.48 s of a 21.85 s field recording: read 3 s from 0.1 s before it
 content: A balloon-burst field recording (one unwindowed WAV, plus Room EQ Wizard project files), raw audio, reflection-delay tables and images
   from La Escena, an open-air Bronze Age rock site at El Cantalar, Alicante, Spain.
 fs_hz:
@@ -27,9 +28,13 @@ license:
 homepage: https://zenodo.org/records/18913642
 doi: 10.5281/zenodo.18913642
 notes: 'The only WAV (Cantalar_45m_globo_IR_v1_IR-48k.wav) is REW''s unwindowed export of a whole balloon field recording
-  (21.85 s; the pop at 13.48 s, background before and after), not an impulse response, so RIRDB lists the dataset
-  without measuring it. REW names that recording globo_10m although the file name says 45 m. The authors report echo
+  (21.85 s; the pop at 13.48 s, background before and after), not an impulse response: RIRDB measures 3 s from just before the pop
+  (its defect, below). REW names that recording globo_10m although the file name says 45 m. The authors report echo
   delays of 30-190 ms (reflectors 5-33 m), not reverberation.'
+defects:
+- what: 'The only WAV is Room EQ Wizard''s unwindowed export of a whole balloon field recording (21.85 s; the pop at
+    13.48 s, background noise before and after), not a windowed impulse response. RIRDB measures 3 s from 0.1 s before
+    the pop; rirdb get delivers the whole recording.'
 web_check:
   checked: '2026-10-14'
   found_as: 'FAIR dataset: acoustic reverberation study at La Escena (El Cantalar)'

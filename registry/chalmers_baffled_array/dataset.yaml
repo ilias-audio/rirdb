@@ -3,7 +3,11 @@ id: chalmers_baffled_array
 name: Baffled Microphone Array RIRs at Three Elevations
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["11199830"]}
+adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "pattern": "^(?P<room>[^/]+)/", "pattern_on": "path", "m_is": "src", "capture_format": "binaural", "roles": ["L", "R"]}}   # guessed by scripts/onboard/guess.py; see the review
 content: Array RIRs from spherical, equatorial and non-spherical baffled arrays (up to 2,702 directions) and KEMAR
   BRIRs at 360 head orientations, in a damped lab, a reverberant hall and an anechoic room; 3 source heights.
 expected:

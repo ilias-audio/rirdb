@@ -3,7 +3,11 @@ id: hidvas
 name: HIDVAS
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["15773862"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(sigrec|sweep|scene_|noise|ambien|excitation|truncated_)", "room_level": 0, "condition_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
 content: Swept-sine IRs from 8 loudspeakers and 2 in-ear receivers to behind-the-ear hearing-aid mics, dummy-head
   eardrum mics and 2 external mics, in 2 KU Leuven rooms at 4 reverberation times; plus recordings.
 fs_hz:

@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+arundel_impulse_response_44_1kHz.wav	https://www.jezwells.org/Impulse_responses/arundel_impulse_response_44_1kHz.wav	1727892	sha256	8ad3b911c4e5d03bd4a5a3d2303eb97181f9f5d42e9802843a75a4a825aaff85	etag=;last-modified=Thu, 26 Jul 2007 05:00:00 GMT	2026-11-16T11:37:25Z	-
+ely_choir_impulse_response_44_1kHz.wav	https://www.jezwells.org/Impulse_responses/ely_choir_impulse_response_44_1kHz.wav	1330338	sha256	1fac10aa764c19f13ca6728106b3993064494cdc0af5d8d0cbf1563b46485bde	etag=;last-modified=Thu, 26 Jul 2007 05:00:00 GMT	2026-11-16T11:37:25Z	-
+ely_lady_chapel_impulse_response_44_1kHz.wav	https://www.jezwells.org/Impulse_responses/ely_lady_chapel_impulse_response_44_1kHz.wav	1856928	sha256	6b5a1d88a479a5b2c6b041ff484cd2f8891b1c15a98ebebb4f69e5ec61bb652e	etag=;last-modified=Thu, 26 Jul 2007 05:00:00 GMT	2026-11-16T11:37:25Z	-

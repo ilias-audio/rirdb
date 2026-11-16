@@ -168,7 +168,7 @@ A release is a folder of Parquet files. Users read it with pandas, R or DuckDB. 
 release/<version>/
   release.json               version, date, git commit, analyser, row counts, sha256 of each file
   columns.csv                the column reference
-  irs.parquet                one row per IR, 90 scalar columns        <- the table
+  irs.parquet                one row per IR, 91 scalar columns        <- the table
   spaces.parquet             one row per space
   datasets.parquet           one row per catalogued dataset (222)
   downloads.parquet          one row per download and source: URL, size, checksum, order to try
@@ -192,7 +192,7 @@ a scalar: no lists, no JSON. So the CSV in the output folder is the same table.
 | Description (12) | `origin` (measured, simulated, device), `format` (mono, stereo, binaural, ambisonic, array), `layout` (the 11 capture formats), `space_type`, `volume_m3`, `distance_m`, `src_x`, `src_y`, `src_z`, `rcv_x`, `rcv_y`, `rcv_z` (metres, in the dataset's own frame) | registry, index |
 | Permitted use (6) | `licence`, `licence_conditions` (attribution, share_alike, non_commercial, no_derivatives), `use_research`, `use_commercial`, `use_training` (yes, no, unknown), `redistribute` (yes, unaltered_only, no, unknown) | the space's licence, else the dataset's, read through `licences.csv` at build time |
 | Processing (8) | `is_processed`; `proc_windowed`, `proc_truncated`, `proc_denoised`, `proc_equalised`, `proc_resampled`, `proc_bit_depth_reduced`, `proc_format_derived` (`no`, `documented`, `detected`, `both`; empty = not assessed) | registry, derived |
-| Quality (17) | `grade` (S, A, B, C, D; empty for anechoic spaces), `defects_major`, `defects_minor` (counts), eleven true/false columns (`defect_clipping`, `defect_dropouts`, `defect_no_decay`, `defect_sweep_residue`, `defect_tonal_interference`, `defect_corrupt_samples`, `defect_band_limited`, `defect_quantisation_floor`, `defect_dc_offset`, `defect_high_noise_floor`, `defect_inverted_channel`), `usable_top_hz`, `effective_bits`, `peak_to_noise_db` | derived; the three numbers measured |
+| Quality (18) | `grade` (S, A, B, C, D; empty for anechoic spaces), `defects_major`, `defects_minor` (counts), eleven true/false columns (`defect_clipping`, `defect_dropouts`, `defect_no_decay`, `defect_sweep_residue`, `defect_tonal_interference`, `defect_corrupt_samples`, `defect_band_limited`, `defect_quantisation_floor`, `defect_dc_offset`, `defect_high_noise_floor`, `defect_inverted_channel`), `known_defect` (a defect of the files as published, in words, from the registry: the IR stays, rirdb warns), `usable_top_hz`, `effective_bits`, `peak_to_noise_db` | derived; the three numbers measured; known_defect from the registry |
 | Acoustics (20) | `edt_mid`, `t20_mid`, `t30_mid`, `rt_mid`, `rt_mid_from`, `decay_range_mid_db`, `rt_broadband`, `rt_broadband_from`, `decay_range_broadband_db`, `c50_mid`, `c80_mid`, `d50_mid`, `ts_mid`, `drr_db`, `sti`, `iacc_early`, `lateral_fraction`, `bass_ratio`, `treble_ratio`, `mixing_time_ms` | measured; empty when not valid |
 | Octave T30 (10) | `t30_31`, `t30_63`, `t30_125`, ... `t30_16000` | derived from `bands` |
 

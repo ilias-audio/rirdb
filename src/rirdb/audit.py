@@ -299,7 +299,7 @@ def _audit_row(row: dict) -> dict:
     t0 = time.perf_counter()
     try:
         x, fs = ad.load(json.loads(row["locator"]), root)
-        x = analysed_part(x, fs, d.analysis.keep_s, cfg.preprocess.digital_silence_abs)
+        x = analysed_part(x, fs, d.analysis.keep_s, cfg.preprocess.digital_silence_abs, d.analysis.start_s)
         xs, _ = _select_channels(x, tuple(row["channel_roles"].split(",")),
                                  row.get("reference_role") or d.analysis.reference_role)
         out = audit_signal(xs, fs, row["intersection_s_bb"], row["edc_mode_bb"], cfg)

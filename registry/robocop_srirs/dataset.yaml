@@ -3,7 +3,11 @@ id: robocop_srirs
 name: RoboCoP Sparse SRIRs
 year: 2026
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["20391764"]}
+adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset", "m_is": "src"}}   # guessed by scripts/onboard/guess.py; see the review
 content: Spatial RIRs from 60 loudspeaker positions to one 7-mic SDM array (Earthworks M30 plus six capsules) in
   room RTK6 at TU Ilmenau, made for a robot co-presence study; SOFA files plus IFC/OBJ room geometry.
 expected:

@@ -3,7 +3,10 @@ id: jabra_planar_field
 name: Sparsely sampled planar sound field (Jabra - GN Audio)
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["23093495"]}
 content: 136 RIRs in a furnished meeting room (8 × 5 × 2.5 m) at Jabra / GN Audio offices in Ballerup, with microphone
   and loudspeaker positions tracked by a Vicon motion-capture system; 32 kHz, HDF5.
 fs_hz:

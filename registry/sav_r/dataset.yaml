@@ -3,7 +3,10 @@ id: sav_r
 name: SAV+R RIR dataset
 year: 2022
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"wget_mirror","urls":["https://archive.org/download/savr_rir_dataset_202204/"],"accept":["*.wav","*.gltf"]}
 content: 240 mono and Ambisonic RIRs from the Maison Symphonique concert hall and 67 third-order Ambisonic RIRs
   from Montreal's former planetarium (Centech), made for 6DoF navigation, with glTF 3D models of both spaces.
 expected:

@@ -28,29 +28,44 @@ def test_the_site_has_its_pages(site):
     for f in ("style.css", "site.js", "search-data.js", "icon.svg", "fonts/plex-sans.woff2"):
         assert (site / f).exists(), f
     assert 'url=reference.html' in (site / "columns.html").read_text()           # the v2 address still works
+    # the pages of v3 that moved: the rooms page to What you get, the guide and about pages to the home page
+    assert 'location.replace("datasets.html"' in (site / "rooms.html").read_text()
+    assert "tab=get" in (site / "rooms.html").read_text()
+    assert 'url=index.html#guide' in (site / "guide.html").read_text()
+    assert 'url=index.html#about' in (site / "about.html").read_text()
     home = (site / "index.html").read_text()
     assert "Room impulse responses from 1 public datasets" in home and "rirdb search" in home
     assert 'href="https://github.com/ilias-audio"' in home                       # the maintainer, in the footer
+    for part in ("guide", "start", "choose", "python", "glossary", "cite", "add", "about", "g-grades", "g-defect"):
+        assert f'id="{part}"' in home, part                                       # every old address of the guide
 
 
 def test_a_measured_dataset_page_has_every_part(site):
     toy = (site / "d" / "toy.html").read_text()
     assert "Toy dataset (generated for the tests)" in toy and "rirdb get --dataset toy" in toy
-    for part in ('id="about"', 'id="provides"', 'id="rooms"', 'id="measured"', 'id="quality"', 'id="examples"'):
+    for part in ('id="about"', 'id="provides"', 'id="rooms"', 'id="measured"', 'id="quality"', 'id="examples"',
+                 'id="defect"'):
         assert part in toy, part
+    assert "The booth files are too short to trust." in toy and "2 IRs of the table have it" in toy    # its known defect
     assert toy.count('<svg class="chart"') == 4                                  # T30, per octave, DRR, C50
     assert 'id="room-hall"' in toy and 'id="room-booth"' in toy and 'id="room-stairs"' in toy
     assert "Measured by RIRDB" in toy and "CC0" in toy
 
 
-def test_the_search_data_is_written_once_for_both_search_pages(site):
+def test_the_datasets_page_has_its_two_views_and_its_search_data(site):
     text = (site / "search-data.js").read_text()
     data = json.loads(text.removeprefix("window.RIRDB = ").rstrip().removesuffix(";"))
     assert [s["id"] for s in data["spaces"]] == ["toy/booth", "toy/hall", "toy/stairs"]
-    assert [d["id"] for d in data["datasets"]] == ["toy"]
-    for page in ("datasets.html", "rooms.html"):
-        assert 'src="search-data.js"' in (site / page).read_text()
-    assert (site / "rooms.html").read_text().count('class="roomrow"') == 3
+    assert [d["id"] for d in data["datasets"]] == ["toy"] and data["datasets"][0]["defect"]
+    c = data["columns"].index("kd")
+    assert sum(r[-1] for r in data["counts"] if r[c]) == 2     # the booth's two IRs: its known defect
+    page = (site / "datasets.html").read_text()
+    assert 'src="search-data.js"' in page
+    for part in ('id="tab-list"', 'id="tab-get"', 'id="cards"', 'id="tablebox"', 'id="get"', 'id="cmd"', 'id="since"',
+                 'id="ch-t30"', 'name="per"', 'name="n"'):
+        assert part in page, part
+    assert page.count('class="card item"') == 1 and page.count('class="dsrow item"') == 1
+    assert "Known defect" in page
 
 
 def kept(data: dict, format: str | None = None, grade: str | None = None, t30: list[str] = (),
@@ -112,7 +127,7 @@ def test_words():
 
 
 def test_the_guide_cites_the_paper(site):
-    guide = (site / "guide.html").read_text()
+    guide = (site / "index.html").read_text()
     assert "@inproceedings{ibnyahya2026rirdb" in guide and "Reiss, Joshua D." in guide and "@software{rirdb" in guide
 
 

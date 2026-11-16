@@ -3,7 +3,11 @@ id: ely_lady_chapel
 name: The Acoustics of Ely Cathedral's Lady Chapel
 year: 2021
 type: hybrid
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["5150020"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "format_from_regex": {"(?i)fuma|b[ _-]?format": "foa_fuma"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
 content: 8 measured and 24 simulated B-format RIRs (one source, eight receivers; models of its 14th-century, 1930
   and 2019 states) of the Lady Chapel of Ely Cathedral, from York's Cathedral Acoustics project.
 expected:

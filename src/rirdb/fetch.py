@@ -140,7 +140,7 @@ def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
             return
         except (zipfile.BadZipFile, OSError) as e:
             say(f"  Python cannot read {archive.name} ({e}); trying the system's 7z or unzip")
-    if archive.name.endswith(".zip"):
+    if archive.name.endswith((".zip", ".rar")):          # GRAP and MARDY come as RAR, which Python cannot read
         unpack_with_system_tools(archive, into)
         return
     with tarfile.open(archive) as t:
@@ -150,12 +150,20 @@ def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
 
 
 def unpack_with_system_tools(archive: Path, into: Path) -> None:
-    """A split zip (x.z01 ... x.zip; TAU-SRIR) or a zip Python cannot read (RSoANU's >4 GB zip without ZIP64
-    records): 7-Zip, else Info-ZIP's zip (to join the parts) and unzip."""
+    """A split zip (x.z01 ... x.zip; TAU-SRIR), a zip Python cannot read (RSoANU's >4 GB zip without ZIP64
+    records) or a RAR archive: 7-Zip, else (not for RAR) Info-ZIP's zip (to join the parts) and unzip."""
     seven = shutil.which("7z") or shutil.which("7za") or shutil.which("7zz")
     if seven:
-        subprocess.run([seven, "x", "-y", "-bso0", "-bsp0", f"-o{into}", str(archive)], check=True)
+        if subprocess.run([seven, "x", "-y", "-bso0", "-bsp0", f"-o{into}", str(archive)]).returncode:
+            # 7-Zip reads every file of some large zips whose zip64 records are written wrong (CAVEMOVE, ANU
+            # MD-OMP) and still fails with "Headers Error": take them when every file passes its CRC
+            test = subprocess.run([seven, "t", str(archive)], capture_output=True, text=True).stdout
+            if "Headers Error" not in test or any(w in test for w in ("CRC Failed", "Data Error", "Unexpected end")):
+                raise FetchError(f"7-Zip could not unpack {archive.name}: delete it from the cache and run again")
         return
+    if archive.suffix == ".rar":
+        raise FetchError(f"{archive.name} is a RAR archive, which needs 7-Zip (7z). Install it (e.g. `apt install "
+                         "p7zip-full p7zip-rar` or `brew install p7zip`) and run again.")
     if shutil.which("zip") and shutil.which("unzip"):
         joined = archive.with_name(archive.stem + ".joined.zip")
         subprocess.run(["zip", "-q", "-s", "0", str(archive), "--out", str(joined)], check=True)

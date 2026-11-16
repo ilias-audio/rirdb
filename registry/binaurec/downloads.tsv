@@ -1,0 +1,5 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+BinauRec.zip	https://zenodo.org/api/records/7256984/files/BinauRec.zip/content	12437689661	md5	75da1b26797492e61a65c792ea396c92	zenodo:7256984	2026-11-16T11:01:15Z	.
+spatial_scenarios.svg	https://zenodo.org/api/records/7256984/files/spatial_scenarios.svg/content	95909	md5	8c9f3de526858ad45582d10700307ed2	zenodo:7256984	2026-11-16T11:01:15Z	-
+loudspeaker_location.svg	https://zenodo.org/api/records/7256984/files/loudspeaker_location.svg/content	8593	md5	dd6e4e16eee201bdb55f9282532bf84c	zenodo:7256984	2026-11-16T11:01:15Z	-
+README.md	https://zenodo.org/api/records/7256984/files/README.md/content	6875	md5	4f942423c57ea8760c438cc03786b070	zenodo:7256984	2026-11-16T11:01:15Z	-

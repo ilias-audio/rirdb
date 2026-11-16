@@ -1,0 +1,5 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+rir_NBI_line.h5	https://zenodo.org/api/records/14212820/files/rir_NBI_line.h5/content	447183456	md5	4111570e2b2b535821c1ee24f7289615	zenodo:14212820	2026-11-16T11:02:16Z	-
+rir_NBI_em32.sofa	https://zenodo.org/api/records/14212820/files/rir_NBI_em32.sofa/content	429047946	md5	484e251bd964178682ef68809b019d0c	zenodo:14212820	2026-11-16T11:02:16Z	-
+Readme_NBI_em32_Line.pdf	https://zenodo.org/api/records/14212820/files/Readme_NBI_em32_Line.pdf/content	335831	md5	9f7f9dd1b6430837d73892054520032d	zenodo:14212820	2026-11-16T11:02:16Z	-
+rir_NBI_em32.h5	https://zenodo.org/api/records/14212820/files/rir_NBI_em32.h5/content	545926250	md5	87def0e23a89b6bd0336899021a4b98a	zenodo:14212820	2026-11-16T11:02:16Z	-

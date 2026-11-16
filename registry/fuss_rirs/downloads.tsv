@@ -1,0 +1,13 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+FUSS_ssdata_reverb.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_ssdata_reverb.tar.gz/content	7890709248	md5	0ee3f1229194b5b7ab2cdf8a12add0b6	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_ssdata_reverb
+FUSS_ssdata.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_ssdata.tar.gz/content	8892152218	md5	d1f35069880185056ab1bde5aa1da1e7	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_ssdata
+FUSS_DESED_baseline_dry_4_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_DESED_baseline_dry_4_model.tar.gz/content	103923588	md5	a83120258e77955e1a609765483c69b2	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_DESED_baseline_dry_4_model
+FUSS_DESED_baseline_dry_4np_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_DESED_baseline_dry_4np_model.tar.gz/content	107033352	md5	aa0282b99604040e65613d8047ba98e8	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_DESED_baseline_dry_4np_model
+FUSS_DESED_baseline_dry_6_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_DESED_baseline_dry_6_model.tar.gz/content	106126813	md5	7b2252c2f07207edaf37d00739390180	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_DESED_baseline_dry_6_model
+FUSS_fsd_data.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_fsd_data.tar.gz/content	1928324222	md5	79742c73e0d4164f35207e6e74487098	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_fsd_data
+FUSS_license_doc.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_license_doc.tar.gz/content	4022	md5	7d00e8b03601698413045b7293c04fc2	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_license_doc
+FUSS_rir_data.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_rir_data.tar.gz/content	5769611010	md5	e43c7d6d29332eae4bb193f7a940b194	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_rir_data
+FUSS_baseline_dry_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_baseline_dry_model.tar.gz/content	102324048	md5	aca2b32125659a420bd5c307e2505e43	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_baseline_dry_model
+FUSS_baseline_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_baseline_model.tar.gz/content	102342954	md5	fb803bc4b0253912bfe823d4df508a6b	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_baseline_model
+FUSS_DESED_baseline_dry_1_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_DESED_baseline_dry_1_model.tar.gz/content	99893533	md5	17ca2bb89949a117579f5c34afbe443c	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_DESED_baseline_dry_1_model
+FUSS_DESED_baseline_dry_2_model.tar.gz	https://zenodo.org/api/records/4012661/files/FUSS_DESED_baseline_dry_2_model.tar.gz/content	100993980	md5	00174838e1454a9692eebe21e1bce616	zenodo:4012661	2026-11-16T11:01:15Z	FUSS_DESED_baseline_dry_2_model

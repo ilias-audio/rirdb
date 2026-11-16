@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+KU 100 IRs.zip	https://zenodo.org/api/records/13982751/files/KU%20100%20IRs.zip/content	2522057628	md5	f2cb92206438f72834cae99246d86f80	zenodo:13982751	2026-11-16T11:06:24Z	KU 100 IRs
+em32 IRs.zip	https://zenodo.org/api/records/13982751/files/em32%20IRs.zip/content	31078288609	md5	1a1c2012be7d95fb00eb65809b0e2e56	zenodo:13982751	2026-11-16T11:06:24Z	em32 IRs
+speakerPositions.mat	https://zenodo.org/api/records/13982751/files/speakerPositions.mat/content	1868	md5	a17bd49f645db0f50a438ef91cb06d64	zenodo:13982751	2026-11-16T11:06:24Z	-

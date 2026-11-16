@@ -2,7 +2,10 @@
 id: farina_collection
 name: Angelo Farina's public IR collection
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"wget_mirror","urls":["https://www.angelofarina.it/Public/IMP-RESP/"],"accept":["[!bciS]*.wav","*.WAV","*.tim","*.TIM","*.txt","*.TXT","*.xls"]}
 content: Measured IRs (mono, stereo, binaural and B-format) from over 15 venues, mostly Italian theatres, concert
   halls and churches plus Vienna's Musikverein, in Angelo Farina's public web folder.
 fs_hz:

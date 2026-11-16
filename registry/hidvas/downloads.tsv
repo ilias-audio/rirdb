@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+HIDVAS-econ.zip	https://zenodo.org/api/records/15773862/files/HIDVAS-econ.zip/content	651465808	md5	77b8d2483f7f09a4f14868f26d2cbb7a	zenodo:15773862	2026-11-16T11:01:15Z	HIDVAS-econ
+HIDVAS.zip	https://zenodo.org/api/records/15773862/files/HIDVAS.zip/content	15162191930	md5	5fd2f96b7c38ef9ac2c48be78921390f	zenodo:15773862	2026-11-16T11:01:15Z	HIDVAS
+README.md	https://zenodo.org/api/records/15773862/files/README.md/content	14527	md5	0915e4aab9897db8ee7996df9075dd15	zenodo:15773862	2026-11-16T11:01:15Z	-

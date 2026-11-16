@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Common_Slope_Analysis_Results.zip	https://zenodo.org/api/records/13338346/files/Common_Slope_Analysis_Results.zip/content	14806550	md5	21ebe2595774ddf191b8d035f1e01947	zenodo:13338346	2026-11-16T11:04:20Z	.
+srirs.mat	https://zenodo.org/api/records/13338346/files/srirs.mat/content	7458953852	md5	685a19717598cae4bd1fb2e131ae7574	zenodo:13338346	2026-11-16T11:04:20Z	-
+room_geometry2.pdf	https://zenodo.org/api/records/13338346/files/room_geometry2.pdf/content	25771	md5	0cac8a9207dd956516a96477e4c1ba99	zenodo:13338346	2026-11-16T11:04:20Z	-

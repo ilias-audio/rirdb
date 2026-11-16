@@ -3,7 +3,11 @@ id: operarir
 name: OperaRIR
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["8096639"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 2, "channel_formats": {"32": "em32_raw", "25": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
 content: 210 spatial impulse responses measured with an Eigenmike at 97 parterre seats from two stage loudspeakers
   in the main auditorium of the Finnish National Opera and Ballet, Helsinki, as em32 and 4th-order Ambisonic files.
 fs_hz:

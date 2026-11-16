@@ -51,8 +51,8 @@ def test_every_row_is_complete_and_unique():
             assert float(c["min"]) < float(c["max"]), where
 
 
-def test_the_ir_table_has_90_columns():
-    assert len(irs()) == 90
+def test_the_ir_table_has_91_columns():
+    assert len(irs()) == 91
 
 
 def test_closed_lists_agree_with_the_code():

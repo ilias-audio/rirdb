@@ -3,7 +3,10 @@ id: conner_irs
 name: Conner's Impulse Response Library
 year: 2022
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://github.com/itsmusician/IR-Library/releases/download/v2.0.0/Conners-IR-Library_v2.0.0.zip"]}
 content: 'Hobbyist library of 738 IRs (v2.0.0): rooms, enclosed spaces, outdoor sites, plate, spring and hardware
   reverbs, plus instrument, object, speaker and synthesized IRs, captured with claps, pops and sweeps.'
 expected:

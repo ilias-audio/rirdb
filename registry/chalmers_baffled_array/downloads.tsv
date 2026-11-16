@@ -1,0 +1,5 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+CODE_AND_PLOTS.zip	https://zenodo.org/api/records/11199830/files/CODE_AND_PLOTS.zip/content	617218409	md5	ec954e93a520fb5c4014849db5aba848	zenodo:11199830	2026-11-16T11:01:15Z	CODE_AND_PLOTS
+DOCUMENTATION.zip	https://zenodo.org/api/records/11199830/files/DOCUMENTATION.zip/content	73793743	md5	fa3e7c9726bb9343855400153ec396e1	zenodo:11199830	2026-11-16T11:01:15Z	DOCUMENTATION
+DATA_ELEVATED.zip	https://zenodo.org/api/records/11199830/files/DATA_ELEVATED.zip/content	5091009563	md5	3764d58ad67612564cd036b48f4042a1	zenodo:11199830	2026-11-16T11:01:15Z	DATA_ELEVATED
+DATA.zip	https://zenodo.org/api/records/11199830/files/DATA.zip/content	3401909894	md5	4a76ebcd7340e5468344020536d312c3	zenodo:11199830	2026-11-16T11:01:15Z	DATA

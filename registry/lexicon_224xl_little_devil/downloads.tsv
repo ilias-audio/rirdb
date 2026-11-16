@@ -1,0 +1,5 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Halls.zip	https://www.dropbox.com/scl/fi/6ta1a16lbg2i0dufcn4xg/Halls.zip?rlkey=de7h2otj7rqmccak2u7hyqbm2&dl=1	39061069	sha256	1d86dbc62628710fdb485622b534ca6f4bee132ca8655755fe186cd84d4802f5	etag=1677047187100843d;last-modified=	2026-11-16T11:37:25Z	Halls
+Rooms.zip	https://www.dropbox.com/scl/fi/nze0mi5q9a97iqten4n06/Rooms.zip?rlkey=8w1t58esk20kcmr9jw3urjg30&dl=1	14563253	sha256	ced81138eba4a31f35188800dfd6526da9aadb3d105549b68f63a02c48d0eee0	etag=1677047187100845d;last-modified=	2026-11-16T11:37:25Z	Rooms
+Chambers.zip	https://www.dropbox.com/scl/fi/9c3sumthmjzwfjsa21jj9/Chambers.zip?rlkey=t4yaq3hri9nwnroy24urg29nl&dl=1	30459893	sha256	20c50f33574caa343891eab94ceaf0561b5f7e2ef393ae56a848739fb14b0305	etag=1677047187100842d;last-modified=	2026-11-16T11:37:25Z	Chambers
+Plates.zip	https://www.dropbox.com/scl/fi/v6lchraz0tf5slxkzeg2f/Plates.zip?rlkey=128alf3cbyvgsjl5hpqrybu6y&dl=1	48521771	sha256	cf56d337dc3c458f4a63d234ab959817147d446df20950e53ce91535f1b45d7d	etag=1677047187100844d;last-modified=	2026-11-16T11:37:25Z	Plates

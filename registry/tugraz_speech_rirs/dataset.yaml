@@ -3,7 +3,10 @@ id: tugraz_speech_rirs
 name: Dataset of Room Impulse Responses for Realistic Speech Data
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://repository.tugraz.at/records/f6q9h-fc803/files/rir_dataset.zip?download=1"]}
 content: 16-channel circular-array RIRs measured with a robot-moved loudspeaker on fine grids in a classroom (97
   points) and a large corridor (210 points), 4 source directions per point, for simulating moving talkers.
 fs_hz:

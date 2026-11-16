@@ -3,7 +3,10 @@ id: tuil_highres_srirs
 name: High-resolution SRIRs for different room configurations
 year: 2024
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["10450779"]}
 content: Robot-measured spatial RIRs on a 25 cm grid in an ITU-R BS.1116 listening room at TU Ilmenau, with reflective
   walls added in 9 configurations; open mic array, 5 loudspeakers, SOFA files.
 expected:

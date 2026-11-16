@@ -1,0 +1,6 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+Floor_plan.pdf	https://zenodo.org/api/records/20391764/files/Floor_plan.pdf/content	121193	md5	d92dae76ffede24e64b67b824da97b47	zenodo:20391764	2026-11-16T11:03:18Z	-
+RoboCoP_Geometry-URZ.ifc	https://zenodo.org/api/records/20391764/files/RoboCoP_Geometry-URZ.ifc/content	156718	md5	d7912c167bbc50f7a054c52633efa649	zenodo:20391764	2026-11-16T11:03:18Z	-
+RoboCoP_Geometry-URZ.obj	https://zenodo.org/api/records/20391764/files/RoboCoP_Geometry-URZ.obj/content	195486	md5	38ea423bf473a223005ffbd0a1d962ab	zenodo:20391764	2026-11-16T11:03:18Z	-
+RoboCoP_Sparse.sofa	https://zenodo.org/api/records/20391764/files/RoboCoP_Sparse.sofa/content	282408310	md5	7cc5f09cb76b3c9e3b98bfc9c7303f6b	zenodo:20391764	2026-11-16T11:03:18Z	-
+RoboCoP_Sparse.zip	https://zenodo.org/api/records/20391764/files/RoboCoP_Sparse.zip/content	259052308	md5	7506769edb5b260ecb04692479175e5d	zenodo:20391764	2026-11-16T11:03:18Z	.

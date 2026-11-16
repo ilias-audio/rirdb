@@ -3,7 +3,10 @@ id: 3d_marco
 name: 3D-MARCo (impulse responses)
 year: 2019
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["3477602"], include: ["03 3D-MARCo Impulse Responses.zip", "01 3D-MARCo Documentation.zip"]}   # the IRs only: 04-10 are music recordings (22.9 GB)
 content: Impulse responses for 13 stage loudspeaker positions in St Paul's concert hall, Huddersfield, each captured
   by 64 microphones (3D arrays, dummy head, FOA) plus a 32-capsule Eigenmike, released with music recordings.
 fs_hz:

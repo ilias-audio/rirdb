@@ -3,7 +3,10 @@ id: lexicon_224xl_little_devil
 name: Little Devil Studios Lexicon 224XL IRs
 year: 2015
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.dropbox.com/scl/fi/6ta1a16lbg2i0dufcn4xg/Halls.zip?rlkey=de7h2otj7rqmccak2u7hyqbm2&dl=1","https://www.dropbox.com/scl/fi/nze0mi5q9a97iqten4n06/Rooms.zip?rlkey=8w1t58esk20kcmr9jw3urjg30&dl=1","https://www.dropbox.com/scl/fi/9c3sumthmjzwfjsa21jj9/Chambers.zip?rlkey=t4yaq3hri9nwnroy24urg29nl&dl=1","https://www.dropbox.com/scl/fi/v6lchraz0tf5slxkzeg2f/Plates.zip?rlkey=128alf3cbyvgsjl5hpqrybu6y&dl=1"]}
 content: True-stereo IRs of a hardware Lexicon 224XL reverb (halls, rooms, chambers, plates) recorded at 24-bit/96
   kHz by Little Devil Studios in 2015, plus presets for Waves IR-1, Avid Space and Reverberate.
 fs_hz:

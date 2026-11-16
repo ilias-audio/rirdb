@@ -27,8 +27,10 @@ license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/206860
 doi: 10.5281/zenodo.206860
-notes: 'Two files, A/001.sofa and B/021.sofa, are damaged as published (HDF5 read errors), so 144 of the 3,600 BRIRs
-  cannot be read.'
+defects:
+- what: 'Two files, A/001.sofa and B/021.sofa, are damaged as published (HDF5 read errors): their 144 BRIRs cannot be
+    read, so they are not in the table.'
+  files: '^(A/001|B/021)\.sofa$'
 web_check:
   checked: '2026-10-14'
   found_as: KEMAR BRIRs at several positions and head orientations in a real room

@@ -3,7 +3,10 @@ id: surrey_bformat
 name: B-format RIRs (Zermini, Surrey)
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["7558529"]}
 content: A single MATLAB file of B-format (first-order Ambisonic) room impulse responses from the University of
   Surrey, used to make reverberant speech mixtures for a B-format speech-separation study.
 room_info:

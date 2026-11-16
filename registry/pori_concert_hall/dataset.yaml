@@ -3,7 +3,10 @@ id: pori_concert_hall
 name: Concert Hall Impulse Responses - Pori, Finland
 year: 2005
 type: measured
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["http://legacy.spa.aalto.fi/projects/poririrs/wavs/binaural.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/cardioid.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/omni.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/omni_p.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/sndfld.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/sndfld_p.zip","http://legacy.spa.aalto.fi/projects/poririrs/docs/readme.txt","http://legacy.spa.aalto.fi/projects/poririrs/docs/poriref.pdf"]}
 content: Impulse responses for 3 stage sources and 7 receiver positions (4 in the audience, 3 on stage) in the Pori
   Promenadikeskus concert hall, Finland, captured with omni, cardioid, dummy-head and SoundField mics in 2002.
 fs_hz:

@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+01_Documentation.pdf	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/e426b95f-dd1f-469f-9e46-9a646593dac7/content	2180021	md5	3e8e067e66964be095eac93e0e668f61	depositonce:bf819762-b4b4-455b-a556-7fdb19350e7b	2026-11-16T11:37:25Z	-
+2_IR_BPH.zip	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/23942636-4a61-4c3e-95ab-12cb55d95372/content	2907506235	md5	f5e8647c9528954ac7ffe0e31e7c2204	depositonce:bf819762-b4b4-455b-a556-7fdb19350e7b	2026-11-16T11:37:25Z	2_IR_BPH
+2_IR_BOL.zip	https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/2c2fc1db-99cb-435a-bc7d-dad6d8c3b41e/content	1922225189	md5	f6f5d2c5add1a7c8810eb13bb7b79075	depositonce:bf819762-b4b4-455b-a556-7fdb19350e7b	2026-11-16T11:37:25Z	2_IR_BOL

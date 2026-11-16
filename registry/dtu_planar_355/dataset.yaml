@@ -3,7 +3,10 @@ id: dtu_planar_355
 name: Planar RIR Dataset - ACT, DTU Electro (b. 355 r. 008)
 year: 2023
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["21740453"]}
 content: 1,800 RIRs on a 30 × 30 grid covering 80 × 80 cm, measured with a robot-moved microphone in DTU's 'sound
   field control' room (6.1 × 5.8 × 3.1 m) for two loudspeakers; 48 kHz, HDF5.
 fs_hz:

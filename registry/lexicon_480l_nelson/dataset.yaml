@@ -3,7 +3,10 @@ id: lexicon_480l_nelson
 name: Grant Nelson's Lexicon 480L IRs
 year: 2014
 type: production
-status: catalogued
+status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {"kind":"http","urls":["https://www.housecallfm.com/download.php?f=BGLex480.zip#BGLex480.zip"]}
 content: Free impulse responses of 54 programs of producer Grant Nelson's own Lexicon 480L hardware reverb (halls,
   plates, rooms, ambience, effects), as AIFF files with Altiverb and Space Designer presets.
 expected:

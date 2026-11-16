@@ -16,15 +16,17 @@ PER_PAGE = 30
 # ------------------------------------------------------------------------------------------- the search
 
 def facet(name: str, title: str, options: list[tuple[str, str]], multi: bool = False, hint: str = "",
-          show: int | None = None, any_label: str = "Any", counts: bool = True) -> str:
+          show: int | None = None, any_label: str = "Any", counts: bool = True, outside: bool = False) -> str:
     """A group of filters: radio buttons (one choice, "Any" first) or tick boxes (several). Its name is the
     address parameter and, where the command line has it, the option of `rirdb search`. With `show`, the options
-    after the first `show` fold away under "more"."""
+    after the first `show` fold away under "more". `outside`: the inputs sit outside the filters form (in the What
+    you get view) and belong to it by their form attribute."""
     kind = "checkbox" if multi else "radio"
     opts = [] if multi else [(f'{name}-any', "", any_label)]
     opts += [(f"{name}-{v}", v, label) for v, label in options]
+    owner = ' form="filters"' if outside else ""
     labels = [
-        f'<label class="opt" for="{e(i)}"><input type="{kind}" id="{e(i)}" name="{e(name)}" value="{e(v)}"'
+        f'<label class="opt" for="{e(i)}"><input type="{kind}" id="{e(i)}" name="{e(name)}" value="{e(v)}"{owner}'
         f'{" checked" if not multi and not v else ""}><span>{e(label)}</span>'
         + (f'<span class="c" data-for="{e(i)}"></span>' if counts else "") + "</label>"
         for i, v, label in opts]
@@ -45,21 +47,68 @@ def room_types(spaces: list[dict]) -> list[str]:
     return sorted((t for t in count if t != "unknown"), key=lambda t: (-count[t], t))
 
 
+def archive_facet() -> str:
+    """The largest download (`--max-archive`): a filter, since it leaves out the IRs of bigger downloads."""
+    return facet("archive", "Largest download", [(k, k.replace("MB", " MB").replace("GB", " GB")) for k in ARCHIVE_LIMITS],
+                 hint="each is taken whole")
+
+
+def year_facet(datasets: list[dict]) -> str:
+    """The years of publication, from and to (`--year`), under a small chart of the datasets of each year that the
+    other filters keep (site.js draws it)."""
+    known = [d["year"] for d in datasets if d["year"]]
+    years = range(max(known), min(known) - 1, -1) if known else []         # every year, so any range can be chosen
+
+    def choose(name: str, label: str) -> str:
+        opts = '<option value="">any</option>' + "".join(f'<option value="{y}">{y}</option>' for y in years)
+        return f'<label class="yr">{label} <select name="{name}" id="{name}">{opts}</select></label>'
+    return (f'<fieldset class="facet"><legend>Published</legend><div class="yearbars" id="yearbars" aria-hidden="true">'
+            f'</div><div class="yearaxis" aria-hidden="true"><span id="ylo"></span><span id="yhi"></span></div>'
+            f'<div class="yrs">{choose("since", "From")}{choose("until", "to")}</div></fieldset>')
+
+
 def get_fields() -> str:
-    """After the filters: the options of `rirdb get` that shape what you get (at most so many IRs per room, the
-    largest download, a random draw). The command box prints them with the filters (site.js)."""
+    """The options of `rirdb get` that shape how many IRs you get, next to what they do (the What you get view):
+    at most so many per room, a random draw and what it spreads over. The command box prints them with the
+    filters (site.js)."""
     def number(name: str, title: str, hint: str, placeholder: str) -> str:
         return (f'<fieldset class="facet"><legend><label for="{name}">{e(title)}</label> <small>{e(hint)}</small></legend>'
                 f'<input class="numin" type="number" min="1" step="1" inputmode="numeric" id="{name}" name="{name}" '
-                f'placeholder="{e(placeholder)}"></fieldset>')
-    return ('<p class="formhead">What you get</p>'
+                f'form="filters" placeholder="{e(placeholder)}"></fieldset>')
+    return ('<div class="getctl">'
             + number("per", "At most per room", "spread over its reverb", "no limit")
-            + facet("archive", "Largest download", [(k, k.replace("MB", " MB").replace("GB", " GB")) for k in ARCHIVE_LIMITS],
-                    hint="each is taken whole")
             + number("n", "How many IRs", "a random draw", "all")
             + facet("balance", "Spread the draw over", [("space", "Rooms"), ("dataset", "Datasets"),
                                                         ("t30", "Reverberation times")], any_label="Every IR alike",
-                    counts=False))
+                    counts=False, outside=True)
+            + "</div>")
+
+
+def get_view() -> str:
+    """What you get: the options that shape the amount, four numbers, the charts of the IRs the command selects
+    (each over a grey outline of everything the filters match, before the per-room cap and the draw), the command,
+    and the rooms you get. site.js fills it."""
+    def chart(key: str, title: str, what: str, wide: bool = False) -> str:
+        return (f'<figure class="getchart{" wide" if wide else ""}" id="ch-{key}"><figcaption><b>{title}</b>'
+                f'<span>{what}</span></figcaption><div class="chartbox"></div></figure>')
+    return (f'<section class="tabpanel getview" id="get" role="tabpanel" aria-labelledby="tab-get" hidden>'
+            f'{get_fields()}<div class="stats" id="stats" aria-live="polite"></div>'
+            f'<p class="note warn" id="defects" hidden></p>'
+            f'<div class="getcharts">'
+            + chart("t30", "Reverberation time", "T30 at 500 Hz and 1 kHz of the IRs you get; the grey outline is every "
+                    "IR the filters match, before the per-room cap and the draw.")
+            + chart("per", "IRs per room", "How many IRs each room gives, before the draw; grey: without the per-room "
+                    "cap.")
+            + chart("ds", "IRs per dataset", "The datasets that give the most, and how many their IRs were before the "
+                    "per-room cap and the draw.")
+            + chart("types", "Rooms by type", "The rooms you get, by room type; in a draw, about how many.")
+            + chart("rooms", "Rooms by reverberation time and DRR", "Each dot is a room (a room type, for a dataset of "
+                    "thousands of generated rooms) at the median of its IRs; those the command cannot take IRs from are faded. DRR mostly reflects where the microphones were.",
+                    wide=True)
+            + f'</div>{command_box()}'
+            f'<div class="getrooms"><h3>Rooms you get</h3><p class="small quiet" id="roomsnote"></p>'
+            f'<ul class="roomlist" id="roomlist"></ul><button type="button" class="more" id="moreroom" hidden></button>'
+            f'</div></section>')
 
 
 def command_box() -> str:
@@ -92,11 +141,47 @@ def card(d: dict, i: int) -> str:
     picks = (f'<div class="picks"><button type="button" class="pick" data-pick="dataset" data-id="{e(d["id"])}" '
              f'aria-pressed="false">Pick</button><button type="button" class="pick" data-pick="exclude" '
              f'data-id="{e(d["id"])}" aria-pressed="false">Leave out</button></div>') if measured else ""
-    return (f'<article class="card" data-d="{i}" data-n="{d["n"]}" data-year="{d["year"] or 0}" '
-            f'data-measured="{int(measured)}"><div class="main"><h3><a href="d/{e(d["id"])}.html">{e(d["name"])}</a></h3>'
-            f'<p class="by">{by}</p><p class="desc">{e(d["description"])}</p>'
-            f'<div class="meta">{status}{fmts}{pill(words.licence_short(d["licence"]))}</div>'
+    defect = pill("Known defect", "defect") if d["defect"] else ""
+    return (f'<article class="card item" {sort_keys(d, i)}><div class="main"><h3><a href="d/{e(d["id"])}.html">'
+            f'{e(d["name"])}</a></h3><p class="by">{by}</p><p class="desc">{e(d["description"])}</p>'
+            f'<div class="meta">{status}{defect}{fmts}{pill(words.licence_short(d["licence"]))}</div>'
             f'{use_marks(d["uses"])}{picks}</div><div class="side">{side}</div></article>')
+
+
+def sort_keys(d: dict, i: int) -> str:
+    """What site.js sorts and filters a card or a table row by."""
+    return (f'data-d="{i}" data-n="{d["n"]}" data-rooms="{d["rooms"]}" data-year="{d["year"] or 0}" '
+            f'data-measured="{int(d["status"] == "measured")}"')
+
+
+def table_row(d: dict, i: int) -> str:
+    """One dataset as a row of the table view: what to compare at a glance."""
+    measured = d["status"] == "measured"
+    picks = (f'<button type="button" class="pick" data-pick="dataset" data-id="{e(d["id"])}" aria-pressed="false">Pick'
+             f'</button><button type="button" class="pick" data-pick="exclude" data-id="{e(d["id"])}" '
+             f'aria-pressed="false">Leave out</button>') if measured else ""
+    defect = pill("Known defect", "defect") if d["defect"] else ""
+    cells = [
+        f'<a href="d/{e(d["id"])}.html">{e(d["name"])}</a>{defect}<div class="faint small">{e(d["by"])}</div>',
+        e(d["year"] or ""), e(words.ORIGINS.get(d["origin"], d["origin"])),
+        e(", ".join(words.FORMATS.get(f, f) for f in d["formats"])),
+        f'<span class="count">{d["n"]:,}</span>' if measured else '<span class="faint">not measured</span>',
+        f'{d["rooms"]:,}' if measured else "", f'{d["t30_median"]:g} s' if d["t30_median"] else "",
+        e(d["size"]), e(words.licence_short(d["licence"])), f'<div class="picks">{picks}</div>']
+    num = {4, 5, 6}
+    return (f'<tr class="dsrow item" {sort_keys(d, i)}>'
+            + "".join(f'<td{" class=num" if k in num else ""}>{c}</td>' for k, c in enumerate(cells)) + "</tr>")
+
+
+def table_view(ds: list[dict]) -> str:
+    head = [("name", "Dataset"), ("year", "Year"), ("", "Kind"), ("", "Formats"), ("n", "IRs"), ("rooms", "Rooms"),
+            ("", "T30 median"), ("", "Download"), ("", "Licence"), ("", "")]
+    th = "".join(f'<th{" class=num" if k in (4, 5, 6) else ""}>'
+                 + (f'<button type="button" class="sortby" data-sort="{s}">{t}</button>' if s else t) + "</th>"
+                 for k, (s, t) in enumerate(head))
+    rows = "".join(table_row(d, i) for i, d in enumerate(ds))
+    return (f'<div class="scroll" id="tablebox" hidden><table class="plain dstable"><thead><tr>{th}</tr></thead>'
+            f'<tbody id="rows">{rows}</tbody></table></div>')
 
 
 def datasets_page(search: dict) -> str:
@@ -115,32 +200,47 @@ def datasets_page(search: dict) -> str:
               show=0),
         facet("grade", "Decay quality", [("S", "S"), ("A", "A or better"), ("B", "B or better"), ("C", "C or better")],
               hint="measured only"),
+        archive_facet(),
+        year_facet(ds),
     ])
-    presets = [("kind=indoor", "Real rooms only"), ("format=binaural&use=commercial", "Binaural, commercial use allowed"),
-               ("format=ambisonic&status=measured", "Ambisonic, measured"),
-               ("t30=hall&t30=live", "Halls and churches"), ("provides=positions", "With source and receiver positions"),
-               ("provides=geometry&provides=materials", "With geometry and materials")]
+    presets = [("kind=indoor&tab=get", "Real rooms only"), ("format=binaural&use=commercial", "Binaural, commercial use allowed"),
+               ("dataset=arni&per=50&tab=get", "50 ARNI IRs, dry to live"),
+               ("format=mono&per=20&archive=2GB&tab=get", "Mono, 20 per room, small downloads"),
+               ("t30=hall&t30=live", "Halls and churches"), ("since=2024", "Published since 2024"),
+               ("provides=positions", "With source and receiver positions")]
     body = f"""
 <div class="wrap page">
 <div class="page-head"><h1>Datasets</h1>
 <p class="lead">Every public room impulse response dataset we know of: {len(ds)} in all. {n_measured} are measured by
-RIRDB; the others are described from their authors' pages and measured in later releases.</p></div>
+RIRDB; the others are described from their authors' pages and measured in later releases. Filter them, pick the ones
+you want, and see what you get: the page writes the command.</p></div>
 <div class="find">
-<form class="facets" id="filters" aria-label="Filters">{facets}{get_fields()}
+<form class="facets" id="filters" aria-label="Filters">{facets}
 <button type="reset" class="clear">Clear all filters</button></form>
 <div class="results">
 <div class="searchbar"><input id="text" name="text" form="filters" type="search" autocomplete="off"
  placeholder="Search names, descriptions, institutions, rooms: church, Eigenmike, York…" aria-label="Search the datasets"></div>
 <button type="button" class="filterbtn" aria-controls="filters" aria-expanded="false">Filters</button>
 <p class="presets"><span>Try</span>{"".join(f'<a href="?{q}">{e(t)}</a>' for q, t in presets)}</p>
-<div class="resultline"><p id="result" aria-live="polite"><b>{len(ds)}</b> datasets</p>
-<label for="sort">Sort <select id="sort" name="sort" form="filters"><option value="">Measured first</option>
-<option value="n">Most IRs</option><option value="year">Newest</option><option value="name">Name</option></select></label></div>
 <div class="chips" id="chips"></div>
+<div class="tabs" role="tablist" aria-label="Views" hidden><button type="button" role="tab" id="tab-list" aria-controls="list"
+ aria-selected="true" data-tab="">Datasets <span class="tabn" id="n-list"></span></button><button type="button"
+ role="tab" id="tab-get" aria-controls="get" aria-selected="false" data-tab="get">What you get <span class="tabn"
+ id="n-get"></span></button></div>
+<input type="hidden" name="tab" id="tabview" form="filters">
+<section class="tabpanel" id="list" role="tabpanel" aria-labelledby="tab-list">
+<div class="resultline"><p id="result" aria-live="polite"><b>{len(ds)}</b> datasets</p>
+<div class="listctl"><label for="sort">Sort <select id="sort" name="sort" form="filters"><option value="">Measured first</option>
+<option value="n">Most IRs</option><option value="rooms">Most rooms</option><option value="year">Newest</option>
+<option value="name">Name</option></select></label><span class="seg" role="group" aria-label="Show as"><button type="button"
+ data-list="" aria-pressed="true">Cards</button><button type="button" data-list="table" aria-pressed="false">Table</button></span>
+<input type="hidden" name="list" id="listview" form="filters"></div></div>
 <p class="note" id="leftout" hidden></p>
-{command_box()}
 <div class="cards" id="cards">{"".join(card(d, i) for i, d in enumerate(ds))}</div>
+{table_view(ds)}
 <button type="button" class="more" id="more" hidden></button>
+</section>
+{get_view()}
 </div></div></div>"""
     return page("Datasets · RIRDB", body, current="datasets.html", scripts=("search-data.js",))
 
@@ -252,7 +352,7 @@ position published in two formats counts once.</p>
 <section class="section" id="quality"><h2>Decay quality{sample}</h2>
 <div class="gradeline">{grade_bar(grades)}{grade_legend(grades)}</div>
 <p class="quiet">The grade says how much of the decay could be measured, S best. Defects found: {e(found)}.
-<a href="../guide.html#grades">How the grades work</a></p></section>
+<a href="../index.html#g-grades">How the grades work</a></p></section>
 <section class="section" id="examples"><h2>Example IRs</h2>
 <p class="quiet">Six rows of <code>irs.csv</code>, as <code>rirdb get</code> writes it. Every column is explained in the
 <a href="../reference.html">data reference</a>.</p>
@@ -272,6 +372,17 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
     by = " · ".join(e(x) for x in (d["institution"], d["country"], None if pd.isna(d["year"]) else int(d["year"])) if x)
     caveats = [x for x in (d["caveats"] or "").split("\n") if x] + ([d["known_issues"]] if d["known_issues"] else [])
     status = pill("Measured by RIRDB", "measured") if measured else pill("Not measured yet")
+    known = [x for x in str(d.get("known_defects") or "").split("\n") if x]
+    def concerns(x: str) -> str:              # how many IRs of the table the defect concerns
+        n = int(rows["known_defect"].str.contains(x, regex=False).sum()) if "known_defect" in rows else 0
+        return f"{n:,} IRs of the table have it." if n else "No IR of the table comes from these files."
+    defects = "" if not known else (
+        '<div class="warnbox" id="defect"><h2>Known defect</h2><ul>'
+        + "".join(f"<li>{e(x)}" + (f' <span class="quiet">{concerns(x)}</span>' if measured else "") + "</li>"
+                  for x in known)
+        + '</ul><p class="small quiet">The files are kept as published. The IRs a defect concerns stay in the table '
+          'and in what <code>rirdb get</code> delivers, and <code>rirdb search</code> and <code>get</code> warn about '
+          'them.</p></div>')
     banner = "" if measured else (
         f'<p class="banner">{e(words.STATUS.get(d["status"], d["status"]))}. The facts below are from the authors\' pages'
         + (f', read on {e(d["facts_checked_on"])}' if d["facts_checked_on"] else "") + ".</p>")
@@ -293,7 +404,7 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
     licence = (f'<div><h4>Licence</h4><p><b>{e(words.licence_short(d["licence"]))}</b></p>'
                f'<p class="quiet small">{e(words.licence_name(d["licence"]))}</p>{use_marks(c["uses"])}</div>')
     get = (f'<div><h4>Get it</h4>{copybox(f"rirdb get --dataset {i}")}<p class="quiet small">{e(c["size"])}, every file as '
-           f'published, checked against its checksum.</p><p class="small"><a href="../datasets.html?dataset={e(i)}">Choose IRs from it</a>: '
+           f'published, checked against its checksum.</p><p class="small"><a href="../datasets.html?dataset={e(i)}&amp;tab=get">Choose IRs from it</a>: '
            f'at most so many per room, one format, a random draw.</p></div>') if measured else \
           (f'<div><h4>Get it</h4><p class="small">From the authors: <a href="{e(d["homepage"])}">{e(d["host"] or "homepage")}</a>'
            + (f' ({e(d["size_stated"])})' if d["size_stated"] else "") + ". RIRDB will download and check it once it is measured.</p></div>")
@@ -318,6 +429,7 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
     on_page = [("about", "Before you download"), ("provides", "What the authors provide"), ("rooms", "Rooms"),
                ("measured", "What RIRDB measured"), ("quality", "Decay quality"), ("examples", "Example IRs")]
     on_page = [(a, t) for a, t in on_page if measured or a in ("about", "provides")]
+    on_page = ([("defect", "Known defect")] if known else []) + on_page
     aside = (f'<aside class="aside">{licence}{get}<div><h4>Contents</h4><dl>{dl}</dl></div>'
              + (f'<div><h4>Cite</h4>{"".join(cite)}</div>' if cite else "")
              + f'<div><h4>Links</h4><p class="small"><a href="{e(d["homepage"])}">{e(d["host"] or "Homepage")}</a></p></div>'
@@ -328,6 +440,7 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
 <div class="ds-main">
 <div class="ds-head">{status}<h1>{e(d["name"])}</h1>{f'<p class="by">{by}</p>' if by else ""}
 <p class="lead">{e(d["description"])}</p>{banner}</div>
+{defects}
 {f'<div class="note">{cap_html}</div>' if cap_html else ""}
 <section class="section" id="about"><h2>Before you download</h2>
 {"<ul>" + "".join(f"<li>{e(x)}</li>" for x in caveats) + "</ul>" if caveats else '<p class="quiet">Nothing recorded.</p>'}

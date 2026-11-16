@@ -1,0 +1,4 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+roomgeometry.pdf	https://zenodo.org/api/records/12169116/files/roomgeometry.pdf/content	19950	md5	2d511d1fd58bef8faf435d22769f4603	zenodo:12169116	2026-11-16T11:05:53Z	-
+ertd1.mat	https://zenodo.org/api/records/12169116/files/ertd1.mat/content	2615579942	md5	891497292f3d9be9d5a3570c0870431f	zenodo:12169116	2026-11-16T11:05:53Z	-
+ertd2.mat	https://zenodo.org/api/records/12169116/files/ertd2.mat/content	2621787241	md5	2fd331b4d1d5e980d4f793c60904db80	zenodo:12169116	2026-11-16T11:05:53Z	-

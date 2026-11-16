@@ -49,6 +49,8 @@ MAX_ARCHIVE = typer.Option(None, "--max-archive", help="Leave out IRs that come 
 N = typer.Option(None, "--n", help="Draw this many IRs at random (see --balance).")
 BALANCE = typer.Option("none", "--balance", help="What the draw makes equally likely: space, dataset, t30 (short "
                                                  "and long reverbs), or none (every IR).")
+YEAR = typer.Option(None, "--year", help="The dataset's year of publication: 2020- (2020 or later), -2015, 2018-2020 "
+                                         "or 2024.")
 SEED = typer.Option(0, "--seed", help="The seed of the draw, recorded in selection.lock.")
 
 
@@ -57,7 +59,7 @@ def search(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: st
            dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
            fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
            kind: list[str] = KIND, per_space: int = PER_SPACE, max_archive: str = MAX_ARCHIVE, n: int = N,
-           balance: str = BALANCE, seed: int = SEED) -> None:
+           balance: str = BALANCE, seed: int = SEED, year: str = YEAR) -> None:
     """What a selection holds: IRs, spaces, datasets, licences, grades, and its download size. Nothing is downloaded.
 
     The same options as `get`, so `search` shows what `get` would fetch, except `get --dataset X` alone, which gives
@@ -66,7 +68,7 @@ def search(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: st
     from rirdb.select import by_dataset, cap_of, grade_split, human, plural, size_text, select
 
     sel = select(use, format, origin, grade, dataset, exclude_dataset, include_unknown, fs, n, balance, seed,
-                 space_type, t30, provides, kind, per_space, max_archive)
+                 space_type, t30, provides, kind, per_space, max_archive, year=year)
     t = sel.table
     console.print(f"[bold]{plural(len(t), 'IR')}[/bold] in {plural(t['space'].nunique(), 'space')} from "
                   f"{plural(t['dataset'].nunique(), 'dataset')} (release {client.version()})")
@@ -85,6 +87,8 @@ def search(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: st
     copies = (t["duplicate_of"] != "").sum()
     if copies:
         console.print(f"{copies:,} of these IRs are exact copies of another IR (column duplicate_of).")
+    for line in sel.known_defects():
+        console.print(f"[yellow]Warning[/yellow] {line}")
     for d in sorted(t["dataset"].unique()):
         cap = cap_of(d)
         if cap:
@@ -146,6 +150,8 @@ def info(dataset: str = typer.Argument(..., help="A dataset id, e.g. sriracha (`
         console.print("Ranges (5th to 95th percentile): " + "; ".join(ranges))
     if d["known_issues"]:
         console.print(f"Known issues: {d['known_issues']}")
+    for line in (d["known_defects"].split("\n") if d.get("known_defects") else []):
+        console.print(f"[yellow]Known defect[/yellow]: {line}")
     urls = client.table("downloads").query("dataset == @dataset")["url"]
     if urls.map(scripted).all():
         console.print(f"Get it: rirdb get --dataset {dataset}   (every file as published)")
@@ -166,7 +172,7 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
         dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
         fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
         kind: list[str] = KIND, per_space: int = PER_SPACE, max_archive: str = MAX_ARCHIVE, n: int = N,
-        balance: str = BALANCE, seed: int = SEED,
+        balance: str = BALANCE, seed: int = SEED, year: str = YEAR,
         out: Path = typer.Option(Path("rirdb-out"), "--out", help="The output folder."),
         lock: Path = typer.Option(None, "--lock", help="A selection.lock: get the same IRs again."),
         from_dir: Path = typer.Option(None, "--from", help="A folder with the files of a dataset rirdb cannot download."),
@@ -190,7 +196,7 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
     whole = recorded.get("as_published") or (
         len(dataset or []) == 1 and not lock
         and not (use or format or exclude_dataset or include_unknown or fs or space_type or t30 or provides or kind)
-        and n is None and per_space is None and max_archive is None      # --per-space 0 is checked, not ignored
+        and n is None and per_space is None and max_archive is None and year is None   # --per-space 0 is checked
         and origin == "any" and grade == "any" and balance == "none")
     if whole:
         from rirdb import client
@@ -198,11 +204,14 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
         Query(dataset=dataset).check(client.table("datasets"))
         size, unknown = dataset_download_bytes(dataset[0])
         console.print(f"{dataset[0]}: every file as published, {size_text(size, unknown)} to download.")
+        known = client.table("datasets").set_index("dataset").get("known_defects")
+        for line in (known[dataset[0]].split("\n") if known is not None and known[dataset[0]] else []):
+            console.print(f"[yellow]Warning[/yellow] {dataset[0]}: a known defect. {line}")
         capped = dataset
     else:
         sel = from_lock(lock) if lock else select(use, format, origin, grade, dataset, exclude_dataset,
                                                   include_unknown, fs, n, balance, seed, space_type, t30, provides, kind,
-                                                  per_space, max_archive)
+                                                  per_space, max_archive, year=year)
         s = sel.sizes()
         size = s.download_bytes
         console.print(f"{plural(len(sel.table), 'IR')} from {plural(sel.table['dataset'].nunique(), 'dataset')}: "
@@ -210,6 +219,8 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
                       f"({plural(s.n_downloads, 'download')}), {human(s.output_bytes)} as WAV.")
         if sel.table.empty:
             return
+        for line in sel.known_defects():
+            console.print(f"[yellow]Warning[/yellow] {line}")
         capped = sorted(sel.table["dataset"].unique())
     for d in capped:
         cap = cap_of(d)

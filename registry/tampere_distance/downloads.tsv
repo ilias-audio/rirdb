@@ -1,0 +1,9 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+labels_and_splits.zip	https://zenodo.org/api/records/23096979/files/labels_and_splits.zip/content	800637	md5	ee12e435d0b824ad5bd8b40b291090fc	zenodo:23096979	2026-11-16T11:05:53Z	labels_and_splits
+STARSS23_distance.zip	https://zenodo.org/api/records/23096979/files/STARSS23_distance.zip/content	282366578	md5	1bacb919790bc1ceac8e5ae336f7e003	zenodo:23096979	2026-11-16T11:05:53Z	STARSS23_distance
+shared_rir.zip	https://zenodo.org/api/records/23096979/files/shared_rir.zip/content	2213467748	md5	ece8e088d091dbf5b6c3fecf3e565f54	zenodo:23096979	2026-11-16T11:05:53Z	shared_rir
+synthetic_baseline.zip	https://zenodo.org/api/records/23096979/files/synthetic_baseline.zip/content	6403699604	md5	efab74a14b9feb9ce091a2c8214f9d1f	zenodo:23096979	2026-11-16T11:05:53Z	synthetic_baseline
+synthetic_both.zip	https://zenodo.org/api/records/23096979/files/synthetic_both.zip/content	6403679540	md5	6f83986fc472fdfd96d5937e5ac182bf	zenodo:23096979	2026-11-16T11:05:53Z	synthetic_both
+synthetic_gain_var.zip	https://zenodo.org/api/records/23096979/files/synthetic_gain_var.zip/content	6403703732	md5	44afaf5e2926b9e4af35629833e2a0ae	zenodo:23096979	2026-11-16T11:05:53Z	synthetic_gain_var
+MANIFEST.sha256	https://zenodo.org/api/records/23096979/files/MANIFEST.sha256/content	705	md5	3f15d2bf5e2d649bdb6a9cfc874589fe	zenodo:23096979	2026-11-16T11:05:53Z	-
+synthetic_onset_randomized.zip	https://zenodo.org/api/records/23096979/files/synthetic_onset_randomized.zip/content	6403915592	md5	5251610bb4e1ff71440340d20317942c	zenodo:23096979	2026-11-16T11:05:53Z	synthetic_onset_randomized

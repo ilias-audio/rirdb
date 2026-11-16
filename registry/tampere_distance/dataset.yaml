@@ -3,7 +3,10 @@ id: tampere_distance
 name: Speaker Distance Estimation Datasets (Tampere)
 year: 2026
 type: simulated
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: zenodo, records: ["23096979"]}
 content: 2,500 simulated RIRs (pyroomacoustics image-source method, reflection order 100) of randomised rooms, shared
   by a 40,000-clip reverberant speech corpus for single-channel speaker distance estimation.
 expected:

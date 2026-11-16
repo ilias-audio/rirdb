@@ -2,15 +2,14 @@
 
     rirdb dev site --out site/
 
-    index.html          what RIRDB is, a search box, the collection at a glance, ways in        home.py
-    datasets.html       all datasets, with the search and its filters                          datasets.py
+    index.html          what RIRDB is, ways in, how it works, the guide and about sections      home.py, guide.py
+    datasets.html       all datasets, with the search and its filters, and What you get:       datasets.py
+                        charts of what the command selects, and the command itself
     d/<dataset>.html    one page per dataset: what it is, what its authors provide, its rooms,  datasets.py
                         what RIRDB measured (a dataset not measured yet: the first parts only)
-    rooms.html          every room, plotted and listed, with the same filters                   rooms.py
-    guide.html          get started, glossary, cite, add a dataset                              guide.py
-    about.html          who, why, how IRs are measured, how datasets are chosen                 guide.py
+    rooms.html, guide.html, about.html   old addresses: they lead to What you get and the home page's sections
     reference.html      every column of the tables                                              guide.py
-    search-data.js      what the two search pages read (data.py), loaded once by the browser
+    search-data.js      what the datasets page reads (data.py), loaded once by the browser
     style.css, site.js, fonts/, icon.svg
 
 words.py turns codes into words, layout.py holds the frame every page shares, charts.py draws the charts (SVG,
@@ -30,9 +29,9 @@ HERE = Path(__file__).parent
 
 def build(out: Path) -> Path:
     from rirdb.site import datasets as ds_pages
-    from rirdb.site import guide, home, rooms
+    from rirdb.site import guide, home
     from rirdb.site.data import primary, search_data
-    from rirdb.site.layout import ICON_SVG
+    from rirdb.site.layout import ICON_SVG, moved
 
     irs, datasets, spaces = client.table("irs"), client.table("datasets"), client.table("spaces")
     search = search_data(irs, spaces, datasets)
@@ -46,15 +45,15 @@ def build(out: Path) -> Path:
     (out / "search-data.js").write_text(f"window.RIRDB = {data};\n")
 
     write = lambda path, html: (out / path).write_text(html)
-    write("index.html", home.home(search))
+    write("index.html", home.home(search, len(primary(irs))))    # IRs as rirdb search counts them
     write("datasets.html", ds_pages.datasets_page(search))
-    write("rooms.html", rooms.rooms_page(search))
-    write("guide.html", guide.guide_page())
-    write("about.html", guide.about_page(len(datasets), int((datasets["status"] == "measured").sum()), len(irs)))
     write("reference.html", guide.reference_page())
-    for old, new in (("columns.html", "reference.html"), ("spaces.html", "rooms.html")):    # addresses of v2
-        write(old, f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url={new}">'
-                   f'<link rel="canonical" href="{new}"><a href="{new}">{new}</a>\n')
+    # old addresses: the rooms page (v3), the guide and about pages (v3), the columns and spaces pages (v2)
+    write("rooms.html", moved("datasets.html", add="tab=get"))
+    write("spaces.html", moved("datasets.html", add="tab=get"))
+    write("guide.html", moved("index.html", section="#guide"))
+    write("about.html", moved("index.html", section="#about"))
+    write("columns.html", moved("reference.html"))
 
     corpus = primary(irs)
     cards = {c["id"]: c for c in search["datasets"]}

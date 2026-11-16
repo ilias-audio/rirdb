@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 from rirdb.select import GRADES, PROVIDES, USES, dataset_download_bytes, download_bytes, download_sizes, size_text
-from rirdb.site.words import kind_of, room_label
+from rirdb.site.words import KINDS, ROOM_TYPES, kind_of, room_label
 
 # T30 bins: the R10 preferred numbers (ten per decade, equal in log time), 0.05 to 25 s.
 # A value outside counts in the first or last bin.
@@ -128,6 +128,7 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
             "t30": histogram(mine_p["rt_mid"], T30_EDGES) if measured else [],
             "t30_median": num(mine_p["rt_mid"].median()) if measured else None,
             "grades": {g: int(n) for g, n in mine["grade"].replace("", "none").value_counts().items()},
+            "defect": bool(d.get("known_defects")),
             "text": words.lower(),
         }
 
@@ -156,6 +157,7 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
         **{use: rows[col].eq("yes").astype(int) for use, col in USES.items()},
         "dl": [dl_index[k] for k in dl_keys],             # the download each IR comes in (for the download size)
         "big": big,                                         # how many ARCHIVE_LIMITS that download is above
+        "kd": rows["known_defect"].ne("").astype(int) if "known_defect" in rows else 0,   # a known defect (registry)
     })
     counts = keyed.groupby(list(keyed.columns), sort=True).size().reset_index(name="n")
     return {
@@ -163,6 +165,7 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
         "counts": counts.to_numpy().tolist(), "spaces": space_list,
         "downloads": [[None if pd.isna(whole.get(k, np.nan)) else int(whole[k]), int(k[1] == "@mirror")] for k in dl_list],
         "archive_limits": list(ARCHIVE_LIMITS),
+        "room_types": ROOM_TYPES, "kinds": KINDS,
         "datasets": [card(d) for _, d in ds.iterrows()],
     }
 

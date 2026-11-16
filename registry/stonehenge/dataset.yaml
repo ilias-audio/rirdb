@@ -3,7 +3,11 @@ id: stonehenge
 name: Stonehenge impulse response measurements
 year: 2020
 type: measured
-status: catalogued
+status: planned   # set by scripts/onboard; a person makes it active after the review
+access: open
+wave: 3   # onboarded by scripts/onboard
+source: {kind: figshare, records: ["12687554"]}
+adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0}}   # guessed by scripts/onboard/guess.py; see the review
 content: Octave-band IRs for 61 measurements in a 1:12 acoustic scale model of Stonehenge, the prehistoric stone
   circle, with derived acoustic parameters in a spreadsheet.
 expected:
