@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["10020866"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.wav", "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|/Eigenmike Capsules/", "pattern": "^(?P<room>MV[45])/MV[45]/(?P<cond>AS\\d)/AS\\d/(?:TOA|Reference Lav|KEMAR)/MV[45]_AS\\d_[A-Za-z_]+?_R_(?P<rcv>[A-Z]+-[0-9A-Z]+)_S_(?P<src>[A-Z]+-[0-9A-Z]+(?:_[NESW])?)", "roles": {"1": ["omni"], "2": ["L", "R"], "16": ["W", "Y", "Z", "X", "ACN4", "ACN5", "ACN6", "ACN7", "ACN8", "ACN9", "ACN10", "ACN11", "ACN12", "ACN13", "ACN14", "ACN15"]}, "channel_formats": {"1": "mono_omni", "2": "binaural", "16": "hoa_sh"}, "preferred_regex": "/TOA/"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "**/*.wav", "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|/Eigenmike Capsules/", "pattern": "^(?P<room>MV[45])/MV[45]/(?P<cond>AS\\d)/AS\\d/(?:TOA|Reference Lav|KEMAR)/MV[45]_AS\\d_[A-Za-z_]+?_R_(?P<rcv>[A-Z]+-[0-9A-Z]+)_S_(?P<src>[A-Z]+-[0-9A-Z]+(?:_[NESW])?)", "roles": {"1": ["omni"], "2": ["L", "R"], "16": ["W", "Y", "Z", "X", "ACN4", "ACN5", "ACN6", "ACN7", "ACN8", "ACN9", "ACN10", "ACN11", "ACN12", "ACN13", "ACN14", "ACN15"]}, "channel_formats": {"1": "mono_omni", "2": "binaural", "16": "hoa_sh"}, "preferred_regex": "/TOA/"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Third-order Ambisonic spatial IRs for 3DoF/6DoF rendering, KEMAR binaural references and ISO 3382 measurements
   of the BBC Maida Vale live rooms MV4 and MV5, with sources in four orientations.
 expected:

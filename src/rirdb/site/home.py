@@ -1,4 +1,4 @@
-"""The home page: what RIRDB is, a search box, the collection at a glance, ways in, and what the tool prints."""
+"""The home page: what RIRDB is, a search box, ways in, and what the tool prints (the rooms chart is on the rooms page)."""
 
 from __future__ import annotations
 
@@ -6,9 +6,8 @@ from collections import Counter
 
 from rirdb import client
 from rirdb.select import by_dataset, human, plural, select, size_text
-from rirdb.site import charts, words
+from rirdb.site import words
 from rirdb.site.layout import ISSUES, MAINTAINER, MAINTAINER_URL, e, page
-from rirdb.site.rooms import legend, points
 
 # The search shown in the terminal: the first of these that finds IRs in the release.
 EXAMPLES = [{"format": "binaural", "grade": "A"}, {"grade": "A"}, {}]
@@ -41,8 +40,6 @@ def terminal() -> str:
 
 def home(search: dict) -> str:
     ds, sp = search["datasets"], search["spaces"]
-    n_measured = sum(d["status"] == "measured" for d in ds)
-    n_irs = sum(d["n"] for d in ds)
     fmt_count = Counter(f for d in ds for f in d["formats"])
     kind_count = Counter(s["kind"] for s in sp)
     use_count = Counter(u for d in ds for u, v in d["uses"].items() if v in ("yes", "unaltered_only"))
@@ -73,15 +70,6 @@ download it. Get them as one checked folder, with their licences and citations.<
 <form class="bigsearch" action="datasets.html" role="search"><input name="text" type="search"
  placeholder="Search: church, Eigenmike, binaural, York…" aria-label="Search the datasets"><button type="submit">Search</button></form>
 <p class="presets"><span>Try</span>{"".join(f'<a href="{h}">{e(t)}</a>' for h, t in presets)}</p>
-</div></section>
-
-<section class="collection"><div class="wrap">
-<div class="section-head"><h2>The collection</h2>
-<p class="quiet">{len(ds)} datasets described, {n_measured} measured with one analyser: {n_irs:,} IRs in
-{len(sp):,} rooms and other spaces. Each dot is a room, at the median reverberation time and direct-to-reverberant ratio
-of its IRs; click one to open its dataset.</p></div>
-<figure class="plot"><div class="plotbox">{charts.scatter(points(search), "Every room of the collection by reverberation time and DRR", h=380)}</div>
-<figcaption>{legend()}<a href="rooms.html">Filter the rooms</a></figcaption></figure>
 </div></section>
 
 <section class="browse"><div class="wrap"><h2>Start from what you need</h2><div class="browse-grid">{browse_html}</div></div></section>

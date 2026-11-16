@@ -6,8 +6,8 @@ import pandas as pd
 
 from rirdb.select import cap_of
 from rirdb.site import charts, words
-from rirdb.site.data import (BANDS, DB_EDGES, T30_EDGES, acoustics, histogram, labels, own_fields, primary,
-                             space_bands, text)
+from rirdb.site.data import (BANDS, DB_EDGES, MANY_ROOMS, T30_EDGES, acoustics, histogram, labels, own_fields,
+                             primary, shown_space, space_bands, text)
 from rirdb.site.layout import (ICONS, copybox, e, grade_bar, grade_legend, page, pill, table, use_marks)
 
 PER_PAGE = 30
@@ -123,7 +123,22 @@ def provides_grid(d: pd.Series) -> str:
     return f'<div class="provides">{"".join(cells)}</div>'
 
 
+def as_room_types(rows_p: pd.DataFrame, spaces: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """A dataset of more than MANY_ROOMS rooms as one row per room type (data.shown_space), its volume range noted."""
+    shown = shown_space(spaces)
+    rows_p = rows_p.assign(space=rows_p["space"].map(dict(zip(spaces["space"], shown))))
+    g = spaces.assign(space=shown).groupby("space")
+    vol = g["volume_m3"].agg(["min", "max"])
+    note = [(f"volumes {lo:,.0f} to {hi:,.0f} m³; " if pd.notna(lo) else "") + "every room is a row of the spaces table"
+            for lo, hi in zip(vol["min"], vol["max"])]
+    out = g.first().assign(label=g.size().map("{:,} rooms".format), n_irs=g["n_irs"].sum(), volume_m3=float("nan"),
+                           dims_m="", same_as="", note=note)
+    return rows_p, out.reset_index()
+
+
 def rooms_list(rows_p: pd.DataFrame, spaces: pd.DataFrame) -> str:
+    if len(spaces) > MANY_ROOMS:
+        rows_p, spaces = as_room_types(rows_p, spaces)
     curves = space_bands(rows_p)
     t30 = rows_p.groupby("space")["rt_mid"].median()
     drr = rows_p.groupby("space")["drr_db"].median()

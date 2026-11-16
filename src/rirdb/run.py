@@ -194,7 +194,11 @@ def merge(dataset_id: str) -> Path:
     if missing:
         raise RuntimeError(f"{dataset_id}: {len(missing)} of {n} shards missing, e.g. {missing[:5]}")
     df = pd.concat([pd.read_parquet(p) for p in current], ignore_index=True)
-    configs = df["config_sha256"].dropna().unique() if "config_sha256" in df else []
+    # a shard with a failed IR writes its yes/no columns as "True"/"False" text, the other shards as booleans
+    for c in df.columns:
+        if df[c].dtype == object and df[c].map(lambda v: isinstance(v, bool)).any():
+            df[c] = df[c].map({True: True, False: False, "True": True, "False": False}).astype("boolean")
+    configs =df["config_sha256"].dropna().unique() if "config_sha256" in df else []
     if len(configs) > 1:
         raise RuntimeError(f"{dataset_id}: shards mix analyzer configs {sorted(configs)}; re-run the stale shards")
     # older shards: index/analyzer column clashes came out as <col>_x / <col>_y; keep the index value

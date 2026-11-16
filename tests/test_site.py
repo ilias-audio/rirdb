@@ -114,3 +114,18 @@ def test_words():
 def test_the_guide_cites_the_paper(site):
     guide = (site / "guide.html").read_text()
     assert "@inproceedings{ibnyahya2026rirdb" in guide and "Reiss, Joshua D." in guide and "@software{rirdb" in guide
+
+
+def test_a_dataset_of_many_rooms_shows_one_entry_per_room_type_and_counts_the_same(user, monkeypatch):
+    import rirdb.site.data as site_data
+
+    irs, spaces, datasets = client.table("irs"), client.table("spaces"), client.table("datasets")
+    every = search_data(irs, spaces, datasets)
+    monkeypatch.setattr(site_data, "MANY_ROOMS", 1)              # every dataset of 2 rooms or more is grouped
+    grouped = search_data(irs, spaces, datasets)
+    assert all(s["id"].split("/")[1].startswith("all-") for s in grouped["spaces"])   # toy: 3 rooms of 3 types
+    for format in (None, "mono", "stereo"):
+        assert kept(grouped, format) == kept(every, format), format
+    for t in sorted({s["type"] for s in every["spaces"]}):
+        assert kept(grouped, space_type=[t]) == kept(every, space_type=[t]), t
+    assert [d["rooms"] for d in grouped["datasets"]] == [d["rooms"] for d in every["datasets"]]

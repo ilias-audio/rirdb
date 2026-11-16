@@ -150,9 +150,19 @@ def primary_rows(r: pd.DataFrame) -> pd.Series:
     return eligible & r["layout"].eq(r["space"].map(best))
 
 
-def judged(bands: pd.DataFrame) -> pd.DataFrame:
-    """The published band values: a value whose v1 validity fails is empty (R4). 0.9 uses v1's `valid_*`."""
+FIT_SPAN_DB = {"edt": 10, "t20": 20, "t30": 30}   # how many dB of decay each fit covers (ISO 3382-1)
+
+
+def judged(bands: pd.DataFrame, duration_s: pd.Series) -> pd.DataFrame:
+    """The published band values: a value whose v1 validity fails is empty (R4). 0.9 uses v1's `valid_*`.
+
+    A decay time whose fitted line would take longer than the analysed IR (duration_s, by ir_id) to fall its
+    10, 20 or 30 dB is not valid either: the line was fitted to something other than the decay.
+    """
     out = bands.copy()
+    length = out["ir_id"].map(duration_s)
+    for q, span_db in FIT_SPAN_DB.items():
+        out[f"valid_{q}"] = truth(out[f"valid_{q}"]) & ~(finite(out[q]) * span_db / 60 > length)
     for q in ("edt", "t20", "t30", "c50", "c80", "d50", "ts"):
         out[q] = finite(out[q]).where(truth(out[f"valid_{q}"]))
     out["decay_range_db"] = finite(out["decay_range_db"])
@@ -264,7 +274,7 @@ def dataset_irs(dataset_id: str) -> dict:
     out = pd.concat([out, pd.DataFrame(lic, index=out.index)], axis=1)
 
     # bands: judged values, one octave row per band and one broadband row
-    pub = judged(bands)
+    pub = judged(bands, r.set_index("ir_id")["duration_analysed_s"])
     octave, broadband = pub[pub["series"] == "octave"], pub[pub["series"] == "broadband"].set_index("ir_id")
     raw_oct = bands[bands["series"] == "octave"]
     raw_bb = bands[bands["series"] == "broadband"].set_index("ir_id")
@@ -295,9 +305,9 @@ def dataset_irs(dataset_id: str) -> dict:
     n_major = dfx[majors].fillna(False).sum(axis=1).astype(int)
     n_minor = (dfx[minors].fillna(False).sum(axis=1)
                + sum((out[f"proc_{k}"].isin(["detected", "both"])) for k, v in p.items() if v["counts_as_minor_defect"])).astype(int)
-    any_valid = ((truth(bands["valid_edt"]) | truth(bands["valid_t20"]) | truth(bands["valid_t30"]))
-                 .groupby(bands["ir_id"]).any().reindex(r["ir_id"], fill_value=False))
-    decay = decay_grade(raw_oct, any_valid).to_numpy()
+    any_valid = ((pub["valid_edt"] | pub["valid_t20"] | pub["valid_t30"])
+                 .groupby(pub["ir_id"]).any().reindex(r["ir_id"], fill_value=False))
+    decay = decay_grade(octave, any_valid).to_numpy()
     out["grade"] = grade_of(decay, n_major.to_numpy(), n_minor.to_numpy(),
                             all_assessed(dfx).to_numpy(), r["space_type"].to_numpy())
     out["defects_major"] = n_major.to_numpy()

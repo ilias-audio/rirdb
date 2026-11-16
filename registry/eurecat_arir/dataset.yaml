@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1417727"]}
-adapter: {"name": "sofa", "params": {"groups": [{"pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>.+?)_eigenmike\\.sofa$", "pattern_on": "path", "capture_format": "hoa_sh", "sh_norm": "SN3D"}, {"pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>(?!.*_eigenmike).+?)(?:_ambeo|_soundfield)?\\.sofa$", "pattern_on": "path", "capture_format": "foa_ambix", "sh_norm": "SN3D", "roles": ["W", "Y", "Z", "X"]}]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "sofa", "params": {"groups": [{"orientation_known": false, "pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>.+?)_eigenmike\\.sofa$", "pattern_on": "path", "capture_format": "hoa_sh", "sh_norm": "SN3D"}, {"orientation_known": false, "pattern": "^(?P<room>[^/]+)/[^/]+/(?P<room_2>(?!.*_eigenmike).+?)(?:_ambeo|_soundfield)?\\.sofa$", "pattern_on": "path", "capture_format": "foa_ambix", "sh_norm": "SN3D", "roles": ["W", "Y", "Z", "X"]}]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Ambisonic RIRs in SOFA (AmbisonicsDRIR convention) from rooms and outdoor spots of the Fundació Miró (Barcelona),
   the Alte Pinakothek (Munich) and St Andrews Castle (Scotland).
 expected:

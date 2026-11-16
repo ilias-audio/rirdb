@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["17831025"]}
-adapter: {"name": "wav_tree", "params": {"glob": "*/*/*/IRs/*.wav", "pattern": "^(?P<room>[^/]+)/[^/]+/(?:A_Format_192kHz|B_Format_96kHz_AmbiX)/IRs/\\d_(?P<rcv>[A-Z])_IR_", "roles": {"9": ["W", "Y", "Z", "X", "ACN4", "ACN5", "ACN6", "ACN7", "ACN8"]}, "channel_formats": {"8": "array_raw", "9": "hoa_sh"}, "preferred_regex": "/B_Format_"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "*/*/*/IRs/*.wav", "pattern": "^(?P<room>[^/]+)/[^/]+/(?:A_Format_192kHz|B_Format_96kHz_AmbiX)/IRs/\\d_(?P<rcv>[A-Z])_IR_", "roles": {"9": ["W", "Y", "Z", "X", "ACN4", "ACN5", "ACN6", "ACN7", "ACN8"]}, "channel_formats": {"8": "array_raw", "9": "hoa_sh"}, "preferred_regex": "/B_Format_"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Second-order Ambisonic SRIRs (Core Sound OctoMic), ambient noise and 360-degree photos from a printer room,
   a meeting room, a classroom and an underground car park, by the University of Milan.
 fs_hz:

@@ -4,7 +4,7 @@ import pandas as pd
 
 import numpy as np
 
-from rirdb.build import decay_grade, download_of, grade_of, primary_rows
+from rirdb.build import decay_grade, download_of, grade_of, judged, primary_rows
 from rirdb.checks import column_checks, sql_checks, threshold_checks
 
 
@@ -30,6 +30,16 @@ def test_decay_grades_follow_thresholds_yaml():
     octave = pd.DataFrame(rows)
     any_valid = pd.Series([True, True, False], index=["a", "b", "c"])
     assert decay_grade(octave, any_valid).tolist() == ["A", "B", "D"]
+
+
+def test_a_decay_fit_longer_than_the_ir_is_not_published():
+    q = ("edt", "t20", "t30", "c50", "c80", "d50", "ts")
+    bands = pd.DataFrame({"ir_id": ["a", "b"], **{k: [1.5, 768.0] for k in q}, **{f"valid_{k}": [True, True] for k in q},
+                          "decay_range_db": [60.0, 60.0]})
+    out = judged(bands, pd.Series({"a": 2.0, "b": 2.0}))     # 768 s: 30 dB would take 384 s of a 2 s IR
+    assert out["t30"].tolist()[0] == 1.5 and np.isnan(out["t30"].tolist()[1])
+    assert out["valid_t30"].tolist() == [True, False]
+    assert out["c50"].tolist() == [1.5, 768.0]                 # clarity is not a decay fit
 
 
 def test_grade_s_needs_every_defect_assessed():

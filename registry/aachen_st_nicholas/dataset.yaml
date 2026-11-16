@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["23312556"]}
-adapter: {"name": "wav_tree", "params": {"glob": "*/**/*.wav", "pattern": "(?:Nikolauskapelle_Source\\d_BRIR/(?P<src>S\\d)-Do_(?P<rcv>R\\d+)|/(?P<cond>occupied|unoccupied)/(?P<cond_2>Odeon|Treble)(?:Occ)?_(?P<src_2>S\\d)(?P<rcv_2>R\\d+))", "room_from": "dataset", "ir_kind_from_regex": {"simulated_impulse_responses/": "virtual"}, "roles": {"1": ["omni"], "2": ["omni", "omni_copy"], "4": ["W", "X", "Y", "Z"]}, "channel_formats": {"1": "mono_omni", "2": "mono_omni", "4": "foa_fuma"}, "reference_roles": {"2": "omni"}, "sh_norm": "FuMa"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "*/**/*.wav", "pattern": "(?:Nikolauskapelle_Source\\d_BRIR/(?P<src>S\\d)-Do_(?P<rcv>R\\d+)|/(?P<cond>occupied|unoccupied)/(?P<cond_2>Odeon|Treble)(?:Occ)?_(?P<src_2>S\\d)(?P<rcv_2>R\\d+))", "room_from": "dataset", "ir_kind_from_regex": {"simulated_impulse_responses/": "virtual"}, "roles": {"1": ["omni"], "2": ["omni", "omni_copy"], "4": ["W", "X", "Y", "Z"]}, "channel_formats": {"1": "mono_omni", "2": "mono_omni", "4": "foa_fuma"}, "reference_roles": {"2": "omni"}, "sh_norm": "FuMa"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 46 measured B-format RIRs (3 sources, 22 receivers) and 264 ODEON/TREBLE simulated IRs (unoccupied and
   occupied) of the late-Gothic St. Nicholas Chapel, Aachen Cathedral, with ISO 3382 parameters and materials.
 fs_hz:

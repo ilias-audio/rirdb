@@ -47,6 +47,17 @@ def five_numbers(values: pd.Series) -> dict | None:
     return {"p5": q[0], "p25": q[1], "p50": q[2], "p75": q[3], "p95": q[4], "n": len(v)}
 
 
+MANY_ROOMS = 1000   # a dataset with more rooms than this generates them (one room per IR): shown per room type
+
+
+def shown_space(spaces: pd.DataFrame) -> pd.Series:
+    """The entry the site shows each room as: the room itself or, in a dataset of more than MANY_ROOMS rooms, one
+    entry per room type (`<dataset>/all-<type>-<origin>`). The pages stay small; every filter still counts right."""
+    many = spaces.groupby("dataset")["space"].transform("size") > MANY_ROOMS
+    group = spaces["dataset"] + "/all-" + spaces["space_type"].fillna("") + "-" + spaces["origin"].fillna("")
+    return spaces["space"].where(~many, group)
+
+
 def primary(irs: pd.DataFrame) -> pd.DataFrame:
     """One layout per space (a space published in two layouts counts once), as `rirdb search` counts."""
     return irs[irs["is_primary"].astype(bool)]
@@ -77,12 +88,21 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
     ds = datasets.sort_values("name", key=lambda s: s.str.lower()).reset_index(drop=True)
     d_index = {d: i for i, d in enumerate(ds["dataset"])}
     sp = spaces[spaces["n_irs"] > 0].sort_values(["dataset", "space"]).reset_index(drop=True)
+    rows = irs[irs["space"].isin(set(sp["space"]))]
+    has_mono = set(rows.loc[rows["format"].eq("mono"), "space"])          # per room, as the command line decides
+    mono_w = rows["format"].eq("ambisonic") & ~rows["space"].isin(has_mono)
+    n_rooms = primary(rows).groupby("dataset")["space"].nunique()
+    # a dataset of thousands of generated rooms: one entry per room type (shown_space)
+    shown = shown_space(sp)
+    rows = rows.assign(space=rows["space"].map(dict(zip(sp["space"], shown))))
+    one = shown.map(shown.value_counts()) == 1
+    sp = sp.assign(space=shown, label=sp["label"].where(one, shown.map(shown.value_counts()).map("{:,} rooms".format)),
+                   volume_m3=sp["volume_m3"].where(one), dims_m=sp["dims_m"].where(one),
+                   same_as=sp["same_as"].where(one)).drop_duplicates("space").reset_index(drop=True)
     s_index = {s: i for i, s in enumerate(sp["space"])}
-    rows = irs[irs["space"].isin(s_index)]
     prim = primary(rows)
     medians = prim.groupby("space")[["rt_mid", "drr_db"]].median()
     space_formats = rows.groupby("space")["format"].agg(lambda f: sorted(set(f)))
-    has_mono = set(rows.loc[rows["format"].eq("mono"), "space"])
     room_words = (sp["label"].fillna("") + " " + sp["space_type"]).groupby(sp["dataset"]).agg(" ".join)
 
     def card(d) -> dict:
@@ -101,7 +121,7 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
             "uses": {u: d[c] for u, c in USES.items()}, "formats": formats,
             "provides": [p for p in PROVIDES if d[f"provides_{p}"] in ("yes", "partial")],
             "size": size_text(size, unknown) if measured else (d["size_stated"] or ""),
-            "n": int(len(mine_p)), "rooms": int(mine_p["space"].nunique()),
+            "n": int(len(mine_p)), "rooms": int(n_rooms.get(i, 0)),
             "t30": histogram(mine_p["rt_mid"], T30_EDGES) if measured else [],
             "t30_median": num(mine_p["rt_mid"].median()) if measured else None,
             "grades": {g: int(n) for g, n in mine["grade"].replace("", "none").value_counts().items()},
@@ -122,7 +142,7 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
         "grade": rows["grade"].fillna("").replace("", "-"),
         "t30": bin_index(rows["rt_mid"], T30_EDGES),
         "primary": rows["is_primary"].astype(bool).astype(int),
-        "mono_w": (rows["format"].eq("ambisonic") & ~rows["space"].isin(has_mono)).astype(int),
+        "mono_w": mono_w.astype(int),
         **{use: rows[col].eq("yes").astype(int) for use, col in USES.items()},
     })
     counts = keyed.groupby(list(keyed.columns), sort=True).size().reset_index(name="n")

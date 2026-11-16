@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15178235"]}
-adapter: {"name": "wav_tree", "params": {"glob": "RIRs/*.wav", "pattern": "IR_pos-(?P<src>[A-Z]\\d+)_(?P<rcv>R\\d+)_FOA\\.wav$", "room_from": "dataset", "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "RIRs/*.wav", "pattern": "IR_pos-(?P<src>[A-Z]\\d+)_(?P<rcv>R\\d+)_FOA\\.wav$", "room_from": "dataset", "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 13 first-order Ambisonic (FuMa B-format) RIRs measured in an unoccupied Dutch primary-school classroom,
   shared with babble-noise recordings, photos and a 3D model of the room for hearing research in VR.
 expected:
