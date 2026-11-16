@@ -10,6 +10,7 @@ content: 414 mono IRs measured in one real classroom under 23 configurations of 
   and diffusers, each with 2 source and 9 receiver positions (WAV); all files fetched, with the configuration
   table (XLSX) and the T20/C50 plots.
 fs_hz: [48000]
+analysis: {keep_s: 2.4}   # a burst of wrapped sweep distortion at 2.5-2.6 s of each 2.73 s file (plausibility review, 16 Nov 2026)
 expected:
   n_irs: 414
   n_rooms: 1
@@ -42,6 +43,7 @@ wave: 3
 homepage: https://zenodo.org/records/16947513
 paper: {title: "The ECIRS (Ecophon Classroom Impulse Response Set) - Data collection and perceptual tests performed on the influence of early reflections (Inter-Noise 2025)", url: "https://doi.org/10.3397/IN_2025_1075441"}
 doi: 10.5281/zenodo.16947513
+notes: 'Each 2.73 s file ends with a burst of wrapped sweep distortion at 2.5-2.6 s; RIRDB analyses the first 2.4 s of each file.'
 web_check:
   checked: '2026-10-14'
   found_as: 'ECIRS: Ecophon Classroom Impulse Response Set'

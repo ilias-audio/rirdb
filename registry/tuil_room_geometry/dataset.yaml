@@ -8,11 +8,13 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["14901307"]}
-adapter: {"name": "wav_tree", "params": {"glob": "rir_dataset_part1/**/*.wav", "room_from": "file"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
-content: 50,000 simulated RIRs made with the RIR Generator tool at TU Ilmenau for training models that estimate
-  room dimensions from audio on embedded devices; one 785 MB ZIP of WAV files with little documentation.
+adapter: {"name": "wav_tree", "params": {"glob": "rir_dataset_part1/rir_dataset_part3/*.wav", "room_from": "file"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+content: 'Simulated RIRs (files numbered to 50,000) made with the RIR Generator tool at TU Ilmenau for training models that estimate
+  room dimensions from audio on embedded devices; one 785 MB ZIP of WAV files with little documentation. The three
+  parts hold 48,085 files but only 16,666 distinct simulations: part 3 holds each once and parts 1 and 2 repeat them
+  byte for byte, so RIRDB lists part 3.'
 expected:
-  n_irs: 50000
+  n_irs: 16666   # part3 holds every distinct simulation; parts 1 and 2 repeat them byte for byte
 room_info:
   images: 'no'
   conditions: 'no'
@@ -21,6 +23,7 @@ license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/14901307
 doi: 10.5281/zenodo.14901307
+notes: 'Below 250 Hz, the T30 of these very dry simulated rooms reflects the octave filters'' ringing, not the rooms.'
 web_check:
   checked: '2026-10-14'
   found_as: (RIR) Dataset for Neural Room Geometry Estimation (TU Ilmenau)

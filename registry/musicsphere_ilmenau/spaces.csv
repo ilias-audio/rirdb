@@ -1,2 +1,2 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
-st-jakobus-ilmenau,"St. Jakobus Church, Ilmenau",worship,,,,,,,,"omni IRs: 9 microphones in and around the organ (one 9-channel IR per source); spatial IRs: 7-microphone SDM array at 43 positions, the glass wall at the back open or closed",
+st-jakobus-ilmenau,"St. Jakobus Church, Ilmenau",worship,,,,,,,,"omni IRs: 9 microphones in and around the organ (one 9-channel IR per source); spatial IRs: 7-microphone SDM array at 43 positions, the glass wall at the back open or closed; the subwoofer IRs (Genelec 7360A, swept 18 Hz-1 kHz) carry low frequencies only, so most have no mid-band decay time",

@@ -189,8 +189,10 @@ def write_common(rows: pd.DataFrame, out: Path, q, command: list[str] | None, as
     (out / "LICENSES.md").write_text(licences_md(rows, datasets))
     (out / "references.bib").write_text(references_bib(datasets))
     keep = ["ir_id", "audio_hash", *(["weight"] if "weight" in rows else [])]
+    unset = vars(type(q)())                     # only the options used: an older rirdb reads the lock if it can
+    query = {k: v for k, v in vars(q).items() if v != unset[k]}
     lock = {"rirdb": __version__, "tables": client.version(), "command": command or sys.argv,
-            "as_published": as_published, "query": dict(vars(q)), "irs": rows[keep].to_dict("records")}
+            "as_published": as_published, "query": query, "irs": rows[keep].to_dict("records")}
     (out / "selection.lock").write_text(json.dumps(lock, indent=1) + "\n")
 
 

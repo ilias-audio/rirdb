@@ -12,6 +12,7 @@ content: 24 mono IRs (WAV, 48 kHz/32-bit) measured at listening positions in the
   Cornaro in Padua (1524), with a SketchUp 3D model and a measurement-layout image.
 fs_hz:
 - 48000
+analysis: {keep_s: 5.0}   # DIRAC full-period exports: wrapped distortion at 18-20 s of each 21.85 s file (plausibility review, 16 Nov 2026)
 expected:
   n_irs: 24
   n_rooms: 1
@@ -26,6 +27,7 @@ license:
   spdx: CC-BY-4.0
 homepage: https://data.mendeley.com/datasets/s455ww48zp/1
 doi: 10.17632/s455ww48zp.1
+notes: 'The files are DIRAC full-period exports (21.85 s) whose end holds wrapped sweep distortion; RIRDB analyses the first 5 s of each file.'
 web_check:
   checked: '2026-10-14'
   found_as: Acoustic dataset of the Cornaro's Lodge in Padua (Italy, 1524)

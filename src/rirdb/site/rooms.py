@@ -4,7 +4,7 @@ of the datasets page."""
 from __future__ import annotations
 
 from rirdb.site import charts, words
-from rirdb.site.datasets import anchor, facet, room_types
+from rirdb.site.datasets import anchor, command_box, facet, get_fields, room_types
 from rirdb.site.layout import copybox, e, page
 
 PER_PAGE = 50
@@ -61,7 +61,7 @@ def rooms_page(search: dict) -> str:
 outdoor sites, vehicles and devices among them. Each dot is a room at the median reverberation time and
 direct-to-reverberant ratio of its IRs. Filter them, then open a room on its dataset's page.</p></div>
 <div class="find">
-<form class="facets" id="filters" aria-label="Filters">{facets}
+<form class="facets" id="filters" aria-label="Filters">{facets}{get_fields()}
 <button type="reset" class="clear">Clear all filters</button></form>
 <div class="results">
 <div class="searchbar"><input id="text" name="text" form="filters" type="search" autocomplete="off"
@@ -69,7 +69,7 @@ direct-to-reverberant ratio of its IRs. Filter them, then open a room on its dat
 <button type="button" class="filterbtn" aria-controls="filters" aria-expanded="false">Filters</button>
 <div class="resultline"><p id="result" aria-live="polite"><b>{len(sp):,}</b> rooms</p></div>
 <div class="chips" id="chips"></div>
-<div id="cmd" hidden>{copybox("rirdb search")}<p class="note" id="cmdnote" hidden></p></div>
+{command_box()}
 <figure class="plot"><div class="plotbox">{charts.scatter(pts, "Every room by median reverberation time and DRR")}</div>
 <figcaption>{legend()}<span class="quiet small">{len(pts):,} rooms have both values. DRR mostly reflects where the
 authors put the microphones, so read it as a property of the measurements as much as of the room. Values beyond an

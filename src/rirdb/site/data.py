@@ -13,7 +13,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from rirdb.select import GRADES, PROVIDES, USES, dataset_download_bytes, size_text
+from rirdb.select import GRADES, PROVIDES, USES, dataset_download_bytes, download_bytes, download_sizes, size_text
 from rirdb.site.words import kind_of, room_label
 
 # T30 bins: the R10 preferred numbers (ten per decade, equal in log time), 0.05 to 25 s.
@@ -24,6 +24,8 @@ T30_EDGES = [0.05, 0.063, 0.08, 0.1, 0.125, 0.16, 0.2, 0.25, 0.315, 0.4, 0.5, 0.
 DB_EDGES = list(range(-20, 32, 2))
 # The octaves drawn on a dataset page (the tables also hold 31.5 Hz and 16 kHz, rarely valid).
 BANDS = [63, 125, 250, 500, 1000, 2000, 4000, 8000]
+# The choices of "Largest download" on the search pages: `--max-archive` values, smallest first.
+ARCHIVE_LIMITS = {"500MB": 5e8, "2GB": 2e9, "10GB": 1e10}
 
 
 def bin_index(values: pd.Series, edges: list[float]) -> pd.Series:
@@ -95,8 +97,9 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
     # a dataset of thousands of generated rooms: one entry per room type (shown_space)
     shown = shown_space(sp)
     rows = rows.assign(space=rows["space"].map(dict(zip(sp["space"], shown))))
-    one = shown.map(shown.value_counts()) == 1
-    sp = sp.assign(space=shown, label=sp["label"].where(one, shown.map(shown.value_counts()).map("{:,} rooms".format)),
+    n_in = shown.value_counts()                                         # rooms behind each entry
+    one = shown.map(n_in) == 1
+    sp = sp.assign(space=shown, label=sp["label"].where(one, shown.map(n_in).map("{:,} rooms".format)),
                    volume_m3=sp["volume_m3"].where(one), dims_m=sp["dims_m"].where(one),
                    same_as=sp["same_as"].where(one)).drop_duplicates("space").reset_index(drop=True)
     s_index = {s: i for i, s in enumerate(sp["space"])}
@@ -133,9 +136,16 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
         "type": s["space_type"], "origin": s["origin"], "kind": kind_of(s["space_type"], s["origin"]),
         "volume": num(s["volume_m3"], 0), "dims": text(s.get("dims_m")),
         "t30": num(medians["rt_mid"].get(s["space"])), "drr": num(medians["drr_db"].get(s["space"]), 1),
-        "formats": space_formats.get(s["space"], []), "same_as": text(s["same_as"]),
+        "formats": space_formats.get(s["space"], []), "same_as": text(s["same_as"]), "rooms": int(n_in[s["space"]]),
     } for _, s in sp.iterrows()]
 
+    # downloads: each is taken whole, so an IR costs its whole download (a web folder: its own files, select.py)
+    whole = download_sizes()
+    dl_keys = list(zip(rows["dataset"], rows["download"]))
+    dl_list = sorted(set(dl_keys))
+    dl_index = {k: i for i, k in enumerate(dl_list)}
+    size = download_bytes(rows)
+    big = sum((size > b).astype(int) for b in ARCHIVE_LIMITS.values()).where(size.notna(), len(ARCHIVE_LIMITS))
     keyed = pd.DataFrame({
         "space": rows["space"].map(s_index),
         "format": rows["format"],
@@ -144,11 +154,15 @@ def search_data(irs: pd.DataFrame, spaces: pd.DataFrame, datasets: pd.DataFrame)
         "primary": rows["is_primary"].astype(bool).astype(int),
         "mono_w": mono_w.astype(int),
         **{use: rows[col].eq("yes").astype(int) for use, col in USES.items()},
+        "dl": [dl_index[k] for k in dl_keys],             # the download each IR comes in (for the download size)
+        "big": big,                                         # how many ARCHIVE_LIMITS that download is above
     })
     counts = keyed.groupby(list(keyed.columns), sort=True).size().reset_index(name="n")
     return {
         "t30_edges": T30_EDGES, "grades": GRADES, "columns": list(counts.columns),
         "counts": counts.to_numpy().tolist(), "spaces": space_list,
+        "downloads": [[None if pd.isna(whole.get(k, np.nan)) else int(whole[k]), int(k[1] == "@mirror")] for k in dl_list],
+        "archive_limits": list(ARCHIVE_LIMITS),
         "datasets": [card(d) for _, d in ds.iterrows()],
     }
 

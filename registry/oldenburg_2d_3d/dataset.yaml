@@ -14,7 +14,7 @@ fs_hz:
 - 44100
 expected:
   n_irs: 24
-  n_rooms: 2
+  n_rooms: 3
 room_info:
   dimensions: 'no'
   volume: 'no'

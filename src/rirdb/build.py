@@ -341,8 +341,12 @@ def dataset_irs(dataset_id: str) -> dict:
     out["iacc_early"] = finite(r["iacc_early"]).where(fmt == "binaural")
     orient = r["orientation_known"].fillna(True).astype(bool)
     out["lateral_fraction"] = finite(r["lateral_fraction"]).where((fmt == "ambisonic") & orient)
-    out["bass_ratio"] = finite(r["bass_ratio"])
-    out["treble_ratio"] = finite(r["treble_ratio"])
+    # v1's ratios come from its own valid T30/T20: empty where judged() rejected one of the six bands they use
+    lost = ((truth(bands["valid_t30"]) & ~pub["valid_t30"]) | (truth(bands["valid_t20"]) & ~pub["valid_t20"])) \
+        & bands["series"].eq("octave") & bands["band_hz"].isin([125, 250, 500, 1000, 2000, 4000])
+    hit = r["ir_id"].isin(set(bands.loc[lost, "ir_id"]))
+    out["bass_ratio"] = finite(r["bass_ratio"]).where(~hit)
+    out["treble_ratio"] = finite(r["treble_ratio"]).where(~hit)
     out["mixing_time_ms"] = finite(r["mixing_time_ms"])
     for b in OCTAVES:
         col = octave[octave["band_hz"] == OCTAVE_HZ.get(b, b)].set_index("ir_id")["t30"] if len(octave) else pd.Series(dtype=float)
@@ -432,6 +436,8 @@ def datasets_table(registry: list[Dataset], built: dict[str, dict]) -> pd.DataFr
         u = d.license.uses
         if b:
             status = "measured"
+        elif d.status in ("deferred", "broken", "manual"):      # the registry says why it is not measured
+            status = d.status
         elif paths.tables_dir(d.id).joinpath("index.parquet").exists():
             status = "indexed"
         elif paths.downloads_tsv(d.id).exists():

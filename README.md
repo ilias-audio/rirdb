@@ -20,7 +20,13 @@ rirdb search --format binaural --grade A                 # what a selection hold
 rirdb info sriracha                                      # one dataset: licence, sizes, quality, what its cap leaves out
 rirdb get --dataset rochester                            # every file as published, each checked by its sha256
 rirdb get --use research --format binaural --grade A --balance space --n 500
+rirdb search --dataset arni --per-space 50              # 50 IRs per room, spread from its driest to its most reverberant
+rirdb get --format mono --per-space 20 --max-archive 2GB  # leave out IRs that come in a download above 2 GB
 ```
+
+The [website](https://ilias-audio.github.io/rirdb/) writes these commands as you click: filters, then how many
+per room, the largest download, a draw, and the datasets you pick or leave out. `search` takes every option of
+`get`, so you can look before anything is downloaded.
 
 `get` writes one folder (`--out`, default `rirdb-out/`):
 
@@ -36,7 +42,7 @@ The same selection in Python:
 
 ```python
 import rirdb.select as rs
-sel = rs.select(use="research", format="binaural", grade="A", balance="space", n=500)
+sel = rs.select(use="research", format="binaural", grade="A", per_space=20, max_archive="2GB", balance="space", n=500)
 sel.table            # pandas DataFrame, one row per IR
 sel.download("irs/")
 ```

@@ -2,5 +2,5 @@ space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,lic
 cluster1,"Cluster 1, school or preschool room (shoebox model)",,,,,,,,,,
 cluster2,"Cluster 2, school or preschool room (shoebox model)",,,,,,,,,,
 cluster3,"Cluster 3, school or preschool room (shoebox model)",,,,,,,,,,
-cluster4,"Cluster 4, school or preschool room (shoebox model)",,,,,,,,,,
-cluster5,"Cluster 5, school or preschool room (shoebox model)",,,,,,,,,,
+cluster4,"Cluster 4, gym or sports hall (shoebox model)",sports_leisure,,,,,,,,,
+cluster5,"Cluster 5, gym or sports hall (shoebox model)",sports_leisure,,,,,,,,"a large sports hall model (about 23 x 19 m): its simulated tail near 500 Hz hardly decays after 0.35 s and the files end at 1.5 s, so no decay time is published",

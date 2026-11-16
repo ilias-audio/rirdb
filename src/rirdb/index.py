@@ -149,10 +149,15 @@ def ir_id(dataset_id: str, file: str, item: str) -> str:
     return f"{dataset_id}-{hashlib.blake2b(key.encode(), digest_size=8).hexdigest()}"
 
 
-def audio_key(file: str, item: str, locator: str, channel_roles: str, reference_role: str, n_samples: int) -> str:
+def audio_key(file: str, item: str, locator: str, channel_roles: str, reference_role: str, n_samples: int,
+              keep_s: float | None = None) -> str:
     """A hash of everything that decides which samples are analysed. A measurement repeats it, and `build`
-    fails where the two differ, so a reader change cannot leave a stale measurement in place."""
-    parts = json.dumps([file, item, json.loads(locator), channel_roles, reference_role, int(n_samples)], sort_keys=True)
+    fails where the two differ, so a reader change cannot leave a stale measurement in place. The dataset's
+    `analysis.keep_s` counts only when set, so the keys of every other dataset stay as they were."""
+    fields = [file, item, json.loads(locator), channel_roles, reference_role, int(n_samples)]
+    if keep_s:                                   # the part of the file the analyser reads (run.analysed_part)
+        fields.append(float(keep_s))
+    parts = json.dumps(fields, sort_keys=True)
     return hashlib.blake2b(parts.encode(), digest_size=8).hexdigest()
 
 
@@ -202,8 +207,8 @@ def index_table(d: Dataset) -> tuple[pd.DataFrame, pd.DataFrame]:
     pos = df[["src_x", "src_y", "src_z", "rcv_x", "rcv_y", "rcv_z"]].astype(float).to_numpy()
     df["distance_m"] = ((pos[:, :3] - pos[:, 3:]) ** 2).sum(axis=1) ** 0.5     # NaN where a position is missing
     df["sampled"] = sample_by_cap(df, d.cap)
-    df["audio_key"] = [audio_key(*r) for r in zip(df["file"], df["item"], df["locator"], df["channel_roles"],
-                                                  df["reference_role"], df["n_samples"])]
+    df["audio_key"] = [audio_key(*r, d.analysis.keep_s) for r in zip(df["file"], df["item"], df["locator"],
+                                                                    df["channel_roles"], df["reference_role"], df["n_samples"])]
     own = [{k: (v if v is None or isinstance(v, (str, int, float, bool)) else json.dumps(v, default=str))
             for k, v in e.items() if k not in _OWN_EXTRA} for e in extra]
     meta = pd.DataFrame(own)

@@ -1,2 +1,2 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
-adelaide-chamber,"Reverberation chamber, University of Adelaide",laboratory,,,,,,,,"63 positions on a 50 cm grid, a microphone moved by a robot",
+adelaide-chamber,"Reverberation chamber, University of Adelaide",laboratory,,,,,,,,"63 positions on a 50 cm grid, a microphone moved by a robot; 45 of the 63 grid IRs have less than 35 dB of decay range at 500 Hz-1 kHz (the microphone rides on a robot, and all points come from one 36-minute recording), so their decay times are left empty; the 18 that pass give T30 about 5.1 s",

@@ -1,2 +1,2 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
-kuleuven-conference-room,U-shaped conference room (KU Leuven and Televic),office_meeting,,,,,,,,"conditions: microphone orientation (up, towards the desk, towards the centre), with or without curtains",
+kuleuven-conference-room,U-shaped conference room (KU Leuven and Televic),office_meeting,,363,10.30 x 10.13 x 3.48,,,,,"conditions: microphone orientation (up, towards the desk, towards the centre), with or without curtains; authors: T30 about 0.7 s with curtains, 0.9 s without (technical report, Table I)",

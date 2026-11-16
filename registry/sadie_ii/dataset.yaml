@@ -47,6 +47,7 @@ adapter:
 homepage: https://www.york.ac.uk/sadie-project/database.html
 paper: {title: "A Perceptual Evaluation of Individual and Non-Individual HRTFs: A Case Study of the SADIE II Database (Applied Sciences, 2018)", url: "https://doi.org/10.3390/app8112029"}
 doi: 10.5281/zenodo.12092466
+notes: 'The authors give a T60 of about 50-65 ms. RIRDB''s T30 (0.08-0.14 s from 500 Hz up) is longer because its -5 to -35 dB fit includes a weak, slower late tail; the early decay time (median 0.08 s) is the fairer comparison.'
 web_check:
   checked: '2026-10-14'
   found_as: 'SADIE II database: BRIR subset (University of York)'

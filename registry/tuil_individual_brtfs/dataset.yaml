@@ -8,8 +8,9 @@ access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["61083"]}
 adapter: {"name": "sofa", "params": {"pattern": "^(?P<rcv>\\d{3})_(?P<room>[A-Za-z0-9]+)_(?P<cond>\\d+)\\.sofa$", "capture_format": "binaural", "roles": ["L", "R"]}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
-content: BRIRs of 25 people measured at TU Ilmenau in a listening lab and an empty seminar room (182 m³, T60 2.0
-  s), plus for some people an acoustically enhanced seminar room and a small lecture hall; SOFA files.
+content: BRIRs of 25 people measured at TU Ilmenau in a listening lab and an empty seminar room (182 m³; the record
+  states T60 2.0 s, RIRDB measures 0.89 s at 500 Hz-1 kHz, as the 0.9 s Werner et al. (ISAAR 2013) give for this
+  seminar room), plus for some people an acoustically enhanced seminar room and a small lecture hall; SOFA files.
 expected:
   n_rooms: 4
 room_info:

@@ -46,7 +46,9 @@ homepage: https://zenodo.org/records/17296511
 doi: 10.5281/zenodo.17296511
 notes: 'All files are mono, 48 kHz, 24-bit. The mono RIRs are 48,001 samples (1.0 s) long and not cut short: they fall below -60 dB by about 0.6 s (A1) and 0.1 s (R1) and are zero after about 47,000 samples. The binaural ear files are 2.73 s long.
   In A1, LS39 and LS40 are subwoofers, so their RIRs hold low frequencies only. The readme does not explain
-  the A1 Preset folders (no Preset, A, C, E); they are kept as conditions.'
+  the A1 Preset folders (no Preset, A, C, E); they are kept as conditions.
+  The A1 RIRs carry a weak late high-frequency burst at about 0.25-0.5 s (27-36 dB below the direct sound), audible in
+  convolution; rt_mid follows the early decay.'
 web_check:
   checked: '2026-10-14'
   found_as: Room Impulse Dataset HAW Sound Lab (Hamburg)

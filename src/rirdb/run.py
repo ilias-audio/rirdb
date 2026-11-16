@@ -42,9 +42,13 @@ def features_dir(dataset_id: str) -> Path:
 
 
 def _git_sha() -> str:
+    """The commit that measured, with "-dirty" when src/ or the registry had changes not committed."""
+    git = ["git", "-C", str(paths.REPO_ROOT)]
     try:
-        return subprocess.run(["git", "-C", str(paths.REPO_ROOT), "rev-parse", "--short=12", "HEAD"],
-                              capture_output=True, text=True, check=True).stdout.strip()
+        sha = subprocess.run(git + ["rev-parse", "--short=12", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        dirty = subprocess.run(git + ["status", "--porcelain", "--", "src", "registry"], capture_output=True, text=True,
+                               check=True).stdout.strip()
+        return sha + ("-dirty" if dirty else "")
     except (subprocess.CalledProcessError, FileNotFoundError):
         return "unknown"
 
@@ -67,6 +71,18 @@ def _select_channels(x: np.ndarray, roles: tuple[str, ...], reference_role: str 
     return x[i:i + 1], (roles[i],)
 
 
+def analysed_part(x: np.ndarray, fs: int, keep_s: float | None, silence: float) -> np.ndarray:
+    """The part of a file the analyser reads: all of it or, with the dataset's `analysis.keep_s`, keep_s seconds
+    from where the sound starts. For files whose end is not background noise (sweep distortion wrapped round by the
+    deconvolution, a faded tail), which the noise estimate would otherwise read. `rirdb get` delivers files uncut.
+    The analyser's facts about the file (its length, onset, clipping) then describe that part."""
+    if not keep_s:
+        return x
+    sound = np.flatnonzero(np.any(np.abs(x) > silence, axis=0))
+    first = int(sound[0]) if len(sound) else 0
+    return x[:, first:first + int(round(keep_s * fs))]
+
+
 _WORKER = {}
 
 
@@ -85,6 +101,7 @@ def _analyze_row(row: dict) -> tuple[dict, dict]:
         x, fs = adapter.load(json.loads(row["locator"]), root)
         roles = tuple(row["channel_roles"].split(","))
         content_sha1 = hashlib.sha1(np.ascontiguousarray(x, dtype=np.float32).tobytes()).hexdigest()
+        x = analysed_part(x, fs, d.analysis.keep_s, cfg.preprocess.digital_silence_abs)
         xs, rs = _select_channels(x, roles, row.get("reference_role") or d.analysis.reference_role)
         a = analyze_ir(xs, fs, roles=rs, capture_format=row["capture_format"], sh_norm=row.get("sh_norm"),
                        orientation_known=bool(row.get("orientation_known", True)), cfg=cfg)

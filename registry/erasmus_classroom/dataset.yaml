@@ -10,6 +10,7 @@ source: {kind: zenodo, records: ["15178235"]}
 adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "RIRs/*.wav", "pattern": "IR_pos-(?P<src>[A-Z]\\d+)_(?P<rcv>R\\d+)_FOA\\.wav$", "room_from": "dataset", "sh_norm": "FuMa", "channel_formats": {"4": "foa_fuma"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 13 first-order Ambisonic (FuMa B-format) RIRs measured in an unoccupied Dutch primary-school classroom,
   shared with babble-noise recordings, photos and a 3D model of the room for hearing research in VR.
+analysis: {keep_s: 3.0}   # untrimmed ITA output: wrapped harmonic distortion from about 3.9 s (plausibility review, 16 Nov 2026)
 expected:
   n_irs: 13
   n_rooms: 1
@@ -17,12 +18,14 @@ room_info:
   geometry: 'yes'
   positions: partial
   images: 'yes'
+  reference_acoustics: 'yes'
   conditions: partial
   where: 'Classroom Environment Description Document v0.2.pdf'
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/15178235
 doi: 10.5281/zenodo.15178235
+notes: 'The files are the untrimmed ITA toolbox output (5.46 s), whose end holds wrapped harmonic distortion; RIRDB analyses the first 3 s of each file.'
 web_check:
   checked: '2026-10-14'
   found_as: Virtual Classroom Environment with Babble Noise and RIR Recordings (Erasmus MC)

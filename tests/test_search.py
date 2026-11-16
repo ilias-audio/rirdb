@@ -6,7 +6,10 @@ import pytest
 from typer.testing import CliRunner
 
 from rirdb.cli import app
-from rirdb.select import download_plan, human, licences_text, select
+import numpy as np
+import pandas as pd
+
+from rirdb.select import download_bytes, download_plan, human, licences_text, select, spread_per_space
 
 pytestmark = pytest.mark.xdist_group("toy")
 
@@ -68,3 +71,38 @@ def test_space_type_t30_and_provides_on_the_command_line(user):
     assert out.startswith("0 IRs")                                   # the toy dataset's authors provide nothing
     bad = CliRunner().invoke(app, ["search", "--space-type", "spaceship"])
     assert bad.exit_code != 0 and "spaceship" in str(bad.exception)
+
+
+def test_per_space_keeps_at_most_n_of_each_space(user):
+    every, two = select().table, select(per_space=2).table
+    assert two.groupby("space").size().max() == 2 and set(two["space"]) == set(every["space"])
+    assert two["ir_id"].tolist() == select(per_space=2).table["ir_id"].tolist()      # the same IRs every time
+
+
+def test_the_spread_runs_from_the_shortest_to_the_longest_reverb():
+    rt = [0.3, 0.31, 0.32, 0.33, 0.5, 0.9, 1.4, 2.0, np.nan]
+    rows = pd.DataFrame({"space": "s", "ir_id": [f"i{k}" for k in range(9)], "rt_mid": rt})
+    assert sorted(spread_per_space(rows, 3)["rt_mid"]) == [0.3, 0.9, 2.0]   # 0.3, about 0.77 (log middle), 2.0
+    assert spread_per_space(rows.iloc[[0, 4, 8]], 2)["rt_mid"].tolist() == [0.3, 0.5]   # rt_mid first, then by id
+    assert len(spread_per_space(rows, 20)) == 9                                         # fewer than n: all of them
+
+
+def test_max_archive_leaves_out_irs_in_bigger_downloads(user):
+    every = select().table
+    size = download_bytes(every)
+    assert (size == download_plan(every)["size_bytes"].iloc[0]).all()       # one download, toy.zip, taken whole
+    assert select(max_archive=f"{int(size.iloc[0])}B").table.equals(every)
+    assert select(max_archive=f"{int(size.iloc[0]) - 1}B").table.empty
+    with pytest.raises(ValueError, match="not a size"):
+        select(max_archive="big")
+
+
+def test_search_takes_the_options_of_get(user):
+    out = CliRunner().invoke(app, ["search", "--n", "2", "--balance", "space", "--per-space", "2"])
+    assert out.exit_code == 0, out.output
+    assert out.output.startswith("2 IRs")
+
+
+def test_one_per_space_takes_the_typical_ir():
+    rows = pd.DataFrame({"space": "s", "ir_id": [f"i{k}" for k in range(5)], "rt_mid": [0.3, 0.5, 0.6, 0.7, 2.0]})
+    assert spread_per_space(rows, 1)["rt_mid"].tolist() == [0.6]                  # the median, not the driest

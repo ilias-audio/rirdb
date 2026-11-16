@@ -42,19 +42,31 @@ KIND = typer.Option(None, "--kind", help="Only these kinds of space (repeat for 
 PROVIDES = typer.Option(None, "--provides", help="Only datasets whose authors provide this (repeat for several): "
                                                  "dimensions, volume, geometry, materials, positions, images, "
                                                  "reference_acoustics, conditions.")
+PER_SPACE = typer.Option(None, "--per-space", help="At most this many IRs of each space (room), spread over its "
+                                                     "reverberation times from the shortest to the longest.")
+MAX_ARCHIVE = typer.Option(None, "--max-archive", help="Leave out IRs that come in a download (an archive or a big "
+                                                         "file, always taken whole) larger than this, e.g. 2GB.")
+N = typer.Option(None, "--n", help="Draw this many IRs at random (see --balance).")
+BALANCE = typer.Option("none", "--balance", help="What the draw makes equally likely: space, dataset, t30 (short "
+                                                 "and long reverbs), or none (every IR).")
+SEED = typer.Option(0, "--seed", help="The seed of the draw, recorded in selection.lock.")
 
 
 @app.command()
 def search(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str = GRADE,
            dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
            fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
-           kind: list[str] = KIND) -> None:
-    """What a selection holds: IRs, spaces, datasets, licences, grades, and its download size. Nothing is downloaded."""
+           kind: list[str] = KIND, per_space: int = PER_SPACE, max_archive: str = MAX_ARCHIVE, n: int = N,
+           balance: str = BALANCE, seed: int = SEED) -> None:
+    """What a selection holds: IRs, spaces, datasets, licences, grades, and its download size. Nothing is downloaded.
+
+    The same options as `get`, so `search` shows what `get` would fetch, except `get --dataset X` alone, which gives
+    every file of X as published (`rirdb info X` gives its size)."""
     from rirdb import client
     from rirdb.select import by_dataset, cap_of, grade_split, human, plural, size_text, select
 
-    sel = select(use, format, origin, grade, dataset, exclude_dataset, include_unknown, fs, space_type=space_type,
-                 t30=t30, provides=provides, kind=kind)
+    sel = select(use, format, origin, grade, dataset, exclude_dataset, include_unknown, fs, n, balance, seed,
+                 space_type, t30, provides, kind, per_space, max_archive)
     t = sel.table
     console.print(f"[bold]{plural(len(t), 'IR')}[/bold] in {plural(t['space'].nunique(), 'space')} from "
                   f"{plural(t['dataset'].nunique(), 'dataset')} (release {client.version()})")
@@ -153,11 +165,8 @@ def grid(counts: pd.DataFrame, label: str) -> Table:
 def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str = GRADE,
         dataset: list[str] = DATASET, exclude_dataset: list[str] = EXCLUDE, include_unknown: bool = UNKNOWN,
         fs: int = FS, space_type: list[str] = SPACE_TYPE, t30: str = T30, provides: list[str] = PROVIDES,
-        kind: list[str] = KIND,
-        n: int = typer.Option(None, "--n", help="Draw this many IRs at random (see --balance)."),
-        balance: str = typer.Option("none", "--balance", help="What the draw makes equally likely: space, dataset, "
-                                                              "t30 (short and long reverbs), or none (every IR)."),
-        seed: int = typer.Option(0, "--seed", help="The seed of the draw, recorded in selection.lock."),
+        kind: list[str] = KIND, per_space: int = PER_SPACE, max_archive: str = MAX_ARCHIVE, n: int = N,
+        balance: str = BALANCE, seed: int = SEED,
         out: Path = typer.Option(Path("rirdb-out"), "--out", help="The output folder."),
         lock: Path = typer.Option(None, "--lock", help="A selection.lock: get the same IRs again."),
         from_dir: Path = typer.Option(None, "--from", help="A folder with the files of a dataset rirdb cannot download."),
@@ -172,14 +181,16 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
     import sys
 
     from rirdb.deliver import write_published, write_selection
-    from rirdb.select import Query, cap_of, dataset_download_bytes, from_lock, human, plural, size_text, select
+    from rirdb.select import (Query, cap_of, dataset_download_bytes, from_lock, human, parse_size, plural, size_text,
+                               select)
 
     recorded = json.loads(lock.read_text()) if lock else {}
     if recorded.get("as_published"):                            # a lock of `get --dataset X` alone
         dataset = recorded["query"]["dataset"]
     whole = recorded.get("as_published") or (
         len(dataset or []) == 1 and not lock
-        and not (use or format or exclude_dataset or include_unknown or fs or n or space_type or t30 or provides or kind)
+        and not (use or format or exclude_dataset or include_unknown or fs or space_type or t30 or provides or kind)
+        and n is None and per_space is None and max_archive is None      # --per-space 0 is checked, not ignored
         and origin == "any" and grade == "any" and balance == "none")
     if whole:
         from rirdb import client
@@ -190,7 +201,8 @@ def get(use: str = USE, format: str = FORMAT, origin: str = ORIGIN, grade: str =
         capped = dataset
     else:
         sel = from_lock(lock) if lock else select(use, format, origin, grade, dataset, exclude_dataset,
-                                                  include_unknown, fs, n, balance, seed, space_type, t30, provides, kind)
+                                                  include_unknown, fs, n, balance, seed, space_type, t30, provides, kind,
+                                                  per_space, max_archive)
         s = sel.sizes()
         size = s.download_bytes
         console.print(f"{plural(len(sel.table), 'IR')} from {plural(sel.table['dataset'].nunique(), 'dataset')}: "
@@ -225,16 +237,6 @@ def main() -> None:
     except (FetchError, ValueError) as e:
         console.print(f"[red]rirdb:[/red] {e}")
         raise SystemExit(1)
-
-
-def parse_size(text: str) -> float:
-    """'20GB' -> 20e9 (also kB, MB, TB; powers of 1000)."""
-    units = {"TB": 1e12, "GB": 1e9, "MB": 1e6, "KB": 1e3, "B": 1}
-    t = text.strip().upper()
-    for unit, factor in units.items():
-        if t.endswith(unit):
-            return float(t.removesuffix(unit)) * factor
-    return float(t)
 
 
 if __name__ == "__main__":

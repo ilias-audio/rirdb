@@ -7,11 +7,12 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["7928804"]}
-adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^(?P<src>S\\d)_(?P<rcv>R\\d)_(?P<src_2>firecracker|dodecahedron)", "room_from": "dataset"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
-content: 26 WAV IRs measured in September 2015 in the ancient open-air theatre of Tyndaris, Sicily, with a dodecahedron
-  loudspeaker (2 source positions) and firecrackers (1 position) at up to 9 receivers.
+adapter: {"name": "wav_tree", "params": {"glob": "*.wav", "pattern": "^(?P<src>S\\d)_(?P<rcv>R\\d)_(?P<src_2>firecracker|dodecahedron)", "room_from": "dataset", "exclude": "(^|/)(__MACOSX|\\._)|/\\.DS_Store$|_firecracker\\.wav$"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+content: '26 WAV IRs measured in September 2015 in the ancient open-air theatre of Tyndaris, Sicily, with a dodecahedron
+  loudspeaker (2 source positions) and firecrackers (1 position) at up to 9 receivers. The 9 firecracker files are raw
+  field recordings (18-143 s, several shots each): they are delivered with the dataset but left out of the table.'
 expected:
-  n_irs: 26
+  n_irs: 17   # the 9 firecracker files are raw field recordings (several shots each), left out
   n_rooms: 1
 room_info:
   volume: 'no'
@@ -40,6 +41,6 @@ web_check:
   caveats:
   - Microphone, sample rate and position layout are not on the record; they are in the linked Applied Sciences 2020
     paper (Astolfi et al.).
-  - Firecracker files vary in length (1.7 to 13.8 MB), while every dodecahedron IR has the same length, so the firecracker
-    files may need trimming.
+  - Firecracker files vary in length (1.7 to 13.8 MB), while every dodecahedron IR has the same length; the firecracker
+    files are raw field recordings with several shots each, so RIRDB lists only the 17 dodecahedron IRs.
   - Individual WAV files, no ZIP (about 57 MB in total).

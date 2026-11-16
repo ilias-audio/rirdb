@@ -1,6 +1,7 @@
 """Which IRs a query selects, and what they cost to download.
 
-    sel = rirdb.select(use="research", format="binaural", grade="A", balance="space", n=500)
+    from rirdb.select import select
+    sel = select(use="research", format="binaural", grade="A", per_space=20, max_archive="2GB", n=500, balance="space")
     sel.table           one row per IR (the columns of irs, plus `weight` with a balance)
     sel.sizes()         the download, whole, and the output as WAV
     sel.download("irs/")
@@ -52,6 +53,8 @@ class Query:
     t30: str | None = None                                 # rt_mid from MIN up to MAX seconds, "1.2-2.5"; "2.5-": no top
     provides: list[str] = field(default_factory=list)     # the authors provide all of these (yes or partly)
     kind: list[str] = field(default_factory=list)         # any of these kinds of space (KINDS)
+    per_space: int | None = None   # at most this many IRs of each space, spread over its rt_mid (spread_per_space)
+    max_archive: str | None = None  # leave out IRs whose download is larger, "2GB" (download_bytes)
 
     def check(self, datasets: pd.DataFrame) -> None:
         for name, value, allowed in (("use", self.use, [None, *USES]), ("format", self.format, [None, *FORMATS]),
@@ -64,6 +67,10 @@ class Query:
             raise ValueError(f"no dataset {', '.join(unknown)} in release {client.version()} (`rirdb search` lists them)")
         if self.n is not None and self.n < 1:
             raise ValueError("n must be at least 1")
+        if self.per_space is not None and self.per_space < 1:
+            raise ValueError("per_space must be at least 1")
+        if self.max_archive is not None:
+            parse_size(self.max_archive)
         bad = sorted(set(self.space_type) - set(allowed_values("irs", "space_type")))
         if bad:
             raise ValueError(f"space type {', '.join(bad)} is not one of {', '.join(allowed_values('irs', 'space_type'))}")
@@ -105,7 +112,9 @@ def matching(irs: pd.DataFrame, q: Query, datasets: pd.DataFrame | None = None) 
         for p in q.provides:
             ok &= ds[f"provides_{p}"].isin(["yes", "partial"])
         keep &= irs["dataset"].isin(ds.loc[ok, "dataset"])
-    if q.format == "mono":                       # last: "has a mono row" among the rows the other filters keep
+    if q.max_archive:                            # a download of unknown size (no file listed) is left out too
+        keep &= download_bytes(irs) <= parse_size(q.max_archive)
+    if q.format == "mono":                     # last: "has a mono row" among the rows the other filters keep
         has_mono = irs.loc[keep & irs["format"].eq("mono"), "space"].unique()
         keep &= irs["format"].eq("mono") | (irs["format"].eq("ambisonic") & ~irs["space"].isin(has_mono))
     elif q.format:
@@ -136,6 +145,80 @@ def t30_range(text: str) -> tuple[float, float | None]:
     if not sep or out is None or (out[1] is not None and out[1] <= out[0]):
         raise ValueError(f"t30 {text!r} is not a range in seconds such as 1.2-2.5 (or 2.5- for no upper limit)")
     return out
+
+
+def parse_size(text: str) -> float:
+    """'20GB' -> 20e9 (also kB, MB, TB; powers of 1000)."""
+    units = {"TB": 1e12, "GB": 1e9, "MB": 1e6, "KB": 1e3, "B": 1}
+    t = str(text).strip().upper()
+    try:
+        for unit, factor in units.items():
+            if t.endswith(unit):
+                return float(t.removesuffix(unit)) * factor
+        return float(t)
+    except ValueError:
+        raise ValueError(f"{text!r} is not a size such as 500MB or 2GB") from None
+
+
+def download_sizes() -> dict[tuple[str, str], float]:
+    """Each download of the release, whole: (dataset, download) -> bytes, NaN when the release does not know.
+    A split zip counts with all its parts; a web folder (`@mirror`) counts all its files; the one download of a
+    dataset whose host gives no size (a GitHub tarball) counts the files it unpacks to."""
+    d = client.table("downloads").sort_values("source_rank").drop_duplicates(["dataset", "download"])
+    out = {}
+    for ds, g in d.groupby("dataset"):
+        size = dict(zip(g["download"], g["size_bytes"].astype(float)))
+        for z, s in size.items():
+            if z == "@mirror":
+                s = float(client.table(f"files.{ds}")["size_bytes"].sum())
+            elif np.isnan(s) and len(size) == 1:
+                s = float(client.table(f"files.{ds}")["size_bytes"].sum(min_count=1))
+            elif z.endswith(".zip"):
+                s += sum(v for p, v in size.items() if split_part_of(p, z))
+            out[(ds, z)] = s
+    return out
+
+
+def download_bytes(rows: pd.DataFrame) -> pd.Series:
+    """What each IR costs to download on its own: the whole download that holds it (downloads are taken whole),
+    or, in a web folder fetched file by file, its own files. NaN when the release does not know the size."""
+    whole = download_sizes()
+    out = pd.Series([whole.get((d, z), np.nan) for d, z in zip(rows["dataset"], rows["download"])],
+                    index=rows.index, dtype=float)
+    for ds in rows.loc[rows["download"] == "@mirror", "dataset"].unique():
+        files = client.table(f"files.{ds}").set_index("file")["size_bytes"]
+        mine = (rows["dataset"] == ds) & (rows["download"] == "@mirror")
+        out[mine] = [float(files.reindex(f.split("|")).sum(min_count=1)) for f in rows.loc[mine, "file"]]
+    return out
+
+
+def spread_per_space(rows: pd.DataFrame, n: int) -> pd.DataFrame:
+    """At most n IRs of each space, spread over its reverberation times: the n whose rt_mid are as evenly spaced
+    as can be, on a log scale, from the space's shortest to its longest. A room measured in many settings (ARNI:
+    5,246 panel settings) so gives n settings from its driest to its most reverberant. A space with n IRs or fewer
+    keeps them all; IRs without rt_mid come last, by id. With n = 1, the IR nearest the space's median rt_mid. The same rows give the same IRs on every machine."""
+    big = rows.groupby("space")["space"].transform("size") > n
+    keep = [rows.index[~big]]
+    for _, g in rows[big].groupby("space"):
+        g = g.sort_values(["rt_mid", "ir_id"], na_position="last")
+        rt = g["rt_mid"].dropna().to_numpy()
+        if len(rt) <= n:                                    # every IR with an rt_mid, then the rest by id
+            keep.append(g.index[:n])
+            continue
+        log = np.log(np.clip(rt, 1e-3, None))
+        free = np.ones(len(rt), dtype=bool)
+        targets = np.linspace(log[0], log[-1], n) if n > 1 else [np.median(log)]   # one IR: the room's typical one
+        for target in targets:                              # the nearest IR not taken yet
+            i = int(np.searchsorted(log, target))
+            lo, hi = i - 1, i
+            while lo >= 0 and not free[lo]:
+                lo -= 1
+            while hi < len(log) and not free[hi]:
+                hi += 1
+            j = lo if hi >= len(log) or (lo >= 0 and target - log[lo] <= log[hi] - target) else hi
+            free[j] = False
+        keep.append(g.index[:len(rt)][~free])
+    return rows.loc[rows.index.isin(np.concatenate(keep))]
 
 
 def allowed_values(table: str, column: str) -> list[str]:
@@ -230,14 +313,21 @@ def select(use: str | None = None, format: str | None = None, origin: str = "any
            dataset: list[str] | str | None = None, exclude_dataset: list[str] | str | None = None,
            include_unknown: bool = False, fs: int | None = None, n: int | None = None, balance: str = "none",
            seed: int = 0, space_type: list[str] | str | None = None, t30: str | None = None,
-           provides: list[str] | str | None = None, kind: list[str] | str | None = None) -> Selection:
-    """The IRs of the release that match, one row each, drawn to n with a balance (Python's `rirdb get`)."""
+           provides: list[str] | str | None = None, kind: list[str] | str | None = None,
+           per_space: int | None = None, max_archive: str | None = None) -> Selection:
+    """The IRs of the release that match, one row each, at most `per_space` of each space (spread over its
+    reverberation times), then drawn to n with a balance (Python's `rirdb get`)."""
     as_list = lambda v: [v] if isinstance(v, str) else list(v or [])
-    q = Query(use, format, origin, grade, as_list(dataset), as_list(exclude_dataset), include_unknown, fs,
-              n, balance, seed, as_list(space_type), t30, as_list(provides), as_list(kind))
+    q = Query(use=use, format=format, origin=origin, grade=grade, dataset=as_list(dataset),
+              exclude_dataset=as_list(exclude_dataset), include_unknown=include_unknown, fs=fs, n=n, balance=balance,
+              seed=seed, space_type=as_list(space_type), t30=t30, provides=as_list(provides), kind=as_list(kind),
+              per_space=per_space, max_archive=max_archive)
     datasets = client.table("datasets")
     q.check(datasets)
-    return Selection(q, draw(matching(client.table("irs"), q, datasets), q).reset_index(drop=True))
+    rows = matching(client.table("irs"), q, datasets)
+    if per_space:
+        rows = spread_per_space(rows, per_space)
+    return Selection(q, draw(rows, q).reset_index(drop=True))
 
 
 

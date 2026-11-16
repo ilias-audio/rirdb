@@ -13,10 +13,10 @@ import soundfile as sf
 from typer.testing import CliRunner
 
 from rirdb import client
-from rirdb.cli import app, parse_size
+from rirdb.cli import app
 from rirdb.deliver import ambix, audio_hash
 from rirdb.fetch import sha256_of
-from rirdb.select import Query, draw, matching, weights, t30_range
+from rirdb.select import Query, draw, matching, parse_size, weights, t30_range
 from tests.toy import DUPLICATE, TOY_FILES
 
 pytestmark = pytest.mark.xdist_group("toy")
@@ -174,3 +174,23 @@ def test_the_website_and_the_command_line_sort_spaces_the_same_way():
     pairs = [(t, o) for t in ROOM_TYPES for o in ("measured", "simulated", "device")]
     got = kind_of(pd.Series([t for t, _ in pairs]), pd.Series([o for _, o in pairs])).tolist()
     assert got == [one(t, o) for t, o in pairs]
+
+
+def test_a_lock_records_per_space_and_max_archive(user, tmp_path):
+    get("--per-space", "1", "--max-archive", "10GB", "--out", str(tmp_path / "a"))
+    lock = json.loads((tmp_path / "a" / "selection.lock").read_text())
+    assert lock["query"]["per_space"] == 1 and lock["query"]["max_archive"] == "10GB"
+    assert len(lock["irs"]) == len({r["ir_id"] for r in lock["irs"]}) == len(pd.read_csv(tmp_path / "a" / "irs.csv"))
+    get("--lock", str(tmp_path / "a" / "selection.lock"), "--out", str(tmp_path / "b"))
+    assert json.loads((tmp_path / "b" / "selection.lock").read_text())["irs"] == lock["irs"]
+
+
+def test_per_space_0_is_refused_even_with_one_dataset(user, tmp_path):
+    out = CliRunner().invoke(app, ["get", "--dataset", "toy", "--per-space", "0", "--out", str(tmp_path / "a")])
+    assert out.exit_code != 0 and "per_space must be at least 1" in str(out.exception)
+    assert not (tmp_path / "a").exists()
+
+
+def test_a_lock_records_only_the_options_used(user, tmp_path):
+    get("--n", "2", "--out", str(tmp_path / "a"))
+    assert json.loads((tmp_path / "a" / "selection.lock").read_text())["query"] == {"n": 2}

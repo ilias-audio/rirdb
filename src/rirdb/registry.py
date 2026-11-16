@@ -189,8 +189,9 @@ class Adapter(_Strict):
 
 class Analysis(_Strict):
     scope: Literal["full", "subsample_v1", "none"] = "full"
-    reference_role: str | None = None    # channel role analysed for arrays (e.g. "mic_0")
+    reference_role: str | None = None    # channel role analysed for arrays (e.g. "mic_0"); "mean": all channels
     subsample: dict | None = None
+    keep_s: float | None = None          # analyse only this long from where the sound starts (run.analysed_part)
 
 
 class Paper(_Strict):

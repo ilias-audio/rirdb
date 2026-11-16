@@ -293,12 +293,13 @@ def _init(dataset_id: str):
 
 
 def _audit_row(row: dict) -> dict:
-    from rirdb.run import _select_channels
+    from rirdb.run import _select_channels, analysed_part
 
     d, ad, root, cfg = _W["dataset"], _W["adapter"], _W["root"], _W["cfg"]
     t0 = time.perf_counter()
     try:
         x, fs = ad.load(json.loads(row["locator"]), root)
+        x = analysed_part(x, fs, d.analysis.keep_s, cfg.preprocess.digital_silence_abs)
         xs, _ = _select_channels(x, tuple(row["channel_roles"].split(",")),
                                  row.get("reference_role") or d.analysis.reference_role)
         out = audit_signal(xs, fs, row["intersection_s_bb"], row["edc_mode_bb"], cfg)

@@ -1,2 +1,2 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
-oldenburg-living-room,"Living-room lab with kitchen, University of Oldenburg",domestic,,,,,,,,"conditions are the file names' last code (F_C, F_O, F_L); the documentation describes the door to the coupled room open and closed",
+oldenburg-living-room,"Living-room lab with kitchen, University of Oldenburg",domestic,,,,,,,,"conditions: F_C/F_O door to the kitchen closed/open; F_L/F_K omni-source reverberation measurements in the living room / kitchen (kitchen T30 about 0.65 s at mid frequencies)",

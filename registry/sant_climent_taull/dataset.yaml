@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3558319"]}
-adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "ImpulseResponses/**/*.[wW][aA][vV]", "pattern": "/(?P<cond>Church|ModelA|ModelB)/[^/]+/(?:Model[AB]-|Taull_)?(?P<src>Source\\d)_(?P<rcv>Receiver\\d)(?:_(?P<cond_2>Omni|Cardi))?", "room_from": "dataset", "ir_kind_from_regex": {"/Model[AB]/": "virtual"}, "format_from_regex": {"/A-Format/": "tetra_raw", "/B-Format/": "foa_fuma", "/FuMa 2OA/": "hoa_sh", "/Binaural/": "binaural"}, "sh_norm": "FuMa", "preferred_regex": "/(B-Format|FuMa 2OA)/"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"orientation_known": false, "glob": "ImpulseResponses/**/*.[wW][aA][vV]", "pattern": "/(?P<cond>Church|ModelA|ModelB)/[^/]+/(?:Model[AB]-|Taull_)?(?P<src>Source\\d)_(?P<rcv>Receiver\\d)(?:_(?P<cond_2>Omni|Cardi))?", "room_from": "dataset", "ir_kind_from_regex": {"/Model[AB]/": "virtual"}, "max_s": 30, "format_from_regex": {"Model[AB]-Source1_Receiver\\d_Omni_Binaural": "mono_omni", "/B-Format/": "foa_fuma", "/FuMa 2OA/": "hoa_sh", "/Binaural/": "binaural"}, "sh_norm": "FuMa", "preferred_regex": "/(B-Format|FuMa 2OA)/"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: 12 measured B-format RIRs (3 sources x 4 receivers) in the Romanesque church of Sant Climent de Taüll,
   Catalonia, plus 96 ODEON-simulated binaural and 2nd-order Ambisonic IRs of two model states.
 expected:
@@ -26,6 +26,11 @@ license:
   spdx: CC-BY-2.0
 homepage: https://zenodo.org/records/3558319
 doi: 10.5281/zenodo.3558319
+notes: 'The 12 A-format files are raw sweep recordings (116.8 s) and are left out of the table. 8 of the binaural files
+  (ModelA and ModelB, Source1, omni) have one channel and are listed as mono. The ModelA and ModelB binaural and mono renders look stretched in time by a factor of
+  2: their decay times are twice those of the Ambisonic renders of the same models (2.6 against 1.35 s, 5.3 against
+  2.7 s), their files are twice as long, and the omni ones hold nothing above 12 kHz. Read their decay times with care;
+  the Ambisonic renders agree with the measured church (1.35-1.39 s).'
 web_check:
   checked: '2026-10-14'
   found_as: 'Model of Sant Climent de Taüll: impulse responses and auralisations'

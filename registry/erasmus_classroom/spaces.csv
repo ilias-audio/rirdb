@@ -1,2 +1,2 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
-erasmus-classroom,"Primary-school classroom, the Netherlands (unoccupied)",lecture_classroom,,,,,,,,,
+erasmus-classroom,"Primary-school classroom, the Netherlands (unoccupied)",lecture_classroom,,137,,,,,,"the authors' T30 (their section 1.5) is 0.69, 0.44, 0.375, 0.426, 0.426, 0.438 and 0.393 s from 125 Hz to 8 kHz",

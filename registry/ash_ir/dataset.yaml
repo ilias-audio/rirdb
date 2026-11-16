@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["4780815"]}
-adapter: {"name": "wav_tree", "params": {"glob": "ASH-IR-Dataset/BRIRs/**/*.wav", "pattern": "/BRIRs/(?P<room>R\\d+[A-Z]?)/BRIR_R\\d+[A-Z]?(?:_(?P<cond>\\d+ms))?_(?P<rcv>P\\d+)_(?P<src>E-?\\d+_A-?\\d+)\\.wav$", "roles": {"2": ["L", "R"]}, "channel_formats": {"2": "binaural"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "wav_tree", "params": {"glob": "ASH-IR-Dataset/BRIRs/**/*.wav", "pattern": "/BRIRs/(?P<room>R\\d+[A-Z]?)/BRIR_R\\d+(?P<cond>[A-Z])?(?:_(?P<cond_2>\\d+ms))?_(?P<rcv>P\\d+)_(?P<src>E-?\\d+_A-?\\d+)\\.wav$", "roles": {"2": ["L", "R"]}, "channel_formats": {"2": "binaural"}}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Equalised 2-channel BRIRs of 39 rooms (studios, control rooms, seminar rooms, halls) derived from public
   BRIR datasets, with headphone filters and Equalizer APO configs for virtual surround on headphones.
 fs_hz:

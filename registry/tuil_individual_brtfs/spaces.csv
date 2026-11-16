@@ -1,5 +1,5 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
 hl,"Listening lab (HL), TU Ilmenau",laboratory,,,,,,,,the rooms are matched to the file codes from the record's description,
-sr,"Seminar room (SR), TU Ilmenau, empty",lecture_classroom,,182,,,,,,"T60 2.0 s; the rooms are matched to the file codes from the record's description",
-hu201,"Seminar room HU 201, TU Ilmenau (acoustically treated)",lecture_classroom,,,,,,,,the rooms are matched to the file codes from the record's description,
-ldv,"Small lecture hall (LdV), TU Ilmenau",lecture_classroom,,,,,,,,the rooms are matched to the file codes from the record's description,
+sr,"Seminar room (SR), TU Ilmenau, empty",lecture_classroom,,182,,,,,,"the record states T60 2.0 s; RIRDB measures 0.89 s at 500 Hz-1 kHz, as the 0.9 s Werner et al. (ISAAR 2013) give for this seminar room; the rooms are matched to the file codes from the record's description",
+hu201,"Seminar room HU 201, TU Ilmenau (acoustically treated)",lecture_classroom,,,,,,,,"the rooms are matched to the file codes from the record's description; some SOFA files of this set state 41 kHz; if the true rate is 44.1 kHz, their times read about 7 % long",
+ldv,"Small lecture hall (LdV), TU Ilmenau",lecture_classroom,,,,,,,,"the rooms are matched to the file codes from the record's description; some SOFA files of this set state 41 kHz; if the true rate is 44.1 kHz, their times read about 7 % long",

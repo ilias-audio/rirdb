@@ -69,7 +69,7 @@ def guide_page() -> str:
 <div class="wrap page prose">
 <div class="page-head"><h1>Guide</h1><p class="lead">Install RIRDB, find IRs, get them as one folder, and cite what
 you use.</p></div>
-<nav class="toc-inline" aria-label="On this page"><a href="#start">Get started</a><a href="#python">In Python</a>
+<nav class="toc-inline" aria-label="On this page"><a href="#start">Get started</a><a href="#choose">Choose what you get</a><a href="#python">In Python</a>
 <a href="#glossary">Glossary</a><a href="#cite">Cite</a><a href="#add">Add a dataset</a></nav>
 
 <section id="start"><h2>Get started</h2>
@@ -88,8 +88,30 @@ command for any search: <code>--format</code>, <code>--use</code>, <code>--origi
 <code>--space-type</code>, <code>--t30</code>, <code>--provides</code> and <code>--dataset</code>.
 <code>rirdb search --help</code> lists them all.</p></section>
 
+<section id="choose"><h2>Choose exactly what you get</h2>
+<p>The <a href="datasets.html">datasets</a> and <a href="rooms.html">rooms</a> pages build the command as you click:
+filters on the left, then <b>What you get</b>, and <b>Pick</b> or <b>Leave out</b> on any dataset. The command, the
+same in Python, and what it would download are written under the results. <code>rirdb search</code> takes every
+option of <code>rirdb get</code>, so you can look before anything is downloaded.</p>
+<p><b>At most so many per room</b> (<code>--per-space</code>). A room measured in many ways can hold thousands of IRs:
+ARNI, a variable-acoustics room, has 26,221 in 5,246 panel settings. <code>--per-space 50</code> keeps 50 of each room,
+spread over its reverberation times from the shortest to the longest, so one room gives its whole range and does not
+outweigh the others.</p>
+{copybox("rirdb search --dataset arni --per-space 50")}
+<p><b>No big downloads</b> (<code>--max-archive</code>). Datasets come as their authors publish them, and a download is
+taken whole: one SRIRACHA condition is a single 8.9 GB file. <code>--max-archive 2GB</code> leaves out every IR that
+comes in a download larger than 2 GB (or of unknown size), so a selection across many datasets stays small.</p>
+{copybox("rirdb search --format mono --per-space 20 --max-archive 2GB")}
+<p><b>A draw</b> (<code>--n</code>, <code>--balance</code>, <code>--seed</code>). <code>--n 500</code> draws 500 of the
+IRs left; <code>--balance space</code>, <code>dataset</code> or <code>t30</code> makes each room, each dataset or each
+range of reverberation time equally likely, so a dataset with many IRs does not fill the draw. The seed and every
+IR drawn are written in <code>selection.lock</code>.</p>
+{copybox("rirdb get --use training --format mono --per-space 20 --max-archive 2GB --n 1000 --balance t30 --out my-irs")}
+</section>
+
 <section id="python"><h2>In Python</h2>
-{copybox('import rirdb' + chr(10) + 'sel = rirdb.select(format="binaural", grade="A", balance="space", n=200)' + chr(10) + 'sel.table      # one row per IR, every column of the data reference' + chr(10) + 'sel.download("irs/")')}
+<p>Every option of the command line is an argument of <code>select</code>, with <code>_</code> for <code>-</code>.</p>
+{copybox('from rirdb.select import select' + chr(10) + chr(10) + 'sel = select(format="binaural", grade="A", per_space=20, max_archive="2GB", balance="space", n=200)' + chr(10) + 'sel.table        # one row per IR, every column of the data reference' + chr(10) + 'sel.sizes()      # the download, and the IRs as WAV' + chr(10) + 'sel.download("irs/")')}
 </section>
 
 <section id="glossary"><h2>Glossary</h2><dl class="glossary">{gloss}</dl>

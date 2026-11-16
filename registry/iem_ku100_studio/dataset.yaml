@@ -27,6 +27,7 @@ license:
   note: PHAIDRA labels the files with the Public Domain Mark 1.0 (a public-domain label rather than a licence) and
     gives no other terms.
 homepage: https://phaidra.kug.ac.at/o:76742
+notes: 'The readme''s T60 of about 0.4 s is approximate: the BRIRs decay in about 0.22 s at 500 Hz-1 kHz, 0.32 s at 125 Hz and 0.5 s at 63 Hz. The 360 subwoofer IRs (04_LFE) carry low frequencies only.'
 web_check:
   checked: '2026-10-14'
   found_as: BRIRs_KU100_IEMProductionStudio (IEM Graz)

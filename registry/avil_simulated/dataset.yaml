@@ -8,9 +8,10 @@ status: active   # onboarded by scripts/onboard; reviewed on 15 Nov 2026 (report
 access: open
 wave: 3   # tier A, onboarded by scripts/onboard
 source: {kind: zenodo, records: ["10834971"]}
-adapter: {"name": "sofa", "params": {"glob": "**/irdb/lora_avil_*.sofa", "pattern": "^lora_avil_(?P<room>low|mid|high)_", "capture_format": "array_raw"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
+adapter: {"name": "sofa", "params": {"glob": "**/irdb/lora_avil_*.sofa", "pattern": "^lora_avil_(?P<room>low|mid|high)_(?P<cond>dir|omni)_", "capture_format": "array_raw"}}   # reviewed on 15 Nov 2026 (docs/plans/onboarding.md)
 content: Simulated impulse responses for low-, mid- and high-reverberation environments, rendered for DTU's Audiovisual
   Immersion Lab and stored as SOFA files, with a MATLAB scene constructor (COCOHA project).
+analysis: {reference_role: mean}   # 64 loudspeaker feeds on a sphere: their mean is the sound at the centre (plausibility review, 16 Nov 2026)
 expected:
   n_rooms: 3
 room_info:
@@ -21,6 +22,9 @@ license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/10834971
 doi: 10.5281/zenodo.10834971
+notes: 'Each IR is a set of 64 loudspeaker feeds for the AVIL array (nearest-loudspeaker rendering); RIRDB measures their
+  mean, the sound at the centre of the array. The dir and omni files (a talker and an omnidirectional source) are the
+  two conditions.'
 web_check:
   checked: '2026-10-14'
   found_as: Simulated IRs and scene constructor for the DTU Audio-Visual Immersion Lab (COCOHA)

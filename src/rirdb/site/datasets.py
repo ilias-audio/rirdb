@@ -6,7 +6,7 @@ import pandas as pd
 
 from rirdb.select import cap_of
 from rirdb.site import charts, words
-from rirdb.site.data import (BANDS, DB_EDGES, MANY_ROOMS, T30_EDGES, acoustics, histogram, labels, own_fields,
+from rirdb.site.data import (BANDS, DB_EDGES, ARCHIVE_LIMITS, MANY_ROOMS, T30_EDGES, acoustics, histogram, labels, own_fields,
                              primary, shown_space, space_bands, text)
 from rirdb.site.layout import (ICONS, copybox, e, grade_bar, grade_legend, page, pill, table, use_marks)
 
@@ -16,16 +16,17 @@ PER_PAGE = 30
 # ------------------------------------------------------------------------------------------- the search
 
 def facet(name: str, title: str, options: list[tuple[str, str]], multi: bool = False, hint: str = "",
-          show: int | None = None) -> str:
+          show: int | None = None, any_label: str = "Any", counts: bool = True) -> str:
     """A group of filters: radio buttons (one choice, "Any" first) or tick boxes (several). Its name is the
     address parameter and, where the command line has it, the option of `rirdb search`. With `show`, the options
     after the first `show` fold away under "more"."""
     kind = "checkbox" if multi else "radio"
-    opts = [] if multi else [(f'{name}-any', "", "Any")]
+    opts = [] if multi else [(f'{name}-any', "", any_label)]
     opts += [(f"{name}-{v}", v, label) for v, label in options]
     labels = [
         f'<label class="opt" for="{e(i)}"><input type="{kind}" id="{e(i)}" name="{e(name)}" value="{e(v)}"'
-        f'{" checked" if not multi and not v else ""}><span>{e(label)}</span><span class="c" data-for="{e(i)}"></span></label>'
+        f'{" checked" if not multi and not v else ""}><span>{e(label)}</span>'
+        + (f'<span class="c" data-for="{e(i)}"></span>' if counts else "") + "</label>"
         for i, v, label in opts]
     if show is not None and len(labels) > show + 2:            # fold the rest away
         more = f"Show all {len(labels)}" if show == 0 else f"{len(labels) - show} more"
@@ -44,6 +45,36 @@ def room_types(spaces: list[dict]) -> list[str]:
     return sorted((t for t in count if t != "unknown"), key=lambda t: (-count[t], t))
 
 
+def get_fields() -> str:
+    """After the filters: the options of `rirdb get` that shape what you get (at most so many IRs per room, the
+    largest download, a random draw). The command box prints them with the filters (site.js)."""
+    def number(name: str, title: str, hint: str, placeholder: str) -> str:
+        return (f'<fieldset class="facet"><legend><label for="{name}">{e(title)}</label> <small>{e(hint)}</small></legend>'
+                f'<input class="numin" type="number" min="1" step="1" inputmode="numeric" id="{name}" name="{name}" '
+                f'placeholder="{e(placeholder)}"></fieldset>')
+    return ('<p class="formhead">What you get</p>'
+            + number("per", "At most per room", "spread over its reverb", "no limit")
+            + facet("archive", "Largest download", [(k, k.replace("MB", " MB").replace("GB", " GB")) for k in ARCHIVE_LIMITS],
+                    hint="each is taken whole")
+            + number("n", "How many IRs", "a random draw", "all")
+            + facet("balance", "Spread the draw over", [("space", "Rooms"), ("dataset", "Datasets"),
+                                                        ("t30", "Reverberation times")], any_label="Every IR alike",
+                    counts=False))
+
+
+def command_box() -> str:
+    """The command that selects what the page keeps: look first, get it, or the same in Python (site.js)."""
+    def block(key: str, title: str, hint: str) -> str:
+        return (f'<div class="cmdpart"><p class="small"><b>{title}</b> <span class="quiet">{hint}</span></p>'
+                f'<div class="copybox"><pre id="cmd-{key}"></pre><button type="button" data-copy>Copy</button></div></div>')
+    return ('<section id="cmd" class="cmd" aria-label="Your command" hidden><h2 class="cmdhead">Your command</h2>'
+            '<p id="cmdsum" class="small" aria-live="polite"></p>'
+            + block("search", "Look first", "nothing is downloaded")
+            + block("get", "Get it", "downloads, checks every file, writes one folder")
+            + block("py", "In Python", "the same selection")
+            + '<p class="note" id="cmdnote" hidden></p></section>')
+
+
 def card(d: dict, i: int) -> str:
     """One result: what the dataset is, who made it, what it holds, what its licence allows."""
     measured = d["status"] == "measured"
@@ -58,11 +89,14 @@ def card(d: dict, i: int) -> str:
         prov = ", ".join(words.PROVIDES_SHORT[p] for p in d["provides"])
         side = (f'<span>{e(d["size"]) if d["size"] else "Size not stated"}</span>'
                 + (f'<span>Provides {e(prov)}</span>' if prov else ""))
+    picks = (f'<div class="picks"><button type="button" class="pick" data-pick="dataset" data-id="{e(d["id"])}" '
+             f'aria-pressed="false">Pick</button><button type="button" class="pick" data-pick="exclude" '
+             f'data-id="{e(d["id"])}" aria-pressed="false">Leave out</button></div>') if measured else ""
     return (f'<article class="card" data-d="{i}" data-n="{d["n"]}" data-year="{d["year"] or 0}" '
             f'data-measured="{int(measured)}"><div class="main"><h3><a href="d/{e(d["id"])}.html">{e(d["name"])}</a></h3>'
             f'<p class="by">{by}</p><p class="desc">{e(d["description"])}</p>'
             f'<div class="meta">{status}{fmts}{pill(words.licence_short(d["licence"]))}</div>'
-            f'{use_marks(d["uses"])}</div><div class="side">{side}</div></article>')
+            f'{use_marks(d["uses"])}{picks}</div><div class="side">{side}</div></article>')
 
 
 def datasets_page(search: dict) -> str:
@@ -92,7 +126,7 @@ def datasets_page(search: dict) -> str:
 <p class="lead">Every public room impulse response dataset we know of: {len(ds)} in all. {n_measured} are measured by
 RIRDB; the others are described from their authors' pages and measured in later releases.</p></div>
 <div class="find">
-<form class="facets" id="filters" aria-label="Filters">{facets}
+<form class="facets" id="filters" aria-label="Filters">{facets}{get_fields()}
 <button type="reset" class="clear">Clear all filters</button></form>
 <div class="results">
 <div class="searchbar"><input id="text" name="text" form="filters" type="search" autocomplete="off"
@@ -104,7 +138,7 @@ RIRDB; the others are described from their authors' pages and measured in later 
 <option value="n">Most IRs</option><option value="year">Newest</option><option value="name">Name</option></select></label></div>
 <div class="chips" id="chips"></div>
 <p class="note" id="leftout" hidden></p>
-<div id="cmd" hidden>{copybox("rirdb search")}<p class="note" id="cmdnote" hidden></p></div>
+{command_box()}
 <div class="cards" id="cards">{"".join(card(d, i) for i, d in enumerate(ds))}</div>
 <button type="button" class="more" id="more" hidden></button>
 </div></div></div>"""
@@ -259,7 +293,8 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
     licence = (f'<div><h4>Licence</h4><p><b>{e(words.licence_short(d["licence"]))}</b></p>'
                f'<p class="quiet small">{e(words.licence_name(d["licence"]))}</p>{use_marks(c["uses"])}</div>')
     get = (f'<div><h4>Get it</h4>{copybox(f"rirdb get --dataset {i}")}<p class="quiet small">{e(c["size"])}, every file as '
-           f'published, checked against its checksum.</p></div>') if measured else \
+           f'published, checked against its checksum.</p><p class="small"><a href="../datasets.html?dataset={e(i)}">Choose IRs from it</a>: '
+           f'at most so many per room, one format, a random draw.</p></div>') if measured else \
           (f'<div><h4>Get it</h4><p class="small">From the authors: <a href="{e(d["homepage"])}">{e(d["host"] or "homepage")}</a>'
            + (f' ({e(d["size_stated"])})' if d["size_stated"] else "") + ". RIRDB will download and check it once it is measured.</p></div>")
     contents = []
