@@ -611,9 +611,10 @@
       const name = '<a href="d/' + esc(d.id) + '.html#defect">' + esc(d.name) + "</a>";
       const many = (st.per ? "about " : "") + fmt(n) + (n === 1 ? " IR" : " IRs");
       return "<b>Known defect.</b> " + (draw ? "The draw can take IRs of " + name + " whose files have a defect as published ("
-          + many + " of those it draws from): its page says which; rirdb warns when it does."
-        : many.charAt(0).toUpperCase() + many.slice(1) + " of " + name + (n === 1 ? " has" : " have") + " a defect of the files "
-          + "as published: its page says which. They stay in the selection, and rirdb prints the same warning.");
+          + many + " of those it draws from, graded D): its page says which; rirdb warns when it does."
+        : many.charAt(0).toUpperCase() + many.slice(1) + " of " + name + (n === 1 ? " has" : " have") + " a defect of the files as "
+          + "published, so " + (n === 1 ? "it is" : "they are") + " graded D: its page says which. They stay in the selection, and rirdb "
+          + "prints the same warning.");
     }).join("<br>");
     if (!t.irs) return;
     // the reverberation time

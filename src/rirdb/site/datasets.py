@@ -380,7 +380,7 @@ def dataset_page(d: pd.Series, c: dict, irs: pd.DataFrame, spaces: pd.DataFrame,
         '<div class="warnbox" id="defect"><h2>Known defect</h2><ul>'
         + "".join(f"<li>{e(x)}" + (f' <span class="quiet">{concerns(x)}</span>' if measured else "") + "</li>"
                   for x in known)
-        + '</ul><p class="small quiet">The files are kept as published. The IRs a defect concerns stay in the table '
+        + '</ul><p class="small quiet">The files are kept as published. The IRs a defect concerns stay in the table, graded D, '
           'and in what <code>rirdb get</code> delivers, and <code>rirdb search</code> and <code>get</code> warn about '
           'them.</p></div>')
     banner = "" if measured else (

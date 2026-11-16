@@ -439,7 +439,7 @@ recommended, since he asked to finalise the plan.
    | A | the same decay rule; minor defects allowed |
    | B | T20 or T30 valid in every octave from 250 Hz to 2 kHz; minor defects allowed |
    | C | some decay value valid; or the decay of S, A or B with a major defect |
-   | D | no decay value valid |
+   | D | no decay value valid, or a known defect of the files as published (registry `defects`) |
 
    `--grade A` means A or better, so the abstract's command still works. It no longer returns clipped
    IRs: by D9, an IR with a valid decay and clipping had grade A. The grade is empty for anechoic

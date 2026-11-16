@@ -62,7 +62,7 @@ GRADES = {"S": "S: valid decay in every octave from 125 Hz to 4 kHz, no defect f
           "A": "A: valid decay in every octave from 125 Hz to 4 kHz, minor defects at most",
           "B": "B: valid decay from 250 Hz to 2 kHz",
           "C": "C: some decay value valid, or a major defect",
-          "D": "D: no decay value valid"}
+          "D": "D: no decay value valid, or a known defect of the files as published"}
 
 STATUS = {"measured": "Measured by RIRDB", "indexed": "Downloaded and listed; measured in the next release",
           "pinned": "Its files are pinned; downloaded in the next run",

@@ -60,7 +60,8 @@ from a folder you filled (`--from`). Every file is checked against its sha256, a
 its decoded samples.
 
 **Grades** S, A, B, C and D describe the decay of each IR: S and A need a valid T30 in every octave from
-125 Hz to 4 kHz, and a defect (clipping, dropouts, a sweep left in the response, ...) lowers the grade.
+125 Hz to 4 kHz, and a defect (clipping, dropouts, a sweep left in the response, ...) lowers the grade. An IR
+whose files have a known defect as published is graded D.
 `--grade A` means A or better. Nothing is filtered unless you ask: `search` always shows the split by origin
 and grade.
 

@@ -339,7 +339,7 @@ def defect_lines(t: pd.DataFrame) -> list[str]:
     if "known_defect" not in t:                   # tables made before 0.9.6
         return []
     hit = t[t["known_defect"].fillna("").ne("")]
-    return [f"{d}: {plural(len(g), 'IR')} with a known defect. {w}"
+    return [f"{d}: {plural(len(g), 'IR')} with a known defect, graded D. {w}"
             for (d, w), g in hit.groupby(["dataset", "known_defect"])]
 
 

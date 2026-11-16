@@ -314,6 +314,8 @@ def dataset_irs(dataset_id: str) -> dict:
     out["defects_minor"] = n_minor.to_numpy()
     out = pd.concat([out, dfx], axis=1)
     out["known_defect"] = known_defect(d, out["file"])
+    # a known defect of the files as published (registry `defects`) rates the IR at the worst grade (thresholds.yaml)
+    out["grade"] = out["grade"].where(out["known_defect"].eq("") | out["grade"].eq(""), thresholds()["grades"]["known_defect_caps_at"])
     out["usable_top_hz"] = np.nan                                  # measured from step 4
     out["effective_bits"] = np.nan                                 # measured from step 4
     out["peak_to_noise_db"] = finite(r["peak_to_noise_db"])

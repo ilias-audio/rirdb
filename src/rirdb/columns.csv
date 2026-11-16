@@ -42,7 +42,7 @@ irs,proc_equalised,string,,no|documented|detected|both,,,always,not assessed,Cor
 irs,proc_resampled,string,,no|documented|detected|both,,,always,not assessed,"The content stops at another rate's Nyquist (processing.resampled). Detected counts as a minor defect",build
 irs,proc_bit_depth_reduced,string,,no|documented|detected|both,,,always,not assessed (0.9: analyser v1 does not measure the effective bit depth),"Fewer bits used than the container holds. Detected counts as a minor defect",build
 irs,proc_format_derived,string,,no|documented|detected|both,,,always,not assessed,"Converted from another layout, e.g. binaural decoded from Ambisonics. Documented by the authors only",build
-irs,grade,string,,S|A|B|C|D,,,space_type is not anechoic,the space is anechoic: there is no decay to grade,"Quality of the decay, capped by defects (grades in thresholds.yaml). --grade A means A or better",build
+irs,grade,string,,S|A|B|C|D,,,space_type is not anechoic,the space is anechoic: there is no decay to grade,"Quality of the decay, capped by defects (grades in thresholds.yaml); D for an IR with a known defect of the files as published (known_defect). --grade A means A or better",build
 irs,defects_major,int,,,0,6,always,never empty,Number of true major defect columns,build
 irs,defects_minor,int,,,0,7,always,never empty,"Number of true minor defect columns, plus proc_resampled and proc_bit_depth_reduced when detected",build
 irs,defect_clipping,bool,,,,,the file is readable,not assessed,Major. Samples held at the peak level (defects.clipping),build

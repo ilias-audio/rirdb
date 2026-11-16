@@ -125,8 +125,9 @@ def test_a_known_defect_is_kept_and_warned_about(user):
     booth = t["file"].str.startswith("booth/")
     assert booth.any() and t.loc[booth, "known_defect"].eq("The booth files are too short to trust.").all()
     assert t.loc[~booth, "known_defect"].eq("").all()
-    assert select().known_defects() == [f"toy: {booth.sum()} IRs with a known defect. The booth files are too short "
-                                        "to trust."]
+    assert t.loc[booth, "grade"].eq("D").all() and t.loc[~booth, "grade"].ne("D").all()   # a known defect rates D
+    assert select().known_defects() == [f"toy: {booth.sum()} IRs with a known defect, graded D. The booth files are "
+                                        "too short to trust."]
     assert select(dataset="toy", t30="1-").known_defects() == []          # the hall and stairs only
     out = CliRunner().invoke(app, ["search"])
     assert "Warning toy: 2 IRs with a known defect" in out.output

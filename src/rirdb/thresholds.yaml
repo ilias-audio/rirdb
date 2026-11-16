@@ -136,10 +136,11 @@ grades:
   # A  the same decay rule; minor defects allowed
   # B  T20 or T30 valid in every octave of b_bands_hz; minor defects allowed
   # C  some decay value valid (EDT, T20 or T30, any band); or the decay of S, A or B with a major defect
-  # D  no decay value valid
+  # D  no decay value valid; or a known defect of the files as published (registry `defects`, irs.known_defect)
   s_and_a_bands_hz: [125, 250, 500, 1000, 2000, 4000]
   b_bands_hz: [250, 500, 1000, 2000]
   major_defect_caps_at: C
+  known_defect_caps_at: D   # Ilias, 16 Nov 2026: "if there's defects in the original data give those IR bad rating"
   # S needs every defect assessed (decision D, 15 Nov 2026): where a defect is empty because the audio was
   # not audited (ReverbFX and TH Köln in 0.9), an S becomes A. The defects the analyser does not measure at
   # all are left out of this rule until it measures them.
