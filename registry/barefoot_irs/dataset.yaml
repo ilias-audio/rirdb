@@ -2,15 +2,26 @@
 id: barefoot_irs
 name: Barefoot Recording Impulse Response Project
 year: 2021
-type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+type: measured   # a library of real spaces published for music production, as echothief (onboarding.md)
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.dropbox.com/scl/fi/1adap9qop7xz2dkpwjbim/BF-TL-SPACE-LIBRARY.zip?rlkey=8dt6d8kx0sfsnkglovb7dfdc9&dl=1"]}
+adapter: {name: wav_tree, params: {glob: BF TL SPACE LIBRARY/*/*.wav, join: '\.(?P<ch>[LR])\.wav$', pattern: '^BF TL SPACE LIBRARY/[^/]+/(?:(?P<room>Chamber) (?P<cond>[AB]) -> (?P<cond_2>[AB])|(?P<room_2>Drumbrella)(?: (?P<cond_3>[^/]+?))?|(?P<room_3>Chamber A|Chamber B|Sound Room A|Sound Room B|Iso Booth A|Lounge A|Hallway A|Hallway B)(?: (?P<rcv>[^/]+?))?)\.[LR]\.wav$', room_from: pattern, ir_kind_from_regex: {' -> ': creative}}}
+capture_formats:
+- stereo
+fs_hz:
+- 48000
+analysis:
+  keep_s: 4   # was 10; the noise floor of the files steps down about 20 dB at 6-7.5 s, so 4 s ends before it (3, 4 and 6 s tested, identical results)
 content: 'Stereo IRs of Barefoot Recording, Eric Valentine''s studio: two recording rooms, an iso booth, two echo
   chambers, a lounge and two hallways, captured with 20 s sweeps and a Neumann KM184 pair for Avid Space.'
 expected:
   n_rooms: 8
+  n_irs: 26
+  note: '52 mono files joined into 26 stereo IRs (L and R files). The page names 8 rooms plus the Drumbrella; the reader
+    lists 10 spaces: the 8 rooms, the Drumbrella (a hanging cloud over the drum kit, heights as conditions) and the two
+    echo chambers fed in series (A -> B, B -> A).'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -20,6 +31,8 @@ room_info:
   images: 'yes'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'the project page (https://www.cianriordan.com/barefoot: room names, photos, 20 s sweeps through an ATC SCM25a,
+    Neumann KM184 pair) and one photo per room in the download (BF TL SPACE LIBRARY/<room>/*.jpg)'
 license:
   spdx: LicenseRef-custom
   note: 'Informal terms on the page: ''This software is provided to the community for free. Use it, share it, ...

@@ -3,16 +3,27 @@ id: rwth_continuous_brirs
 name: Quasi-Continuous BRIRs in the Horizontal Plane
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15490727"]}
-content: Binaural measurements of a stereo loudspeaker pair in RWTH Aachen's IKS|Lab with a KU100 dummy head turning
-  continuously through 370°; BRIRs for any angle are extracted with the included MATLAB code.
+adapter: {name: ndarray, params: {glob: data.mat, container: h5, array: data/referenceIrs, time_axis: 1, channel_axis: 3, record_axes: [0, 2], channels: [0, 1], roles: [L, R], capture_format: binaural, fs_dataset: data/sampleRate, room_default: iks-lab, select: {0: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]}, axis_keys: {0: {as: rcv, names_from: data/referenceAnglesDegree, format: '{:g}deg'}, 2: {as: src, names: [left, right]}}}}
+capture_formats:
+- binaural
+content: Binaural measurements of a stereo loudspeaker pair in RWTH Aachen's IKS|Lab with a KU100 dummy head turning continuously
+  through 370 degrees. RIRDB indexes the 24 reference BRIRs in data.mat (12 head angles, 30-degree steps, x 2 loudspeakers,
+  first sweep, KU100 ears); the quasi-continuous BRIRs for any angle must be computed from the recording with the included
+  MATLAB NLMS code and are not indexed.
 fs_hz:
 - 32000
 expected:
   n_rooms: 1
+  n_irs: 24
+  note: 'data.mat holds 24 reference measurements (12 head orientations, -180 to 150 degrees in 30-degree steps, each swept
+    twice) x 2 loudspeakers x 4 microphones (documentation.pdf). Read: the first sweep at each orientation and the KU100
+    ears, 12 x 2 = 24 binaural IRs. Left out on purpose: the second sweeps (a reproducibility check; src/demo.m drops them
+    too) and the B&K 4101-B microphones worn at the ears. The quasi-continuous BRIRs are not in the file: they are computed
+    from the 622 s recording with the authors'' NLMS code, so they are not read.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -20,6 +31,10 @@ room_info:
   positions: partial
   images: partial
   reference_acoustics: partial
+  where: 'documentation.pdf (section I: room, set-up and geometry: loudspeakers about 60 degrees apart, KU100 about 1.7
+    m away, positive angles turn the head left; section II: the fields of data.mat and the channel order); data/referenceAnglesDegree
+    gives each reference measurement''s head angle; the room is described further in rwth_em64''s documentation.pdf (floor
+    35 m2)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/15490727
@@ -41,7 +56,8 @@ web_check:
   - https://zenodo.org/records/15490727/files/documentation.pdf
   confidence: medium
   caveats:
-  - 'Mostly raw measurement signals in one 650 MB MATLAB file: the quasi-continuous BRIRs (0.25 s) must be computed
-    with the included MATLAB adaptive-filter (NLMS) demo.'
-  - Ready-made IRs cover only 24 reference head orientations (30° steps) for the 2 loudspeakers, 1 s long.
+  - 'Mostly raw measurement signals in one 650 MB MATLAB file: the quasi-continuous BRIRs (0.25 s) must be computed with
+    the included MATLAB adaptive-filter (NLMS) demo.'
+  - Ready-made IRs cover only 12 reference head orientations (30° steps), each swept twice, for the 2 loudspeakers, 1 s
+    long.
   - 'Four channels per measurement: the KU100 ears plus B&K 4101-B binaural microphones worn on the dummy head.'

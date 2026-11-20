@@ -2,17 +2,34 @@
 id: odeon_irs
 name: ODEON impulse response downloads
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://odeon.dk/download/ImpulseResponses/Auditorium21_IR.zip","https://odeon.dk/download/ImpulseResponses/HagiaSofia_IR.zip","https://odeon.dk/wp-admin/download/ImpulseResponses/corridor_flutter.zip"]}
+adapter: {name: wav_tree, params: {glob: '**/*.wav', pattern: '^(?P<room>Auditorium21|HagiaSofia|corridor_flutter)(?:_IR)?/(?:S[1-3]/)?(?:(?P<src>S[1-3])(?P<rcv>R\d+))?', roles: {1: [omni], 4: [W, X, Y, Z]}, channel_formats: {1: mono_omni, 4: foa_fuma}, sh_norm: FuMa, orientation_known: false}}
+capture_formats:
+- mono_omni
+- foa_fuma
+fs_hz:
+- 44100
 content: 'Example IRs from the ODEON room-acoustics software makers: DTU Auditorium 21 (measured 2013), Hagia Sophia
   (measured; modelled in the CAHRISMA project) and a B-format outdoor corridor flutter echo (Zoom H3-VR).'
 expected:
   n_rooms: 3
+  n_irs: 47
+  note: 'The download page gives no IR count. 47 files: Auditorium 21, 2 sources x 5 receivers (the 10 ISO 3382 combinations
+    of Christensen et al., ISRA 2013); Hagia Sophia, 3 sources x 12 receivers (the CAHRISMA measurements); the corridor,
+    one B-format IR.'
 room_info:
   geometry: partial
   images: 'no'
+  dimensions: partial
+  volume: partial
+  reference_acoustics: partial
+  where: 'the download page (https://odeon.dk/downloads/impulse-responses/: Auditorium 21 measured with ODEON''s 4 s sweep;
+    Hagia Sophia from the CAHRISMA project; the corridor in B-format with a Zoom H3-VR, its ODEON model in the ZIP); Christensen,
+    Koutsouris and Rindel, ''The ISO 3382 parameters: can we simulate them? can we measure them?'', ISRA 2013 (https://odeon.dk/pdf/ISRA2013_Paper_The_ISO_3382_parameters_Can_we_simulate_them_Can_we_measure_them.pdf),
+    section 4 and 5.2: both rooms, plans, receiver distances, Hagia Sophia''s size and reverberation'
 license:
   spdx: LicenseRef-unspecified
   note: The download page states no terms of use, and the site's Terms and Conditions page covers only software

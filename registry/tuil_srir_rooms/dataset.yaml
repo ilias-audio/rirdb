@@ -3,18 +3,32 @@ id: tuil_srir_rooms
 name: TU Ilmenau SRIR dataset in different rooms
 year: 2022
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["6541444"]}
+adapter: {name: mat_struct, params: {glob: measurements/*/*.mat, pattern: '^measurements/[^/]+/(?P<room>H\d{4}a?|K-HS\d)_(?P<src>0|30)_[012]_(?P<rcv>[01])\.mat$', var: recordings, field: ir, fs_field: fs, time_axis: 0, capture_format: sdm_array, reference_role: mic_6}}
+analysis:
+  reference_role: mic_6
+ir_kinds:
+- room
+capture_formats:
+- sdm_array
+fs_hz:
+- 48000
 content: 'Spatial RIRs measured with a self-built SDM microphone array in 15 TU Ilmenau rooms (6 seminar rooms,
   6 offices, 3 lecture halls): 42 .mat measurements, with 360° photos and floor plans.'
 expected:
   n_irs: 42
   n_rooms: 15
+  note: 6 seminar rooms x 2 loudspeakers + 6 offices x 2 loudspeakers x 2 microphone positions + 3 lecture halls x 2 loudspeakers
 room_info:
   geometry: partial
   images: 'yes'
+  positions: partial
+  where: 'measurements/readme.txt (file names: room, loudspeaker angle 0 or 30 degrees, room type, microphone position);
+    info/floor plans/*.png with legend_room_color_marking.txt (seats, windows, board, acoustic panels, microphone and loudspeaker
+    positions, no scale); info/sdm array/checkMicGeo.m (6 capsules at r = 5 cm plus a centre microphone, mic 7); 360images/'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/6541444

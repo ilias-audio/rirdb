@@ -4,17 +4,38 @@ name: Hearing Anything Anywhere dataset
 year: 2024
 type: measured
 ir_kinds: [room]
-capture_formats: [mono_omni, binaural]
-fs_hz: [48000]
+capture_formats:
+- mono_omni
+- binaural
+fs_hz:
+- 48000
 content: About 3,000 RIRs (mono and binaural) and music recordings at the same positions in 4 real rooms (classroom, dampened room, hallway, complex room) in 14 configurations (DiffRIR).
-expected: {n_irs: 3006, n_rooms: 4, note: "3,006 microphone-speaker pairs in the base subsets, plus rotation, translation and panel subsets (checked 2026-10-13)"}
+expected:
+  n_irs: 3226
+  n_rooms: 4
+  note: '3,006 mono RIRs (the paper''s Table 1: 630 classroom, 768 dampened, 936 hallway, 672 complex microphone-speaker
+    pairs, over all 14 subsets) plus 220 binaural RIRs (bin_RIRs.npy, counted from the array shapes; the paper gives no
+    binaural count). Checked 2026-11-16.'
 license: {spdx: CC-BY-4.0, redistribute_audio: yes, note: "Zenodo record: CC BY 4.0 (checked 2026-10-13). The music clips come from the Free Music Archive under their own licences."}
 access: open
 source: {kind: zenodo, records: ["11195833"]}
+adapter: {name: ndarray, params: {groups: [{glob: '*/*/RIRs.npy', container: npy, time_axis: 1, record_axes: [0], fs: 48000, capture_format: mono_omni, roles: [omni], pattern: '^(?P<room>classroom|complex|dampened|hallway)(?:(?P<src>Base|Rotation|Translation)|(?P<cond>Panel\d?))/', positions: {rcv: {npy: xyzs.npy, key_from_position: true}}, src_default: Base}, {glob: '*/*/bin_RIRs.npy', container: npy, time_axis: 2, channel_axis: 1, record_axes: [0], fs: 48000, capture_format: binaural, roles: [L, R], pattern: '^(?P<room>classroom|complex|dampened|hallway)(?:(?P<src>Base|Rotation|Translation)|(?P<cond>Panel\d?))/', positions: {rcv: {npy: bin_xyzs.npy, key_from_position: true, key_prefix: bin_}}, src_default: Base}]}}
+room_info:
+  dimensions: 'yes'
+  volume: partial
+  materials: partial
+  positions: 'yes'
+  reference_acoustics: partial
+  where: 'paper (arXiv 2406.07532), Section 4, Table 1 and Appendix C.1: room descriptions, dimensions, RT60, pair counts,
+    panel and loudspeaker configurations; xyzs.npy and bin_xyzs.npy per subset: microphone and binaural-head positions in
+    metres (read as receiver positions); the authors'' GitHub repo rooms/*.py: speaker_xyz per subset and the binaural head
+    axes (forward +y, left -x); Zenodo record description: file layout, 48 kHz'
+analysis:
+  keep_s: 3.0
 homepage: https://github.com/maswang32/hearinganythinganywhere
 paper: {title: "Hearing Anything Anywhere", url: "https://arxiv.org/abs/2406.07532"}
 doi: 10.5281/zenodo.11195833
-status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 web_check:
   checked: '2026-10-14'
   institution: Stanford University

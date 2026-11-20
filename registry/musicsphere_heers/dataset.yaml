@@ -6,7 +6,7 @@ type: measured
 status: planned   # set by scripts/onboard; a person makes it active after the review
 access: open
 wave: 3   # onboarded by scripts/onboard
-source: {kind: zenodo, records: ["22111389"]}
+source: {kind: zenodo, records: ["22111389", "22686848"]}   # 22686848: the SRIRs (Part 1); 22111389: the overview
 content: Spatial RIRs from a robot-mounted 7-microphone array at 152 positions in the nave of Sint-Martinus Church,
   Heers (Belgium), with 5 sources near the organ and altar; SOFA files.
 expected:

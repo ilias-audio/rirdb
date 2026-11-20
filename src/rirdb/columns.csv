@@ -10,15 +10,15 @@ irs,duplicate_of,string,,,,,always,no other IR in the table has the same audio_h
 irs,file,string,,,,,always,never empty,"The path inside the dataset's files. Two paths joined by | when a response spans two files",index
 irs,item,string,,,,,always,the file holds one IR,"The position of the IR inside the file (an index or a key, as the reader names it)",index
 irs,download,string,,,,,always,never empty,The download that holds the file (a key of downloads.parquet),pin
-irs,audio_hash,string,,,,,the file is readable,the file cannot be read (defect_corrupt_samples),"First 32 hex digits of a hash of the decoded samples (float32, channel after channel): in 0.9 the SHA-1 of the samples, from analyser v1; from 1.0 the SHA-256 of the sample rate, the channel count and the samples. get checks every IR it cuts against it",measure
-irs,fs,int,Hz,,4000,768000,always,never empty,Sample rate of the file,index
-irs,channels,int,,,1,256,always,never empty,Number of channels in this response,index
+irs,audio_hash,string,,,,,the file is readable,the file cannot be read (defect_corrupt_samples),"First 32 hex digits of a hash of the decoded samples (float32, channel after channel): in 0.9 the SHA-1 of the samples, from analyser v1; from 1.0 the SHA-256 of the sample rate, the channel count and the samples. For an IR the reader computes from published values (inverse FFT, subband filters), the hash of those values and the reader's settings: the same on any numpy build. get checks every IR it cuts against it",measure
+irs,fs,int,Hz,,1000,768000,always,never empty,Sample rate of the file,index
+irs,channels,int,,,1,4096,always,never empty,"Number of channels in this response (up to 2,702: spherical arrays measured one position at a time on a Lebedev grid, chalmers_baffled_array and wdr_studios)",index
 irs,duration_s,float,s,,0,3600,always,never empty,Length of the response as published,index
 irs,sample_format,string,,int8|int16|int24|int32|float32|float64,,,always,the container does not say,How the samples are stored in the file,index
 irs,measured_on,string,,,,,the file is readable,no value could be measured (defect_corrupt_samples),"The channels the room values describe: L+R (mean of two ears or a stereo pair), W (Ambisonic omni), ch0 (one reference capsule or the mono channel)",measure
 irs,origin,string,,measured|simulated|device,,,always,never empty,"How the IR came to exist. The dataset's origin, unless its space states its own",registry
 irs,format,string,,mono|stereo|binaural|ambisonic|array,,,always,never empty,The channel format of the response,registry
-irs,layout,string,,mono_omni|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,The capture format: which device or arrangement recorded the channels,registry
+irs,layout,string,,mono_omni|mono_directional|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,The capture format: which device or arrangement recorded the channels,registry
 irs,space_type,string,,anechoic|circulation|concert_hall|device|domestic|hospitality_retail|industrial|laboratory|large_structure|lecture_classroom|office_meeting|outdoor|public_interior|scale_model|sports_leisure|stairwell|studio_booth|theatre_auditorium|transport_hub|tunnel_underpass|underground|vehicle|virtual|worship|unknown,,,always,never empty (unknown when the dataset does not say),The kind of space. The space's own type in spaces.csv; otherwise the dataset's default,registry
 irs,volume_m3,float,m3,,0,10000000,always,the dataset does not state the volume,"Volume of the space, as the dataset or its paper states it",registry
 irs,distance_m,float,m,,0,10000,always,the dataset gives no positions,Source-receiver distance,index
@@ -187,7 +187,7 @@ all_irs,space,string,,,,,always,never empty,As irs.space,index
 all_irs,condition,string,,,,,always,the dataset has one state of the space,As irs.condition,index
 all_irs,source,string,,,,,always,the dataset does not name source positions,As irs.source,index
 all_irs,receiver,string,,,,,always,the dataset does not name receiver positions,As irs.receiver,index
-all_irs,layout,string,,mono_omni|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,As irs.layout,registry
+all_irs,layout,string,,mono_omni|mono_directional|stereo|binaural|foa_fuma|foa_ambix|hoa_sh|em32_raw|sma_raw|tetra_raw|array_raw|sdm_array,,,always,never empty,As irs.layout,registry
 all_irs,file,string,,,,,always,never empty,As irs.file,index
 all_irs,item,string,,,,,always,the file holds one IR,As irs.item,index
 all_irs,src_x,float,m,,-10000,10000,always,the dataset gives no source position,As irs.src_x,index

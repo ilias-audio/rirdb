@@ -47,7 +47,9 @@ def test_active_datasets_say_where_room_information_is():
 
 def test_conflicting_licences_list_every_statement_and_use_the_strictest():
     conflicts = {d.id: d.license for d in DATASETS if d.license.statements}
-    assert len(conflicts) == 12
+    # 12 at step 1; tier B adds 4 whose SOFA headers state another licence than the record: tuil_highres_srirs,
+    # tuil_translation_seminar, tuil_translation_two_rooms, wdr_studios
+    assert len(conflicts) == 16
     for i, lic in conflicts.items():
         assert len(lic.statements) >= 2, i
         assert lic.spdx == strictest([s.licence for s in lic.statements]), i
@@ -70,7 +72,8 @@ def test_only_very_dense_datasets_have_a_cap():
     assert {i: caps[i] for i in ("sriracha", "miracle", "meshgrid3d")} == {"sriracha": 500, "miracle": 500,
                                                                            "meshgrid3d": 500}
     # for the 0.9 preview only: what analyser v1 measured (master-plan.md, step 1)
-    assert set(caps) == {"sriracha", "miracle", "meshgrid3d", "mp_rir", "meshrir", "soundcam"}
+    assert set(caps) == {"sriracha", "miracle", "meshgrid3d", "mp_rir", "meshrir", "soundcam",
+                         "uts_multizone"}   # tier B: 104,160 IRs in 7 spaces, about 14,880 each (decision 4)
 
 
 @pytest.mark.parametrize("dataset_id", sorted(p.parent.name for p in paths.DATASETS_DIR.glob("*/spaces.csv")))

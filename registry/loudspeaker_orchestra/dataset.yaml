@@ -3,10 +3,18 @@ id: loudspeaker_orchestra
 name: Loudspeaker Orchestra with Multi-Channel Microphone Arrays
 year: 2022
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"depositonce","records":["bf819762-b4b4-455b-a556-7fdb19350e7b"],"include":["2_IR_BPH.zip","2_IR_BOL.zip","01_Documentation.pdf"],"exclude":["1_Recordings_*.zip","3_AdditionalData.zip"]}
+adapter: {name: sofa, params: {groups: [{glob: 2_IR_*/2_IR_*/2_*_Listener1_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener1)_RIR\.sofa$', pattern_on: path, capture_format: binaural, roles: [L, R], m_select: [45], preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener2_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener2)_RIR\.sofa$', pattern_on: path, capture_format: binaural, roles: [L, R], preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener3_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener3)_RIR\.sofa$', pattern_on: path, capture_format: array_raw, reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener4_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener4)_RIR\.sofa$', pattern_on: path, capture_format: array_raw, reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener5_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener5)_RIR\.sofa$', pattern_on: path, capture_format: tetra_raw, roles: [FLU, FRD, BLD, BRU], reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener6_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener6)_RIR\.sofa$', pattern_on: path, capture_format: sma_raw, reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener7_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener7)_RIR\.sofa$', pattern_on: path, capture_format: em32_raw, reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener8_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener8)_RIR\.sofa$', pattern_on: path, capture_format: sma_raw, reference_role: mean, preferred: false}, {glob: 2_IR_*/2_IR_*/2_*_Listener9_RIR.sofa, pattern: '^2_IR_(?P<room>BOL|BPH)/2_IR_(?:BOL|BPH)/2_(?:BOL|BPH)_(?P<rcv>Listener9)_RIR\.sofa$', pattern_on: path, capture_format: mono_omni, roles: [omni]}]}}
+capture_formats:
+- binaural
+- array_raw
+- tetra_raw
+- sma_raw
+- em32_raw
+- mono_omni
 content: Measured IRs from each of 18 loudspeakers to 9 microphones (omni, two dummy heads, equatorial arrays, FOA/HOA
   mics) in the Berliner Philharmonie and the Berlin Open Lab, as SOFA files, with orchestra recordings.
 fs_hz:
@@ -14,6 +22,10 @@ fs_hz:
 expected:
   n_irs: 324
   n_rooms: 2
+  note: 'Per room 18 loudspeakers x 9 listeners (01_Documentation.pdf, Tables 1 and 2): 162 per room. FABIAN (Listener1)
+    was also measured at 91 head-above-torso orientations (-45 to 45 degrees, M = 91); only the frontal one (m = 45) is
+    indexed, as for huddersfield_360_brir and raves. The omni measurement microphone (Listener9) is the preferred layout.
+    The Zylia (Listener6) and em32 (Listener7) IRs start 14 to 90 ms later than the others'' (device latency), as published.'
 room_info:
   dimensions: partial
   geometry: 'yes'
@@ -21,15 +33,18 @@ room_info:
   positions: 'yes'
   images: 'yes'
   conditions: partial
+  volume: 'yes'
+  where: 01_Documentation.pdf (listeners, emitters and instruments, Tables 1 and 2); the SOFA files' metadata (RoomDescription,
+    RoomVolume, positions of listener, source and emitters); 3_AdditionalData.zip (SketchUp models, photos) was not downloaded
 license:
   spdx: CC-BY-NC-SA-4.0
   statements:
   - licence: CC-BY-SA-4.0
-    where: DepositOnce record and the documentation's licence line
+    where: DepositOnce record, the documentation's licence line and the License attribute of every SOFA file
   - licence: CC-BY-NC-SA-4.0
     where: 'documentation text: redistribution and editing ''for non-commercial purposes'''
-  note: The record and the documentation name CC BY-SA 4.0, but the documentation's text says the database may be
-    redistributed and edited 'for non-commercial purposes'.
+  note: The record and the documentation name CC BY-SA 4.0, but the documentation's text says the database may be redistributed
+    and edited 'for non-commercial purposes'.
 homepage: https://depositonce.tu-berlin.de/handle/11303/16995.3
 doi: 10.14279/depositonce-15774.3
 web_check:

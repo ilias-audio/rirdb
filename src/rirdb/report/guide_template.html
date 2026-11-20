@@ -974,8 +974,9 @@ function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; le
 function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
 /* ================================================================ vocabulary */
-const FAM = { mono_omni: 'mono', stereo: 'stereo', binaural: 'binaural', foa_fuma: 'ambisonic', foa_ambix: 'ambisonic',
-  hoa_sh: 'ambisonic', em32_raw: 'ambisonic', sma_raw: 'ambisonic', tetra_raw: 'ambisonic', array_raw: 'array', sdm_array: 'array' };
+const FAM = { mono_omni: 'mono', mono_directional: 'mono', stereo: 'stereo', binaural: 'binaural', foa_fuma: 'ambisonic',
+  foa_ambix: 'ambisonic', hoa_sh: 'ambisonic', em32_raw: 'ambisonic', sma_raw: 'ambisonic', tetra_raw: 'ambisonic',
+  array_raw: 'array', sdm_array: 'array' };
 const FAM_LABEL = { mono: 'Mono', stereo: 'Stereo', binaural: 'Binaural', ambisonic: 'Ambisonic / spherical', array: 'Microphone array' };
 const FAM_ORDER = ['mono', 'stereo', 'binaural', 'ambisonic', 'array'];
 const TYPE_LABEL = { measured: 'Measured', simulated: 'Simulated', production: 'Production library', hybrid: 'Measured + simulated' };

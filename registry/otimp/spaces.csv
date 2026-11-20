@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+otimp-listening-room,"Acoustically treated listening room (OTIMP, Imperial College London and Oticon; location not stated)",studio_booth,room,165.9,7.9 x 6.0 x 3.5,,,,,"T 250 ms (Moore et al. 2019); 29 loudspeakers on a 1.9 m sphere (the overhead one at 1.6 m), the listener at its centre; the receiver is the subject and the chair yaw (0, -15, -30 degrees)",

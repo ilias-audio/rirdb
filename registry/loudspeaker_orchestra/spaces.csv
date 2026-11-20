@@ -1,0 +1,3 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+bph,"Berliner Philharmonie, large hall",concert_hall,room,21000,,,,,,"volume from the SOFA files (RoomVolume); 18-loudspeaker orchestra on the stage, the 9 listeners at one slightly raised position in the first row of the audience (01_Documentation.pdf, Figure 1), 8.32 m from the orchestra centre",
+bol,"Berlin Open Lab, mixed-reality space (TU Berlin)",laboratory,room,1800,,,,,,"volume from the SOFA files (RoomVolume); empty room (the SOFA RoomDescription); the same 18-loudspeaker orchestra and 9 listeners, the orchestra centre 3.38 m from the listeners",

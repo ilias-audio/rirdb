@@ -3,11 +3,13 @@ id: 6drir_dl
 name: 6DRIR-DL
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["8038733"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "pattern": "^(?P<room>[^/]+)/", "pattern_on": "path", "m_is": "src"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: sofa, params: {glob: '*/SOFA_measurement-*/*.sofa', pattern: '^measurement-(?P<cond>no-obstacles|wedges)-(?P<rcv>A\d)\.sofa$', room_from: dataset, capture_format: sma_raw}}
+capture_formats:
+- sma_raw
 content: RIRs from a 14 x 28 grid of 392 small loudspeakers (8 cm spacing) to nine 19-capsule Zylia ZM-1S spherical
   arrays in a steel-walled room, with and without absorbers; SOFA, 48 kHz.
 fs_hz:
@@ -15,6 +17,7 @@ fs_hz:
 expected:
   n_irs: 7056
   n_rooms: 1
+  note: 392 loudspeaker positions x 9 arrays x 2 room states; each IR has the 19 capsules of a Zylia ZM-1S as channels.
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -24,6 +27,7 @@ room_info:
   images: partial
   reference_acoustics: 'no'
   conditions: 'yes'
+  where: 'readme.md (in both parts: room size, coordinates, the two room states, Fig. 1) and the SOFA files'' metadata'
 license:
   spdx: CC-BY-4.0
   note: The companion GitHub repository (code and README only, no data) has a CC0 1.0 LICENSE file, while the Zenodo

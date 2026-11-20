@@ -4,18 +4,49 @@ name: Extended Room Transition Dataset (ERTD)
 year: 2024
 type: simulated
 ir_kinds: [room]
-capture_formats: [mono_omni]
+capture_formats:
+- mono_omni
 content: 2,833 FDTD-simulated RIRs per variant on a 0.2 m grid over a meeting room coupled to a hallway (the geometry of McKenzie's Room Transition Dataset, NLOS source), at 1.55 m height; ERTD1 absorption matched to the measurements, ERTD2 with a strongly absorbing hallway wall.
-expected: {n_irs: 5666, n_rooms: 2, note: "2 variants x 2833"}
+expected:
+  n_irs: 5666
+  n_rooms: 1
+  note: 2 absorption conditions (ertd1, ertd2) x 2,833 receivers, one source. ertd1.mat and ertd2.mat share the source and
+    every receiver position and differ in absorption, so they are two states of one space (the coupled meeting room and
+    hallway), not two rooms.
 license: {spdx: CC-BY-4.0, redistribute_audio: yes}
 access: open
 source: {kind: zenodo, records: ["12169116"]}
+adapter: {name: ndarray, params: {glob: 'ertd[12].mat', container: h5, array: ertd/rirs, time_axis: 1, record_axes: [0], fs: 48000, pattern: '(?P<cond>ertd[12])\.mat$', room_default: meeting-room-hallway}}
+fs_hz:
+- 48000
+room_info:
+  dimensions: 'yes'
+  geometry: partial
+  materials: 'yes'
+  positions: 'yes'
+  conditions: 'yes'
+  where: roomgeometry.pdf (plan of the meeting room and hallway); the Zenodo description (absorption coefficients of each
+    variant); srcPos and rcvPos in each .mat file
 wave: 4
 homepage: https://zenodo.org/records/12169116
 paper: {title: "Common-slope modeling of late reverberation (IEEE/ACM TASLP 31, 2023)", url: "https://doi.org/10.1109/TASLP.2023.3317572"}
 doi: 10.5281/zenodo.12169116
-status: planned
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 web_check:
   checked: '2026-10-14'
   institution: Aalto University
   country: Finland
+  caveats:
+  - 'The files and the record state no sampling rate. RIRDB uses 48 kHz, inferred from the direct-sound delay (about 140
+    samples per metre, 48.0 kHz at a speed of sound of 343 m/s) and the length (120,000 samples, exactly 2.5 s at 48 kHz).
+    The delays fix the rate only relative to the speed of sound: for a speed between 340 and 346 m/s the rate lies between
+    47.6 and 48.4 kHz, so times and decay values would be off by 1% at most.'
+  - Content stops at about 4 kHz; above it the files hold only a flat noise floor (also present before the direct sound)
+    about 41 to 44 dB below the 500 Hz to 1 kHz level in ertd1 and about 55 dB below in ertd2, so 8 kHz values are empty,
+    4 kHz values describe 2.8 to 4 kHz, and about half of the ertd1 IRs grade B because their 4 kHz T30 is not valid. The
+    automatic band-limited flag (defect_band_limited) misses most of these IRs, because the floor lies inside its 50 dB
+    window.
+  - 'Each file stores its 2,833 IRs as one compressed 2.6 GB array, so reading any one IR decompresses the whole file: rirdb
+    get spends about 14 s on each IR it writes (one read took 13 to 15 s in our tests), after downloading that 2.6 GB file;
+    get --dataset ertd alone copies the files as published without reading them.'
+  - Most IRs (4,053 of 5,666) carry a DC offset, median about -43 dB re peak, from the FDTD simulation; octave-band values are unaffected, broadband values may be slightly affected. In ertd1 rt_mid (1.47 s) matches the measured mckenzie_rtd meeting-room-to-hallway (1.50 s) within 2 %, which supports the inferred 48 kHz.

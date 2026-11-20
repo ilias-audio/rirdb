@@ -27,11 +27,23 @@ Registry parameters (adapter.params), all optional:
   max_s:       leave out files longer than this (seconds): sweep or scene recordings, not IRs
   tokens:      true: take the source and receiver from the file name where the pattern gives none, as written
                S2, Src2, LS2, Spk2 (source) and R5, Rcv5, Mic5, M5, Pos5, P5 (receiver)
+  layout_from_regex: {regex: {n_channels: {roles, format, sh_norm, orientation_known}}}, for conventions that
+               differ inside one dataset (farina_collection's B-format in two channel orders, W X + Y Z or
+               W Y + X Z; an ORTF pair among ear files). The regex is searched on the relpath of the IR's (first)
+               file; the first one that matches and has an entry for the IR's channel count sets what its entry
+               gives, over what the parameters above gave. roles must have one name per channel. An entry without
+               sh_norm keeps the dataset's sh_norm for a first-order format
+  segments:    each file holds this many IRs of equal length, one after the other in time (default 1). Each part
+               is a record with the item 0, 1, ... (farina_car_irs: Aurora "2x2" files hold the binaural IR of the
+               left loudspeaker, then that of the right one)
+  segment_names: the source of each part, in order, e.g. [L, R] (default 1, 2, ...); joined after the pattern's
+               source with "_" when the pattern has one
 """
 
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 from pathlib import Path
 from typing import Iterator
 
@@ -64,8 +76,50 @@ def token(rx: re.Pattern, stem: str) -> str | None:
     return re.sub(r"[ _-]", "", m.group(0)) if m else None
 
 
+def with_layouts(records: Iterator[IRRecord], layouts: dict, sh_norm: str | None) -> Iterator[IRRecord]:
+    """Roles, format, sh_norm and orientation_known from the first entry of `layout_from_regex` that fits the IR.
+    `sh_norm` is the dataset's own (the parameter), kept for a first-order format when the entry gives none."""
+    rules = [(re.compile(rx), {int(n): entry for n, entry in by_n.items()}) for rx, by_n in layouts.items()]
+    for r in records:
+        first = r.locator.get("relpath") or r.locator["files"][0]
+        n = len(r.channel_roles)
+        entry = next((by_n[n] for rx, by_n in rules if rx.search(first) and n in by_n), None)
+        if entry is None:
+            yield r
+            continue
+        roles = tuple(entry.get("roles") or r.channel_roles)
+        if len(roles) != n:
+            raise ValueError(f"{first}: {n} channels, but layout_from_regex gives the roles {list(roles)}")
+        fmt = entry.get("format", r.capture_format)
+        norm = entry["sh_norm"] if "sh_norm" in entry else (sh_norm if fmt.startswith("foa") else None)
+        yield replace(r, capture_format=fmt, channel_roles=roles, sh_norm=norm,
+                      orientation_known=bool(entry.get("orientation_known", r.orientation_known)))
+
+
+def in_segments(records: Iterator[IRRecord], k: int, names: list | None) -> Iterator[IRRecord]:
+    """Each record becomes k records, one per equal part of the file in time (the `segments` parameter)."""
+    names = [str(n) for n in (names or range(1, k + 1))]
+    if len(names) != k:
+        raise ValueError(f"segments is {k}, but segment_names has {len(names)} names")
+    for r in records:
+        for i, name in enumerate(names):
+            yield replace(r, local_key=f"{r.local_key}#{i}", n_samples=r.n_samples // k,
+                          src_key=f"{r.src_key}_{name}" if r.src_key else name,
+                          locator={**r.locator, "segment": i, "segments": k})
+
+
 class WavTreeAdapter:
     def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
+        p = dataset.adapter.params
+        records = self._file_records(dataset, root)
+        if p.get("layout_from_regex"):
+            records = with_layouts(records, p["layout_from_regex"], p.get("sh_norm"))
+        if int(p.get("segments", 1)) > 1:
+            records = in_segments(records, int(p["segments"]), p.get("segment_names"))
+        return records
+
+    def _file_records(self, dataset, root: Path) -> Iterator[IRRecord]:
+        """One record per file, or per set of files joined by `join`."""
         p = dataset.adapter.params
         exclude = re.compile(p.get("exclude", DEFAULT_EXCLUDE))
         pattern = re.compile(p["pattern"]) if p.get("pattern") else None
@@ -176,6 +230,15 @@ class WavTreeAdapter:
         return [[r for _, r in sorted(v)] for v in sets.values()]
 
     def load(self, locator: dict, root: Path) -> tuple[np.ndarray, int]:
+        x, fs = self.read(locator, root)
+        if "segments" in locator:                   # one part of the file in time
+            n = x.shape[1] // locator["segments"]
+            x = x[:, locator["segment"] * n:(locator["segment"] + 1) * n]
+        return x, fs
+
+    @staticmethod
+    def read(locator: dict, root: Path) -> tuple[np.ndarray, int]:
+        """The whole file, or the joined files, as (channels, time)."""
         if "files" in locator:
             chans = [sf.read(str(root / f), dtype="float64", always_2d=True) for f in locator["files"]]
             n = min(c[0].shape[0] for c in chans)

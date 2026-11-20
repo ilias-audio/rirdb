@@ -4,19 +4,36 @@ name: RIR-Mega
 year: 2025
 type: simulated
 ir_kinds: [room]
-capture_formats: [array_raw]
-fs_hz: [16000]
-content: 50,000 linear-array plus 8,000 circular-array 8-channel simulated RIRs (image-source method, shoebox rooms 3-25 m long) with a compact metadata schema; full archive on Zenodo, subset on Hugging Face.
-expected: {n_irs: 58000, note: "Zenodo v1.2.1: 50,000 linear + 8,000 circular 8-channel RIRs (checked 2026-10-13)"}
+capture_formats:
+- array_raw
+fs_hz:
+- 16000
+content: 50,000 linear-array plus 8,000 circular-array 8-channel simulated RIRs (image-source method, max order 17; shoebox
+  rooms 3-30 m long and 2.5-10 m high) with a compact metadata schema; full archive on Zenodo, subset on Hugging Face.
+expected:
+  n_irs: 58000
+  note: 'Zenodo v1.2.1: 50,000 linear + 8,000 circular 8-channel RIRs, as metadata.csv lists them. The 50k folders also
+    hold 7,731 WAVs that metadata.csv does not list at that path: each is a byte copy of a listed file (same name and checksum)
+    and is not read. Each room is a shoebox simulated by the image method (max order 17) from its seed_room; the 8,000 circular
+    RIRs are in 8,000 of the 50,000 rooms (same seed_room, room size, absorption, source and array centre as linear rir_000958
+    to rir_008957), so there are 50,000 rooms. Every file is peak-normalised (all 58,000 files peak at 0.98), so absolute
+    levels and the level difference between the two arrays are lost.'
+  n_rooms: 50000
 license: {spdx: CC-BY-4.0, redistribute_audio: yes, note: "Zenodo record and paper: CC BY 4.0. The Hugging Face subset is tagged CC BY-NC 4.0, added later and apparently a template leftover; use the Zenodo copy (checked 2026-10-13)."}
 access: open
 source: {kind: zenodo, records: ["17387402"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 2, "channel_formats": {"8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: rir_mega_meta, params: {}}
+space_type: virtual
+room_info:
+  where: 'rir_output_50k/rir_output_50k/metadata.csv and rir_output_8k_circ/rir_output_8k_circ/metadata.csv (per RIR: room
+    family, room size, absorption per octave band, max order, source and array-centre position, the 8 microphone positions,
+    RT60, DRR, C50, C80 computed by the authors); manifests/manifests/index_linear8.csv and index_circular8.csv repeat only
+    the id, family, array and microphone positions, and their wav_path points to an audio/ folder that does not exist'
 wave: 4
 homepage: https://zenodo.org/records/17387402
 paper: {title: "RIR-Mega: a large-scale simulated room impulse response dataset for machine learning and room acoustics modeling", url: "https://arxiv.org/abs/2510.18917"}
 doi: 10.5281/zenodo.17387402
-status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 web_check:
   checked: '2026-10-14'
   institution: Mandip Goswami (independent; Amazon affiliation)

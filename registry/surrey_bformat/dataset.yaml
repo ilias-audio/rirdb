@@ -3,12 +3,32 @@ id: surrey_bformat
 name: B-format RIRs (Zermini, Surrey)
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["7558529"]}
-content: A single MATLAB file of B-format (first-order Ambisonic) room impulse responses from the University of
-  Surrey, used to make reverberant speech mixtures for a B-format speech-separation study.
+adapter: {name: ndarray, params: {glob: B_format_RIRs_12BB01_Alfredo_S3A.mat, container: mat, array: rirs_final, time_axis: 2, channel_axis: 1, record_axes: [0], fs: 48000, roles: [W, X, Y, Z], capture_format: foa_fuma, orientation_known: false, room_default: surrey-12bb01, axis_keys: {0: {as: src, names: [az000, az010, az020, az030, az040, az050, az060, az070, az080, az090, az100, az110, az120, az130, az140, az150, az160, az170, az180, az190, az200, az210, az220, az230, az240, az250, az260, az270, az280, az290, az300, az310, az320, az330, az340, az350]}}}}
+ir_kinds:
+- room
+capture_formats:
+- foa_fuma
+fs_hz:
+- 48000
+space_type: unknown
+expected:
+  n_irs: 36
+  n_rooms: 1
+  note: rirs_final holds 36 B-format IRs, one per 10 degrees of source azimuth (judged from the direct sound); the record
+    gives no count, rate or room.
+notes: 'Measured (mains hum in the noise, early reflections that change with source position). The sampling rate is not
+  stated: the length (60001 samples) and a 50 Hz hum harmonic fit 48 kHz, and also 96 kHz; 48 kHz is assumed (at 96 kHz
+  every time measure would halve). The layout foa_fuma names the channel order (W X Y Z) only: the normalisation and the
+  W gain are not stated, and the channel levels do not settle FuMa against N3D, so sh_norm is left empty. The source keys
+  az000-az350 are nominal: at 0.5-2 kHz the direct sound''s azimuth is within 5 degrees of the name (up to 10 degrees broadband).
+  The microphone''s orientation is not stated and the sources surround it, so no lateral fraction is published.'
+content: A single MATLAB file of 36 measured first-order B-format (W X Y Z) room impulse responses from room 12BB01 at the
+  University of Surrey, one per 10 degrees of source azimuth around one microphone position, used to make reverberant speech
+  mixtures for a B-format speech-separation study.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -17,8 +37,13 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: the file name only (room 12BB01, S3A); the Zenodo record names no room. The source azimuths are judged from the
+    direct sound.
 license:
   spdx: CC-BY-4.0
+  note: CC BY 4.0, as the Zenodo record publishes it (kept on 17 Nov 2026, to confirm). The file name (B_format_RIRs_12BB01_Alfredo_S3A.mat)
+    points to the S3A project, whose own RIR sets are academic-only; whether these IRs are S3A measurements is not stated,
+    and the author (Alfredo Zermini) is to be asked.
 homepage: https://zenodo.org/records/7558529
 doi: 10.5281/zenodo.7558529
 web_check:

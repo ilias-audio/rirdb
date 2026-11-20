@@ -3,18 +3,27 @@ id: hidvas
 name: HIDVAS
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15773862"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(sigrec|sweep|scene_|noise|ambien|excitation|truncated_)", "room_level": 0, "condition_level": 1}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: HIDVAS-econ/*/*/IR-*.wav, pattern: '^HIDVAS-econ/[^/]+/[^/]+/IR-(?P<room>EAL|SAL)_(?P<cond>T30_\d{3})-(?P<cond_2>CL|OP|SO|NR)-(?P<src>l(?:RIC[LR]|[PN]\d{3}))-m(?P<rcv>DHED|BTE|XM\d)', join: '-m(?:DHED(?P<ch>[LR])|BTE(?P<ch_2>[LR][FB]))\.wav$', roles: {'1': [omni], '2': [L, R]}, channel_formats: {'1': mono_omni, '2': binaural, '4': array_raw}, exclude: '-lRIC[LR]-'}}
+capture_formats:
+- binaural
+- array_raw
+- mono_omni
 content: Swept-sine IRs from 8 loudspeakers and 2 in-ear receivers to behind-the-ear hearing-aid mics, dummy-head
   eardrum mics and 2 external mics, in 2 KU Leuven rooms at 4 reverberation times; plus recordings.
 fs_hz:
 - 48000
 expected:
-  n_irs: 1216
+  n_irs: 512
   n_rooms: 2
+  note: 'the authors'' 1,216 IR files (one per loudspeaker-microphone pair) joined into 608 IRs: per loudspeaker, the eardrum
+    pair (binaural), the 4 BTE microphones (array_raw), XM1 and XM2 (mono); 4 settings x (3 domes x 10 loudspeakers + 1
+    dome x 8) x 4 = 608. The 96 IRs from the two in-ear RIC loudspeakers are left out (their source is in the ear canal,
+    not in the room): 512. In the closed-dome (CL) eardrum pairs the dome occludes the eardrum microphone, which leaves
+    only about 34 dB of decay range, so 28 of the 32 CL binaural IRs have no mid reverberation time.'
 room_info:
   dimensions: partial
   volume: 'no'
@@ -24,6 +33,8 @@ room_info:
   images: partial
   reference_acoustics: partial
   conditions: 'yes'
+  where: README.md (setup, rooms, T30 per setting, naming, gains) and coordinates.csv (loudspeaker and microphone positions);
+    Roebben et al., arXiv 2606.14175 (the EAL curtain settings, room heights)
 license:
   spdx: LicenseRef-unspecified
   note: The Zenodo data record states no licence; the companion code repository on GitHub and the arXiv preprint

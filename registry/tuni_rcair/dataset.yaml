@@ -3,10 +3,18 @@ id: tuni_rcair
 name: TUNI-RCAIR
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5242909"]}
+adapter: {name: csv_tree, params: {glob: TUNI-RCAIR dataset/*/Impulse Responses/*/*_full.csv, pattern: '^TUNI-RCAIR dataset/(?P<room>[^/]+)/Impulse Responses/(?P<src>[0-9.]+m)/[A-Z]+_(?P<rcv>DOA_-?\d+)_range_[0-9.]+_full\.csv$', fs: 48000, roles: [mic_1, mic_2, mic_3, mic_4, mic_5, mic_6, mic_7], capture_format: array_raw, ir_kind_from_regex: {/AnechoicChamber\(AEC\)/: anechoic}}}
+capture_formats:
+- array_raw
+defects:
+- what: The 0.5 s IRs decay into a floor 15 to 28 dB below the mean level of their first 5 ms after the peak, and louder
+    than the level before the direct sound, by 0.07 to 0.13 s in the six rooms (median per room; 0.21 s at the latest, in
+    the glass corridor, whose T60 is 1.7 s) and by 0.01 s in the anechoic chamber. So T20 and T30 can mostly not be measured
+    and EDT and clarity may be biased; the authors' T60 values come from separate sine-sweep measurements with another microphone.
 content: 7-microphone circular-array IRs measured in 7 Tampere University spaces (audio lab, offices, meeting rooms,
   glass stair corridor, anechoic chamber), the array rotated in 5° steps at 3 source distances.
 fs_hz:
@@ -14,6 +22,8 @@ fs_hz:
 expected:
   n_irs: 777
   n_rooms: 7
+  note: 7 spaces x 3 source distances (0.7, 1.4, 2.1 m) x 37 array rotations (-90 to 90 degrees in 5 degree steps); the
+    28-channel WAV files are the raw MLS recordings and are left out
 room_info:
   dimensions: 'yes'
   volume: 'yes'
@@ -23,6 +33,9 @@ room_info:
   images: 'yes'
   reference_acoustics: 'yes'
   conditions: 'no'
+  where: 'the paper (EUSIPCO 2021, section III: MLS at 48 kHz, DPA 4060 microphones, Genelec 8010A; Table II microphone
+    coordinates; Table III dimensions, empty volumes and T60, the T60 measured separately with a logarithmic sine sweep
+    in Room EQ Wizard and an Earthworks M30) and https://tuni-rcair.github.io/ (photos, the same table)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/5242909
@@ -35,7 +48,7 @@ web_check:
   - array
   host: Zenodo
   size: 17.5 GB
-  file_formats: WAV in one tar.gz
+  file_formats: CSV IRs (7 columns, no header) and WAV raw MLS recordings, in one tar.gz
   institution: Tampere University
   country: Finland
   evidence_urls:
@@ -47,5 +60,4 @@ web_check:
   caveats:
   - 'Large: a single 17.5 GB tar.gz.'
   - One of the seven spaces is an anechoic chamber.
-  - Short source distances only (0.7, 1.4 and 2.1 m); the array is rotated from -90° to +90° instead of moving the
-    source.
+  - Short source distances only (0.7, 1.4 and 2.1 m); the array is rotated from -90° to +90° instead of moving the source.

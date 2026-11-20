@@ -3,15 +3,31 @@ id: tut_tietotalo
 name: TUT Tietotalo Ambisonic Impulse Response
 year: 2018
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1443539"]}
+adapter: {name: stft_subband, params: {file: Tietotalo_RIR.mat, var: rir_DB, fs: 48000, room: tietotalo-corridor, label: 'Corridor, Tietotalo building, Tampere University of Technology', distances_m: [1, 2], elevation0_deg: -40, elevation_step_deg: 10, azimuth0_deg: -180, azimuth_step_deg: 10, capture_format: em32_raw, reference_role: mean, orientation_known: false}}
+capture_formats:
+- em32_raw
+fs_hz:
+- 48000
+analysis:
+  reference_role: mean
+  keep_s: 0.045
+defects:
+- what: The files hold 4-tap STFT-domain filters, not impulse responses; RIRDB rebuilds each response from them, and it
+    holds only about 70-75 ms of room sound before the filter fades out, and nothing above about 15.5 kHz. Decay and clarity
+    values would describe the filter, not the corridor, so none are given.
 content: '32-channel Eigenmike IRs of a large university corridor in Tampere, measured with MLS from a loudspeaker
   moved in circles: 36 azimuths, 9 or 5 elevations, at 1 m and 2 m, stored as STFT-domain responses.'
 expected:
   n_irs: 504
   n_rooms: 1
+  note: '36 azimuths x (9 elevations at 1 m + 5 at 2 m), 32 em32 capsules each (Zenodo record; Adavanne et al. 2018, section
+    III-A3); in the file, distance index 1 fills elevation slots 2-6 only, the other slots are zero. Each IR is rebuilt
+    from a 4-tap STFT-domain filter (reader stft_subband); no acoustic values are computed: analysis.keep_s 0.045 is deliberately
+    below analyser v1''s 0.05 s minimum (thresholds.yaml min_analysable_s), so no value comes from the cut-off response'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -21,11 +37,16 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: partial
+  where: 'Zenodo record 1443539 (layout of rir_DB; MLS from a Genelec G Two moved in circles round an Eigenmike; responses
+    estimated in the STFT domain with a CHiME challenge tool); Adavanne et al. 2018, arXiv 1807.00129, section III-A3 (a
+    corridor with classrooms around it; 1 m: elevations -40 to 40 degrees, 2 m: -20 to 20, 10 degree steps, 36 azimuths;
+    48 kHz)'
 license:
-  spdx: LicenseRef-custom
-  note: Tampere University of Technology's own licence allows use and copying for experimental and non-commercial
-    purposes only, with the copyright notice kept and the Audio Research Group acknowledged; all commercial use,
-    including selling results obtained with the data, is prohibited.
+  spdx: LicenseRef-TAU-NonCommercial
+  note: Tampere University of Technology's own licence allows use and copying for experimental and non-commercial purposes
+    only, with the copyright notice kept and the Audio Research Group acknowledged; all commercial use, including selling
+    results obtained with the data, is prohibited.
+  redistribute_audio: unaltered_only
 homepage: https://zenodo.org/records/1443539
 doi: 10.5281/zenodo.1443539
 web_check:

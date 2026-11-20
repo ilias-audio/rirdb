@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+surrey-12bb01,"Room 12BB01, University of Surrey",unknown,room,,,,,,,"named only in the file name, which also names the S3A project; 36 source directions, 10 degrees apart, around one microphone position; T20 of the W channel about 0.25 s at 0.5-1 kHz (0.31 s broadband) at the assumed 48 kHz",

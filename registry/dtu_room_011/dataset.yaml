@@ -3,10 +3,13 @@ id: dtu_room_011
 name: RIR Dataset - ACT, DTU Elektro (011, IEC; plane, sphere)
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["14320166"], exclude: ["video_011.avi", "video_iec.avi"]}
+adapter: {name: h5_sets, params: {glob: rir_*.h5, pattern: 'rir_(?P<room>011|iec)\.h5$', sets: 'dataset_(?P<set>plane|sphere)/impulse_response', time_axis: 1, fs_attr: sampling_frequency, positions: position}}
+capture_formats:
+- mono_omni
 content: '1,612 RIRs (806 per room) measured with a robot-moved microphone on a plane and a sphere in two DTU rooms:
   a very reverberant shoebox room (011) and an IEC listening room; 44.1 kHz, HDF5.'
 fs_hz:
@@ -14,6 +17,9 @@ fs_hz:
 expected:
   n_irs: 1612
   n_rooms: 2
+  note: '806 per room (709 plane + 97 sphere); 42 plane rows repeat an earlier position (40 positions, the same coordinates
+    to 1 micrometre: 39 measured twice and one four times, plane rows 44, 70, 71 and 97), so each room has 764 distinct
+    positions; all 806 rows are kept, as the authors count them'
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +29,8 @@ room_info:
   images: 'yes'
   reference_acoustics: 'yes'
   conditions: 'no'
+  where: Readme.html (rooms, dimensions, octave T30, positions); positions in the HDF5 files, relative to the robot base;
+    photos 011_photo_*.jpg, iec_photo_*.jpg
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://data.dtu.dk/articles/dataset/Room_Impulse_Response_Dataset_-_ACT_DTU_Elektro_011_IEC_plane_sphere_/14320166

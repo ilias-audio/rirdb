@@ -143,7 +143,7 @@ layout is not counted in statistics.
 | `dataset` | `[a-z0-9_]+`, e.g. `openair`; also its folder name | never, once published |
 | `space` | `<dataset>/<slug>`, e.g. `openair/york-minster` | spaces are merged or split; IR ids are not affected |
 | `ir_id` | `<dataset>-<16 hex>`: the hash of `file#item` | the authors move the file, or the reader slices it differently |
-| `audio_hash` | first 32 hex digits of the SHA-256 of the sample rate, the channel count and the decoded samples (float32, channel after channel) | the audio changes, whatever the container |
+| `audio_hash` | first 32 hex digits of the SHA-256 of the sample rate, the channel count and the decoded samples (float32, channel after channel); for an IR the reader computes from published values (inverse FFT, subband filters), the hash of those values and the reader's settings: the same on any numpy build | the audio changes, whatever the container |
 
 - **The recipe is frozen.** `file` is the path inside the dataset's files (two paths joined by `|` when a
   response spans two files). `item` is the position inside the file, empty when the file holds one IR.
@@ -189,7 +189,7 @@ a scalar: no lists, no JSON. So the CSV in the output folder is the same table.
 |---|---|---|
 | Identity (8) | `ir_id`, `dataset`, `space`, `condition`, `source`, `receiver`, `is_primary`, `duplicate_of` | index; `duplicate_of` derived |
 | Audio (9) | `file`, `item`, `download`, `audio_hash`, `fs`, `channels`, `duration_s`, `sample_format`, `measured_on` (the channels the values describe: `L+R`, `W`, `ch0`) | index, measure |
-| Description (12) | `origin` (measured, simulated, device), `format` (mono, stereo, binaural, ambisonic, array), `layout` (the 11 capture formats), `space_type`, `volume_m3`, `distance_m`, `src_x`, `src_y`, `src_z`, `rcv_x`, `rcv_y`, `rcv_z` (metres, in the dataset's own frame) | registry, index |
+| Description (12) | `origin` (measured, simulated, device), `format` (mono, stereo, binaural, ambisonic, array), `layout` (the 12 capture formats), `space_type`, `volume_m3`, `distance_m`, `src_x`, `src_y`, `src_z`, `rcv_x`, `rcv_y`, `rcv_z` (metres, in the dataset's own frame) | registry, index |
 | Permitted use (6) | `licence`, `licence_conditions` (attribution, share_alike, non_commercial, no_derivatives), `use_research`, `use_commercial`, `use_training` (yes, no, unknown), `redistribute` (yes, unaltered_only, no, unknown) | the space's licence, else the dataset's, read through `licences.csv` at build time |
 | Processing (8) | `is_processed`; `proc_windowed`, `proc_truncated`, `proc_denoised`, `proc_equalised`, `proc_resampled`, `proc_bit_depth_reduced`, `proc_format_derived` (`no`, `documented`, `detected`, `both`; empty = not assessed) | registry, derived |
 | Quality (18) | `grade` (S, A, B, C, D; empty for anechoic spaces), `defects_major`, `defects_minor` (counts), eleven true/false columns (`defect_clipping`, `defect_dropouts`, `defect_no_decay`, `defect_sweep_residue`, `defect_tonal_interference`, `defect_corrupt_samples`, `defect_band_limited`, `defect_quantisation_floor`, `defect_dc_offset`, `defect_high_noise_floor`, `defect_inverted_channel`), `known_defect` (a defect of the files as published, in words, from the registry: the IR stays, rirdb warns), `usable_top_hz`, `effective_bits`, `peak_to_noise_db` | derived; the three numbers measured; known_defect from the registry |

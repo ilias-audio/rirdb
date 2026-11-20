@@ -227,6 +227,140 @@ def spherical_to_xyz(p: np.ndarray) -> np.ndarray:
     return np.stack([r * np.cos(el) * np.cos(az), r * np.cos(el) * np.sin(az), r * np.sin(el)], axis=1)
 
 
+def sofa_coordinate_type(h, name: str) -> str:
+    """The Type attribute of a SOFA position variable: "cartesian" (the default) or "spherical"."""
+    value = h[name].attrs.get("Type", b"cartesian")
+    return value.decode() if isinstance(value, bytes) else str(value)
+
+
+def sofa_source_position(h) -> np.ndarray | None:
+    """SourcePosition as stored, or None when the file has none or only zeros (source positions not published)."""
+    if "SourcePosition" not in h:
+        return None
+    src = np.asarray(h["SourcePosition"])
+    return src if np.any(src) else None
+
+
+def sofa_positions(h, p: dict, g: dict) -> tuple[np.ndarray | None, np.ndarray | None]:
+    """The source and listener positions of one SOFA file, in metres: (src, lis).
+
+    h is the open file, p the reader's params for it and g the groups its file-name pattern matched. src has shape
+    (M or 1, E or 1, 3) and lis (M or 1, 3): a row per measurement, or one row for all (and for sources a column
+    per emitter, or one column for all). Either is None when the file publishes none. An all-zero SourcePosition
+    is unpublished; a spherical SourcePosition is around the listener. With p["emitter_positions"], each emitter
+    is placed at SourcePosition + EmitterPosition (emitter_positions). The pattern groups rcv_x, rcv_y and rcv_z
+    replace those coordinates of the listener (listener_from_name). With p["ignore_positions"], both are None.
+    """
+    if p.get("ignore_positions"):
+        return None, None
+    M = sofa_shape(h["Data.IR"])[0]
+    lis = np.asarray(h["ListenerPosition"]) if "ListenerPosition" in h else None
+    if lis is not None and lis.ndim != 2:
+        lis = None
+    lis = listener_from_name(lis, g)
+    src = emitter_positions(h, lis) if p.get("emitter_positions") else source_positions(h, lis)
+    if src is not None and len(src) != M:
+        src = src[:1]
+    if lis is not None and len(lis) != M:
+        lis = lis[:1]
+    return src, lis
+
+
+def name_number(text: str) -> float:
+    """A number as a file name writes it, with "pt" for the decimal point: "-0pt5" -> -0.5."""
+    return float(text.replace("pt", "."))
+
+
+def listener_from_name(lis: np.ndarray | None, g: dict) -> np.ndarray | None:
+    """ListenerPosition with the coordinates that the file name states put in its place: the pattern groups
+    rcv_x, rcv_y and rcv_z (written with name_number's "pt"). Without ListenerPosition, the name must state all
+    three, or the listener stays unknown."""
+    stated = {axis: name_number(g[f"rcv_{name}"]) for axis, name in enumerate("xyz") if g.get(f"rcv_{name}")}
+    if not stated:
+        return lis
+    if lis is None:
+        if len(stated) < 3:
+            return None
+        lis = np.zeros((1, 3))
+    lis = np.array(lis, dtype=float)
+    for axis, value in stated.items():
+        lis[:, axis] = value
+    return lis
+
+
+def source_positions(h, lis: np.ndarray | None) -> np.ndarray | None:
+    """SourcePosition in metres, shape (rows of SourcePosition, 1, 3), or None when not published (missing, all
+    zero or not 2-D). A spherical SourcePosition is around the listener lis."""
+    src = sofa_source_position(h)
+    if src is None or src.ndim != 2:
+        return None
+    xyz = src
+    if sofa_coordinate_type(h, "SourcePosition") == "spherical":
+        xyz = (spherical_to_xyz(src) + (lis if lis is not None else 0))[:len(src)]
+    return xyz[:, None, :]
+
+
+def emitter_positions(h, lis: np.ndarray | None) -> np.ndarray:
+    """The position of every emitter (loudspeaker) of a SOFA file, shape (rows of SourcePosition, E, 3), in metres.
+
+    An emitter is at SourcePosition + EmitterPosition. EmitterPosition is (E, 3, 1) or (E, 3), cartesian or
+    spherical around the source. Here an all-zero (or missing) SourcePosition is the origin, not unpublished; a
+    spherical SourcePosition is around the listener lis. The source must not be rotated (SourceView (1, 0, 0) or
+    none) and the emitters must not move with the measurement: either raises ValueError.
+    """
+    if "SourceView" in h:
+        view = np.asarray(h["SourceView"], dtype=float).reshape(-1, 3)
+        if sofa_coordinate_type(h, "SourceView") == "spherical":
+            view = spherical_to_xyz(view)
+        if not np.allclose(view / np.linalg.norm(view, axis=1, keepdims=True), [1, 0, 0]):
+            raise ValueError(f"SourceView {view[0]} is rotated: emitter_positions reads unrotated sources only")
+    emitters = np.asarray(h["EmitterPosition"], dtype=float)
+    if emitters.ndim == 3:
+        if emitters.shape[2] > 1:
+            raise ValueError(f"EmitterPosition {emitters.shape} changes with the measurement: not read")
+        emitters = emitters[:, :, 0]
+    if sofa_coordinate_type(h, "EmitterPosition") == "spherical":
+        emitters = spherical_to_xyz(emitters)
+    src = np.asarray(h["SourcePosition"], dtype=float) if "SourcePosition" in h else np.zeros((1, 3))
+    if np.any(src) and sofa_coordinate_type(h, "SourcePosition") == "spherical":
+        src = (spherical_to_xyz(src) + (lis if lis is not None else 0))[:len(src)]
+    return src[:, None, :] + emitters[None, :, :]
+
+
+def sofa_room(p: dict, g: dict, rel: str, dataset_id: str) -> str:
+    """The room of one SOFA file, as the params' room_from says (pattern, dataset, parent folder or file name)."""
+    room_from = p.get("room_from") or ("pattern" if field(g, "room") else "file")
+    if room_from == "pattern":
+        return field(g, "room")
+    if room_from == "dataset":
+        return p.get("room_default") or dataset_id
+    if room_from == "parent":
+        return Path(rel).parent.name
+    return Path(rel).stem
+
+
+def first_per_source(src: np.ndarray) -> list[int]:
+    """The first measurement m at each distinct source position (rounded to the millimetre)."""
+    firsts: dict = {}
+    for m in range(len(src)):
+        firsts.setdefault(tuple(np.round(src[m], 3)), m)
+    return sorted(firsts.values())
+
+
+def source_position_name(position) -> str:
+    """A source key from its position, rounded to the centimetre: src_<x>_<y>_<z>."""
+    return "src_" + "_".join(f"{v:g}" for v in np.round(position, 2))
+
+
+def _position(a: np.ndarray, m: int, e: int | None = None) -> tuple:
+    """The position of measurement m (and emitter e), from positions with a row per measurement or one row for all
+    (and, for sources, a column per emitter or one column for all)."""
+    a = a[m] if len(a) > 1 else a[0]
+    if a.ndim == 2:
+        a = a[e] if e is not None and len(a) > 1 else a[0]
+    return tuple(a)
+
+
 class SofaAdapter:
     """Generic SOFA (netCDF4/HDF5) adapter.
 
@@ -243,18 +377,27 @@ class SofaAdapter:
       joined, e.g. a position and a head orientation), pattern_on (name (default) | path: the
       relative path, so folders can name the room or source), ir_kind. An all-zero
       SourcePosition is treated as unpublished.
+    Options that correct the positions a file states (sofa_positions):
+      emitter_positions: true   each emitter's source is SourcePosition + EmitterPosition (cartesian or
+                                spherical around the source), not the SourcePosition alone (the centre of a
+                                loudspeaker ring or orchestra). A zero SourcePosition is then the origin.
+      pattern groups rcv_x, rcv_y, rcv_z   the listener coordinates the file name states, with "pt" for the
+                                decimal point (x-0pt5 is -0.5), replace those of ListenerPosition. They do
+                                not change the receiver key, which joins only rcv and rcv_<digit>.
+      ignore_positions: true    the file's positions are placeholders: no source or listener position.
+    m_is: src, stated on a file with an E axis of length 1 (several measurements of one loudspeaker
+    moved round the room): the measurement names the source, src_<x>_<y>_<z> from SourcePosition, and the
+    receiver key is the pattern's rcv alone. Without it, an E axis names the source by the emitter (e0, e1, ...)
+    and m goes into the receiver key.
     The axes of Data.IR come from its netCDF dimension names (M, R, N, E in any order): SOFA 2
     conventions such as MultiSpeakerBRIR store (M, R, E, N).
-    Loading reads one slice lazily via h5py.
+    Positions come from sofa_positions. Loading reads one slice lazily via h5py.
     """
 
     def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
-        import h5py
-
         params = dataset.adapter.params
-        groups = params.get("groups") or [params]
         exclude = re.compile(params.get("exclude", DEFAULT_EXCLUDE))
-        for p in groups:
+        for p in params.get("groups") or [params]:
             pattern = re.compile(p["pattern"]) if p.get("pattern") else None
             for f in sorted(root.glob(p.get("glob", "**/*.sofa"))):
                 rel = f.relative_to(root).as_posix()
@@ -266,69 +409,63 @@ class SofaAdapter:
                     if m_ is None:
                         continue
                     g = m_.groupdict()
-                try:
-                    with h5py.File(f, "r") as h:
-                        shape = sofa_shape(h["Data.IR"])
-                        fs = int(np.ravel(h["Data.SamplingRate"][()])[0])
-                        src = np.asarray(h["SourcePosition"]) if "SourcePosition" in h else None
-                        src_type = h["SourcePosition"].attrs.get("Type", b"cartesian") if src is not None else b""
-                        src_type = src_type.decode() if isinstance(src_type, bytes) else str(src_type)
-                        if src is not None and not np.any(src):
-                            src = None                # all zeros: source positions not published
-                        lis = np.asarray(h["ListenerPosition"]) if "ListenerPosition" in h else None
-                        conv = h.attrs.get("SOFAConventions", b"")
-                        conv = conv.decode() if isinstance(conv, bytes) else str(conv)
-                except OSError:
-                    continue      # not HDF5 (e.g. a git-LFS pointer)
-                src_xyz = src
-                if src is not None and src.ndim == 2 and src_type == "spherical":      # around the listener (SOFA)
-                    src_xyz = spherical_to_xyz(src) + (lis if lis is not None and lis.ndim == 2 else 0)
-                M, R, N = shape[:3]
-                E = shape[3] if len(shape) == 4 else None
-                roles = p.get("roles") or [f"mic_{i}" for i in range(R)]
-                if len(roles) != R:
-                    roles = [f"mic_{i}" for i in range(R)]
-                room_from = p.get("room_from") or ("pattern" if field(g, "room") else "file")
-                if room_from == "pattern":
-                    room = field(g, "room")
-                elif room_from == "dataset":
-                    room = p.get("room_default") or dataset.id
-                elif room_from == "parent":
-                    room = Path(rel).parent.name
+                yield from self._file_records(dataset, p, f, rel, g)
+
+    def _file_records(self, dataset, p: dict, f: Path, rel: str, g: dict) -> Iterator[IRRecord]:
+        """The records of one SOFA file f (path rel), read with the params p; g holds the pattern's groups."""
+        import h5py
+
+        try:
+            with h5py.File(f, "r") as h:
+                shape = sofa_shape(h["Data.IR"])
+                fs = int(np.ravel(h["Data.SamplingRate"][()])[0])
+                src = sofa_source_position(h)
+                src_xyz, lis = sofa_positions(h, p, g)
+                conv = h.attrs.get("SOFAConventions", b"")
+                conv = conv.decode() if isinstance(conv, bytes) else str(conv)
+        except OSError:
+            return            # not HDF5 (e.g. a git-LFS pointer)
+        M, R, N = shape[:3]
+        E = shape[3] if len(shape) == 4 else None
+        roles = p.get("roles") or [f"mic_{i}" for i in range(R)]
+        if len(roles) != R:
+            roles = [f"mic_{i}" for i in range(R)]
+        room = sofa_room(p, g, rel, dataset.id)
+        rcv_m = p.get("m_is") == "rcv"
+        src_per_m = src is not None and src.ndim == 2 and src.shape[0] == M
+        m_is_src = p.get("m_is") == "src" and E is not None     # stated on a file with an emitter axis
+        if m_is_src and E != 1:
+            raise ValueError(f"{rel}: m_is: src reads files with one emitter; this one has {E}")
+        ms = p.get("m_select") or range(M)
+        by_source = bool(p.get("first_per_source")) and src_per_m
+        if by_source:        # repeated measurements: the first m at each SourcePosition
+            ms = first_per_source(src)
+        for m in ms:
+            if m >= M:
+                continue
+            for e in range(E) if E else [None]:
+                sp = None if src_xyz is None else _position(src_xyz, m, e)
+                lp = None if lis is None else _position(lis, m)
+                key = f"{rel}#{m}" + (f"#{e}" if e is not None else "")
+                if m_is_src:         # the measurement names the source, by its position
+                    src_key = field(g, "src") or (source_position_name(src[m]) if src_per_m else f"m{m}")
+                    rcv_key = field(g, "rcv")
                 else:
-                    room = Path(rel).stem
-                rcv_m = p.get("m_is") == "rcv"
-                ms = p.get("m_select") or range(M)
-                first_per_source = bool(p.get("first_per_source")) and src is not None and src.ndim == 2 \
-                    and src.shape[0] == M
-                if first_per_source:        # repeated measurements: the first m at each SourcePosition
-                    firsts: dict = {}
-                    for m in range(M):
-                        firsts.setdefault(tuple(np.round(src[m], 3)), m)
-                    ms = sorted(firsts.values())
-                es = range(E) if E else [None]
-                for m in ms:
-                    if m >= M:
-                        continue
-                    for e in es:
-                        sp = tuple(src_xyz[m if src.shape[0] == M else 0]) if src is not None and src.ndim == 2 else None
-                        lp = tuple(lis[m if lis.shape[0] == M else 0]) if lis is not None and lis.ndim == 2 else None
-                        key = f"{rel}#{m}" + (f"#{e}" if e is not None else "")
-                        yield IRRecord(
-                            dataset_id=dataset.id, local_key=key, room_key=slug(room),
-                            room_label=g.get("label") or str(room).replace("_", " "),
-                            capture_format=p.get("capture_format", "array_raw"), channel_roles=tuple(roles), fs=fs,
-                            n_samples=int(N), locator={"relpath": rel, "container": "sofa", "m": int(m), "e": e},
-                            src_key=field(g, "src") or (f"e{e}" if e is not None else None) or ((
-                                "src_" + "_".join(f"{v:g}" for v in np.round(src[m], 2)) if first_per_source
-                                else None if p.get("m_is") == "rcv" else f"m{m}")),
-                            rcv_key="_".join(k for k in (field(g, "rcv"), f"m{m}" if e is not None or rcv_m else None)
-                                             if k) or None,
-                            condition_key=field(g, "cond"), src_pos=sp, rcv_pos=lp, sh_norm=p.get("sh_norm"),
-                            orientation_known=bool(p.get("orientation_known", True)),
-                            ir_kind=p.get("ir_kind", "room"),
-                            extra={"sofa_conventions": conv, "reference_role": p.get("reference_role"),
-                                   "preferred": bool(p.get("preferred", True))})
+                    src_key = field(g, "src") or (f"e{e}" if e is not None else None) or (
+                        source_position_name(src[m]) if by_source else None if rcv_m else f"m{m}")
+                    rcv_key = "_".join(k for k in (field(g, "rcv"), f"m{m}" if e is not None or rcv_m else None)
+                                       if k) or None
+                yield IRRecord(
+                    dataset_id=dataset.id, local_key=key, room_key=slug(room),
+                    room_label=g.get("label") or str(room).replace("_", " "),
+                    capture_format=p.get("capture_format", "array_raw"), channel_roles=tuple(roles), fs=fs,
+                    n_samples=int(N), locator={"relpath": rel, "container": "sofa", "m": int(m), "e": e},
+                    src_key=src_key, rcv_key=rcv_key, condition_key=field(g, "cond"), src_pos=sp, rcv_pos=lp,
+                    sh_norm=p.get("sh_norm"),
+                    orientation_known=bool(p.get("orientation_known", True)),
+                    ir_kind=p.get("ir_kind", "room"),
+                    extra={"sofa_conventions": conv, "reference_role": p.get("reference_role"),
+                           "preferred": bool(p.get("preferred", True))})
 
     def load(self, locator: dict, root: Path):
         import h5py
@@ -400,157 +537,6 @@ class MatArrayAdapter:
         return np.moveaxis(a, (c_ax, t_ax), (0, 1)).astype(np.float64), int(p["fs"])
 
 
-# ---------------------------------------------------------------- N-d arrays (HDF5 / NPY)
-class NdArrayAdapter:
-    """Dense IR tensors in HDF5 datasets or .npy files (MIRACLE, SRIRACHA, MeshRIR, MP-RIR, ...).
-
-    Params (all per `groups` entry, or top level):
-      glob                 files to read
-
-      array                HDF5 dataset path (h5) or MATLAB v5 variable (mat)
-      array_pattern        regex: every matching top-level HDF5 array becomes a condition
-      container            h5 | npy | mat (MATLAB v5, loaded whole)
-      time_axis            axis holding samples
-      channel_axis         axis holding simultaneous channels of one record (optional)
-      record_axes          axes enumerated into records (all remaining axes if omitted)
-      fs                   sampling rate, or fs_attr (HDF5 attribute path "dataset@attr" / "@attr")
-      pattern              regex on the file name (groups room, cond, src, rcv)
-      room_default, capture_format, roles, reference_role, ir_kind
-      channels             indices along channel_axis to keep (e.g. one ear pair of several)
-      record_is            rcv (default) | src: what the record index enumerates, for the position keys
-      crop_s               keep only the first crop_s seconds (e.g. long deconvolutions whose tail is non-stationary noise)
-      positions            {src|rcv: {array: path, axis_of: record axis index}} (optional, h5)
-    Records are the Cartesian product of record-axis indices; loading slices lazily.
-    """
-
-    def _groups(self, params):
-        return params.get("groups") or [params]
-
-    _mat_cache: dict = {}
-
-    def _open(self, path: Path, g: dict, array: str | None = None):
-        array = array or g.get("array")
-        if g.get("container", "h5") == "npy":
-            return np.load(path, mmap_mode="r"), None
-        if g["container"] == "mat":             # MATLAB v5: load once per file (small files)
-            key = (str(path), array)
-            if key not in self._mat_cache:
-                import scipy.io
-
-                self._mat_cache.clear()
-                self._mat_cache[key] = np.asarray(scipy.io.loadmat(str(path), variable_names=[array])[array])
-            return self._mat_cache[key], None
-        import h5py
-
-        try:
-            import hdf5plugin  # noqa: F401
-        except ImportError:
-            pass
-        h = h5py.File(path, "r")
-        return h[array], h
-
-    def _fs(self, path: Path, g: dict) -> int:
-        if "fs" in g:
-            return int(g["fs"])
-        if "fs_var" in g:                              # MATLAB v5 variable
-            import scipy.io
-
-            return int(np.ravel(scipy.io.loadmat(str(path), variable_names=[g["fs_var"]])[g["fs_var"]])[0])
-        import h5py
-
-        with h5py.File(path, "r") as h:
-            if "fs_dataset" in g:                     # scalar dataset, e.g. metadata/sampling_rate
-                return int(np.ravel(h[g["fs_dataset"]][()])[0])
-            ds, _, attr = g["fs_attr"].partition("@")
-            obj = h[ds] if ds else h
-            return int(np.ravel(obj.attrs[attr])[0])
-
-    def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
-        import itertools
-
-        for gi, g in enumerate(self._groups(dataset.adapter.params)):
-            pattern = re.compile(g["pattern"]) if g.get("pattern") else None
-            for f in sorted(root.glob(g["glob"])):
-                m_ = pattern.search(f.relative_to(root).as_posix()) if pattern else None
-                if pattern is not None and m_ is None:
-                    continue
-                gd = m_.groupdict() if m_ else {}
-                rel = f.relative_to(root).as_posix()
-                arrays = [g.get("array")]
-                if g.get("array_pattern"):            # one HDF5 array per condition (e.g. dEchorate)
-                    import h5py
-
-                    with h5py.File(f, "r") as hh:
-                        arrays = sorted(k for k in hh.keys() if re.fullmatch(g["array_pattern"], k))
-                for array in arrays:
-                    yield from self._records(dataset, g, gi, f, rel, gd, array, itertools)
-
-    def _records(self, dataset, g, gi, f, rel, gd, array, itertools):
-        arr, h = self._open(f, g, array)
-        shape = arr.shape
-        if h is not None:
-            h.close()
-        t_ax = g["time_axis"] % len(shape)
-        c_ax = g.get("channel_axis")
-        c_ax = None if c_ax is None else c_ax % len(shape)
-        rec_axes = g.get("record_axes")
-        rec_axes = [a % len(shape) for a in rec_axes] if rec_axes is not None else \
-            [a for a in range(len(shape)) if a not in (t_ax, c_ax)]
-        n_ch = len(g["channels"]) if g.get("channels") else (shape[c_ax] if c_ax is not None else 1)
-        roles = g.get("roles") or (["omni"] if n_ch == 1 else [f"mic_{i}" for i in range(n_ch)])
-        fs = self._fs(f, g)
-        room = gd.get("room") or g.get("room_default") or dataset.id
-        for idx in itertools.product(*[range(shape[a]) for a in rec_axes]):
-            key = f"{rel}#" + (f"{array}#" if g.get("array_pattern") else "") + ",".join(map(str, idx))
-            if g.get("record_is") == "src":
-                src = "-".join(filter(None, [gd.get("src"), ",".join(map(str, idx))]))
-                rcv = gd.get("rcv")
-            else:
-                src, rcv = gd.get("src"), gd.get("rcv") or ",".join(map(str, idx))
-            yield IRRecord(
-                dataset_id=dataset.id, local_key=key, room_key=slug(room),
-                capture_format=g.get("capture_format", "mono_omni" if n_ch == 1 else "array_raw"),
-                channel_roles=tuple(roles), fs=fs,
-                n_samples=min(int(shape[t_ax]), int(round(g["crop_s"] * fs))) if g.get("crop_s") else int(shape[t_ax]),
-                locator={"relpath": rel, "container": g.get("container", "h5"), "group": gi,
-                         "idx": list(idx), "array": array},
-                condition_key=gd.get("cond") or (array if g.get("array_pattern") else None),
-                src_key=src, rcv_key=rcv,
-                room_label=str(room).replace("_", " "), ir_kind=g.get("ir_kind", "room"),
-                extra={"reference_role": g.get("reference_role")})
-
-    def load(self, locator: dict, root: Path):
-        g = self._groups(self._params)[locator.get("group", 0)]
-        path = root / locator["relpath"]
-        arr, h = self._open(path, g, locator.get("array"))
-        try:
-            shape = arr.shape
-            t_ax = g["time_axis"] % len(shape)
-            c_ax = g.get("channel_axis")
-            c_ax = None if c_ax is None else c_ax % len(shape)
-            rec_axes = g.get("record_axes")
-            rec_axes = [a % len(shape) for a in rec_axes] if rec_axes is not None else \
-                [a for a in range(len(shape)) if a not in (t_ax, c_ax)]
-            sl = [slice(None)] * len(shape)
-            for a, i in zip(rec_axes, locator["idx"]):
-                sl[a] = i
-            if g.get("crop_s"):
-                sl[t_ax] = slice(0, int(round(g["crop_s"] * self._fs(path, g))))
-            x = np.asarray(arr[tuple(sl)], dtype=np.float64)
-            # remaining axes keep their relative order: put channels first, time last
-            remaining = [a for a in range(len(shape)) if a not in rec_axes]
-            if c_ax is None:
-                x = x.reshape(1, -1)
-            elif remaining.index(c_ax) > remaining.index(t_ax):
-                x = x.T
-            if g.get("channels"):
-                x = np.atleast_2d(x)[list(g["channels"])]
-        finally:
-            if h is not None:
-                h.close()
-        return np.atleast_2d(x), self._fs(path, g)
-
-
 # ---------------------------------------------------------------- TAU-SRIR DB
 class TauSrirAdapter:
     """TAU-SRIR DB (MATLAB v7.3): rirs_<nn>_<room>.mat holds rirs(traj, height).{foa,mic},
@@ -590,3 +576,190 @@ class TauSrirAdapter:
             ref = h["rirs"][locator["fmt"]][locator["hi"], locator["ti"]]
             x = np.asarray(h[ref][locator["k"]], dtype=np.float64)      # (4, 7200)
         return x, self.FS
+
+
+# ---------------------------------------------------------------- MD-OMP (ANU)
+class AnuMdOmpAdapter:
+    """anu_md_omp (MD-OMP Monte Carlo, ANU): rir/rir_rt0<T>_<trial>.mat (MATLAB v5) holds rir_s1 ... rir_s4, each
+    [28 microphones x 16000 samples] at 16 kHz, and `source` [4 x 3] (the four source positions, metres).
+
+    One record per file x source x microphone (mono, omni): the 28 microphones are spread along the walls of one
+    simulated 3.36 x 4.48 x 4.1 m room (pos.perimetermic() in github.com/weiting-lai/MD-OMP_Localization), so each
+    is its own receiver. The condition is the reverberation time (rt02 = 0.2 s ... rt08 = 0.8 s). The sources are
+    drawn anew for each file, so the source key names the file's condition and trial: rt03-trial007-s2.
+
+    Params (all optional): glob (default "rir/rir_rt*.mat"), fs (16000), room_default ("md-omp-room"),
+    n_sources (4), n_mics (28), n_samples (16000; the IR variables are not opened to list them), ir_kind
+    (default the dataset's first ir_kind).
+    """
+
+    # pos.perimetermic() (+function/+pos/perimetermic.m, v1.00 01-04-24): x, y, z in metres
+    MICS = np.array([
+        [0, 0, 1.3854], [0, 4.48, 1.9806], [0.56, 0, 1.0087], [0.56, 4.48, 1.6220], [1.12, 0, 1.5358],
+        [1.12, 4.48, 1.8099], [1.68, 0, 1.5769], [1.68, 4.48, 1.4509], [2.24, 0, 1.5879], [2.24, 4.48, 1.3812],
+        [2.8, 0, 1.8362], [2.8, 4.48, 1.9144], [3.36, 0, 1.6767], [3.36, 4.48, 1.8149], [0, 0.56, 1.7422],
+        [3.36, 0.56, 1.2596], [0, 1.12, 1.7434], [3.36, 1.12, 1.6351], [0, 1.68, 1.9738], [3.36, 1.68, 1.8074],
+        [0, 2.24, 1.4605], [3.36, 2.24, 1.3502], [0, 2.8, 1.5407], [3.36, 2.8, 1.2149], [0, 3.36, 1.5759],
+        [3.36, 3.36, 1.9231], [0, 3.92, 1.7195], [3.36, 3.92, 1.0305]])
+    NAME = re.compile(r"rir_rt0?(?P<rt>\d+)_(?P<trial>\d+)\.mat$")
+
+    def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
+        import scipy.io
+
+        p = dataset.adapter.params
+        fs = int(p.get("fs", 16000))
+        n_src, n_mic, n = int(p.get("n_sources", 4)), int(p.get("n_mics", 28)), int(p.get("n_samples", 16000))
+        room = p.get("room_default", "md-omp-room")
+        kind = p.get("ir_kind") or (dataset.ir_kinds[0] if dataset.ir_kinds else "room")
+        for f in sorted(root.glob(p.get("glob", "rir/rir_rt*.mat"))):
+            m = self.NAME.search(f.name)
+            if not m:
+                continue
+            rel = f.relative_to(root).as_posix()
+            rt, trial = int(m["rt"]), int(m["trial"])
+            src = np.asarray(scipy.io.loadmat(str(f), variable_names=["source"])["source"], dtype=float)
+            for s in range(n_src):
+                for k in range(n_mic):
+                    yield IRRecord(
+                        dataset_id=dataset.id, local_key=f"{rel}#rir_s{s + 1}#{k}", room_key=slug(room),
+                        capture_format="mono_omni", channel_roles=("omni",), fs=fs, n_samples=n,
+                        locator={"relpath": rel, "container": "mat", "var": f"rir_s{s + 1}", "k": k},
+                        condition_key=f"rt60-{rt / 10:.1f}s", src_key=f"rt{rt:02d}-trial{trial:03d}-s{s + 1}",
+                        rcv_key=f"mic{k + 1:02d}", src_pos=tuple(src[s]), rcv_pos=tuple(self.MICS[k]),
+                        room_label=str(room).replace("-", " "), ir_kind=kind,
+                        extra={"rt60_s": rt / 10, "trial": trial})
+
+    def load(self, locator: dict, root: Path):
+        import scipy.io
+
+        a = scipy.io.loadmat(str(root / locator["relpath"]), variable_names=[locator["var"]])[locator["var"]]
+        return np.asarray(a[locator["k"]], dtype=np.float64)[None, :], int(self._params.get("fs", 16000))
+
+
+# ---------------------------------------------------------------- OTIMP (Oticon-Imperial hearing aids)
+class OtimpAdapter:
+    """otimp (Oticon-Imperial hearing-aid impulse responses): the calibrated database only.
+
+    02_default_calibrated/.../mat/subject_<nn>.mat (MATLAB v5) holds ha_rir_0, ha_rir_n15 and ha_rir_n30, each
+    [32133 samples x 6 microphones x 29 loudspeakers] at 44.1 kHz (fs), with doa_az_deg, doa_el_deg and doa_unit_vec
+    (X front, Y left, Z up). The 6 microphones are the front and rear behind-the-ear mics of the left and right
+    hearing aids (1 3 left, 2 4 right) and an in-ear mic in each ear canal (5 left, 6 right).
+
+    One record per subject x chair rotation (0, -15, -30 degrees yaw) x loudspeaker, with the 6 microphones as its
+    channels. The loudspeakers are on a sphere of radius 1.9 m (the one overhead at 1.6 m; Moore et al., JASA 2019,
+    section II), the head at its centre. metadata.csv beside the files gives the subject type (m, f, x = mannequin)
+    and in_ear_valid (subject 40: the in-ear channels are NaN, as published).
+
+    01_original_study (the same measurement processed for the paper) and 03_merged_direct_path (the first 10.7 ms
+    only: head-related, not room, responses) are not read.
+
+    Params (optional): glob, room_default ("otimp-listening-room"), radius_m (1.9), radius_top_m (1.6).
+    """
+
+    ROLES = ("BTE_L_front", "BTE_R_front", "BTE_L_rear", "BTE_R_rear", "ear_L", "ear_R")
+    ROTATIONS = {"ha_rir_0": 0, "ha_rir_n15": -15, "ha_rir_n30": -30}
+    NAME = re.compile(r"subject_(?P<n>\d+)\.mat$")
+    _cache: dict = {}                           # the last variable read: (samples, mics, loudspeakers), and fs
+
+    @staticmethod
+    def _subject(folder: Path, n: int) -> dict:
+        """The subject's row of metadata.csv (empty when it has none)."""
+        import csv
+
+        with open(folder / "metadata.csv", newline="") as fh:
+            return next((row for row in csv.DictReader(fh) if int(row["subj_id"]) == n), {})
+
+    def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
+        import scipy.io
+
+        p = dataset.adapter.params
+        room = p.get("room_default", "otimp-listening-room")
+        r_side, r_top = float(p.get("radius_m", 1.9)), float(p.get("radius_top_m", 1.6))
+        for f in sorted(root.glob(p.get("glob", "02_default_calibrated/02_default_calibrated/mat/subject_*.mat"))):
+            m = self.NAME.search(f.name)
+            if not m:
+                continue
+            n = int(m["n"])
+            meta = self._subject(f.parent, n)
+            rel = f.relative_to(root).as_posix()
+            shapes = {name: shape for name, shape, _ in scipy.io.whosmat(str(f))}
+            v = scipy.io.loadmat(str(f), variable_names=["fs", "doa_az_deg", "doa_el_deg", "doa_unit_vec"])
+            fs = int(np.ravel(v["fs"])[0])
+            az, el, u = np.ravel(v["doa_az_deg"]), np.ravel(v["doa_el_deg"]), np.asarray(v["doa_unit_vec"], float)
+            for var, yaw in self.ROTATIONS.items():
+                n_samples, n_mic, n_doa = shapes[var]
+                if n_mic != len(self.ROLES):
+                    raise ValueError(f"{rel}: {var} has {n_mic} microphones, expected {len(self.ROLES)}")
+                for d in range(n_doa):
+                    radius = r_top if el[d] >= 89.9 else r_side
+                    yield IRRecord(
+                        dataset_id=dataset.id, local_key=f"{rel}#{var}#{d}", room_key=slug(room),
+                        capture_format="array_raw", channel_roles=self.ROLES, fs=fs, n_samples=int(n_samples),
+                        locator={"relpath": rel, "container": "mat", "var": var, "d": d},
+                        src_key=f"ls{d + 1:02d}_az{az[d]:g}_el{el[d]:g}", rcv_key=f"subject{n:02d}_yaw{yaw}",
+                        src_pos=tuple(radius * u[:, d]), rcv_pos=(0.0, 0.0, 0.0),
+                        room_label=str(room).replace("-", " "),
+                        extra={"subject": n, "subject_kind": {"m": "male", "f": "female", "x": "mannequin"}.get(
+                            meta.get("gender", ""), ""), "chair_yaw_deg": yaw,
+                            "in_ear_valid": meta.get("in_ear_valid") == "1"})
+
+    def load(self, locator: dict, root: Path):
+        import scipy.io
+
+        key = (locator["relpath"], locator["var"])
+        if key not in self._cache:
+            self._cache.clear()
+            v = scipy.io.loadmat(str(root / locator["relpath"]), variable_names=[locator["var"], "fs"])
+            self._cache[key] = (np.asarray(v[locator["var"]]), int(np.ravel(v["fs"])[0]))
+        a, fs = self._cache[key]
+        return np.ascontiguousarray(a[:, :, locator["d"]].T, dtype=np.float64), fs
+
+
+# ---------------------------------------------------------------- One simulated scene per .npz (Tampere)
+class NpzSceneAdapter:
+    """tampere_distance (Zenodo 23096979): one simulated RIR per NumPy .npz file.
+
+    shared_rir/shared_rir/sample_<NNNNN>_rir.npz, one per acoustic scene (a shoebox room of its own,
+    pyroomacoustics image-source method). Each file holds h_full (N,), the complete RIR read here; h_direct,
+    h_no_late and h_no_early, the same RIR cut by the authors for the paper (not read); and room_dim (3,) in m,
+    distance_m and absorption_coeff. No sampling rate is stored: 16 kHz, the rate of the corpus convolved with
+    these RIRs (DATASET.md).
+
+    One record per file, its item empty: the room key is the scene (sample-NNNNN), the label gives the room size,
+    extra holds the size, the source-microphone distance and the absorption coefficient. Positions are not
+    published, only the distance.
+
+    Params (all optional): glob (default "shared_rir/shared_rir/sample_*_rir.npz"), array ("h_full"), fs (16000).
+    """
+
+    NAME = re.compile(r"sample_(?P<scene>\d{5})_rir\.npz$")
+
+    def iter_records(self, dataset, root: Path) -> Iterator[IRRecord]:
+        p = dataset.adapter.params
+        fs = int(p.get("fs", 16000))
+        array = p.get("array", "h_full")
+        for f in sorted(root.glob(p.get("glob", "shared_rir/shared_rir/sample_*_rir.npz"))):
+            m = self.NAME.search(f.name)
+            if not m:
+                continue
+            rel = f.relative_to(root).as_posix()
+            with np.load(f) as z:
+                n = int(z[array].shape[-1])
+                dims = [float(v) for v in z["room_dim"]]
+                dist = float(z["distance_m"])
+                alpha = float(z["absorption_coeff"])
+            scene = m["scene"]
+            dims_txt = " x ".join(f"{d:.2f}" for d in dims)
+            yield IRRecord(
+                dataset_id=dataset.id, local_key=rel, room_key=slug(f"sample-{scene}"),
+                capture_format="mono_omni", channel_roles=("omni",), fs=fs, n_samples=n,
+                locator={"relpath": rel, "container": "npz", "array": array},
+                room_label=f"simulated shoebox room {dims_txt} m, absorption {alpha:.3f} (scene {scene})",
+                extra={"dims_m": dims, "distance_m": dist, "absorption_coeff": alpha,
+                       "volume_m3": float(np.prod(dims))})
+
+    def load(self, locator: dict, root: Path):
+        p = getattr(self, "_params", {}) or {}
+        with np.load(root / locator["relpath"]) as z:
+            x = np.asarray(z[locator.get("array", "h_full")], dtype=np.float64)
+        return x.reshape(1, -1), int(p.get("fs", 16000))

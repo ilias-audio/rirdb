@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+3d-marco,"St Paul's Hall, University of Huddersfield",concert_hall,room,,,mair/mair,,,,"13 loudspeaker positions on the stage (source = azimuth and distance, e.g. +30deg_3m); receivers are the 12 microphone arrays (the Eigenmike's raw capsules and its B-format are one receiver, Eigen); average RT60 2.1 s (white paper)",

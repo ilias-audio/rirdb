@@ -108,7 +108,8 @@ def band_label(b) -> str:
 
 
 FORMAT_LABELS = {
-    "mono_omni": "Mono (omni)", "stereo": "Stereo", "binaural": "Binaural", "foa_fuma": "First-order Ambisonics (FuMa)",
+    "mono_omni": "Mono (omni)", "mono_directional": "Mono (directional)", "stereo": "Stereo", "binaural": "Binaural",
+    "foa_fuma": "First-order Ambisonics (FuMa)",
     "foa_ambix": "First-order Ambisonics (AmbiX)", "hoa_sh": "Higher-order Ambisonics", "em32_raw": "Eigenmike em32 capsules",
     "sma_raw": "Spherical array capsules", "tetra_raw": "Tetrahedral A-format", "array_raw": "Microphone array",
     "sdm_array": "SDM array",

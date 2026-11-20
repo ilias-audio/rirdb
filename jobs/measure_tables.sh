@@ -5,6 +5,8 @@
 #
 #   jobs/measure_tables.sh <id> ...        # IR counts (for the shards) from reports/onboarding/review.tsv
 #   IRS_TSV=other.tsv jobs/measure_tables.sh <id> ...
+#   MEASURE_ANALYZE="-c 2 --mem-per-cpu=24G" MEASURE_SHARDS=12 jobs/measure_tables.sh <id>   # big files: fewer
+#   workers with more memory each, and more shards
 #
 # Bash only (login node); every Python step runs inside sbatch, on a copy of the registry made now. A dataset that
 # v1 measured already ($RIRDB_ROOT/metrics/v1/<id>) is skipped, so this never overwrites a measurement.
@@ -23,15 +25,16 @@ for id in "$@"; do
     [ -n "$n" ] && [ "$n" != "-" ] || { echo "$id: no IR count in $counts, skipped"; continue; }
     [ "$n" -le 100000 ] || { echo "$id: $n IRs, above the 100,000 cap: measure its sample by hand"; continue; }
     shards=$(( (n + 299) / 300 )); [ "$shards" -gt 200 ] && shards=200
+    shards=${MEASURE_SHARDS:-$shards}
     log="qlogs/ms_${id}"
     ix=$(run -p computeshort -t 1:0:0 -c 2 --mem-per-cpu=8G -J "mi_$id" -o "${log}_index_%j.out" -e "${log}_index_%j.err" \
          jobs/quick_cpu.sh pixi run rirdb dev index-v1 "$id")
-    an=$(run --dependency=afterok:"$ix" --array=0-$((shards - 1))%50 -J "ma_$id" -o "${log}_an_%A_%a.out" \
+    an=$(run --dependency=afterok:"$ix" --array=0-$((shards - 1))%50 ${MEASURE_ANALYZE:-} -J "ma_$id" -o "${log}_an_%A_%a.out" \
          -e "${log}_an_%A_%a.err" jobs/cpu_array.sh pixi run rirdb dev analyze --dataset "$id" --shard auto \
          --n-shards "$shards" --full)
     mg=$(run --dependency=afterok:"$an" -p computeshort -t 0:30:0 -J "mm_$id" -o "${log}_merge_%j.out" \
          -e "${log}_merge_%j.err" jobs/quick_cpu.sh pixi run rirdb dev merge "$id")
-    au=$(run --dependency=afterok:"$mg" --array=0-$((shards - 1))%50 -J "mu_$id" -o "${log}_au_%A_%a.out" \
+    au=$(run --dependency=afterok:"$mg" --array=0-$((shards - 1))%50 ${MEASURE_ANALYZE:-} -J "mu_$id" -o "${log}_au_%A_%a.out" \
          -e "${log}_au_%A_%a.err" jobs/cpu_array.sh pixi run rirdb dev audit --dataset "$id" --shard auto --n-shards "$shards")
     am=$(run --dependency=afterok:"$au" -p computeshort -t 0:20:0 -J "mx_$id" -o "${log}_auditmerge_%j.out" \
          -e "${log}_auditmerge_%j.err" jobs/quick_cpu.sh pixi run rirdb dev audit-merge "$id")

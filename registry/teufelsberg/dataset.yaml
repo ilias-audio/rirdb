@@ -2,18 +2,23 @@
 id: teufelsberg
 name: Balance Mastering Teufelsberg IRs
 year: 2015
-type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+type: measured   # a real structure recorded on site, published for music production (as echothief)
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://3.onj.me/balance-mastering-teufelsberg-IRs-advanced-all-samplerates-bitdepths.zip"]}
+adapter: {name: wav_tree, params: {glob: 96000-24bit/*.wav, pattern: '(?P<rcv>IR-\d\d)-96000-24bit\.wav$', room_from: dataset}}
+capture_formats:
+- stereo
 content: Six stereo reverb impulse responses of the main listening tower at the former NSA compound on Teufelsberg,
   Berlin, made by Balance Mastering; a copy survives as 44.1 kHz/24-bit WAV on the Internet Archive.
 fs_hz:
-- 44100
+- 96000
 expected:
   n_irs: 6
   n_rooms: 1
+  note: 'Six IRs (the 2015 announcements: six variations), each published at 44.1, 48, 88.2 and 96 kHz in 16 and 24 bit
+    (same lengths in seconds); only the 96 kHz 24-bit files are read.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -22,6 +27,9 @@ room_info:
   positions: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'Please link back to Balance Mastering.txt (credit only); the 2015 announcements (rekkerd.org, cdm.link, sonicstate.com):
+    main listening tower of the NSA field station, six variations, recorded in the domes. No positions, method or what differs
+    between the six.'
 license:
   spdx: LicenseRef-custom
   note: A readme in the item says 'Feel free to distribute but please link back' to the now-defunct Balance Mastering

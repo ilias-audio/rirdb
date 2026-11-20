@@ -3,16 +3,29 @@ id: tuil_translation_seminar
 name: BRIRs for interactive listener translation (seminar room)
 year: 2020
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3457798"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset", "m_is": "src", "capture_format": "binaural", "roles": ["L", "R"]}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: sofa, params: {exclude: (^|/)(__MACOSX|\._)|\.DS_Store$, groups: [{glob: BRIRs_*.sofa, pattern: '^BRIRs_(?P<room>Seminar)(?P<room_2>Room)_LS-(?P<src>Front|Side)(?:_(?P<cond>Reverse))?\.sofa$', room_from: pattern, m_is: rcv, capture_format: binaural, roles: [L, R]}, {glob: RIRs_*.sofa, pattern: '^(?P<rcv>RIRs)_(?P<room>Seminar)(?P<room_2>Room)_LS-(?P<src>Front|Side)\.sofa$', room_from: pattern, m_is: rcv, capture_format: mono_omni, roles: [omni]}]}}
+capture_formats:
+- binaural
+- mono_omni
+fs_hz:
+- 48000
+defects:
+- what: 'Three SOFA files state the other loudspeaker''s source position: LS-Side (session 1, BRIRs and RIRs) states the
+    front loudspeaker''s (0, 0, 1.55) and LS-Front_Reverse the side loudspeaker''s (5.5, -1.5, 1.55). The room plan and
+    the first arrivals put the front loudspeaker at (0, 0) and the side one at (5.5, -1.5) in both sessions, so the source
+    positions and distances of these IRs are wrong.'
+  files: LS-Side\.sofa$|LS-Front_Reverse\.sofa$
 content: KEMAR 45BA BRIRs at 16 positions along a 7.5 m line in a seminar room (9.9 x 4.7 x 3.1 m, T60 1.0 s) for
   two loudspeakers, head turned in 4° steps, in two sessions, plus omni RIRs; MATLAB and SOFA.
 expected:
   n_irs: 5792
   n_rooms: 1
+  note: 5,760 BRIRs (4 sets x 16 positions x 90 head orientations) + 32 omni RIRs (2 x 16), derived from the record; the
+    same data also come as MATLAB files, which are not read
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -22,8 +35,17 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'yes'
+  where: Zenodo record description (room, positions, sessions); ROOM_illustration.png/.pdf (plan with positions); SOFA RoomDescription;
+    ReadMe.txt in each set (48 kHz, T60, windows); PhotosMeasurement (session 2)
 license:
-  spdx: CC-BY-4.0
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-NC-SA-4.0
+    where: SOFA file headers (License attribute of every SOFA file)
+  redistribute_audio: 'yes'
+  note: 'Conflicting statements: the strictest is used (as for tuil_robot_coupled). Ask the authors to confirm.'
 homepage: https://zenodo.org/records/3457798
 doi: 10.5281/zenodo.3457798
 web_check:

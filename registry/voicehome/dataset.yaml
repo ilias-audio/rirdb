@@ -3,15 +3,27 @@ id: voicehome
 name: voiceHome corpus (v0.2)
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1314196"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(noises)/", "room_level": 2, "channel_formats": {"8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: voiceHome_corpus v0.2/audio/rirs/*.wav, pattern: '/rirs/(?P<room>home\d_room\d)_(?P<rcv>arrayGeo\d_arrayPos\d)_(?P<src>speakerPos\d+)\.wav$', channel_formats: {'8': array_raw}}}
+capture_formats:
+- array_raw
+fs_hz:
+- 16000
+room_info:
+  where: voiceHome_corpus_french_documentation_v1.2.pdf, section 3.4 (homes and rooms) and 3.3 (file formats); annotations/rooms/home<h>_room<r>_arrayPos<n>.txt
+    and _speakerPos<n>.txt (array centre and loudspeaker coordinates and orientation in the room, +/- 5 cm), annotations/arrays/arrayGeo<n>.txt
+    (microphone coordinates around the array centre, in channel order)
 content: French distant-speech corpus that also ships room impulse responses and noise recorded with an 8-microphone
   device in real homes (12 rooms in 3 homes, according to a later paper that used them).
 expected:
   n_rooms: 12
+  n_irs: 188
+  note: 12 rooms in 3 homes, 4 rooms each (documentation v1.2, section 3.4; Bertin et al. 2016); 188 RIR files in audio/rirs,
+    counted from the archive (neither the record nor the paper gives the number). Home 1 has speech and noise only, no RIRs.
+    The RIRs are cut to 0.27-0.49 s and end 50-77 dB below the peak; most (139 of 188) are still decaying there.
 license:
   spdx: CC-BY-NC-SA-4.0
   note: The record also limits use to non-commercial scientific purposes and asks users to cite the corpus.
@@ -40,3 +52,4 @@ web_check:
   - Non-commercial scientific use only (CC BY-NC-SA 4.0).
   - The RIRs come inside a 1.9 GB speech-corpus ZIP; the documentation PDF is in French.
   - Room counts come from a later paper that used these RIRs (CHiME-7 UDASE), not from the record.
+  - The authors cut the RIRs at about 0.3-0.5 s, before the noise floor, so the mid-band decay range is only 35-55 dB; rt_mid comes from T20 for 44 IRs and is missing for 3, and the 125-250 Hz T30 is often empty.

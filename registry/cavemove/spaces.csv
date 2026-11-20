@@ -1,0 +1,5 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+volkswagen-golf,Volkswagen Golf (2011) cabin (static),vehicle,vehicle,,,,,,,"TalkBox at the seats and the car audio system; 8-mic circular dashboard array (receiver array) and 8 distributed mics (receiver distributed); window states w0-w3 as conditions",
+smart-forfour,Smart forfour (2019) cabin (static),vehicle,vehicle,,,,,,,"TalkBox at the seats and the car audio system; 8-mic circular dashboard array and 8 distributed mics; window states w0-w2",
+honda-cr-v,Honda CR-V (2009) cabin (static),vehicle,vehicle,,,,,,,"TalkBox at the seats and the car audio system; 8-mic circular dashboard array and 8 distributed mics; window states w0-w3",
+alfaromeo-146,Alfa Romeo 146 TS (2000) cabin (static),vehicle,vehicle,,,,,,,"TalkBox at the seats only (no car audio system); 8 distributed mics only; window states w0-w2",

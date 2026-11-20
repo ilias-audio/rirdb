@@ -134,11 +134,21 @@ SAMPLE_FORMATS = {"PCM_S8": "int8", "PCM_U8": "int8", "PCM_16": "int16", "PCM_24
                   "FLOAT": "float32", "DOUBLE": "float64"}
 
 
-def split_key(local_key: str) -> tuple[str, str]:
+def file_of(locator: dict) -> str:
+    """The file a reader's locator points at: its `relpath`, or its `files` joined with "|"."""
+    return locator.get("relpath") or "|".join(locator["files"])
+
+
+def split_key(local_key: str, file: str) -> tuple[str, str]:
     """A reader's key -> (file, item). `file` is the path inside the dataset's files (two paths joined by
-    "|" for a response in two files); `item` is the place inside the file, empty when it holds one IR."""
-    file, _, item = local_key.partition("#")
-    return file, item
+    "|" for a response in two files), as the reader's locator gives it; `item` is the place inside the file,
+    empty when it holds one IR. The file comes from the locator, not from the key, because a file name may
+    hold a "#" (sonic_palimpsest: 03a-#3Mezz.wav)."""
+    if local_key == file:
+        return file, ""
+    if local_key.startswith(file + "#"):
+        return file, local_key[len(file) + 1:]
+    raise ValueError(f"the key {local_key!r} does not start with its file {file!r}")
 
 
 def ir_id(dataset_id: str, file: str, item: str) -> str:
@@ -181,7 +191,8 @@ def index_table(d: Dataset) -> tuple[pd.DataFrame, pd.DataFrame]:
         raise RuntimeError(f"{d.id}: the reader found no IR under {paths.files_dir(d.id)}")
     raw = pd.DataFrame(rows)
     extra = raw["extra"].map(json.loads)
-    file_item = raw["local_key"].map(split_key)
+    files = [file_of(json.loads(loc)) for loc in raw["locator"]]
+    file_item = [split_key(key, file) for key, file in zip(raw["local_key"], files)]
     df = pd.DataFrame({
         "file": [f for f, _ in file_item], "item": [i for _, i in file_item],
         "space": raw["room_id"], "condition": raw["condition_key"].fillna(""),
@@ -200,9 +211,6 @@ def index_table(d: Dataset) -> tuple[pd.DataFrame, pd.DataFrame]:
     df.insert(0, "ir_id", [ir_id(d.id, f, i) for f, i in zip(df["file"], df["item"])])
     if df["ir_id"].duplicated().any():
         raise RuntimeError(f"{d.id}: two IRs with one file#item: {df.loc[df['ir_id'].duplicated(), 'ir_id'].head().tolist()}")
-    named = [json.loads(loc).get("relpath") or "|".join(json.loads(loc)["files"]) for loc in raw["locator"]]
-    if list(df["file"]) != named:
-        raise RuntimeError(f"{d.id}: a key does not start with the path of its file (a \"#\" in a file name?)")
     old = raw["ir_id"].str.split(":", n=1).str[1]
     if not (df["ir_id"].str.split("-", n=1).str[1] == old).all():
         raise RuntimeError(f"{d.id}: an ir_id hex differs from the reader's own id")

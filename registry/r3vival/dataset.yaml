@@ -3,15 +3,23 @@ id: r3vival
 name: R3VIVAL
 year: 2023
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"github","records":["facebookresearch/R3VIVAL@main"]}
+adapter: {name: wav_tree, params: {glob: '**/RIRs/FRL_array/*.wav', pattern: 'RLRVarAcLab_Absorptive_(?P<cond>[^_]+)_(?P<src>S[^_]+)_(?P<rcv>R\d+)_FRL10cm\.wav$', room_from: dataset, roles: {7: [front, back, right_top, left_top, right_bottom, left_bottom, centre]}, channel_formats: {7: sdm_array}}}
+capture_formats:
+- sdm_array
+fs_hz:
+- 48000
+analysis:
+  reference_role: centre
 content: '272 spatial RIRs of one variable-acoustics lab (9.7 x 5.5 x 2.7 m): 34 source positions x 8 absorber-panel
   settings, captured with a 7-mic open array for SDM, plus 360° stereoscopic videos.'
 expected:
   n_irs: 272
   n_rooms: 1
+  note: 34 source positions x 8 panel settings, one receiver (README)
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -21,6 +29,7 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'yes'
+  where: README.md (room size, RT60 range, array channel table, panel settings) and Images/Plan.png, Images/T30.png
 license:
   spdx: CC-BY-4.0
 homepage: https://github.com/facebookresearch/R3VIVAL

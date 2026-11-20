@@ -3,17 +3,31 @@ id: sweet_area
 name: Sweet Area Impulse Response Database
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["13982751"]}
-content: KU 100 BRIRs and Eigenmike em32 IRs (raw and HOA) of a 42-loudspeaker setup, measured by robot arm at 121
-  positions around the sweet spot of the Immersive Media Lab, Leibniz University Hannover.
+adapter: {name: ita_audio_mat, params: {room_default: immersive-media-lab, speakers: speakerPositions.mat, groups: [{glob: KU 100 IRs/*/*_KU100.mat, field: ir, capture_format: binaural, roles: [L, R], device: KU 100}, {glob: em32 IRs/*/*_em32.mat, field: ir_hoa, capture_format: hoa_sh, sh_norm: N3D, orientation_known: false, device: em32 (4th-order Ambisonics), roles: [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15, ACN16, ACN17, ACN18, ACN19, ACN20, ACN21, ACN22, ACN23, ACN24]}]}}
+capture_formats:
+- binaural
+- hoa_sh
+fs_hz:
+- 48000
+content: KU 100 BRIRs and Eigenmike em32 IRs converted to 4th-order Ambisonics (the files hold no raw capsule signals) of
+  a 42-loudspeaker setup, measured by robot arm at 121 positions around the sweet spot of the Immersive Media Lab, Leibniz
+  University Hannover.
 expected:
   n_rooms: 1
+  n_irs: 10164
+  note: 121 positions x 42 loudspeakers, with the KU 100 (5082 BRIRs) and with the em32 as 4th-order Ambisonics (5082);
+    the record gives no count
 room_info:
   positions: 'yes'
   images: 'no'
+  where: speakerPositions.mat (loudspeaker positions), result.headtrackingMessage in each file (receiver position), the
+    file names (circle radius and azimuth; cart_0p15_0p10 is the centre); the Zenodo record and Kiyan et al., DAGA 2024
+    (Robokopp) for the setup; the IKT Immersive Media Lab web page (linked from the record) for the floor area of about
+    30 m2
 license:
   spdx: CC-BY-SA-4.0
 homepage: https://zenodo.org/records/13982751

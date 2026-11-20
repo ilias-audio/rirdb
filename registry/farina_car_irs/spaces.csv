@@ -1,0 +1,10 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+astra,Opel Astra cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+audi100,Audi 100 cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+audi80,Audi 80 cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+bmw730,BMW 730 cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+croma,Fiat Croma cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+dedra,Lancia Dedra cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+evasion,Citroën Evasion cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+passat,Volkswagen Passat cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",
+punto,Fiat Punto cabin,vehicle,,,,,,,,"sources L and R are the left and right loudspeakers (Aurora 2x2 order, not stated; arrival times agree); binaural receiver (Sennheiser), seat not stated",

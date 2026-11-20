@@ -3,17 +3,22 @@ id: isobel
 name: ISOBEL Sound Field Dataset
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["4501339"]}
+adapter: {name: ndarray, params: {groups: [{glob: '*/*_SoundField_IRs/source_*/h_*/*.mat', container: mat, array: ImpulseResponse, time_axis: 0, fs: 48000, pattern: '^(?P<room>[^/]+)/[^/]+_SoundField_IRs/(?P<src>source_\d)/(?P<rcv>h_\d+/idxX_\d+_idxY_\d+)\.mat$'}, {glob: '*/*_Reverb_IRs/**/*.mat', container: mat, array: ImpulseResponse, time_axis: 0, fs: 48000, pattern: '^(?P<room>[^/]+)/[^/]+_Reverb_IRs/(?P<rcv>(?:h_\d+/)?(?P<src>(?:Omni|Woofer|Src)Pos_\d+)_MicPos_\d+)\.mat$'}]}}
+capture_formats:
+- mono_omni
 content: 23,174 measured single-channel RIRs on 32x32 horizontal grids (1 to 1.9 m high) covering four rooms in
   Denmark, two sources per room, plus ISO 3382-2 reverberation-time measurements.
 fs_hz:
 - 48000
 expected:
-  n_irs: 23174
+  n_irs: 23450
   n_rooms: 4
+  note: '23,174 sound-field IRs (the authors'' count: 2 woofers x the reachable points of a 32x32 grid x 1 to 4 heights)
+    + 276 IRs of the ISO 3382-2 reverberation measurements; the raw sweep recordings are left out'
 room_info:
   dimensions: 'yes'
   volume: 'yes'
@@ -21,6 +26,8 @@ room_info:
   positions: partial
   images: partial
   reference_acoustics: 'yes'
+  where: '<room>/<Room>_MeasurementReport.pdf (Room B: RoomB_Measurements.pdf): address, dimensions, photos, grid steps,
+    heights, source and microphone positions, T20'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/4501339

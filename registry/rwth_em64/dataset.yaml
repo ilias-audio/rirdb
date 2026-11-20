@@ -3,10 +3,18 @@ id: rwth_em64
 name: RWTH IKS Lab Eigenmike em64 IR Database
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
-source: {kind: zenodo, records: ["15093935"]}
+source:
+  kind: zenodo
+  records:
+  - '15093935'
+  exclude:
+  - IR_000.zip
+adapter: {name: ndarray, params: {glob: IKSLabIR/em64/IR_*/speaker_*.mat, pattern: '^IKSLabIR/em64/(?P<rcv>IR_-?\d-?\d-?\d)/(?P<src>speaker_\d+)\.mat$', container: mat, array: h, time_axis: 0, channel_axis: 1, record_axes: [], fs: 48000, room_default: iks-lab, capture_format: sma_raw, reference_role: mic_0, orientation_known: false}}
+capture_formats:
+- sma_raw
 content: 'Eigenmike em64 (64-channel spherical microphone array) RIRs in RWTH Aachen''s IKS|Lab listening room:
   36 loudspeakers x 63 array positions on a 3-level grid, 48 kHz, 1 s long; MATLAB files.'
 fs_hz:
@@ -14,6 +22,8 @@ fs_hz:
 expected:
   n_irs: 2268
   n_rooms: 1
+  note: 63 em64 positions (a 5 x 5 grid without its 4 corners, at 3 heights) x 36 loudspeakers, one 64-channel IR each (the
+    authors count 145,152 single-capsule RIRs). IR_000.zip repeats position IR_000 byte for byte and is not read.
 room_info:
   dimensions: partial
   volume: 'no'
@@ -21,6 +31,10 @@ room_info:
   positions: 'yes'
   images: 'yes'
   reference_acoustics: partial
+  where: 'documentation.pdf (room: floor 35 m2, ITU-R BS.1116-3, T60 about 0.25 s; Table 1: loudspeaker angles and distances;
+    Figures 2-3: the em64 grid, 50 cm apart at 45, 115 and 185 cm); the Zenodo record corrects the ceiling loudspeaker distances
+    (loudspeaker 32 at 1.3 m, not 1.6 m; 33-36 at 1.7 m, not 1.9 m); each file''s info struct repeats the sampling rate,
+    the grid index (microphone_position) and the loudspeaker azimuth, inclination and uncorrected distance'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/15093935

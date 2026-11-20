@@ -3,17 +3,25 @@ id: tuil_open_headphones
 name: BRIRs for a Listener Wearing Open Headphones
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5172098"]}
+adapter: {name: ndarray, params: {glob: '*.mat', container: mat, array: brirs, time_axis: 0, channel_axis: 1, record_axes: [2], fs: 48000, pattern: '^(?P<cond>[A-Za-z0-9]+(?:_\(\d+\))?)_(?:(?P<src>\d+cm)_)?48kHz(?:_1)?\.mat$', room_default: listening-lab, capture_format: binaural, roles: [L, R]}}
+capture_formats:
+- binaural
 content: KEMAR 45BA BRIRs measured in TU Ilmenau's listening lab while the dummy head wore seven open headphone
   models (or none), at 92 head angles, two distances and three repeats; MATLAB files at 48 kHz.
 fs_hz:
 - 48000
 expected:
-  n_irs: 4048
+  n_irs: 1472
   n_rooms: 1
+  note: 'run 1 only, 16 files x 92 head angles: 6 headphones (BK211, DT1990Pro, DT990Pro, HD600, STAX, VIESHAIR) x 2 distances
+    (75, 200 cm), the AKG K1000 with earpieces at 0 and 45 degrees (no distance in the file name; measured at 200 cm, from
+    the direct-sound delay), and 2 without headphones (75, 200 cm). Runs 2 and 3 of each headphone set (28 files, 2,576
+    BRIRs; the headphones were reseated between runs) are left out: a repeated measurement is indexed once, as for arni,
+    tuil_robot_coupled and operarir. The download holds 44 .mat files (4,048 BRIRs) and 18 photos; the authors give no total.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +31,9 @@ room_info:
   images: partial
   reference_acoustics: 'no'
   conditions: 'yes'
+  where: the Zenodo record's description (listening lab, KEMAR 45BA, 75 and 200 cm, 92 angles in 4-degree steps plus 90
+    and 270, clockwise, 3 runs with the headphones reseated); the angles variable in each file; Photos/ (each headphone
+    on KEMAR); the K1000 distance from the direct-sound delay
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/5172098

@@ -3,10 +3,18 @@ id: tugraz_speech_rirs
 name: Dataset of Room Impulse Responses for Realistic Speech Data
 year: 2024
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://repository.tugraz.at/records/f6q9h-fc803/files/rir_dataset.zip?download=1"]}
+adapter: {name: tugraz_rir_bin, params: {rooms: [classroom, corridor], fs: 48000, src_z: 1.21, labels: {classroom: 'Classroom, Signal Processing and Speech Communication Laboratory, TU Graz', corridor: 'Large corridor, Signal Processing and Speech Communication Laboratory, TU Graz'}}}
+capture_formats:
+- array_raw
+defects:
+- what: Corridor source positions near the array do not match the direct-sound delays (sources published 0.1-0.5 m from
+    the array arrive with the same delay; delay vs published distance has slope 0.83, classroom 0.97), so corridor distances
+    below about 1 m are unreliable
+  files: ^data/corridor/
 content: 16-channel circular-array RIRs measured with a robot-moved loudspeaker on fine grids in a classroom (97
   points) and a large corridor (210 points), 4 source directions per point, for simulating moving talkers.
 fs_hz:
@@ -14,6 +22,10 @@ fs_hz:
 expected:
   n_irs: 1228
   n_rooms: 2
+  note: 97 positions x 4 source directions in the classroom (388), 210 x 4 in the corridor (840; one grid point, near (1.36,
+    0.75), was measured twice about 5 h apart at positions 1.9 cm apart, so the 210 positions cover 209 grid points, and
+    both are kept); each IR is one 16-channel circular-array recording (radius 0.275 m), 5 s at 48 kHz. The six WAV files
+    are speech examples, not IRs.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +35,8 @@ room_info:
   images: partial
   reference_acoustics: 'no'
   conditions: 'no'
+  where: data/<room>/meta.json (array position, radius, rotation, wall outline) and data/<room>/index (source x, y, facing
+    angle); fileio.py; Fragner et al., Data in Brief 2024 (PMC10912595) for the grids and the about 121 cm source height
 license:
   spdx: CC-BY-4.0
 homepage: https://repository.tugraz.at/records/f6q9h-fc803

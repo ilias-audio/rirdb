@@ -1,6 +1,6 @@
 {
- "version": "0.9.5",
- "base_url": "https://github.com/ilias-audio/rirdb/releases/download/tables-0.9.5/",
+ "version": "0.9.6",
+ "base_url": "https://github.com/ilias-audio/rirdb/releases/download/tables-0.9.6/",
  "files": {
   "all_irs.meshgrid3d.parquet": {
    "sha256": "923dc9e42c560f8a0fa7737f518eae23a845a99f28c17238592bb11a0e821c1c",
@@ -26,6 +26,18 @@
    "sha256": "3e3cf78b62e850e7429135d8a5fe660193bca6dde0fcadbc9dfe4f797bea81cb",
    "size": 28857745
   },
+  "all_irs.uts_multizone.parquet": {
+   "sha256": "f6d81606210cce122664fe8bc40b1f56804fb413fc5df59840b2e7322a9813bc",
+   "size": 3286337
+  },
+  "bands.3d_marco.parquet": {
+   "sha256": "e26ddffec962ee689e133b498bf88c0e1bfe3d63d3603e70f9d63258f25e46c0",
+   "size": 125777
+  },
+  "bands.6drir_dl.parquet": {
+   "sha256": "e8294ff3885ea96b01e568adb561a3eb40043465086cda2a69905048e4429a4f",
+   "size": 4268044
+  },
   "bands.aachen_air.parquet": {
    "sha256": "76255b27c2c72e8f2ae0d6649538ee48c78958668eca98871d8201c5f2535f64",
    "size": 83086
@@ -33,6 +45,14 @@
   "bands.aachen_st_nicholas.parquet": {
    "sha256": "0f2e0ae82619fe83c4e40bfd3c5bc0849c9ae4b1086e7b06f3c60da412d7ca96",
    "size": 226972
+  },
+  "bands.aalborg_low_frequency.parquet": {
+   "sha256": "988fb2f5f0ddca704c731b58ae7a7b08f2f7d6bd5ba334a4f311a380c777a82d",
+   "size": 115043
+  },
+  "bands.aalto_coupled_simulated.parquet": {
+   "sha256": "eae90601d2ec692b4eae522a95fbde03bcc3d1454bfdec05aeab3ec9eb368d4e",
+   "size": 606773
   },
   "bands.aalto_multiroom.parquet": {
    "sha256": "08237a9f7e3db3561a403700a9e7a0fdf0fb6f7d0b20603f84ab9525125783c4",
@@ -57,6 +77,14 @@
   "bands.airchive.parquet": {
    "sha256": "dfd94f5309d52324dd66f9aa4309623028e3ea04a8737f0aed2644317c410543",
    "size": 40101
+  },
+  "bands.airwindows.parquet": {
+   "sha256": "a1b7eb92028cf5f2bfb12ab549d174aacf779e2aa357597e744fc790ea9f5db0",
+   "size": 20694
+  },
+  "bands.anu_md_omp.parquet": {
+   "sha256": "6a8c75a8058be4a8eab727171b90adce137439dfc1150dd833de4ddbf81f6394",
+   "size": 40666478
   },
   "bands.arni.parquet": {
    "sha256": "3ae7911b88c39492b81a69d2ffed4cb9aa0f03f962985a78be28b4b27a5b3d60",
@@ -86,9 +114,21 @@
    "sha256": "69a1bff1170ebdd6d0c7f659150337259548d69b19364e07ac78e6582a567d4f",
    "size": 597663
   },
+  "bands.asn_database.parquet": {
+   "sha256": "579be95053beb292cb5490f53bc26a6854b2c741cfcb0b88ee1e66f4b2d33d03",
+   "size": 12535799
+  },
+  "bands.avil_living_room_model.parquet": {
+   "sha256": "8370adee5f127228c919b617d2ccf8f68c655e26abc15602fff2b6290e21400b",
+   "size": 22266
+  },
   "bands.avil_simulated.parquet": {
    "sha256": "6c6c1eeeffec936a30515344ba08107efcc6f2997beb69dbcb399482c0e3377e",
    "size": 108406
+  },
+  "bands.barefoot_irs.parquet": {
+   "sha256": "731302aad69c05094db767259b13e5185f46f22043798ddeb8fa6b16bbb24a74",
+   "size": 25570
   },
   "bands.bbc_brirs.parquet": {
    "sha256": "21bf5c5f585afa06c967eaf51322e5b71e88476026923e5d8843d765fb1ecea1",
@@ -98,9 +138,17 @@
    "sha256": "afd397e6fc13ad90dce8932cc5b6bf078b184954d82df85250fdc46d093f29f3",
    "size": 2452633
   },
+  "bands.binaurec.parquet": {
+   "sha256": "96d1c935c39dee3764209b939e81ce24c2ab4a4ad325c865b2c3f7143bd0353f",
+   "size": 14611
+  },
   "bands.bras.parquet": {
    "sha256": "743f86ad6497e91c9270090d53eb3566d59e06d83885c01586f094e2d6716515",
    "size": 165316
+  },
+  "bands.bricasti_m7_samplicity.parquet": {
+   "sha256": "e9a89f4fb58acd07fd2958e3556823688ecf708aba15fe3713500b75d7a00534",
+   "size": 197224
   },
   "bands.brudex.parquet": {
    "sha256": "f08e0d72f42b63e90f8629a631144461c2c5c6e6d864532737173b36b6d70b29",
@@ -114,9 +162,21 @@
    "sha256": "be1d1330fdcf3a957cb4b6131fab9aafc39bd91692d1439aadb2d736a8e6fdc4",
    "size": 299218
   },
+  "bands.cavemove.parquet": {
+   "sha256": "fc2338608a5c1aeb3ba77afc744af339a2366e9220e4815e46a9806b25e9cba0",
+   "size": 90292
+  },
+  "bands.chalmers_baffled_array.parquet": {
+   "sha256": "e01689e588be702ec4c713c18be52179fe8b39805d1002fb76d990fe736088bd",
+   "size": 2538665
+  },
   "bands.churchir.parquet": {
    "sha256": "daa82d47321bf5a6a98ffc7e8e7af52e76a5f656f9391e0be6c55a47b531f9e6",
    "size": 130225
+  },
+  "bands.conner_irs.parquet": {
+   "sha256": "4213293ff0642b58e7e092ad0832c443b3337fca822c8eab97906ae0099dc6d2",
+   "size": 200054
   },
   "bands.cornaro_lodge.parquet": {
    "sha256": "3d2f813c4b7de04ee136afe02c7bcf62ad63633e459c1cb1a86b0cab5e0d8c88",
@@ -138,9 +198,29 @@
    "sha256": "8481ddb849537a3f626ffc481450c8d5d16548e7cfaf5de7eb3c382e6620976b",
    "size": 473650
   },
+  "bands.dirha_wsj.parquet": {
+   "sha256": "93d100a205d86059599be26d6a58c744ead2d43df082459822bee7789356b0a1",
+   "size": 136659
+  },
   "bands.doubleecho.parquet": {
    "sha256": "56481985bb0839bce369ec0efe96e07b08ebb3c451bac0293c4f19ee36cde8f7",
    "size": 869584
+  },
+  "bands.dtu_frequency_responses.parquet": {
+   "sha256": "940a7532d74f5111fad8fd28da0c3a6fca2e6991156965520f4fa28ae7cddf9e",
+   "size": 2673577
+  },
+  "bands.dtu_planar_355.parquet": {
+   "sha256": "9e5512a74027ba76ccbfb9924c75be72597762446ffd17da3a041500b1834c48",
+   "size": 637895
+  },
+  "bands.dtu_room_011.parquet": {
+   "sha256": "0d66065dbfd92adde92ea6aa8072639ff4de562cbfe5f69c1482cc2bfd620529",
+   "size": 1172326
+  },
+  "bands.dtu_room_019.parquet": {
+   "sha256": "0881375da2c0f02792e3358255284883694a54631f4c0bf20b968ad00ce77c42",
+   "size": 1970798
   },
   "bands.echothief.parquet": {
    "sha256": "2f198357d3f874f0539ac730b8cf90c1a76371ca6fba2d6aca0182edbd1179f5",
@@ -154,13 +234,29 @@
    "sha256": "bb782841850c4f61a4c6384bfe376e7c0f38d521e32aac86885e6c774732a328",
    "size": 76359
   },
+  "bands.el_cantalar.parquet": {
+   "sha256": "829da525b052ec50b480702ce0c209dbc0f9670950ef7750a2e2e9398bc97821",
+   "size": 8270
+  },
+  "bands.ely_lady_chapel.parquet": {
+   "sha256": "5cbd6f543dd97812dc1a3e40af320ebc6dfc823c1fac5e240affe2175fb29a06",
+   "size": 29851
+  },
   "bands.em32_line_arni.parquet": {
    "sha256": "506a3c756616afa621e377f9d0cc79db941c6f6dfd19a2b137941670e4fc9224",
    "size": 424927
   },
+  "bands.epfl_rectangular_room.parquet": {
+   "sha256": "d3cb41dbdc8defe01a879574f82f9436caa660531a659fd635ee49edb4fb366d",
+   "size": 57116
+  },
   "bands.erasmus_classroom.parquet": {
    "sha256": "299dc8e31baeca3838268e357c1c385f3cebbeb8b81acfdcd1524341c1bf8a20",
    "size": 16740
+  },
+  "bands.ertd.parquet": {
+   "sha256": "ff088b28375211f3b7b73e713751d4359b47c59836de4bbb7e36e81129addded",
+   "size": 3716601
   },
   "bands.eurecat_arir.parquet": {
    "sha256": "0101ec307fa4186604719ed97365d4a64ba7cf0ebf07caf37fe0d83d31a38500",
@@ -170,17 +266,41 @@
    "sha256": "5a1cee3c9c4c68f2d1214898f904c9c8f7fd3c883d24d3ba2f31beb13a5c9d5b",
    "size": 26592126
   },
+  "bands.farina_car_irs.parquet": {
+   "sha256": "c2ce7d0a6793884ed1a47724354fcad9176dbc77dec76baf44d3c56a9a9573e8",
+   "size": 15356
+  },
+  "bands.farina_collection.parquet": {
+   "sha256": "36099b12a43118d7257a7ce6e109eb673023023e46978f7ad4f1ce885c754320",
+   "size": 169719
+  },
   "bands.flair.parquet": {
    "sha256": "5884eb9a18b699d46cb9850443e46691864a989eea4137bc1b4a0103c1af5195",
    "size": 186478
+  },
+  "bands.fuss_rirs.parquet": {
+   "sha256": "0e00eee4f1337172b701df10494e463a81444d2cce95b59162e3bc1545d3349f",
+   "size": 93441893
   },
   "bands.goethehaeuschen.parquet": {
    "sha256": "62743383e15cd47884e602616c0d263cb92b36af094dc4d8d00921aaec3591bb",
    "size": 576050
   },
+  "bands.grap.parquet": {
+   "sha256": "579b65edcba167a9dd894f3ba9f434d12aced1bffc7a807af083c890ead684e8",
+   "size": 17605890
+  },
   "bands.haw_sound_lab.parquet": {
    "sha256": "72e132b57abd7dc2a667a706376dfd1c6ad687816945029151191445a2bc999d",
    "size": 109560
+  },
+  "bands.hearing_anything_anywhere.parquet": {
+   "sha256": "8a79fada57e31cfc77c259454a80ab289671a1eed5e95e7a2efe65d14096d41c",
+   "size": 2354499
+  },
+  "bands.hidvas.parquet": {
+   "sha256": "b097918f616f9901670510c9c3c0c275290522174d898d58edb611b24ce73117",
+   "size": 371944
   },
   "bands.ho_rir_cremona.parquet": {
    "sha256": "16176beb43d2098e23fe5f98b9662f128a0f96b9b5114f1c26855f32bae1d965",
@@ -198,9 +318,17 @@
    "sha256": "996870ab17dd4cf880aee017ecceaf7af5675cc50b5ff317a76901d436da7d57",
    "size": 20104
   },
+  "bands.hybridreverb2.parquet": {
+   "sha256": "85e434e0150c8429b2c48f786183bcab82400a6881c1430c1e613af9bc254b17",
+   "size": 87694
+  },
   "bands.iem_cube_bformat.parquet": {
    "sha256": "2e04c271b555655e389535bda03c1c8a05f7c7d8493ccd71c3768badbb4e0eb3",
    "size": 513331
+  },
+  "bands.iem_digital_twins.parquet": {
+   "sha256": "7a0bbd9eb0f9c4d709530e6c6c90c14f50658ccd5bca0f107e365c241d099422",
+   "size": 98614
   },
   "bands.iem_ku100_studio.parquet": {
    "sha256": "352ab1359215747fe7502e0901935ddd2fb42cbc744b7e535b28fe8a9d9f9e16",
@@ -222,13 +350,45 @@
    "sha256": "d024e3c074b7da01a5dc9f1761186d58a021fd10814e89827b61c1124f5f3b27",
    "size": 13258
   },
+  "bands.isobel.parquet": {
+   "sha256": "8ad12192674982ce657e53cd304b8d334743a538fc307dc3e45b07654cfbebdd",
+   "size": 16054765
+  },
+  "bands.jabra_planar_field.parquet": {
+   "sha256": "52283c60076655dff2a5948e15fa62c2ed9ea2835d12749b508fee71be845250",
+   "size": 102843
+  },
+  "bands.kinect_rir.parquet": {
+   "sha256": "f47ef9c0ca9bb5bcb975d8ac31de08fd788616a1f686eb82ad6059f283b5a7b3",
+   "size": 44853595
+  },
   "bands.kuleuven_conference_room.parquet": {
    "sha256": "f23eeea552efec210ed5c0d66f06335c3b33062bf47e1fd446c192bc2a489967",
    "size": 28007
   },
+  "bands.l3das_rirs.parquet": {
+   "sha256": "980f9cdc9628a580dfe85ef1022441ac773fb89b66eb23f963576f8314690c28",
+   "size": 143045
+  },
+  "bands.lexicon_224xl_little_devil.parquet": {
+   "sha256": "7a5c1ec7e3afc003c6f50d1cc23ee7994a26a51699bbe7052c80dfd7d802186e",
+   "size": 104585
+  },
+  "bands.lexicon_480l_nelson.parquet": {
+   "sha256": "f6fc1e457b712d495d1e34eb95a0055ab4d1a4385fdcd8e5df951f997c7c96dd",
+   "size": 44636
+  },
+  "bands.loudspeaker_orchestra.parquet": {
+   "sha256": "e4e8b985c35aaca5f2bb763baaffc93a3af685b2d8c6d8af0a22c0a0276f3891",
+   "size": 238466
+  },
   "bands.mair.parquet": {
    "sha256": "136eb754c3e735b2cb519717ec2eb3894bfb5f1f6e663faeb113173f63152380",
    "size": 281002
+  },
+  "bands.mardy.parquet": {
+   "sha256": "f9e465aadbcec7b5f473d12f20a9d8f9d86bf48f52c188e7ec80ad04b2ed0033",
+   "size": 13937
   },
   "bands.mckenzie_rtd.parquet": {
    "sha256": "7cd08f7c2409f511aa44fe6bbcaf36882f3017835da46fda1064fadde0ddb5c5",
@@ -262,6 +422,10 @@
    "sha256": "582531db6089b7e7454c4ab7e82d962e38d2e7860d320a2b71e18dba783e2d68",
    "size": 3197945
   },
+  "bands.munich_underground.parquet": {
+   "sha256": "c76e961a61413a9b44c365a62802781e5c469a5acb830157121df8748684ca1a",
+   "size": 88903
+  },
   "bands.musicsphere_ilmenau.parquet": {
    "sha256": "372ebdd3b6406f3e126bba82f52460a332c49a0e8e92b1caaf7cd4f0008910fe",
    "size": 425855
@@ -270,6 +434,14 @@
    "sha256": "056c244b9b7ced24fd393bf2320fd355bc18ceb6f39f4f2ffce8d1504872d39b",
    "size": 884721
   },
+  "bands.niels_bohr_auditorium.parquet": {
+   "sha256": "2d93f2897152c8c6eb8fe12afd74ebde146a5af3ae05ed430f54693de99c8d1d",
+   "size": 370733
+  },
+  "bands.odeon_irs.parquet": {
+   "sha256": "adcda7c4695be3b5f28ca9497fe2c1cb4aab20a29659b93a48a9d2c5a5f763d9",
+   "size": 39503
+  },
   "bands.ok5.parquet": {
    "sha256": "29e9391fe4404ebf8b4436bdbcdc70716b85a3417c49f30b186835f9676fe84e",
    "size": 56127
@@ -277,6 +449,10 @@
   "bands.oldenburg_2d_3d.parquet": {
    "sha256": "4d1ea33ebbef7bd35408e68636aa4ffd563dc8029659b481e2071ca03cc7ca78",
    "size": 24374
+  },
+  "bands.oldenburg_gesture_lab.parquet": {
+   "sha256": "2c1f24cc9be783393e788dd9b10f13db42d64df2fe2a2f7b39a15d3504316bb4",
+   "size": 64814
   },
   "bands.oldenburg_living_room.parquet": {
    "sha256": "954bfdae713fb5b6058710f33a7860c6e30da8bdf06b41efba8fd107a98a5109",
@@ -290,21 +466,65 @@
    "sha256": "9ccf73c07053c3cce2916239f3a5cb93346204a0a1b366aec639606a37b8070b",
    "size": 489338
   },
+  "bands.openslr26.parquet": {
+   "sha256": "e05b51f22ae026aaeacb19b41d0555b6ca996532067f56cf94020fcd23d5a69f",
+   "size": 31939664
+  },
   "bands.openslr28.parquet": {
    "sha256": "4cd98cddf35f09f80f0d61d7e09e694d8951ea91e30efb6df1f77d1d219ba29a",
    "size": 112837
+  },
+  "bands.operarir.parquet": {
+   "sha256": "8ca36ef0f98ce7e9a6b00122a2ab080a3f0fe7f26d247745cc6ef1c0e540eaea",
+   "size": 280686
+  },
+  "bands.otimp.parquet": {
+   "sha256": "a9e74eafd563578979dd0edb05edeb04b6a047738eafc168121cefb22698ff2e",
+   "size": 2865146
   },
   "bands.pan_ar.parquet": {
    "sha256": "d1277bf713f3cb5ca95a215d68eeed5c1dc051f17ddad299398356b8c3cb8cab",
    "size": 39130
   },
+  "bands.parirset.parquet": {
+   "sha256": "6ab1882eead5c25fed7d9e63fa07faa13675c440feefec9fc8441cbdc768fc12",
+   "size": 31938
+  },
+  "bands.pori_concert_hall.parquet": {
+   "sha256": "c68c03d783413c3ffc1b148185efd28d2149b7a4505b8717ef7738a7accaab60",
+   "size": 54054
+  },
+  "bands.r3vival.parquet": {
+   "sha256": "d47a73bd91dc57c120b9056bfe6c994c1affb9d7de279ce11c143c056c61ea18",
+   "size": 197903
+  },
   "bands.raves.parquet": {
    "sha256": "340933cae0fbdd73caa75f35ee71dff04212ee88a57865e1826ba3c08da2cdc3",
    "size": 141681
   },
+  "bands.reaper_blog_irs.parquet": {
+   "sha256": "90868bd3655deb11187d4cfe4878b8880fc795681e16462715b60b7b9e22f693",
+   "size": 31179
+  },
+  "bands.reverberant_fake_speech.parquet": {
+   "sha256": "5660a70d9a7210eb51cc90f1882954ee0df3306684739b4ceeebb1f9c300bf51",
+   "size": 69627558
+  },
   "bands.reverbfx.parquet": {
    "sha256": "83f70ce8233a1ec340a51b5a923289a71759dc37a7843ea794625ad13da8217e",
    "size": 1205126
+  },
+  "bands.rir_44k.parquet": {
+   "sha256": "9bcad66fb50ab5c6f941fe5c93d6fccc9da34a254e20e2fecb5ef0793a07f0e7",
+   "size": 24099907
+  },
+  "bands.rir_mega.parquet": {
+   "sha256": "e72a7d4987660278e9b129cafdf23c5897aa82dd4ea3a6019ce8cb2ddc38bed5",
+   "size": 32354402
+  },
+  "bands.robocop_srirs.parquet": {
+   "sha256": "8f62d87e3d2907dbcfdc457679ce662f6e99f0de362a96e85e59a5618faf6c3b",
+   "size": 48842
   },
   "bands.rochester.parquet": {
    "sha256": "e890645e25c6d1c7077ab3f31f8dd184c0ffb7fd53ae42a613fdb9c4867c64bb",
@@ -314,9 +534,21 @@
    "sha256": "7c5191f84e093b84154e6250262cd53da489daa09fcc8353a0b2def8582da121",
    "size": 509022
   },
+  "bands.rwth_continuous_brirs.parquet": {
+   "sha256": "4c7f3fa2e1ebc4fcc031b727e7d331be1265a06b913ec065f78beb57b7434251",
+   "size": 24978
+  },
+  "bands.rwth_em64.parquet": {
+   "sha256": "f2fd7fc452a8f7cef95899c17114754276be0aaeb4c3cea15ffc5d4810a895b2",
+   "size": 1665380
+  },
   "bands.sadie_ii.parquet": {
    "sha256": "cbe9b3fa9dd273d83255a6fe12c75ee6f3b7305e5bc2659f11b955bbd3e142b2",
    "size": 735554
+  },
+  "bands.salford_room_in_room.parquet": {
+   "sha256": "aa0557f2e4be128dc5b09e354ae9276d48634273de01b5fbf3b18f397b7a367e",
+   "size": 103854
   },
   "bands.sant_climent_taull.parquet": {
    "sha256": "ea9715ae30e6402f6d2c8d390b0cf687503a9ecc83facaccb407959d089ec5e2",
@@ -326,13 +558,29 @@
    "sha256": "0c684a3fcd1f47949353249193445c6d70fff551eb06cf0bcec6bed25f186ced",
    "size": 3394258
   },
+  "bands.sav_r.parquet": {
+   "sha256": "6c244d85470a147ad70c14e89d806fdeebdf76a0a62df0c1e80f66d648914b31",
+   "size": 204490
+  },
+  "bands.sbsbrir.parquet": {
+   "sha256": "5e81fcb43283097b1a3abd2b15a94f8274466e422f7f7a17196c4eb04bae07a7",
+   "size": 22531002
+  },
   "bands.scream_sdn.parquet": {
    "sha256": "fb3e770a64b269eb25b73a15b295daacf514802ef82de545121cf5868faebc93",
    "size": 28497
   },
+  "bands.sonic_palimpsest.parquet": {
+   "sha256": "8b8492947b030d98de9c1f32619549192843400704cd26439bf0680c787a38e7",
+   "size": 38162
+  },
   "bands.soundcam.parquet": {
    "sha256": "a68d1702f756c5ff1ed684d7db91c4aff6784e2ab9f9e33c14fed22c7c0bb6e5",
    "size": 126915
+  },
+  "bands.spheres.parquet": {
+   "sha256": "64710c088ba479f068650199947b576a992d417f2536df44be7f4f4dc7823806",
+   "size": 240025
   },
   "bands.sriracha.parquet": {
    "sha256": "610cda6f072009a99ec9d0fd532fb247a4a27e2e8a138411ecc1db82f2b7d56a",
@@ -342,17 +590,41 @@
    "sha256": "d3cf23a72a970cef47a366ada4cc7c9e29cc3f4d1c5aca810c0f6c9527741fe2",
    "size": 63883
   },
+  "bands.stonehenge.parquet": {
+   "sha256": "e45e98f7957484e4b3fb264a750ecabb44612052f055c8204c89766075e7db14",
+   "size": 45045
+  },
   "bands.surir.parquet": {
    "sha256": "c74aab4a06a08b123b7f3c3ee7133a74f387b47c1388a3b414f58d22f7d16c6e",
    "size": 1879086
+  },
+  "bands.surrey_bformat.parquet": {
+   "sha256": "8b0bc8f8bc65845a503db3ac0a8de571408f4ce94939ba55ab226219430d1fd4",
+   "size": 32606
   },
   "bands.surrey_real_room_brirs.parquet": {
    "sha256": "cba245a7dfb71c8592260b704afcc0046fd5a4b6941ffe98d702030bb523a840",
    "size": 115883
   },
+  "bands.sweet_area.parquet": {
+   "sha256": "1c4dcae1316073738fd2808f0aed67ff9f2e592dcc53c0bd87a769df8590170e",
+   "size": 7623011
+  },
+  "bands.tampere_distance.parquet": {
+   "sha256": "77a2a43a279ba0620352ba2732586061cc73e060fcf1a0f25e3d7af2ed9b8e6b",
+   "size": 1639214
+  },
+  "bands.tamulionis_rirs.parquet": {
+   "sha256": "65958dbe0f0fea65d7440d7243f7760fe7a5d7a7737e841fc695998aa47e84c4",
+   "size": 42082
+  },
   "bands.tau_srir.parquet": {
    "sha256": "35bef26c3d5bda73d834e0611fc32ad4bc20aaea18edf98053ed8fb0613a20fc",
    "size": 12379773
+  },
+  "bands.teufelsberg.parquet": {
+   "sha256": "b5a1fd50f22e5ea9f4af9ee6bc35ec53f43b9cfcefeb71e7d07652dbaf244993",
+   "size": 11748
   },
   "bands.thk_srir.parquet": {
    "sha256": "7f4e5800403a29eff816c600fbd4763a3a9272affd4629f119d2f304d99afa20",
@@ -366,9 +638,21 @@
    "sha256": "8f197bbe91802aac702e7630ce8cd17aa46f3db11a55b650a905abc51f78eb09",
    "size": 6486922
   },
+  "bands.tuburo.parquet": {
+   "sha256": "0a00b02b344a0f6e726c886eed1bb82a1d7037b2d26b5d9ae48afe80cc5c57cd",
+   "size": 25512245
+  },
+  "bands.tugraz_speech_rirs.parquet": {
+   "sha256": "4c701309cae0d594a20f3e8365cd9dd9ff22f07a896e0c71097a755c4c9f4de3",
+   "size": 862748
+  },
   "bands.tuil_eigenmike_kemar.parquet": {
    "sha256": "99c2220c39329c0ecb6412daa949e2ae77cc16e2137dc24e49f17fbba078a991",
    "size": 540220
+  },
+  "bands.tuil_highres_srirs.parquet": {
+   "sha256": "38458aa9aaa638e0a49762e5f26737bcf0b7dbf374c2cb3cc2cf0b2fa040f129",
+   "size": 13282463
   },
   "bands.tuil_individual_brtfs.parquet": {
    "sha256": "e7c5153b01b738abf76deddc50c25b72f0ec9280599f7062f87017f9ae7d3586",
@@ -377,6 +661,10 @@
   "bands.tuil_kemar_positions.parquet": {
    "sha256": "b221db9e05a64e36efb62c8d53055da45c46fce22351e4e1505de8343bb1f27e",
    "size": 2631537
+  },
+  "bands.tuil_open_headphones.parquet": {
+   "sha256": "0182b04885a041b94923989853cc06be903bc061b4665ce1de9262b9526cae70",
+   "size": 1114967
   },
   "bands.tuil_robot_coupled.parquet": {
    "sha256": "d26c9c822d452e23f5eb77cb154af39e99fdb751e9b01da772d7393eaccbd082",
@@ -390,9 +678,33 @@
    "sha256": "68822e2348713e980747bee1cb5bdd9cc7f32b1045286d527ee37be0cfbf0f1d",
    "size": 272454
   },
+  "bands.tuil_srir_rooms.parquet": {
+   "sha256": "e377458f6e02e26a3454a4a47a1b9737552775cee5fc17919639c22ed856e779",
+   "size": 36580
+  },
   "bands.tuil_synesthetic.parquet": {
    "sha256": "7d24ab60e98af655fdf0dd5b183def00798737e03c273e0282fa552563997ca6",
    "size": 13070262
+  },
+  "bands.tuil_translation_seminar.parquet": {
+   "sha256": "fea74b5fe40e0ddbe74baaf3b3013150ada9f97973134eb90351c556ee81d2ae",
+   "size": 4346657
+  },
+  "bands.tuil_translation_two_rooms.parquet": {
+   "sha256": "30838a39ec68262277bbdf1ce478ddee57a1c53b4f030d0c1c059ed7612c5166",
+   "size": 4892402
+  },
+  "bands.tuil_tv_studio_brirs.parquet": {
+   "sha256": "b93745f40846decb01abe946dce964a95117a58f6145d270125d988e4f65fe4d",
+   "size": 2993243
+  },
+  "bands.tuni_rcair.parquet": {
+   "sha256": "967c27da0b8b4a8105aa610cb9f387b37dd9877b7fd3f4ad757cd4d6b44d344e",
+   "size": 322298
+  },
+  "bands.tut_tietotalo.parquet": {
+   "sha256": "b5e306e9291f79bbfdff60adcc1b2a9fca5f835847082a25f11d69f9bcea3bff",
+   "size": 6177
   },
   "bands.twoears_auditorium3.parquet": {
    "sha256": "d738898452bb1a4d562c84ec04a28d5cb48e14d9d73178440382be6b05cc25b9",
@@ -414,25 +726,57 @@
    "sha256": "9d0436c4aa850de637467c880734cd67358c1ffc9bfcef39064c52b52038129a",
    "size": 18391
   },
+  "bands.ulrich_diy_rooms.parquet": {
+   "sha256": "ee5b5f4ccc77b2fdf6c81886ec963ee9d800140be8a8173e237237e1af017687",
+   "size": 16024
+  },
   "bands.upv_rir_db.parquet": {
    "sha256": "198314e47c390bb4190c74833e0a88ef5172c61bc78d9a1255696f5ad26e0ea1",
    "size": 697018
+  },
+  "bands.uts_multizone.parquet": {
+   "sha256": "afb7ef8985f9e0d22bdf42d9a10318e5bda83745473a25a835e848560f751da5",
+   "size": 2448502
+  },
+  "bands.voicehome.parquet": {
+   "sha256": "7341635c33c2aa954ec1868d552a816c01672e8fd82ff3c4aa81e8c699101f49",
+   "size": 118112
   },
   "bands.voxengo.parquet": {
    "sha256": "5b8ba8d742d219c1eb358c2952f6981b8390484e87fa4cd97189aa2ffe4633c1",
    "size": 30976
   },
+  "bands.wdr_studios.parquet": {
+   "sha256": "13c70a060010cfa120c16f9609d7cfa9af8cc47b1833842ce601ae92a860e96d",
+   "size": 6752177
+  },
+  "bands.wells_cathedrals.parquet": {
+   "sha256": "7b3985cc1b8d0bab127916625e7dca31ce693fe48f87c4f4e325e8ab61ce29d2",
+   "size": 9947
+  },
+  "bands.york_minster_chapter_house.parquet": {
+   "sha256": "7e02771009b8c6da633473e844f3476b42102dbad05a5a2840c5a9ef5df1af24",
+   "size": 79672
+  },
   "columns.csv": {
-   "sha256": "20ed891cd72e2132abbad76a61e09a09debe121a8e3029ba4b5df1a6c61ff784",
-   "size": 29237
+   "sha256": "11de78659cd07107afccedf201869754752cb5a60076ef482d775eb2df2f7ec5",
+   "size": 30042
   },
   "datasets.parquet": {
-   "sha256": "bcea956213a3ddcc017d747472a4824c4aebdfc8f1a5362d68d393294a65ce01",
-   "size": 148842
+   "sha256": "d8c87ce17eb99a8eec14d025fecc0be70ff01e6c4e2cc5059919f62dc46b2559",
+   "size": 194261
   },
   "downloads.parquet": {
-   "sha256": "257260a417901fad5a4978ad612c536377c1cffa72fc11fec9bac5bd898b7271",
-   "size": 219491
+   "sha256": "84d8f4a0d503ede48776eec4d7b38c04dfbde90702f9b478c86653f7c64f0608",
+   "size": 447877
+  },
+  "files.3d_marco.parquet": {
+   "sha256": "fdc6fea7f30f79f79f5d5c509323f85485657d145c5cb8008d3b692d9d711648",
+   "size": 141870
+  },
+  "files.6drir_dl.parquet": {
+   "sha256": "4541a199582b6a93f7ac10ef722f9283400b14f3f663541e2c408a985a5b1465",
+   "size": 9627
   },
   "files.aachen_air.parquet": {
    "sha256": "2592c507600729b8b285bd08b71562015401a8766df3137ebf4a9fbfdb85e2d0",
@@ -441,6 +785,14 @@
   "files.aachen_st_nicholas.parquet": {
    "sha256": "b72aaa941c727726abe90326c1ff17dd5364ec698223ee09b45e60c908109160",
    "size": 31411
+  },
+  "files.aalborg_low_frequency.parquet": {
+   "sha256": "88ebc319fe04f9d4a91ec999127c20b686032925c6b7375e0937ccc7d3e77a09",
+   "size": 18940
+  },
+  "files.aalto_coupled_simulated.parquet": {
+   "sha256": "df29862f8a4c0a7b0735fc8571f1244ac65debb42fa98492a4c0c788bbd3bd47",
+   "size": 7210
   },
   "files.aalto_multiroom.parquet": {
    "sha256": "0e02b41572c0ce3e08ad846c9196291ef2bcb3344de25eead65a834ed639fe28",
@@ -465,6 +817,14 @@
   "files.airchive.parquet": {
    "sha256": "0e0ba29899d8dc41ee7b3dbbc5e56d4c24d2d794aba18a261daf8b774db7ed33",
    "size": 25344
+  },
+  "files.airwindows.parquet": {
+   "sha256": "2d4e7a41dc81632a1c6cf0e150149c38f4ff350deedaaab594b1861b155c9810",
+   "size": 6960
+  },
+  "files.anu_md_omp.parquet": {
+   "sha256": "dedf1accb4114c3b7389cb706cb5a0f7d191cc13d987169acf776fd7b4809009",
+   "size": 59108
   },
   "files.arni.parquet": {
    "sha256": "69fb80a50c5decc1e9335b4bbd1c2892840204c2942345ac1fbe71b4c3079969",
@@ -494,9 +854,21 @@
    "sha256": "59e9c51afe4b430299641dbb77d24f4922dbd3f83209bfda516292ba099c2350",
    "size": 292763
   },
+  "files.asn_database.parquet": {
+   "sha256": "f3583d968d38251e6718eb2ab8c067d2cec6ae757d9653872e70dba6940374c0",
+   "size": 17241882
+  },
+  "files.avil_living_room_model.parquet": {
+   "sha256": "6037741e391dda88fa0bd71249209849c67954ed1e62f7c473963108fd975bb9",
+   "size": 25728
+  },
   "files.avil_simulated.parquet": {
    "sha256": "4f66b11dcc06563a7184037fb5fdba3eb902248b7f155af0d1ec9ee0978e1217",
    "size": 8972
+  },
+  "files.barefoot_irs.parquet": {
+   "sha256": "7ab5c86d29dd28747af7c3bad582ccd392ea44cbe782b886aaece6b7842bd3bc",
+   "size": 12384
   },
   "files.bbc_brirs.parquet": {
    "sha256": "be06f2999e80ee54c46b828e2c3ed438d3b0320e02a984cfc8df35f153ed6f25",
@@ -506,9 +878,17 @@
    "sha256": "f7b859ba7f34b47e8e8f4422a64e309a716116f96ff2bc526ffe082c812692e7",
    "size": 4129202
   },
+  "files.binaurec.parquet": {
+   "sha256": "e6af5acfbbe8183d2803439c97f2a1f7f58870784a34d4df468c2a8949d9853b",
+   "size": 3736896
+  },
   "files.bras.parquet": {
    "sha256": "188fe30dafe7227e8e085f52b53b931da46eab62f7e180df1487763b96aae172",
    "size": 92643
+  },
+  "files.bricasti_m7_samplicity.parquet": {
+   "sha256": "e6bd64625d71dedd83e71e71de001423fbcf2c61bd084d19af57842f390ff19e",
+   "size": 72922
   },
   "files.brudex.parquet": {
    "sha256": "308e2d8d2bcf6c649764d7b8746e7858d199725170d252556541cef19d92755b",
@@ -522,9 +902,21 @@
    "sha256": "2750e46c55a0019a06054b4ff5c248a89c3623ebe593f4bf2f1fac1e6950961d",
    "size": 40707
   },
+  "files.cavemove.parquet": {
+   "sha256": "a59e219e7ce4b6a1961f75270851e60f681387599f3ff0a5220bf5b629470e0a",
+   "size": 125381
+  },
+  "files.chalmers_baffled_array.parquet": {
+   "sha256": "96e6fccfa6936e1ee9bf74f2cc62d62c23722af23476457b83babe4892d6a5b2",
+   "size": 37890
+  },
   "files.churchir.parquet": {
    "sha256": "4d0df7a774745ca788cc96ed5782ba0e23fe18cf2175a744c92e366acbde4f02",
    "size": 19915
+  },
+  "files.conner_irs.parquet": {
+   "sha256": "d4c601b8f4526d43e6b4dd928e5b269ac5d5a87186583703ecc4fd38790d43e3",
+   "size": 69956
   },
   "files.cornaro_lodge.parquet": {
    "sha256": "5f87aa8405a7d02bf662af2ea7d69da49a31e6f7eac26f5e21d0e6794a43dd1f",
@@ -546,9 +938,29 @@
    "sha256": "12dd971e1992e4ebdc1a61fd7f0844a11254ef2de1fa2f027004c95c83f91e55",
    "size": 84961
   },
+  "files.dirha_wsj.parquet": {
+   "sha256": "b1b980dc9755f33f70ef86d16d24468b9360c171d51dd891b073dac7b8135495",
+   "size": 86594
+  },
   "files.doubleecho.parquet": {
    "sha256": "d4d2dd997bc05cb2f5cce97fcc10b8cd3cb8bb1e5669d51505433fcd0627344c",
    "size": 429029
+  },
+  "files.dtu_frequency_responses.parquet": {
+   "sha256": "bc4ce53a56ba3d713f4940f8683eae3cd09f78eb8734a33854e65718d7ce92b6",
+   "size": 5703
+  },
+  "files.dtu_planar_355.parquet": {
+   "sha256": "5c925ae442a0761598ece365d6844f095cc2fcf661f77f95448fbcf4d1264c8a",
+   "size": 5909
+  },
+  "files.dtu_room_011.parquet": {
+   "sha256": "3aa9c86dabdd88e44330338ca6cf043d2f4da9a7900c7d448a6206db8c3fd396",
+   "size": 5771
+  },
+  "files.dtu_room_019.parquet": {
+   "sha256": "d62cb3dac1d353a3b2984e441526ac37a2b32758ebddcee6717b0befcb69cf58",
+   "size": 6178
   },
   "files.echothief.parquet": {
    "sha256": "0daee5cbb71b91bd75c51a5de7c35c01bef7c3969816b929d05ad61daf490be7",
@@ -562,13 +974,29 @@
    "sha256": "2ba8280b7ec6555ae1d3095711afd56472be24d3d0a1f8bc0b9aaecf11e0f3b8",
    "size": 15411
   },
+  "files.el_cantalar.parquet": {
+   "sha256": "3756709dfa1aec32c1cbd9ac51768d2aa6e7e2d5b0f1d8b9e0a3adbae0cdbf14",
+   "size": 11379
+  },
+  "files.ely_lady_chapel.parquet": {
+   "sha256": "df1be459df2a54b3b8593d6755e575d45f324f2e7cc2bf262baf3658fedcb66f",
+   "size": 8471
+  },
   "files.em32_line_arni.parquet": {
    "sha256": "7e583c5ea2ba8ac3b2e4d5ab9c8051ad0c9ec41bffc36676bd549b5ba88918fd",
    "size": 6195
   },
+  "files.epfl_rectangular_room.parquet": {
+   "sha256": "b8c31f460f8127ed99bfbabe1eb0b8ab5ce687a92f8fd6f8cb54dcea2c3d64cf",
+   "size": 5767
+  },
   "files.erasmus_classroom.parquet": {
    "sha256": "f3b44e2000388eb8ee19b924163f429965290656a0a19f997f124d178df10257",
    "size": 8200
+  },
+  "files.ertd.parquet": {
+   "sha256": "562b1efcf25bebea9c60c11a52e1f8336b46f425bc4caa019122803c9ca87544",
+   "size": 5339
   },
   "files.eurecat_arir.parquet": {
    "sha256": "e4f054855dc2de758f73ffae2339567822407f18c939fd65a63bc711419e2682",
@@ -578,17 +1006,41 @@
    "sha256": "4e0bc6a16234a30d84a3888fbccb6d03facddbb95e2c98a1c964c97fe6578714",
    "size": 5451
   },
+  "files.farina_car_irs.parquet": {
+   "sha256": "ee3f620d4593ea541989f6b23cfbab9c68ab0f635e9da7b0ba1df83d6fcc0354",
+   "size": 5902
+  },
+  "files.farina_collection.parquet": {
+   "sha256": "44b6649ffd55e8f01e2d284a8e9d31b8495addbcd04d29f8a171ee7d5c63a4b8",
+   "size": 43528
+  },
   "files.flair.parquet": {
    "sha256": "ee6ccb1d5023279e09ee4a189f6a9757bce48c7c16e31648ec09dbdbf39ac73b",
    "size": 5121
+  },
+  "files.fuss_rirs.parquet": {
+   "sha256": "3bac62f82418cfa8ffda4d30e29c4cd6b80ff1d6521c4528ceb3901a4da4f794",
+   "size": 32252379
   },
   "files.goethehaeuschen.parquet": {
    "sha256": "9007594d0a8b5598b33e3a342e5a367ca28e8a2f36d8b6044112adc0cef6f208",
    "size": 12420
   },
+  "files.grap.parquet": {
+   "sha256": "59f30059bb2b824374d6022fb6e6782e76cb8ecd2bfb1b89109a7264f239465d",
+   "size": 1982502
+  },
   "files.haw_sound_lab.parquet": {
    "sha256": "0c0989e1f0d39fdbc44b5673373c72c3b2a1d3c62aa2cfe419bbb6a327f7f383",
    "size": 53430
+  },
+  "files.hearing_anything_anywhere.parquet": {
+   "sha256": "4ad97e215d44911028924d8345259a7db72e0cc5292406a9fe8f579f46ecfc30",
+   "size": 16948
+  },
+  "files.hidvas.parquet": {
+   "sha256": "1cef91b80bcad51b55d1d4bbedf4a36a5fedd4f2408ddcde1103ead954244630",
+   "size": 863049
   },
   "files.ho_rir_cremona.parquet": {
    "sha256": "7c36bee0f16abd896995ef2aa9ed3d183715a5474029a74d21651509b8965c6b",
@@ -606,9 +1058,17 @@
    "sha256": "d244adefb6f06dc864c2641670a225329b0bd63dc585fa0faae8e27ca29a212a",
    "size": 12938
   },
+  "files.hybridreverb2.parquet": {
+   "sha256": "0a676225a7285032ae630f3d0c34413d7544c742613f22ba0e871ac2c4f23ba5",
+   "size": 46486
+  },
   "files.iem_cube_bformat.parquet": {
    "sha256": "19f6292554ef91a593197db32c7685271dc6c53700bbd88835dedfcae36c0363",
    "size": 5470
+  },
+  "files.iem_digital_twins.parquet": {
+   "sha256": "98fd7bf55ac9a32a990a3f13cc721352f58347423bf79e525cefab45daf18c3a",
+   "size": 9467
   },
   "files.iem_ku100_studio.parquet": {
    "sha256": "bf69377e2cdce4b82274abf52218da21a248d60354b3e9c7a65b7490abe8921f",
@@ -630,13 +1090,45 @@
    "sha256": "247044f739b333e3751859f68e2e7cdb8fc36f4536cf4d7880601a77e7d5fda2",
    "size": 5783
   },
+  "files.isobel.parquet": {
+   "sha256": "e0efa8f36eb8a5ab7350206621f63fe85c824764c95999394057a3df9a65d31d",
+   "size": 3665240
+  },
+  "files.jabra_planar_field.parquet": {
+   "sha256": "e3b4aaf22c7ca7743761fbbd746da46202c9fe084e7447d9b8402d73e32b6639",
+   "size": 5443
+  },
+  "files.kinect_rir.parquet": {
+   "sha256": "d18614097df3e3b83677ac8721d9f6cadb734fc79a83bc760858de721ada2239",
+   "size": 9724529
+  },
   "files.kuleuven_conference_room.parquet": {
    "sha256": "724730e8977627c6ab0e9ec14a88b34068effb870da22e95fbcee1d823352932",
    "size": 12116
   },
+  "files.l3das_rirs.parquet": {
+   "sha256": "bf03ea6e3f4f0f0783759759f2f2fc07e88fd0c12201db1e73ffc03ecf0ad552",
+   "size": 45235
+  },
+  "files.lexicon_224xl_little_devil.parquet": {
+   "sha256": "95980bf38da18fcf8121e78783fc26b00ef83d0ce00d0a089624edff10199030",
+   "size": 27144
+  },
+  "files.lexicon_480l_nelson.parquet": {
+   "sha256": "4ec42336b0d44ab0391fdef7714c8599c65b1e4f12604ecb092f9ee340a8497c",
+   "size": 15011
+  },
+  "files.loudspeaker_orchestra.parquet": {
+   "sha256": "66e38e8599cc15d050f4d1ecd7470dd44c13f46ecb20628256fe7c8589e23dec",
+   "size": 6927
+  },
   "files.mair.parquet": {
    "sha256": "436261daba4a4d6e04d2a87414a7f112ce73b20ed132f908618b7535fff5a18a",
    "size": 150546
+  },
+  "files.mardy.parquet": {
+   "sha256": "bb5d2fd743fee519831fd5602c146c92e4931129b633553d6bfe8371f4031eb6",
+   "size": 10398
   },
   "files.mckenzie_rtd.parquet": {
    "sha256": "7c88444b26dd10275cb01c9c8fd71cfdf468a30f5aee9385dc4f82d7741b99be",
@@ -670,6 +1162,10 @@
    "sha256": "4863bd52630f1d0892b9d2398928e94d6d20d5508072dc65c9b1fd9e40ec1293",
    "size": 5889
   },
+  "files.munich_underground.parquet": {
+   "sha256": "11f287b0c347bc6f46e8d5a9933f6f80f8972b696e0f73472b51fe3d3b5fba25",
+   "size": 11736
+  },
   "files.musicsphere_ilmenau.parquet": {
    "sha256": "6cde5d9c14cec7168b8af8898b4b408c342a6dfd0ed8244810e285018ff67cbc",
    "size": 12215
@@ -678,6 +1174,14 @@
    "sha256": "045a3fe6b8995ce6bff4a79a0c35db6798305c60e085af33a8c885866bcdc62a",
    "size": 194914
   },
+  "files.niels_bohr_auditorium.parquet": {
+   "sha256": "528d3f53c91070b392adc043d75a5de6d319aa19165c49ab5b70fb45a631216b",
+   "size": 5631
+  },
+  "files.odeon_irs.parquet": {
+   "sha256": "21bd09746aa1578ee9e65d0e429e99b6199e3cdf2623686b341f5b7c6b708fc6",
+   "size": 9108
+  },
   "files.ok5.parquet": {
    "sha256": "7233a44f40bc6878c439bac3d02023e50576eb5a9d0b951af2d0486f9470d3a5",
    "size": 8022
@@ -685,6 +1189,10 @@
   "files.oldenburg_2d_3d.parquet": {
    "sha256": "0c3d3394321614e01458667e07731e11e0785ce75dc8546442ad5ebfd3a6fedf",
    "size": 17330
+  },
+  "files.oldenburg_gesture_lab.parquet": {
+   "sha256": "e141772632d8921128aeabcd3e05ddd72def1337300c114c9caccec7189944a9",
+   "size": 7960
   },
   "files.oldenburg_living_room.parquet": {
    "sha256": "c4bc83b1874dd609c03784c1db082304eaccc6fb402b659e811e27678e629ccb",
@@ -698,21 +1206,65 @@
    "sha256": "a0394fe668ef81b1bc2306b2fb282b1b84a597ad00a4126986b670923d682ad0",
    "size": 81162
   },
+  "files.openslr26.parquet": {
+   "sha256": "a84fd2e94f66fc4a439fca4f84efdef59db7774b77bffcb735814cbc306d3c7f",
+   "size": 4306550
+  },
   "files.openslr28.parquet": {
    "sha256": "44264e24b03fd465b99800e18171e17ab3db7d3a0b6b76c7ccf7c16fb05f8b89",
    "size": 4457345
+  },
+  "files.operarir.parquet": {
+   "sha256": "d059fc3242c825502bd2b15e4f4180e59b93ac146079c47acfecb15626a3fd3f",
+   "size": 39758
+  },
+  "files.otimp.parquet": {
+   "sha256": "c8e4c241199c3ec13442821db30b1f3e48a5df11fb1e5d59e616b99158cb2130",
+   "size": 32968
   },
   "files.pan_ar.parquet": {
    "sha256": "e15d1a67f56e65ad10d79dda1c025475703990e462b09ae3f721a51187a78156",
    "size": 13169
   },
+  "files.parirset.parquet": {
+   "sha256": "26f046d88bde143255c5a9ee3a1ea7c20c2255e9f299bbfbf48220de21d880f3",
+   "size": 173225
+  },
+  "files.pori_concert_hall.parquet": {
+   "sha256": "df4d7b28210ad144e11c3919bbdc64ef1c497a8a134718ccdfaf271036cb82d5",
+   "size": 10608
+  },
+  "files.r3vival.parquet": {
+   "sha256": "6e3cbaee13aaa363557639dd038f14a58c3d57149eac6a20b3b7859b974f1e68",
+   "size": 34869
+  },
   "files.raves.parquet": {
    "sha256": "f004389f548676f058a0cccfa9fcad984228c51d46e0d9586c5af27ce13c3c56",
    "size": 9956
   },
+  "files.reaper_blog_irs.parquet": {
+   "sha256": "d38a0685999ddef41e1d2680e0e5940e9fbec9d5d859b8935530f19e143ffc75",
+   "size": 8821
+  },
+  "files.reverberant_fake_speech.parquet": {
+   "sha256": "b9261eae87571e617b53476f3e3958c98e970b431dd81a00108fb67fa677c864",
+   "size": 21072560
+  },
   "files.reverbfx.parquet": {
    "sha256": "c42e1db80efe95e6390457c121e4774171c4279a07e1e39c365dbb35831afa32",
    "size": 155616
+  },
+  "files.rir_44k.parquet": {
+   "sha256": "dbd50da4a63f16ccaf30b00fdd94de51883ad5a997554af91b6df90de20e48e9",
+   "size": 5365102
+  },
+  "files.rir_mega.parquet": {
+   "sha256": "a25a2448dcd7792818a16c08c22fbac45741610bd6527b6a1f13d0e35ac2249d",
+   "size": 4878898
+  },
+  "files.robocop_srirs.parquet": {
+   "sha256": "f35df9e2683428cf0ed8916b2df6d45735045336772b59590544d8754d8ae282",
+   "size": 10328
   },
   "files.rochester.parquet": {
    "sha256": "816a62c9eb9cfbeaae93d53b0bbaeb87a8830b520758c8a31e96bae479f37e49",
@@ -722,9 +1274,21 @@
    "sha256": "ecc7d610f03dcc62ead9f9ec5800174b681c640998b4202ba5934e5e7a099d97",
    "size": 131915
   },
+  "files.rwth_continuous_brirs.parquet": {
+   "sha256": "41bc32f82aab45cff59c2b09623b436bcc73a32d3e67b7db1e6c0b2cdf661c5e",
+   "size": 5631
+  },
+  "files.rwth_em64.parquet": {
+   "sha256": "2224ad90cb2f5843d0aba74dd428ec5406735a20f56816e0ca053e5730c04572",
+   "size": 182291
+  },
   "files.sadie_ii.parquet": {
    "sha256": "4ebd8bfe44ac20933a1bcf1b4bf5806fa874b1d2fcfb12fd1b0d01a57100e7ad",
    "size": 10420
+  },
+  "files.salford_room_in_room.parquet": {
+   "sha256": "0951193922c4193b83b198b343fdca44cb00ba4ec195c9dca54ae295c51d85ac",
+   "size": 78979
   },
   "files.sant_climent_taull.parquet": {
    "sha256": "dc7ee38c6a68c955d889255cd59e7698287cc0488ab346b7290c1e8498dad5af",
@@ -734,13 +1298,29 @@
    "sha256": "63ab999aa632a2d85a91bc1e4a8792ffac0398d2e91efd077555f4afa864af85",
    "size": 406268
   },
+  "files.sav_r.parquet": {
+   "sha256": "5a1a6c8ab55a39d81334cbfa36ef438e4146d675a726965102dad7aaf3f35910",
+   "size": 28632
+  },
+  "files.sbsbrir.parquet": {
+   "sha256": "c9579065a23a49f562a3515e24229a8281dd196f14caa6bb3dcb3109695e0451",
+   "size": 6492
+  },
   "files.scream_sdn.parquet": {
    "sha256": "9589e5f4c80208e1572740feb19191bb6466d9e3abfe9c322164b067a2446f58",
    "size": 15873
   },
+  "files.sonic_palimpsest.parquet": {
+   "sha256": "83db3617668187bc6cb92cf864110f35e89e1a338d07d0a095eac58cb2d107c6",
+   "size": 12070
+  },
   "files.soundcam.parquet": {
    "sha256": "877dda127c8cdb107ae722f23fad26757d66c1105511d1b2480f0dfa113e8453",
    "size": 6743
+  },
+  "files.spheres.parquet": {
+   "sha256": "8267d21526bc97ae39a25c37f6a7923706c6937af40b1bfd71e3bf967402a2d4",
+   "size": 142578
   },
   "files.sriracha.parquet": {
    "sha256": "f692dad88f3bf1dd30c0359cbdb33f4739a38e6c53e06389472a9c1f3cea9200",
@@ -750,17 +1330,41 @@
    "sha256": "929cb1305e3eb0b0ba89a0b9b2564b778f9bb688c4e193edf084157ae15321c5",
    "size": 27244
   },
+  "files.stonehenge.parquet": {
+   "sha256": "4e08d65c604ef6b561d2043693296bc76fe56aaae1347f9d9bf384c0cb6d0262",
+   "size": 40065
+  },
   "files.surir.parquet": {
    "sha256": "f70252c3063f06e31e2424448bb0569fd4a8a769e348e1a6efa295d88b75dfe4",
    "size": 11145
+  },
+  "files.surrey_bformat.parquet": {
+   "sha256": "04ef39be9148b25eb96fed902948091592248438a63f2ad11f8aa624f555a218",
+   "size": 5386
   },
   "files.surrey_real_room_brirs.parquet": {
    "sha256": "600d7767f066ce26198e0614af6e669234432c33d8eb7f9be51f36ac4d943979",
    "size": 7565
   },
+  "files.sweet_area.parquet": {
+   "sha256": "7b8d91fb8d66c78b2b9312df7b1539a3c0568215db1d0047f67af8ccfe95a4d6",
+   "size": 25251
+  },
+  "files.tampere_distance.parquet": {
+   "sha256": "735cc7249a9e7ada2c056d70f56d60b7485cb8382a1de988d134af2126d78d4b",
+   "size": 3415152
+  },
+  "files.tamulionis_rirs.parquet": {
+   "sha256": "b362e5d2c93ffa4aed54b2f03aee20acb999313a821c66f53f710385850794cb",
+   "size": 10099
+  },
   "files.tau_srir.parquet": {
    "sha256": "ae7e6860e91f28a703e1f4a5b7510f4b9d439a7c90fbc4d6421fcd7b155993f1",
    "size": 6361
+  },
+  "files.teufelsberg.parquet": {
+   "sha256": "ee7181096bddaa97e513ec3ad203b512c4f2c5c26db87e0fd0677e0d312a95da",
+   "size": 9991
   },
   "files.thk_srir.parquet": {
    "sha256": "48662f6605387c991a442c6b8d79d7c6030ed5354d3ea07dcfcb4b4275a7c086",
@@ -774,9 +1378,21 @@
    "sha256": "142f4f2638b067b883936276e21438a9526642ef6f7db1bf4da236dd0f7d8a58",
    "size": 829073
   },
+  "files.tuburo.parquet": {
+   "sha256": "a05b2a78361818796e14c7fda5aad37af720e1ee404af03ce1daf6931e969b52",
+   "size": 7039
+  },
+  "files.tugraz_speech_rirs.parquet": {
+   "sha256": "eb064af45dc05a8c2ad1fc837888f1326019c6c2ff03299f3c93dc867357a62c",
+   "size": 8142
+  },
   "files.tuil_eigenmike_kemar.parquet": {
    "sha256": "34522c378523e498205395c3fbb7cb5c9b90e6060e646cbacd9199fdcf4b4fe9",
    "size": 10815
+  },
+  "files.tuil_highres_srirs.parquet": {
+   "sha256": "a25a9dfd416c1d457fa5b491b80ba0fdd0a3f4fe6d54f102be2d5adf944c1106",
+   "size": 303332
   },
   "files.tuil_individual_brtfs.parquet": {
    "sha256": "a909ad77676233ae4f47a6a2a8aaaa34ebf9d65f8d7397394c736b19b3bceb4f",
@@ -785,6 +1401,10 @@
   "files.tuil_kemar_positions.parquet": {
    "sha256": "36fef9483fea3f0d9cf33624ead76838f6f00c2726a3be4ce237a334cc754688",
    "size": 9007
+  },
+  "files.tuil_open_headphones.parquet": {
+   "sha256": "3da925377a98cdebfe493a0266f6fa32f368b15d46f026442d21bc8b5ad90d4a",
+   "size": 10512
   },
   "files.tuil_robot_coupled.parquet": {
    "sha256": "b32eb22efac93bb151d624403179e4460bf49e03ed6a37209182e976f0145695",
@@ -798,9 +1418,33 @@
    "sha256": "c2b6fa0298311b5f25854b794f101d65e7e110262a8e77ac19eb003505263425",
    "size": 6685
   },
+  "files.tuil_srir_rooms.parquet": {
+   "sha256": "148825d22b2d8089c5e501d5bfe079bd592a9b03bbe9573b0317b5c8785b303b",
+   "size": 13120
+  },
   "files.tuil_synesthetic.parquet": {
    "sha256": "8478f26d0f9efeca10cc2cce50e4a845a92956268ef206bc8823ed0279dcc619",
    "size": 1379803
+  },
+  "files.tuil_translation_seminar.parquet": {
+   "sha256": "bb023e255218a52cc97ce64e6d0ca1a7fb23218b260598d43a69634eb7cceee0",
+   "size": 15244
+  },
+  "files.tuil_translation_two_rooms.parquet": {
+   "sha256": "53e64eb493095c2207426e378078ae2477cd3e8b4677aed472c4ad41c51d4560",
+   "size": 14679
+  },
+  "files.tuil_tv_studio_brirs.parquet": {
+   "sha256": "70c2ca9d602a2248908e785c7e80c25e805650a13909cb4641a5ad3c48786a58",
+   "size": 57300
+  },
+  "files.tuni_rcair.parquet": {
+   "sha256": "8eae05f5938a0210fdea012fa0ba1031b06c737bb09501c121ff8905dc01f423",
+   "size": 127771
+  },
+  "files.tut_tietotalo.parquet": {
+   "sha256": "e0992f54e7aae2574a7df4213d9997e56b4f72578d6571ff5db0d7d2d6c8d97a",
+   "size": 5284
   },
   "files.twoears_auditorium3.parquet": {
    "sha256": "1d955e860097aeb18ae65c1ced403ce22ee09760b24909c61f6be33aae7c2cc0",
@@ -822,17 +1466,49 @@
    "sha256": "eacb64b17b675b8877dd2e351a5b2678b9eb09e9e7e5af58d3909975ca7ae98d",
    "size": 7543
   },
+  "files.ulrich_diy_rooms.parquet": {
+   "sha256": "b7725609b15d064a1c500e2a1a389f91d04819de61ad0176a526d8409591bd3b",
+   "size": 6544
+  },
   "files.upv_rir_db.parquet": {
    "sha256": "a62fcb32d19847d0143445cd5c9bf11b2779574ca71892ce46e10f49e2dd0e86",
    "size": 36292
+  },
+  "files.uts_multizone.parquet": {
+   "sha256": "a9deebca3cb30ee2583ee1d4f441eccb329a4d03dddff085df16c9a2fdaae58e",
+   "size": 7685627
+  },
+  "files.voicehome.parquet": {
+   "sha256": "828c4a786611116156274e146607e3ae8e64406e3d3af8bd22a159af9e405305",
+   "size": 111122
   },
   "files.voxengo.parquet": {
    "sha256": "9f2a28d7b527560a5d0c4bda4cecfb4822ae927d169df99c55235f0b8b3c1e7d",
    "size": 8645
   },
+  "files.wdr_studios.parquet": {
+   "sha256": "547e9e92fe239a53824e0dfe7af4d6b4798f09f25a116149343ede357c617adf",
+   "size": 50495
+  },
+  "files.wells_cathedrals.parquet": {
+   "sha256": "da66bddc9292de9a42f224bc446f6ebd13430285cb1aa5d6cf0941c98c8a8c82",
+   "size": 5658
+  },
+  "files.york_minster_chapter_house.parquet": {
+   "sha256": "348f2139faa7ef0711930a852760e5a2fdddaec7ef3bb725013d1309fea08dda",
+   "size": 14616
+  },
   "irs.parquet": {
-   "sha256": "ddd7c58c807a4fc0c63cb8b3c70e699dbaf30256168ee9309ee0965a2c8ff345",
-   "size": 65959833
+   "sha256": "3ab5b44cd37f8ac415455c1c5df3a83403b881bb8b998b100724974340d93343",
+   "size": 300672043
+  },
+  "readers.3d_marco.parquet": {
+   "sha256": "56ee8629e9da965195d28d2513bd92fbb8c71d93ea167930b18979788c40e855",
+   "size": 18665
+  },
+  "readers.6drir_dl.parquet": {
+   "sha256": "4759911af7af80b2cb009f4a0da7ddadbaeb29e221e46a7cd9a268af67135d4a",
+   "size": 231224
   },
   "readers.aachen_air.parquet": {
    "sha256": "563323d8160cf06210cbf696d8647524541f970f42270b98b258465ff8c8c91c",
@@ -841,6 +1517,14 @@
   "readers.aachen_st_nicholas.parquet": {
    "sha256": "147f1bed1146a79efb2d47b703c7d0f18cbeac6dacb30dca9665dff150c5334e",
    "size": 13979
+  },
+  "readers.aalborg_low_frequency.parquet": {
+   "sha256": "7296aca62ce44ddc0960896e0fd878e76d452dff18b54b9800a6669d0eaf5e9b",
+   "size": 23442
+  },
+  "readers.aalto_coupled_simulated.parquet": {
+   "sha256": "a09ef4e7e7df3490ae60b4660e4ece785c0cfaf46c8fb7615ecd8184a840de91",
+   "size": 27973
   },
   "readers.aalto_multiroom.parquet": {
    "sha256": "e48524c0790f98e5ff971d09f19c770f3c86ad032f09cc7ff3593bbc89d34c49",
@@ -865,6 +1549,14 @@
   "readers.airchive.parquet": {
    "sha256": "a5b9893d8f9170f2c4ac1ca629250b0de63b38061d8180352af0f43a58fb4ec9",
    "size": 5132
+  },
+  "readers.airwindows.parquet": {
+   "sha256": "e28cb5bff7ddb581251a4ed4ecc0638ed36b23942ae8fa45a70f2c08014bd5bf",
+   "size": 4154
+  },
+  "readers.anu_md_omp.parquet": {
+   "sha256": "fac29e553c85dac3a792b70a62af9a96632ccd1a51bda53faa3f5689afbaec57",
+   "size": 2139769
   },
   "readers.arni.parquet": {
    "sha256": "fd4f7895899dec6da89463fd827e23ae44c8e6c21cafb559af95305d11acdbb6",
@@ -894,9 +1586,21 @@
    "sha256": "a01696cc5b9fb5907275815fba4b6555f250c5eaf0035c38730d47b0d3ab9f3d",
    "size": 27717
   },
+  "readers.asn_database.parquet": {
+   "sha256": "98245f2b9d984e5cb81f8487f298fbc73f22a2df1a738b72b4c8030756927de1",
+   "size": 928982
+  },
+  "readers.avil_living_room_model.parquet": {
+   "sha256": "c8015cd0437f1eb8f0580f61704978e2373aefcbae567396a4ea29be99c9a63e",
+   "size": 5622
+  },
   "readers.avil_simulated.parquet": {
    "sha256": "a98c96483303db57f8789279ebc59df0d646222c0e7bd51b394352810abdbac0",
    "size": 10093
+  },
+  "readers.barefoot_irs.parquet": {
+   "sha256": "e4e93d36c3d9c17c1e85a4df0e4bc7157b9e28f1b281e9e8cfcfa76574ff7086",
+   "size": 5070
   },
   "readers.bbc_brirs.parquet": {
    "sha256": "1e194de2e1f59511eb13e879c53850ae74350d8bd25fbdac872eaa09eb5fdf1f",
@@ -906,9 +1610,17 @@
    "sha256": "91c9722f2cb150a2ce8705015b6cf18f0dcca1ea48faa9123e96214e1c333049",
    "size": 116611
   },
+  "readers.binaurec.parquet": {
+   "sha256": "d0115b4c8d905973b9b02ebda09175088011e56c931883f5742ad5e777971ae1",
+   "size": 4895
+  },
   "readers.bras.parquet": {
    "sha256": "c6e6b74920548180a0504c05c669c656ff0a76184fe6f82a1c942b22532a8a86",
    "size": 12185
+  },
+  "readers.bricasti_m7_samplicity.parquet": {
+   "sha256": "ea864b530e221d2565c66eae12d1c2739347db16a3fdd884b284ebd52cf1c630",
+   "size": 13892
   },
   "readers.brudex.parquet": {
    "sha256": "c6df6e58b333ac1cb982584c2b74a70cf68742d6aa1d005dc53becab8ed0bcd4",
@@ -922,9 +1634,21 @@
    "sha256": "e46e08fa1ba3001ed86a9bbb449fb75d5181e40532495132de21fd66cd8ffac9",
    "size": 16335
   },
+  "readers.cavemove.parquet": {
+   "sha256": "f48ee84abc732797ca90f9e0b132850db9d0e7b5f5889ea4ea60c526e3313676",
+   "size": 9998
+  },
+  "readers.chalmers_baffled_array.parquet": {
+   "sha256": "3be65cae98bf859bd5e21619c3320267435fbbb0957a69ea3988705f92e5dec2",
+   "size": 173884
+  },
   "readers.churchir.parquet": {
    "sha256": "266430a3578856fb60dfdcf78a0ded569fce51663b061d4d22b9e7a1cc4c94da",
    "size": 8911
+  },
+  "readers.conner_irs.parquet": {
+   "sha256": "cf668febc582868e49da8e9f635199f6bce9fcee85fa95bc38eb10f8ccd2ad9e",
+   "size": 15485
   },
   "readers.cornaro_lodge.parquet": {
    "sha256": "6126d40f5de44cb5a0d7b71ed93f900551264ee2ba453a8dfba8d5ba31617973",
@@ -946,9 +1670,29 @@
    "sha256": "754ecabd861f968920c5058b0bb18e7a860d01643ca6ca5668923382ca053c4c",
    "size": 23694
   },
+  "readers.dirha_wsj.parquet": {
+   "sha256": "377e80f09a6a6db7a271db704eb6c887ffb545d80d54409b9800a5650af9df80",
+   "size": 10408
+  },
   "readers.doubleecho.parquet": {
    "sha256": "8e5f0a113b05ed46f34b0768023418906197f0d90e3ec9ccbcd3529d275bf3d4",
    "size": 85672
+  },
+  "readers.dtu_frequency_responses.parquet": {
+   "sha256": "b4397a22e625054994248ae52ec62ed22c6fddfa44d5e472b7cb7de025fa537f",
+   "size": 154768
+  },
+  "readers.dtu_planar_355.parquet": {
+   "sha256": "a2c99f2a8e59171a4ac0d1a10174e900c5a47dd76e933b656579e35c2c300426",
+   "size": 29595
+  },
+  "readers.dtu_room_011.parquet": {
+   "sha256": "4a8c3771ab2b4e3e8ecf7f92c87f36e3e76280c870f1a93f335538c91c211f3d",
+   "size": 51934
+  },
+  "readers.dtu_room_019.parquet": {
+   "sha256": "68034038755504d9035d0ca1288ba7de2dcb6e1ccbbde1b610a3368b6e95cb15",
+   "size": 89834
   },
   "readers.echothief.parquet": {
    "sha256": "2ebde2abbd39a65542e54a0b55b486d20772b4e61f6edae57fa1306131c05724",
@@ -962,13 +1706,29 @@
    "sha256": "2717a41b566f639e783f83add57c50484e6564ee8ec81e1fbf602fcc563b0137",
    "size": 6859
   },
+  "readers.el_cantalar.parquet": {
+   "sha256": "0ae7a8d1ab46792f427df8f4ca71f68a292f3b27ec35a8aaa39f4badbbef8f45",
+   "size": 3703
+  },
+  "readers.ely_lady_chapel.parquet": {
+   "sha256": "acadee13a5dd08138b6815fce9759c0a8064f8907d79211b4c0c1af66c76c8b9",
+   "size": 5022
+  },
   "readers.em32_line_arni.parquet": {
    "sha256": "897edcf02382f98841390d9f106348f937199ba0c57e3c264b148c1ba616c5ed",
    "size": 21810
   },
+  "readers.epfl_rectangular_room.parquet": {
+   "sha256": "baa6a6a9f9db3d632d673403dcdb2497eb96d12c83609eeae9be50545d147c71",
+   "size": 7431
+  },
   "readers.erasmus_classroom.parquet": {
    "sha256": "e681032675a05405780700c7923918b44f3a23ec53292084ece48cfe772759fb",
    "size": 3971
+  },
+  "readers.ertd.parquet": {
+   "sha256": "5194f4874e53e3ddd0267959795222debdb62011229080ef279234289faeb199",
+   "size": 173091
   },
   "readers.eurecat_arir.parquet": {
    "sha256": "341a2d5f7c59bdbf0502a6dc05010805a669d1ac10ec96625fc97b99cf402bdb",
@@ -978,17 +1738,41 @@
    "sha256": "ec930e38f1cd87b6607c38d29973050c224872396f8737ed1542b43a20ce807e",
    "size": 1143209
   },
+  "readers.farina_car_irs.parquet": {
+   "sha256": "9786f4ba34f03665b8ee4aaa0772922ffa39b8c9a9e9a66bcf577d33301d457e",
+   "size": 4168
+  },
+  "readers.farina_collection.parquet": {
+   "sha256": "5fed6daf72ba86e387740c11804088f9ae10e6f4473cb7821e7f26296e8bcef7",
+   "size": 12873
+  },
   "readers.flair.parquet": {
    "sha256": "086efcb6fc1306205f644579d731bf596dc26aca08a1b6deb667321dac533fe6",
    "size": 11240
+  },
+  "readers.fuss_rirs.parquet": {
+   "sha256": "1aa9f4172b7500baee55d182e1de347c9609f110fd575ecf4fa378b2c7747aba",
+   "size": 7074499
   },
   "readers.goethehaeuschen.parquet": {
    "sha256": "f7779d9cb9f652b30d675a6fa556325574c51e625c884099fd827e229a9875b2",
    "size": 33135
   },
+  "readers.grap.parquet": {
+   "sha256": "c0655bd3d9e3dd0edb4b98209c73cad68d25491000c26fd0c28a90e6dcd5b9df",
+   "size": 845869
+  },
   "readers.haw_sound_lab.parquet": {
    "sha256": "e44005cdcd221443738e008a801719010d5131709b10a1500bc2cee7d22a4322",
    "size": 7968
+  },
+  "readers.hearing_anything_anywhere.parquet": {
+   "sha256": "13016ca56eddf1a222521d46764d025497e401fbf32b8afb11546f377f79def4",
+   "size": 113239
+  },
+  "readers.hidvas.parquet": {
+   "sha256": "e1156c151f3fa6b1a2a7051cd0f005959bf4b3a8f3586f3f4240bb758db98f58",
+   "size": 26042
   },
   "readers.ho_rir_cremona.parquet": {
    "sha256": "20273d723ffe50034a90b8fc4f0358904289b79142ddee1993f12515359849ba",
@@ -1006,9 +1790,17 @@
    "sha256": "85f1a6f553c1bd5878e2fe8cc756ec96361f9200216898a312dbc898d2b3adf7",
    "size": 4303
   },
+  "readers.hybridreverb2.parquet": {
+   "sha256": "5bcf406c2c6e064f95a9eb95983b71b83d5ba9ae2491b7db9d1299535e3236f3",
+   "size": 13985
+  },
   "readers.iem_cube_bformat.parquet": {
    "sha256": "cff266c0878d63e9b5dba8afe514931f83a5f7500785a401c9ce519060e5b351",
    "size": 24947
+  },
+  "readers.iem_digital_twins.parquet": {
+   "sha256": "cdf48f2cfe3adf04a464d0da0a4f05302fbb0fa8c04aeb331a6b1d653d05b17b",
+   "size": 10602
   },
   "readers.iem_ku100_studio.parquet": {
    "sha256": "0c115f9b3eb923564d115eb62b2e549e8a09f4dbbe7b295fea7c329a30ece935",
@@ -1030,13 +1822,45 @@
    "sha256": "428da272a5817a4ccb065d37088b9de909e9fae13b766c23976c6d95ecdaa8e6",
    "size": 5164
   },
+  "readers.isobel.parquet": {
+   "sha256": "042d938b223da36b800b066d63db38b062de2f9c812a1aa52128897c1112a5f5",
+   "size": 835966
+  },
+  "readers.jabra_planar_field.parquet": {
+   "sha256": "8502e2982935c3031acf01915e228d3d07ef5ed6ce1b21eca932449b29c9ff19",
+   "size": 7563
+  },
+  "readers.kinect_rir.parquet": {
+   "sha256": "e17086f784705f6cecb7e70271d973e35b37f2504b53144aac296c373fa3e8cc",
+   "size": 8786171
+  },
   "readers.kuleuven_conference_room.parquet": {
    "sha256": "6a120f40689b00ac7e24c20039528561a9e847acc8ecac3fcd68ace23221206b",
    "size": 5075
   },
+  "readers.l3das_rirs.parquet": {
+   "sha256": "49c8284eb9de73e9e92c05d3c4e05b45561be2943841126a238a4b1f6f5b217c",
+   "size": 19707
+  },
+  "readers.lexicon_224xl_little_devil.parquet": {
+   "sha256": "90641634ee931519b2de8bcbee820fcd3f1d7104998fd590c1ee6c5e44888eb5",
+   "size": 7785
+  },
+  "readers.lexicon_480l_nelson.parquet": {
+   "sha256": "c1667fba914c59195ac0408eb54187982348a1aeb75bf0c4e9ef339d98ccc9fb",
+   "size": 5707
+  },
+  "readers.loudspeaker_orchestra.parquet": {
+   "sha256": "90b8330c41ce4e35926b6f59d18ff7295eeb080da14c28ac2ea5b2c76c083218",
+   "size": 14148
+  },
   "readers.mair.parquet": {
    "sha256": "41d966f62e8c81162638454f280d640c3e9b55fa078663a3c019e65fced82fa0",
    "size": 33330
+  },
+  "readers.mardy.parquet": {
+   "sha256": "0327748298b78f6378a3522eb40cff16abf80deb7830684f98693aab53ee466d",
+   "size": 4681
   },
   "readers.mckenzie_rtd.parquet": {
    "sha256": "171808c7a532fa089ad216e481c93b6eb74ba7451912a694e72f9e157a678edc",
@@ -1070,6 +1894,10 @@
    "sha256": "7da95d4c5ab0005dfa6b9073f22365f977f700d8f13f54a76b88fcdb0a509e97",
    "size": 137565
   },
+  "readers.munich_underground.parquet": {
+   "sha256": "b7e720dc892468c23d0f8b7d35b8923b2f7872f2ae92075602158b37b6c3ccd9",
+   "size": 8012
+  },
   "readers.musicsphere_ilmenau.parquet": {
    "sha256": "1afaacc8d42d2ac5f51b2153fe2df850b1c262bbfa0070f5d5ec58f95a63f9ac",
    "size": 24300
@@ -1078,6 +1906,14 @@
    "sha256": "d275b61707b518357c0bec56cb340a6d51347956f9daf8289cedf69fd7207f26",
    "size": 42049
   },
+  "readers.niels_bohr_auditorium.parquet": {
+   "sha256": "b628cd68826922d31f6780aa9c953330ffe42c263dfd09987e05cc5be3d57d84",
+   "size": 19735
+  },
+  "readers.odeon_irs.parquet": {
+   "sha256": "c7289cf9b046bc8894928b9360ac5f21118e3f2af1ddbabf966008af15a75568",
+   "size": 5070
+  },
   "readers.ok5.parquet": {
    "sha256": "9607dbba37beae6dba9ca139f30f034f8555b139e71e77e315f3426ec6e2d49c",
    "size": 6080
@@ -1085,6 +1921,10 @@
   "readers.oldenburg_2d_3d.parquet": {
    "sha256": "cd589a789a8fb13324a38557ad3de1e810a69a5a7ca2b0ab66c43d14d68ba792",
    "size": 4425
+  },
+  "readers.oldenburg_gesture_lab.parquet": {
+   "sha256": "76ed664916f6b4e178a0787541477fa636567931d0d86a379f413f565150cd34",
+   "size": 6620
   },
   "readers.oldenburg_living_room.parquet": {
    "sha256": "05dbafbca029f717e6d0871950df6aed78cfee9b1e0cb619c3e4e492b5842a03",
@@ -1098,21 +1938,65 @@
    "sha256": "8c9c837e4ba572113a098cf5bf13350b1cb46b6e26953f7a916649959bd6d319",
    "size": 31173
   },
+  "readers.openslr26.parquet": {
+   "sha256": "b3dee1b4dba22306e27b32501c9e502e69e2df80ac52be0a225fa893aa6de52a",
+   "size": 1856417
+  },
   "readers.openslr28.parquet": {
    "sha256": "7c8cff96040a53ca768cb1a4cdf1c2ffaf008edd5ce1d344a9812824b3e07e5d",
    "size": 11030
+  },
+  "readers.operarir.parquet": {
+   "sha256": "92126b3f45cc7817465d0ebf317aef9f474e9543c4a7f3cd111a12a0c5392779",
+   "size": 17090
+  },
+  "readers.otimp.parquet": {
+   "sha256": "35aadaa9953e7e8b16658612cd08b5e325d7778b31d78bdcec7614f59525603f",
+   "size": 131830
   },
   "readers.pan_ar.parquet": {
    "sha256": "7f7dea824f464fcd594167fece5cd8004f5858b3c9dee52bd30693dd42c36849",
    "size": 5504
   },
+  "readers.parirset.parquet": {
+   "sha256": "4673164b37ae10a72a44a67ee4a0ce91c9027da4ea6fdbbc02e2db9062661dda",
+   "size": 5358
+  },
+  "readers.pori_concert_hall.parquet": {
+   "sha256": "846dd576d992bffccf5241c2f77ae3e0ed6b06a2d9af281aa79889e6c5fff507",
+   "size": 5505
+  },
+  "readers.r3vival.parquet": {
+   "sha256": "0f927c06e7d7413845b5fa2667c1498179e8a948762519a3f92386c7fa48ab32",
+   "size": 13242
+  },
   "readers.raves.parquet": {
    "sha256": "7630cf8754b93741a726f8655dc4ce4a781f1d214b4a29c2be343116907662d7",
    "size": 10185
   },
+  "readers.reaper_blog_irs.parquet": {
+   "sha256": "801dcbdc752c83c897a104a3199046dade0027c134c0ab3da75652e81f5d8e51",
+   "size": 4875
+  },
+  "readers.reverberant_fake_speech.parquet": {
+   "sha256": "3d03eadd42b270525aa835b7da44f92cdc03f8dd409e9a792c21e981d4310dc1",
+   "size": 5708943
+  },
   "readers.reverbfx.parquet": {
    "sha256": "702a31ba3705553afb6c1c293d6d40a2176a60cf7a3774909dec53cde1aaad98",
    "size": 60821
+  },
+  "readers.rir_44k.parquet": {
+   "sha256": "b41acfee9a9434df90cac4c522af31f4433b4adda050e658a5e5cf2b4f612d38",
+   "size": 3314531
+  },
+  "readers.rir_mega.parquet": {
+   "sha256": "a3c1ca333a8312326db5e8278aa840180992ce9a19238b0a5d4e4fe9fef6171c",
+   "size": 1672585
+  },
+  "readers.robocop_srirs.parquet": {
+   "sha256": "7d7f3f62bd85ff67b9797e9c63a3e90ebd8b9e4f2b6469c8d59ad60929b716ac",
+   "size": 5543
   },
   "readers.rochester.parquet": {
    "sha256": "60b2aa6fac2855bf1a74eabee66005ff0482ed40aea16009f18cef0128dca72c",
@@ -1122,9 +2006,21 @@
    "sha256": "8c0755a4c2a911c85e9e797db7be063699d03f131c8b55238e9f1e70072784c4",
    "size": 30080
   },
+  "readers.rwth_continuous_brirs.parquet": {
+   "sha256": "f6388ad39bc1b22c5aeeb894eb2e661c976d0421beffd5b6f7f49e88f9f8c039",
+   "size": 4440
+  },
+  "readers.rwth_em64.parquet": {
+   "sha256": "5473c56470377b9f492a8e510aeb122f989f21331cadbc7ee05b9e78419a7c88",
+   "size": 76649
+  },
   "readers.sadie_ii.parquet": {
    "sha256": "91f539df0f2f0fb903defeebbb8f3eb10bea49c76355c1521998f32fa432e38b",
    "size": 35520
+  },
+  "readers.salford_room_in_room.parquet": {
+   "sha256": "e803069147719cc9a7e467561c677c7f0a5df74fae66af1169b7d391481960d7",
+   "size": 9165
   },
   "readers.sant_climent_taull.parquet": {
    "sha256": "44a6a7e28f834af069fd0cdaf531100c03c60c6abbc9289d2b26baef8eb674c0",
@@ -1134,13 +2030,29 @@
    "sha256": "f251ba2bed0b527aee4b52b81f0f82f9228dae711a6750a5fb2779fd283052a3",
    "size": 165441
   },
+  "readers.sav_r.parquet": {
+   "sha256": "61a5e06cca6ce39a8023e1fc72556572ef11c055d1c234ca3de507da83190f95",
+   "size": 12836
+  },
+  "readers.sbsbrir.parquet": {
+   "sha256": "f4cf0473e34f843d93a3b9b938c03f6ff8a3f7f26fe2d5edce9876370ccb1d1d",
+   "size": 989112
+  },
   "readers.scream_sdn.parquet": {
    "sha256": "ce64d485057c8bb829d06f2164f140842cae886f3f815f7e9601f1027a726ffa",
    "size": 4866
   },
+  "readers.sonic_palimpsest.parquet": {
+   "sha256": "71698a83b4c48f3b7140e449215a3374756d86e951025a015f253c44d43d4c44",
+   "size": 6033
+  },
   "readers.soundcam.parquet": {
    "sha256": "9f4445a25b46b8733c0f8d6041b2a1a01bf82588024e38895f06f99d4cdabd07",
    "size": 9156
+  },
+  "readers.spheres.parquet": {
+   "sha256": "8ab4bcfe5e2cd6f56e3945af43656f3c234c3d8cc9df54510b89a841b85cabf2",
+   "size": 16194
   },
   "readers.sriracha.parquet": {
    "sha256": "bdf3c6d02fbdaa1b3a3a418577b07fff1ee862f4207f2cc300e556ecef3f3050",
@@ -1150,17 +2062,41 @@
    "sha256": "3fd120fb0ea27aa9b3163dcfa4ff10a43e3d747f95cc346fcf8f227e7f55c02a",
    "size": 6432
   },
+  "readers.stonehenge.parquet": {
+   "sha256": "e65d272b202184921cffeb6fb863bb35f17970469cbbd3eea5d2963d135221a0",
+   "size": 17221
+  },
   "readers.surir.parquet": {
    "sha256": "bdda4eb56616ae80d62c51c0af96214d0a8de8e0bf0d9c0f89f1dc95def06efc",
    "size": 84598
+  },
+  "readers.surrey_bformat.parquet": {
+   "sha256": "fae8a5e42bad356cd469723e79445cd630dcaf13ccfa117515f6066bbad4919c",
+   "size": 4899
   },
   "readers.surrey_real_room_brirs.parquet": {
    "sha256": "8e330fe462befbfdb5289383ff56cb5c8ebbe23fdcbb75675d0a8917f3e5211c",
    "size": 9862
   },
+  "readers.sweet_area.parquet": {
+   "sha256": "5560c579fac9e77cca853ef6bb18fde3fff7af775ff03fd813e1eb3b7e0a2138",
+   "size": 398364
+  },
+  "readers.tampere_distance.parquet": {
+   "sha256": "ac826ece9b3a04a923ed5c5c24d942a2ddfd54d5fc6d480cb5f9b7f4360ab74b",
+   "size": 76032
+  },
+  "readers.tamulionis_rirs.parquet": {
+   "sha256": "7666df279f8d60f862e90ff8f38a578bedfeb343f2e35b0f1ab48c2c53da9e1c",
+   "size": 5435
+  },
   "readers.tau_srir.parquet": {
    "sha256": "f56d320ef50d110e61bdd66ce42bdd6bdc086861b23d04acb4477985e8adb429",
    "size": 1194032
+  },
+  "readers.teufelsberg.parquet": {
+   "sha256": "d29d72c2c6967826bbc959920e15114ad82ef8d56dae6498039607ce7957cef0",
+   "size": 3892
   },
   "readers.thk_srir.parquet": {
    "sha256": "a5f7bdc7904d246d0458b2acf0371b72fdfa3ba79d1fffd6c0a614f323bffa50",
@@ -1174,9 +2110,21 @@
    "sha256": "5df2a3bfc11a03bb1b76f13b582bba9d822c73eae2f57064aca3497ef895f9aa",
    "size": 282471
   },
+  "readers.tuburo.parquet": {
+   "sha256": "0c43ad39d385f46a82a3504140b43f2a9a1658d0ca93cd9c6aa88f1eb2887e32",
+   "size": 1237475
+  },
+  "readers.tugraz_speech_rirs.parquet": {
+   "sha256": "4c7a988707315e37d51cd66ce648c9085e236d01e774bb71452b0d6e283a821d",
+   "size": 42483
+  },
   "readers.tuil_eigenmike_kemar.parquet": {
    "sha256": "71913624fb62c9da2bff13611505ec8374a4b32b8b141e66bc7cdd1a748ccf3c",
    "size": 24487
+  },
+  "readers.tuil_highres_srirs.parquet": {
+   "sha256": "a8147e5bb9f60951bfaa73bb3bdb8ffff85e960e93752191ba3a29fa2fae833c",
+   "size": 617865
   },
   "readers.tuil_individual_brtfs.parquet": {
    "sha256": "9289f6d0c4a2d08d69635866686986eb9312a4ec1d87662c47592621009aeb8e",
@@ -1185,6 +2133,10 @@
   "readers.tuil_kemar_positions.parquet": {
    "sha256": "53048740ed572e86b31550f4e0d13d883c4a38fe308c6614781d93c58ba7ba59",
    "size": 100096
+  },
+  "readers.tuil_open_headphones.parquet": {
+   "sha256": "0f3a446bc85bcc687348e15a0a4835c8b96b8116ca0561d18ede741c8e8e6464",
+   "size": 49216
   },
   "readers.tuil_robot_coupled.parquet": {
    "sha256": "7738fecb91d2297ee340db6e99140fa700755eabc38636f75f50aae5be65d1cd",
@@ -1198,9 +2150,33 @@
    "sha256": "6088694babeca837ea99b566152ebeef6feb899a40b976fdd0de072ce7ad45c7",
    "size": 13456
   },
+  "readers.tuil_srir_rooms.parquet": {
+   "sha256": "e2381c9f72c359b05d7c7c751c2fc3140cc1ccef755e8e669dade831e74e238b",
+   "size": 5382
+  },
   "readers.tuil_synesthetic.parquet": {
    "sha256": "39161b30446c7346ade9286bf821298f250ac8150a6f9b2cda3a252a878ad7e2",
    "size": 527024
+  },
+  "readers.tuil_translation_seminar.parquet": {
+   "sha256": "70e7837aeb9558f508917a2e52bc2baa181141d7c446f3af7ccc15c99a32d102",
+   "size": 178658
+  },
+  "readers.tuil_translation_two_rooms.parquet": {
+   "sha256": "1da3c03bab59355b4d8c0861986d8128a760c24b1ac7a30436f6d2c718ca75b2",
+   "size": 209325
+  },
+  "readers.tuil_tv_studio_brirs.parquet": {
+   "sha256": "b36413bd678e27e0edefd287e402c923ea0b8d5159f91bd747529e50e7527979",
+   "size": 114134
+  },
+  "readers.tuni_rcair.parquet": {
+   "sha256": "99f98e4b437f1b2390c0ea64d2e05dc56591eb7e3cd691ccefa3238b24ee9b0f",
+   "size": 30963
+  },
+  "readers.tut_tietotalo.parquet": {
+   "sha256": "c510057f607011a8cff8939acc745850d6655080f9e1dec6b257bec2d579bd58",
+   "size": 18733
   },
   "readers.twoears_auditorium3.parquet": {
    "sha256": "aa1c8c88652dc719b2a95ae3b7ec015fce7f7162c5da670571ef28798e74f596",
@@ -1222,17 +2198,45 @@
    "sha256": "1b8f47d8646c861a0e9673ea7f330455fac0cb084b3a5b16990f70ee3f7a01f5",
    "size": 4006
   },
+  "readers.ulrich_diy_rooms.parquet": {
+   "sha256": "38ee791296975233852ad46546ffb00979b50d282a4d4d1ae1fe3ce46491b884",
+   "size": 3911
+  },
   "readers.upv_rir_db.parquet": {
    "sha256": "0106392bd096487e340698ec313a1d098ebfb66b50df6e0555b9653c630895a5",
    "size": 52138
+  },
+  "readers.uts_multizone.parquet": {
+   "sha256": "3a0bd78e51d95361651d8ce2d9c1d9db38c17df9b1a2a30d1a460dd8b6b84a7c",
+   "size": 119767
+  },
+  "readers.voicehome.parquet": {
+   "sha256": "e5ecf0db398727d7c3c973855744adf7c972a2d665de5b00b147434c257ea0c9",
+   "size": 10178
   },
   "readers.voxengo.parquet": {
    "sha256": "1f4d771a6a52cea759e2c46f5cfc29d708b9e0c9f582c2ed70a3b4f720dacd6d",
    "size": 4885
   },
+  "readers.wdr_studios.parquet": {
+   "sha256": "6b31d21e724fb2eb4a090e718d4d38fcfdd96820150cfd8facf942d5c0824c03",
+   "size": 278603
+  },
+  "readers.wells_cathedrals.parquet": {
+   "sha256": "7c87eba76b4efe8a2ac4304e17e20c31090e47d6d215d1eaca9f887be9918cc0",
+   "size": 3736
+  },
+  "readers.york_minster_chapter_house.parquet": {
+   "sha256": "daf82c35657cb54cf311d5e85d2de554b85293a0c300404978514881a519d611",
+   "size": 7601
+  },
   "release.json": {
-   "sha256": "863b4308e8bc8451124d23dedc3a9c14742bdd47141055b9b2b946ba2fd6a3b3",
-   "size": 34334
+   "sha256": "adcb5d56ef7f0eea66ae83888a6a6211b4d8b946b9981cf97950a22f61709e43",
+   "size": 62346
+  },
+  "source_meta.6drir_dl.parquet": {
+   "sha256": "1bcb55418efae0034bf878898ed9b2838150b2836e51aca208a7c6d71fb245f5",
+   "size": 131769
   },
   "source_meta.aachen_air.parquet": {
    "sha256": "91d948e54585f56b944fc8d20a15820b1140e5f4affa6fb88f76de671e06ef60",
@@ -1246,17 +2250,33 @@
    "sha256": "c5f644ed8f7b3eca83c2ffd67123b9ba37f8d1de91e2a2c810a7af266edf0ad2",
    "size": 27119
   },
+  "source_meta.anu_md_omp.parquet": {
+   "sha256": "ae573d157709b5cdd7a4b706920eda010b2e4bb3cba57d42de3593e7b3017ff4",
+   "size": 1425985
+  },
   "source_meta.arni_6dof_srir.parquet": {
    "sha256": "bab6c52920c1bc3289ed56d17010a6b7ec9332b19a4657af87e97f202c756882",
    "size": 5936
+  },
+  "source_meta.asn_database.parquet": {
+   "sha256": "ed1655123a2bd9e3b4156614680ed49ec1d4d1749821f921ecbf24e538a2d51d",
+   "size": 544334
   },
   "source_meta.avil_simulated.parquet": {
    "sha256": "6e241701a355e78426b297e39a33d81421a9af67470d4226c3e12b339892e4ff",
    "size": 4676
   },
+  "source_meta.chalmers_baffled_array.parquet": {
+   "sha256": "f199a2db043c7408238620d6de58fab4c29f0cbda19a0c574e9b918f86fb7e31",
+   "size": 89066
+  },
   "source_meta.em32_line_arni.parquet": {
    "sha256": "59676e44107a8e0fbc00ae2ac8241e1363033af3a82bca16c53c73013f5c35f1",
    "size": 13054
+  },
+  "source_meta.epfl_rectangular_room.parquet": {
+   "sha256": "2e8fee82366680713299914edfc99380732538873a351757c9090bb65d1ad7de",
+   "size": 4525
   },
   "source_meta.eurecat_arir.parquet": {
    "sha256": "e8e85bf4212f40baa2af59061246a44c440551d9b42959fc90af0b6b6b0518f0",
@@ -1278,13 +2298,29 @@
    "sha256": "677c33e861d5895925bf3281652a65682dd07cb6c5338c667e28e8f80297bb87",
    "size": 15621
   },
+  "source_meta.iem_digital_twins.parquet": {
+   "sha256": "02a968e456472665de86cfea18b46c3050c9b1c09bf071713338edbc8a7b9992",
+   "size": 5499
+  },
   "source_meta.iot_srir.parquet": {
    "sha256": "56a6a302aa17cdc55ae331a22cc3f77109df3cff18fa835b3526dd5f67e53357",
    "size": 6837
   },
+  "source_meta.kinect_rir.parquet": {
+   "sha256": "4a4fd8200e7eb035a40b460d9fed736d1fc22904b9f0c6caf83d35d2fd4eebc6",
+   "size": 6331367
+  },
+  "source_meta.loudspeaker_orchestra.parquet": {
+   "sha256": "8ae1cad3507d3e175789541684a15983804195722178503029b6505d99c18835",
+   "size": 8183
+  },
   "source_meta.musicsphere_ilmenau.parquet": {
    "sha256": "369184bf5990a9279fa7ff6db736380833eef0df1f3d780790bbb020a396303c",
    "size": 14319
+  },
+  "source_meta.niels_bohr_auditorium.parquet": {
+   "sha256": "2838f7ddc94591fa719f46d717cf5a135d069a825462b5c1cedb279bb51634e5",
+   "size": 2326
   },
   "source_meta.ok5.parquet": {
    "sha256": "d55e23385476d447975f121aedf7a2be00b2061f9c97bfb2d20a67b34be90260",
@@ -1298,13 +2334,29 @@
    "sha256": "ff059e4ef9f959e9842c6a9a6617dd84f189580b1699e4cbe9235c5c761f2b12",
    "size": 6215
   },
+  "source_meta.otimp.parquet": {
+   "sha256": "a34f735805b69a304a0b35a174d5901f2108829e48c039c6693d54c0b885430e",
+   "size": 82578
+  },
   "source_meta.raves.parquet": {
    "sha256": "17ba78cc4c3c6b5b95b5f61bbbdeb4fdba84a8847809989ecb99c21c06b6e272",
    "size": 5436
   },
+  "source_meta.rir_mega.parquet": {
+   "sha256": "d59ef8264b02087523484b3912dcb5051803bcb0b3d1aac19ccd3cff90055c42",
+   "size": 4119519
+  },
+  "source_meta.robocop_srirs.parquet": {
+   "sha256": "31a5f1b9051c0bcfea6949d802616d65708147b9595de6db82f5bf0c8e041bb5",
+   "size": 3036
+  },
   "source_meta.sadie_ii.parquet": {
    "sha256": "afb1df02396a449952eebf3d1d374a5889c4511592ff182991363c2fcdbef3ce",
    "size": 20693
+  },
+  "source_meta.sbsbrir.parquet": {
+   "sha256": "a6f7c08bb8ecf43f0a1a8c4d642fef9d2ea2092ff950346cf7a82beaca598e1a",
+   "size": 589516
   },
   "source_meta.surir.parquet": {
    "sha256": "58bbfaa5edd1280a30870d546dc90c5719058848a2df650a1e4780c22a8be95d",
@@ -1314,9 +2366,29 @@
    "sha256": "63343c235d7a0cda3ab19c3226d52e8aeb77683d07169b3070ca807f55d1471b",
    "size": 5531
   },
+  "source_meta.sweet_area.parquet": {
+   "sha256": "0b60e23ead514c3301698cc565be28ac0d5fb7450aef26badba1cfe4e0d6502e",
+   "size": 204308
+  },
+  "source_meta.tampere_distance.parquet": {
+   "sha256": "5ca5e79f90fdba0336414111109973ba2b0360f5e0e0de906aa654dedc1dc196",
+   "size": 241653
+  },
+  "source_meta.tuburo.parquet": {
+   "sha256": "ce0e7b3641cfa61aee6bab5b8ab32ce6fd9505af9985b8b3db1085be87e39918",
+   "size": 678257
+  },
+  "source_meta.tugraz_speech_rirs.parquet": {
+   "sha256": "ae5e6a04904533b4c907d9b42ca9e47b3b6b07b7eeb8b07822a244183cf3c02b",
+   "size": 36955
+  },
   "source_meta.tuil_eigenmike_kemar.parquet": {
    "sha256": "8156c093e3f8fdd8b7ed7fb5fdc98a2616c3d741d1c72f4eafa6da2d247c5ded",
    "size": 15606
+  },
+  "source_meta.tuil_highres_srirs.parquet": {
+   "sha256": "d81b3424b41853a97f9e9d600bcd78ceec2762898786bab6eb4adf4127a87a42",
+   "size": 343635
   },
   "source_meta.tuil_individual_brtfs.parquet": {
    "sha256": "cf1903dc7d70eb404d7c4e6830e82398d98cd349017b4f23216153ac06714d9e",
@@ -1334,6 +2406,18 @@
    "sha256": "8473dc9e050e30d06f5fa9e5ee7c083ee4c81eb240a2bcd94f02854d5b9ba333",
    "size": 8868
   },
+  "source_meta.tuil_translation_seminar.parquet": {
+   "sha256": "84236f1b367c95a4fd184f6e7fc5c4f8f0c9cda41bb3bf65ce57a5edb5849a5f",
+   "size": 109793
+  },
+  "source_meta.tuil_translation_two_rooms.parquet": {
+   "sha256": "9b67e6ecc5b2c6a2ef90a53b3bb379737dca5a9676623c38777d20f076da859f",
+   "size": 123511
+  },
+  "source_meta.tut_tietotalo.parquet": {
+   "sha256": "04586975f3d5318c296a7f56d91f4c9b485ac279613f328ebaa84d9ca039f1c7",
+   "size": 13545
+  },
   "source_meta.twoears_auditorium3.parquet": {
    "sha256": "e572122960ae5b3ee735a84ce0b6eedb144ee0a05d78bf08d2e3d0e0d9106b5d",
    "size": 22467
@@ -1350,9 +2434,13 @@
    "sha256": "9370748acd94064ed15d284e4685825cdde4e8fc0606bc45d863f8868426e17a",
    "size": 12264
   },
+  "source_meta.wdr_studios.parquet": {
+   "sha256": "6db99bc934061e9b12567463a160839bfb82ae7bfa933b9b7a95855f7a26d966",
+   "size": 163307
+  },
   "spaces.parquet": {
-   "sha256": "a30a5ed2c5e3910e32cf3a9ce26a70e8edf64b43bf254eeb8ca06b4052a275da",
-   "size": 357345
+   "sha256": "5680fcb817c7707c26e8ff834cb3b72f8c5b65fba8136dd75399eadf4fb92df7",
+   "size": 5166226
   }
  }
 }

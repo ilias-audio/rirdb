@@ -15,7 +15,9 @@ checksum (md5 or sha256) where the release has one. A file that does not match i
 
 from __future__ import annotations
 
+import gzip
 import hashlib
+import io
 import os
 import re
 import shutil
@@ -124,28 +126,67 @@ def check_download(path: Path, algo: str, expected: str) -> None:
 
 # ------------------------------------------------------------------------------------------- unpacking
 
+# A tar cut into pieces, each gzipped: x.tar.part.aa.gz, x.tar.part.ab.gz, ... (MB-RIRs). The first piece stands
+# for the archive; the others are its parts.
+SPLIT_TAR = re.compile(r"(.+\.tar)\.part\.([a-z]{2})\.gz")
+
+
 def split_part_of(download: str, archive: str) -> bool:
-    """x.z01, x.z02, ... are the parts of the split zip x.zip (TAU-SRIR): fetched and counted with it."""
+    """The parts fetched and counted with an archive: x.z01, x.z02, ... of the split zip x.zip (TAU-SRIR), and
+    x.tar.part.ab.gz, ... of x.tar.part.aa.gz (MB-RIRs)."""
+    first, part = SPLIT_TAR.fullmatch(archive), SPLIT_TAR.fullmatch(download)
+    if first:
+        return bool(first.group(2) == "aa" and part and part.group(1) == first.group(1) and part.group(2) != "aa")
     return bool(re.fullmatch(re.escape(archive.removesuffix(".zip")) + r"\.z\d\d", download))
+
+
+class Pieces(io.RawIOBase):
+    """The gzipped pieces of a tar, read one after the other as one stream (tarfile reads it in stream mode)."""
+
+    def __init__(self, paths: list[Path]):
+        self.paths, self.current = iter(paths), None
+
+    def readable(self) -> bool:
+        return True
+
+    def readinto(self, buffer) -> int:
+        while True:
+            if self.current is None:
+                path = next(self.paths, None)
+                if path is None:
+                    return 0
+                self.current = gzip.open(path, "rb")
+            n = self.current.readinto(buffer)
+            if n:
+                return n
+            self.current.close()
+            self.current = None
 
 
 def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
     """Unpack the archive into the folder: only `members` where the archive has them all, else everything."""
     into.mkdir(parents=True, exist_ok=True)
-    split = any(archive.parent.glob(archive.name.removesuffix(".zip") + ".z[0-9][0-9]"))
-    if archive.name.endswith(".zip") and not split:
+    safe = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}      # no path outside `into`
+    first = SPLIT_TAR.fullmatch(archive.name)
+    if first and first.group(2) == "aa":         # the pieces, in order, are one tar: read as a stream, all of it
+        pieces = sorted(archive.parent.glob(f"{first.group(1)}.part.[a-z][a-z].gz"))
+        with tarfile.open(fileobj=io.BufferedReader(Pieces(pieces)), mode="r|") as t:
+            t.extractall(into, **safe)
+        return
+    name = archive.name.lower()                  # any case: PRAIRE publishes .ZIP
+    split = any(archive.parent.glob(archive.name[:-4] + ".z[0-9][0-9]")) if name.endswith(".zip") else False
+    if name.endswith(".zip") and not split:
         try:
             with zipfile.ZipFile(archive) as z:
                 z.extractall(into, members=members if members and set(members) <= set(z.namelist()) else None)
             return
         except (zipfile.BadZipFile, OSError) as e:
             say(f"  Python cannot read {archive.name} ({e}); trying the system's 7z or unzip")
-    if archive.name.endswith((".zip", ".rar")):          # GRAP and MARDY come as RAR, which Python cannot read
+    if name.endswith((".zip", ".rar")):          # GRAP and MARDY come as RAR, which Python cannot read
         unpack_with_system_tools(archive, into)
         return
     with tarfile.open(archive) as t:
         wanted = [t.getmember(m) for m in members] if members and set(members) <= set(t.getnames()) else None
-        safe = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}      # no path outside `into`
         t.extractall(into, members=wanted, **safe)
 
 
@@ -161,7 +202,7 @@ def unpack_with_system_tools(archive: Path, into: Path) -> None:
             if "Headers Error" not in test or any(w in test for w in ("CRC Failed", "Data Error", "Unexpected end")):
                 raise FetchError(f"7-Zip could not unpack {archive.name}: delete it from the cache and run again")
         return
-    if archive.suffix == ".rar":
+    if archive.suffix.lower() == ".rar":
         raise FetchError(f"{archive.name} is a RAR archive, which needs 7-Zip (7z). Install it (e.g. `apt install "
                          "p7zip-full p7zip-rar` or `brew install p7zip`) and run again.")
     if shutil.which("zip") and shutil.which("unzip"):

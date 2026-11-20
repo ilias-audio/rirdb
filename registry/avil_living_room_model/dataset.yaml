@@ -3,22 +3,35 @@ id: avil_living_room_model
 name: Living-room model and simulated IRs (DTU AVIL, ODEON)
 year: 2019
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["9746324"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset", "channel_formats": {"64": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: loudspeakerIRs/*.wav, pattern: '^loudspeakerIRs/IR(?P<src>\d+)\.wav$', room_from: pattern, room_default: living_room, channel_formats: {64: array_raw}}}
+ir_kinds:
+- virtual
+space_type: virtual
+capture_formats:
+- array_raw
+fs_hz:
+- 48000
+analysis:
+  reference_role: mean
 content: 21 room impulse responses of a living room simulated in ODEON (7 azimuths x 3 distances) and rendered with
   the LoRA toolbox for DTU's 64-channel loudspeaker lab, with the ODEON room model and outputs.
 expected:
   n_irs: 21
   n_rooms: 1
+  note: 7 azimuths (-90 to 90 degrees, 30-degree steps) x 3 distances (1.4, 2.4, 3.4 m), as the figshare record states;
+    IR01 is -90 degrees at 1.4 m and IR21 is 90 degrees at 3.4 m. Each IR is 64 loudspeaker feeds for DTU's AVIL (LoRA rendering).
 room_info:
   dimensions: partial
   geometry: 'yes'
   positions: 'yes'
   images: 'no'
   conditions: 'no'
+  where: the figshare record (azimuths, distances, IR numbering); AVcocktailpartyRoomODEON/AVcocktailpartyRoom/AVcocktailpartyRoom.SouRecScript
+    (source and listener coordinates) and AVcocktailpartyRoom.Materials.00001.txt (surface areas and absorption coefficients)
 license:
   spdx: CC-BY-4.0
 homepage: https://data.dtu.dk/articles/dataset/A_room_acoustics_model_and_simulated_impulse_responses_of_a_living_room/9746324

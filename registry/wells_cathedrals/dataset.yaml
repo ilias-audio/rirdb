@@ -3,10 +3,16 @@ id: wells_cathedrals
 name: Jez Wells cathedral IRs (Arundel, Ely)
 year: 2007
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.jezwells.org/Impulse_responses/arundel_impulse_response_44_1kHz.wav","https://www.jezwells.org/Impulse_responses/ely_choir_impulse_response_44_1kHz.wav","https://www.jezwells.org/Impulse_responses/ely_lady_chapel_impulse_response_44_1kHz.wav"]}
+adapter: {name: wav_tree, params: {glob: '*_impulse_response_44_1kHz.wav', pattern: '^(?P<room>[a-z_]+?)_impulse_response_44_1kHz\.wav$', room_from: pattern}}
+capture_formats:
+- stereo
+space_type: worship
+analysis:
+  keep_s: 5.7
 content: Three stereo impulse responses that Jez Wells (University of York) recorded in Arundel Cathedral's nave,
   Ely Cathedral's choir and Ely's Lady Chapel while restoring 1950s choral recordings.
 fs_hz:
@@ -14,6 +20,7 @@ fs_hz:
 expected:
   n_irs: 3
   n_rooms: 3
+  note: 'The page lists three IRs: Arundel nave, Ely choir and Ely Lady Chapel.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +30,8 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: jezwells.org/Computer_music_tools.html (the three spaces, 44.1 kHz 24-bit, made to restore late-1950s choral recordings)
+    and the file names. No method, microphones or positions.
 license:
   spdx: LicenseRef-unspecified
 homepage: https://www.jezwells.org/Computer_music_tools.html

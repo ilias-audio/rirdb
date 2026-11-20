@@ -3,17 +3,25 @@ id: bricasti_m7_samplicity
 name: Samplicity Bricasti M7 IR Library
 year: 2010
 type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://cdn.samplicity.com/downloads/Samplicity%20-%20Bricasti%20IRs%20version%202023-10.zip"]}
+adapter: {name: wav_tree, params: {glob: 'Samplicity - Bricasti IRs version 2023-10, left-right files, 48 Khz/*.wav', pattern: '/(?P<room>[1-6] (?:Halls|Plates|Rooms|Chambers|Ambiences|Spaces) \d\d [^/]+?), 48K (?P<src>[LR])\.wav$', room_from: pattern}}
+ir_kinds:
+- digital_reverb
+capture_formats:
+- stereo
+space_type: device
 content: Free true-stereo impulse responses of the presets of a Bricasti M7 hardware reverb unit, captured by Samplicity
   and offered as quad-channel and dual-stereo WAV files at 44.1 and 48 kHz.
 fs_hz:
-- 44100
 - 48000
 expected:
-  n_irs: 134
+  n_irs: 268
+  n_rooms: 134
+  note: '134 presets (the 2010 release''s count), each a true-stereo IR: two stereo IRs, from the left and the right input.
+    Published four times over (quad and dual-stereo, 44.1 and 48 kHz); only the 48 kHz dual-stereo files are read.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +31,8 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: the file names (bank and preset name of the Bricasti M7); samplicity.com/downloads (true-stereo, quad and dual-stereo,
+    44.1 and 48 kHz)
 license:
   spdx: LicenseRef-unspecified
   note: The download page only says the IRs are offered free of charge and as-is. News reports of the 2010 release

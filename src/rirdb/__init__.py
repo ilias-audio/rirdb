@@ -1,3 +1,3 @@
 """rirdb: find room impulse responses across public datasets, and get them as one folder."""
 
-__version__ = "0.9.7"      # the one home of the version (pyproject.toml reads it)
+__version__ = "0.9.8"      # the one home of the version (pyproject.toml reads it)

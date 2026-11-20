@@ -183,7 +183,7 @@ def parse_size(text: str) -> float:
 
 def download_sizes() -> dict[tuple[str, str], float]:
     """Each download of the release, whole: (dataset, download) -> bytes, NaN when the release does not know.
-    A split zip counts with all its parts; a web folder (`@mirror`) counts all its files; the one download of a
+    A split zip or tar counts with all its parts; a web folder (`@mirror`) counts all its files; the one download of a
     dataset whose host gives no size (a GitHub tarball) counts the files it unpacks to."""
     d = client.table("downloads").sort_values("source_rank").drop_duplicates(["dataset", "download"])
     out = {}
@@ -194,7 +194,7 @@ def download_sizes() -> dict[tuple[str, str], float]:
             if z == "@mirror" or (np.isnan(s) and len(size) == 1):
                 s = (float(client.table(f"files.{ds}")["size_bytes"].sum(min_count=1))
                      if client.has(f"files.{ds}.parquet") else np.nan)
-            elif z.endswith(".zip"):
+            else:                                     # a split zip or tar counts with its parts
                 s += sum(v for p, v in size.items() if split_part_of(p, z))
             out[(ds, z)] = s
     return out
@@ -291,7 +291,7 @@ def download_plan(rows: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame(columns=["dataset", "download", "url", "size_bytes", "n_irs"])
     downloads = client.table("downloads")
     need = rows.groupby(["dataset", "download"]).size().rename("n_irs").reset_index()
-    parts = [(d, p) for d, z in zip(need["dataset"], need["download"]) if z.endswith(".zip")    # a split zip
+    parts = [(d, p) for d, z in zip(need["dataset"], need["download"])                       # a split zip or tar
              for p in downloads.loc[downloads["dataset"] == d, "download"] if split_part_of(p, z)]
     need = pd.concat([need, pd.DataFrame(parts, columns=["dataset", "download"]).assign(n_irs=0)], ignore_index=True)
     plan = need.merge(downloads, on=["dataset", "download"], how="left")

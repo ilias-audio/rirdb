@@ -3,17 +3,44 @@ id: rir_44k
 name: RIR-44k (VoiceFixer)
 year: 2021
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5528124"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
-content: 43,239 simulated single-microphone RIRs at 44.1 kHz from random rectangular rooms (sides 1-12 m, RT60 0.05-1
-  s, omni or cardioid mic), released with the VoiceFixer speech-restoration paper.
+adapter: {name: ndarray, params: {groups: [{glob: RIR_44k/t*/rir_omnidirectional_*.npy, container: npy, time_axis: 0, record_axes: [], fs: 16000, pattern: '^RIR_44k/(?:train|test)/rir_omnidirectional_(?P<room>rt60_[^_]+_room_[^_]+_[^_]+_[^_]+)_(?P<rcv>mic_(?P<rx>[^_]+)_(?P<ry>[^_]+)_(?P<rz>[^_]+))_(?P<src>source_(?P<sx>[^_]+)_(?P<sy>[^_]+)_(?P<sz>[^_]+))\.npy$', positions: {rcv: {groups: [rx, ry, rz]}, src: {groups: [sx, sy, sz]}}, capture_format: mono_omni, roles: [omni]}, {glob: RIR_44k/t*/rir_cardioid_*.npy, container: npy, time_axis: 0, record_axes: [], fs: 16000, pattern: '^RIR_44k/(?:train|test)/rir_cardioid_(?P<room>rt60_[^_]+_room_[^_]+_[^_]+_[^_]+)_(?P<rcv>mic_(?P<rx>[^_]+)_(?P<ry>[^_]+)_(?P<rz>[^_]+))_(?P<src>source_(?P<sx>[^_]+)_(?P<sy>[^_]+)_(?P<sz>[^_]+))\.npy$', positions: {rcv: {groups: [rx, ry, rz]}, src: {groups: [sx, sy, sz]}}, capture_format: mono_directional, roles: [cardioid]}]}}
+capture_formats:
+- mono_omni
+- mono_directional
+space_type: virtual
+notes: 'The record calls these 44.1 kHz RIRs, but they were simulated at 16 kHz: the direct sound arrives distance / c x
+  16,000 samples after the start (median 15,980 samples per second on 149 omni files with the source inside the room) and
+  each file is RT60 x 16,000 samples long, within 8 samples. The .npy files store no rate, so RIRDB reads them at 16 kHz;
+  content goes up to 8 kHz only, and rirdb get delivers 16 kHz IRs, not the 44.1 kHz filters VoiceFixer convolved them with.
+  Read at 44.1 kHz, every room would be 2.76 times smaller and every decay 2.76 times shorter than its file name states.
+  The files end at the stated RT60, so the late decay is cut, and decay times fitted at 16 kHz are about 1.25 times the
+  named RT60 (median). Coordinates are in the file names'' order: x is the README''s height axis, then width, then length.
+  The cardioid microphones face +x (the cardioid to omni direct level fits 0.5 + 0.56 x the direction cosine on x). 11,999
+  files put the source more than 5 mm below zero on an axis, outside the room (up to 2.95 m); no source lies beyond a far
+  wall and no microphone outside the room. Another 34 sources are written -0.0, within 5 mm outside a wall, and are not
+  marked. The README says the source distance was redrawn above 5 m, but 7,526 files (all with the source inside the room)
+  name a source more than 5 m from the microphone, up to 14.8 m; their direct sound arrives at the named distance (300 sampled
+  files), so the names, not the README, give the geometry.'
+defects:
+- what: 'The source named in the file lies outside the room (a coordinate below zero, by up to 2.95 m), so the stated source
+    position and distance do not match the IR: its first strong arrival comes earlier, from the source''s mirror image across
+    the wall at zero.'
+  files: _source_(?:[^_]+_){0,2}-(?!0\.0(?:_|\.npy$))
+content: Simulated single-microphone RIRs (43,239 stated, 50,000 in the archive) from random rectangular rooms (sides 1-12
+  m, RT60 0.05-1 s, omni or cardioid microphone), released with the VoiceFixer speech-restoration paper as 44.1 kHz filters
+  but simulated at 16 kHz.
 fs_hz:
-- 44100
+- 16000
 expected:
   n_irs: 43239
+  note: The README and the VoiceFixer paper state 43,239 (38,239 train + 5,000 test); RIR_44k.zip (Zenodo record 5528124)
+    holds 45,000 train and 5,000 test files, all 50,000 distinct (no checksum or name repeats), and every one is indexed,
+    as nothing says which 38,239 the paper's training set holds. The example folder's .npy is a copy of a test file and
+    is not read.
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +50,9 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'the file names (pick-up pattern, RT60, room height width length, microphone and source position, in metres) and
+    RIR_44k/README.md (how they were drawn: rir_simulator_python, sides U(1,12) m, RT60 U(0.05,1) s, source distance drawn
+    with mean 2 m and standard deviation 4 m and redrawn above 5 m, which the names do not bear out)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/5528124

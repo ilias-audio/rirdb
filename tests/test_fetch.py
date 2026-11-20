@@ -3,6 +3,7 @@ and taken from a folder; a changed byte fails. No network."""
 
 from __future__ import annotations
 
+import gzip
 import shutil
 import subprocess
 import zipfile
@@ -98,6 +99,32 @@ def test_a_split_zip_is_unpacked(tmp_path):
 def test_the_parts_of_a_split_zip_are_known_by_name():
     assert split_part_of("TAU-SRIR_DB.z01", "TAU-SRIR_DB.zip") and split_part_of("TAU-SRIR_DB.z12", "TAU-SRIR_DB.zip")
     assert not split_part_of("TAU-SRIR_DB.zip", "TAU-SRIR_DB.zip") and not split_part_of("other.z01", "TAU-SRIR_DB.zip")
+
+
+def test_a_tar_cut_into_gzipped_pieces_is_unpacked(tmp_path):
+    """MB-RIRs publishes mb.tar as mb.tar.part.aa.gz, ab, ...: the first piece stands for the archive."""
+    src = tmp_path / "src" / "mb"
+    src.mkdir(parents=True)
+    (src / "a.bin").write_bytes(bytes(range(256)) * 1000)
+    (src / "b.bin").write_bytes(bytes(range(255, -1, -1)) * 1000)
+    subprocess.run(["tar", "-cf", str(tmp_path / "mb.tar"), "mb"], cwd=tmp_path / "src", check=True)
+    data = (tmp_path / "mb.tar").read_bytes()
+    for k, name in enumerate(("aa", "ab", "ac")):              # three pieces, each gzipped on its own
+        (tmp_path / f"mb.tar.part.{name}.gz").write_bytes(gzip.compress(data[k * 200_000:(k + 1) * 200_000]))
+    unpack(tmp_path / "mb.tar.part.aa.gz", tmp_path / "out")
+    assert (tmp_path / "out" / "mb" / "a.bin").read_bytes() == (src / "a.bin").read_bytes()
+    assert (tmp_path / "out" / "mb" / "b.bin").read_bytes() == (src / "b.bin").read_bytes()
+    assert split_part_of("mb.tar.part.ab.gz", "mb.tar.part.aa.gz") and split_part_of("mb.tar.part.ah.gz", "mb.tar.part.aa.gz")
+    assert not split_part_of("mb.tar.part.aa.gz", "mb.tar.part.aa.gz")
+    assert not split_part_of("src_rec_mb.tar.part.ab.gz", "mb.tar.part.aa.gz")
+
+
+def test_an_upper_case_zip_is_unpacked(tmp_path):
+    """PRAIRE publishes some archives as .ZIP."""
+    with zipfile.ZipFile(tmp_path / "C023.ZIP", "w") as z:
+        z.writestr("ir.flac", b"x" * 10)
+    unpack(tmp_path / "C023.ZIP", tmp_path / "out")
+    assert (tmp_path / "out" / "ir.flac").read_bytes() == b"x" * 10
 
 
 def test_a_download_cut_short_without_an_error_resumes(toy_site, tmp_path):

@@ -1,0 +1,6 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+living-room,"Living room, holiday-apartment model (ASN Database, CATT-Acoustic)",domestic,,,,,,,,"floor area 33.09 m2, T30 0.46 s (database readme v3.2); 76 of the 98 nodes; the 202 sources lie on a 40 cm grid over the whole apartment, so many IRs have the source in another room",
+bedroom,"Bedroom, holiday-apartment model (ASN Database, CATT-Acoustic)",domestic,,,,,,,,"floor area 7.47 m2, T30 0.31 s (database readme v3.2); 10 nodes; sources in all 5 rooms",
+bathroom,"Bathroom, holiday-apartment model (ASN Database, CATT-Acoustic)",domestic,,,,,,,,"floor area 4.32 m2, T30 0.44 s (database readme v3.2); 6 nodes; sources in all 5 rooms",
+hall,"Hall, holiday-apartment model (ASN Database, CATT-Acoustic)",circulation,,,,,,,,"floor area 3.69 m2, T30 0.41 s (database readme v3.2); 4 nodes; sources in all 5 rooms",
+toilet,"Toilet, holiday-apartment model (ASN Database, CATT-Acoustic)",domestic,,,,,,,,"floor area 1.40 m2, T30 0.35 s (database readme v3.2); 2 nodes; sources in all 5 rooms",

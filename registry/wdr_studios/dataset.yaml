@@ -3,19 +3,42 @@ id: wdr_studios
 name: WDR Broadcast Studios Spatial Audio IR Compilation
 year: 2020
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3930833"], exclude: ["miro_wav_format_data.zip"]}   # the SOFA files are the IRs; the 15.5 GB zip holds them again as WAV and MIRO
+adapter: {name: sofa, params: {exclude: (^|/)(__MACOSX|\._)|\.DS_Store$|^miro_wav_format_data/, groups: [{glob: BRIR_*.sofa, pattern: '^BRIR_(?P<room>CR1|CR7|SBS|LBS)_KU_(?P<rcv>MICS|ROTM)_(?P<src>L|R|PAL|PAC|PAR|SBC|SBL)\.sofa$', room_from: pattern, capture_format: binaural, roles: [L, R]}, {glob: DRIR_*.sofa, pattern: '^DRIR_(?P<room>CR1|CR7|SBS|LBS)_VSA_(?P<rcv>\d+(?:RS|OSC))_(?P<src>L|R|PAL|PAC|PAR|SBC|SBL)\.sofa$', room_from: pattern, capture_format: sma_raw, reference_role: mic_0}]}}
+capture_formats:
+- binaural
+- sma_raw
+fs_hz:
+- 48000
 content: KU100 BRIRs (360 head directions in 1° steps) and VariSphear spherical-array DRIRs on Lebedev grids, measured
   in four WDR broadcast studios and control rooms in Cologne; SOFA plus a WAV archive.
 expected:
-  n_irs: 84
+  n_irs: 8700
   n_rooms: 4
+  note: '84 SOFA files: 24 KU100 BRIR sets of 360 head orientations (8,640 BRIRs) and 60 VariSphear array measurements (50
+    to 1,202 grid points each). The record counts the 84 files; the paper counts more than 35,000 single-channel IRs, including
+    stereo-microphone sets that are only in the WAV/MIRO archive, which is not read.'
 room_info:
   images: 'yes'
+  dimensions: partial
+  volume: 'yes'
+  positions: partial
+  reference_acoustics: partial
+  where: 'VDT2012_WDRIRC.pdf (Table 1: floor area, volume, height; Figures 2, 4, 6, 9: room sketches with the listener and
+    the sources; Table 2: listener heights; Figures 7 and 10: RT60 of SBS and LBS); name_coding_chart.pdf (file codes);
+    *_Pano.zip and WDR_PictureCollection.zip (photos)'
 license:
-  spdx: CC-BY-4.0
+  spdx: CC-BY-SA-3.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record 3930833
+  - licence: CC-BY-SA-3.0
+    where: SOFA file headers (License attribute 'CC 3.0 BY-SA') and VDT2012_WDRIRC.pdf, section 6.2 (creativecommons.org/licenses/by-sa/3.0)
+  redistribute_audio: 'yes'
+  note: 'Conflicting statements: the strictest is used. Ask the authors to confirm.'
 homepage: https://zenodo.org/records/3930833
 doi: 10.5281/zenodo.3930833
 web_check:

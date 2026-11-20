@@ -2,15 +2,36 @@
 id: conner_irs
 name: Conner's Impulse Response Library
 year: 2022
-type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+type: measured   # real spaces recorded on site, published as a library for music production (as echothief); plates and springs stay device
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://github.com/itsmusician/IR-Library/releases/download/v2.0.0/Conners-IR-Library_v2.0.0.zip"]}
+adapter: {name: wav_tree, params: {glob: IR-Library-main/**/*.wav, exclude: (^|/)(__MACOSX|\._)|/\.DS_Store$|\(Tail Only\), pattern: '^IR-Library-main/(?:(?:Rooms|Enclosed Spaces|Outdoors)/(?:[^/]+/)*(?P<room>PCC North 300 Level Prefunction Hall|Old Home Guest Bath Tub Resonator|PCC North 300 Level North Terrace|Sunnybrook Farm Willowdale Church|University Garage 3 Outdoor Stair|Old Home Guest Bath Towel Closet|PCC North 300 Level Exhibit Hall|Old Audio Engineering Club Room|Rockefeller Gardens Field Stage|College House Foyer Stairwell|College House Master Bathroom|Florida SR40 Bridge Underpass|University Garage 1 Stairwell|University Garage 2 Stairwell|College House Master Bedroom|OCCC Theater Storage Barrier|Ranch House Open Living Room|Gold Coffee Shop Quiet Room|Suburban Apartment 1 Avenue|13th Century Venetian Home|Drumheller''s Little Church|Theme Park Employee Garage|College House Living Room|Gold Coffee Shop Bathroom|Arroyo House Living Room|Bower Ponds Amphitheatre|Old Home Washing Machine|Reflective Half Bathroom|University Garage 1 Ramp|University Garage 3 Ramp|Old Home AC Intake Vent|PCC 3rd Street Corridor|Small Forest Clearing 1|Small Forest Clearing 2|Weston''s Backrooms Hall|Firenze Parking Garage|Gas Station 1 Car Wash|Gas Station 1 Overhang|Gold Coffee Shop Lobby|Ranch House Bathroom 1|College House Bedroom|Engineering II Atrium|OCCC Freight Elevator|Unknown House 1 Lobby|College House Garage|College House Office|Old Home Living Room|Ostia Antica Theatre|Rome Apartment Alley|Angled Loading Dock|MSB Brick Stairwell|Old Home Guest Bath|Ranch House Bedroom|Eerie Loading Dock|Lux Hotel Bathroom|Old Home Fireplace|Playground Slide 1|Ranch House Hall 1|Ancient Wand Shop|Craft Coffee Shop|Flat Loading Dock|Old Home Backyard|Colonial Bedroom|Old Home Hallway|Orlando Ballroom|Tall Coffee Shop|Catamaran Hull|Old Home Dryer|Royal Ballroom|Tile Dormitory|Medium Gazebo|Old Home Oven|Palm Ballroom|Suburb Street|Villa 10 Hall|Giant Center|Hotel Room 1|Paul''s Place|The Pantheon|Storm Drain|2002 Sedan|FWCC Arena|MSU Arena|Bunker 1|Bunker 2)(?: (?:(?P<rcv>[^/]+?) )??(?:(?:Mono|Stereo) )?\(?(?P<src_4>Balloon|Bang Snap|Clap|Snap|Slap|Click|Speakers (?:Front|Rear)|Temporary Flown PA|PA)\)?(?: (?:Mono|Weird|Heavy Denoise))?(?: (?P<rcv_2>[^/]+?))?| (?P<rcv_3>[^/]+?)(?: \(Heavy Denoise\))?)??(?: \(?(?P<cond>Closed|Open|Light Treatment|Mid Treatment|No Treatment|Optimal|Raw)\)?)?|Plates/(?P<room_2>Conner Plate I)/[^/]+/Conner Plate I (?P<src>[^/]+?)|Springs/Spring Tube Toys/(?P<room_3>Spring Tube Toy \d+in) (?P<src_2>[^/]+?)|Springs/(?P<room_4>(?!Spring Tube Toys/)[^/]+)/(?:[^/]+/)?(?P<src_3>[^/]+?)|Speakers/Amplifiers/Jazz Chorus 120/(?P<room_5>JC-120 Spring) (?P<src_5>\d+s -\d+))\.wav$', room_from: pattern, ir_kind_from_regex: {^IR-Library-main/Plates/: plate, ^IR-Library-main/Springs/: spring, ^IR-Library-main/Speakers/Amplifiers/Jazz Chorus 120/: spring, '/University Garage [12] Stairwell': room, ^IR-Library-main/Outdoors/: outdoor, '/(?:2002 Sedan|Catamaran Hull)': vehicle, '/Old Home (?:Dryer|Oven|Washing Machine|AC Intake Vent)': device}, roles: {'1': [omni], '2': [SL, SR], '4': [LL, X1, X2, RR]}, channel_formats: {'4': array_raw}, reference_roles: {'4': LL}, preferred_regex: '^(?!.*/(?:PCC [^/]+ (?:Combined|Shotgun Mic) Balloon|Amateur Speaker Spring \(Early Mono\)|Boom Arm Spring Flick (?:High|Band) Pass|Giant Center [^/]+ \(Low Gain\)))'}}
+ir_kinds:
+- room
+- outdoor
+- vehicle
+- device
+- plate
+- spring
+capture_formats:
+- stereo
+- mono_omni
+- array_raw
+fs_hz:
+- 44100
+- 48000
+- 96000
+- 192000
 content: 'Hobbyist library of 738 IRs (v2.0.0): rooms, enclosed spaces, outdoor sites, plate, spring and hardware
   reverbs, plus instrument, object, speaker and synthesized IRs, captured with claps, pops and sweeps.'
 expected:
   n_irs: 738
+  n_rooms: 95
+  note: 'The README counts 738 IRs of anything (rooms, objects, instruments, speakers, hardware, synthesized signals). The
+    reader takes the 257 IRs of spaces, plates and springs less 5 (Tail Only) files, and the 24 JC-120 spring-reverb IRs
+    filed under Speakers: 276 IRs in 95 spaces named from the file names (the author gives no room count).'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -19,12 +40,25 @@ room_info:
   positions: 'no'
   images: 'no'
   reference_acoustics: 'no'
-  conditions: 'no'
+  conditions: partial
+  where: the folder and file names (category, site, room, position, excitation); References.md (equipment behind the generic
+    names, e.g. 2002 Sedan = 2002 Toyota Camry LE, HG Spring = Hammond Gibbs 7129, Jazz Chorus 120 = Roland JC-120); Changelog.md
+    (the JC-120 springs moved from Springs/ to Speakers/ in v2.0.0); README.md (contributors of the Menorca bunkers and
+    the UCF atrium). No dimensions, positions or rates are documented.
 license:
   spdx: MIT
   note: MIT licence (copyright 2022 Conner); the README adds that the author wants no attribution requirement and
     allows commercial use, though the MIT text asks that its notice stay with copies.
 homepage: https://github.com/itsmusician/IR-Library
+defects:
+- what: 'The author faded or gated most tails to digital zero, so where a noise or hum floor came first, the decay fit
+    runs through it. In the JC-120 spring files cut at -42 to -60 dB, rt_mid (5 to 12 s) measures that floor: the spring
+    decays in about 3.5 to 3.9 s, as its -30 and -36 files show.'
+  files: 'JC-120 Spring [0-9]+s -(42|48|54|60)\.wav$'
+- what: 'Phoenix Convention Center halls: T20 and T30 at 4 and 8 kHz (3.2 to 5.8 s) are a noise floor the author faded to
+    digital zero, not the room (air absorption alone limits an 8 kHz decay to about 1.7 s). The mid-band decay of about
+    7.3 s is plausible.'
+  files: 'PCC North 300 Level (Exhibit|Prefunction) Hall'
 web_check:
   checked: '2026-10-14'
   found_as: Conner's Impulse Response Library (itsmusician/IR-Library)

@@ -9,13 +9,13 @@
     <out>/selection.lock                the tables' version, the command, the seed, each ir_id and audio_hash
 
 Each IR is cut out of its published file by the dataset's reader, and checked against the hash of its decoded
-samples (`audio_hash`) before it is converted.
+samples (`audio_hash`) before it is converted. For an IR the reader computes (an inverse FFT, subband filters), the
+hash is of the published values it is computed from and the reader's settings (adapters/base.py, ir_hash).
 """
 
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import math
 import os
@@ -47,7 +47,19 @@ RIRDB_BIB = """@misc{rirdb,
 def audio_hash(x: np.ndarray) -> str:
     """The hash of decoded samples, as the release's `audio_hash` (analyser v1: SHA-1 of the float32
     samples, channels first, first 32 hex digits)."""
-    return hashlib.sha1(np.ascontiguousarray(x, dtype=np.float32).tobytes()).hexdigest()[:32]
+    from rirdb.adapters.base import audio_hash as sample_hash
+
+    return sample_hash(x)[:32]
+
+
+def check_audio_hash(reader, locator: dict, root: Path, x: np.ndarray, expected: str, ir_id: str) -> None:
+    """Raise FetchError if the IR the reader cut does not hash to the release's audio_hash (`expected`, empty when
+    the release has none). The hash is ir_hash's: of the samples, or of the published values a computed IR is
+    computed from."""
+    from rirdb.adapters.base import ir_hash
+
+    if expected and ir_hash(reader, locator, root, x)[:32] != expected:
+        raise FetchError(f"{ir_id}: the decoded samples do not match the release (audio_hash)")
 
 
 def ambix(x: np.ndarray, roles: list[str], sh_norm: str) -> np.ndarray:
@@ -134,9 +146,9 @@ def write_selection(sel, out: Path, from_dir: Path | None = None, keep_archives:
             say(f"{dataset}: writing {len(group):,} IRs")
             for r in group.itertuples():
                 how = readers.loc[r.ir_id]
-                x, fs = reader.load(json.loads(how["locator"]), root)
-                if r.audio_hash and audio_hash(x) != r.audio_hash:
-                    raise FetchError(f"{r.ir_id}: the decoded samples do not match the release (audio_hash)")
+                locator = json.loads(how["locator"])
+                x, fs = reader.load(locator, root)
+                check_audio_hash(reader, locator, root, x, r.audio_hash, r.ir_id)
                 y = to_format(x, how["channel_roles"].split(","), q.format, how["sh_norm"])
                 if q.fs and q.fs != fs:
                     y = resample(y, fs, q.fs)

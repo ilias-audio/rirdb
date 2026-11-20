@@ -14,10 +14,11 @@ from rirdb.index import ir_id, sample_by_cap, split_key
 REPO = Path(__file__).resolve().parents[1]
 
 
-@pytest.mark.parametrize("key", ["Room1/Speak1_Mic2.wav", "a.wav|b.wav", "SR1-C1.h5#12,40", "f.sofa#3#1",
-                                 "x.mat#tau/1,2,3"])
-def test_the_id_keeps_the_old_hex(key):
-    file, item = split_key(key)
+@pytest.mark.parametrize("key, file", [("Room1/Speak1_Mic2.wav", "Room1/Speak1_Mic2.wav"), ("a.wav|b.wav", "a.wav|b.wav"),
+                                       ("SR1-C1.h5#12,40", "SR1-C1.h5"), ("f.sofa#3#1", "f.sofa"),
+                                       ("x.mat#tau/1,2,3", "x.mat"), ("03a-#3Mezz.wav", "03a-#3Mezz.wav")])
+def test_the_id_keeps_the_old_hex(key, file):
+    file, item = split_key(key, file)
     assert (f"{file}#{item}" if item else file) == key
     assert ir_id("ds", file, item).split("-", 1)[1] == make_ir_id("ds", key).split(":", 1)[1]
 

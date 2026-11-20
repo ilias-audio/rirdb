@@ -14,7 +14,8 @@ LAYOUTS = {"mono_omni": "Omni microphone", "stereo": "Stereo pair", "binaural": 
            "foa_fuma": "First-order Ambisonics (FuMa)", "foa_ambix": "First-order Ambisonics (AmbiX)",
            "hoa_sh": "Higher-order Ambisonics", "em32_raw": "Eigenmike em32, raw capsules",
            "sma_raw": "Spherical array, raw capsules", "tetra_raw": "Tetrahedral microphone, raw capsules (A-format)",
-           "array_raw": "Microphone array", "sdm_array": "Array for the spatial decomposition method (SDM)"}
+           "array_raw": "Microphone array", "sdm_array": "Array for the spatial decomposition method (SDM)",
+           "mono_directional": "Directional microphone (cardioid or similar)"}
 
 ORIGINS = {"measured": "Measured", "simulated": "Simulated", "device": "Effects and devices"}
 

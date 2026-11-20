@@ -3,21 +3,39 @@ id: sav_r
 name: SAV+R RIR dataset
 year: 2022
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"wget_mirror","urls":["https://archive.org/download/savr_rir_dataset_202204/"],"accept":["*.wav","*.gltf"]}
-content: 240 mono and Ambisonic RIRs from the Maison Symphonique concert hall and 67 third-order Ambisonic RIRs
-  from Montreal's former planetarium (Centech), made for 6DoF navigation, with glTF 3D models of both spaces.
+adapter: {name: wav_tree, params: {glob: '**/*.wav', pattern: '^(?:DATASET-RIR/(?P<room>Maison_symphonique)/Maison_Symphomique_RIR_(?P<rcv>L\d\d)_(?P<src>S)0?(?P<src_2>\d+)_mono\.wav|Maison_symphonique_RIR_ambx/(?P<room_2>Maison_[Ss]ymphonique)_RIR_(?P<rcv_2>LA\d)_(?P<src_3>S)0?(?P<src_4>\d+)_ambx\.wav|DATASET-RIR/(?P<room_3>Centech)/(?P<cond>FurnitureAttenuation)/(?P<cond_2>installed|not_installed)/centech_RIR_(?P<rcv_3>mic\d)_(?P<src_5>s\d)\.wav|DATASET-RIR/(?P<room_4>Centech)/(?P<src_6>galleryEffect)/diameter/centech_RIR_(?P<rcv_4>P\dm)\.wav|DATASET-RIR/(?P<room_5>Centech)/(?=(?P<src_7>galleryEffect))(?P<rcv_5>galleryEffect)/directional/centech_RIR_(?P<rcv_6>mic\d)_(?P<src_8>d\d+)\.wav|DATASET-RIR/(?P<room_6>Centech)/intelligebility/centech_RIR_(?=(?P<src_9>a-?\d+_P\dm))(?P<rcv_7>a-?\d+_P\dm)\.wav)$', roles: {'1': [omni], '16': [W, Y, Z, X, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15]}, channel_formats: {'1': mono_omni, '16': hoa_sh}, orientation_known: false}}
+capture_formats:
+- mono_omni
+- hoa_sh
+fs_hz:
+- 48000
+content: 205 mono and Ambisonic RIRs from the Maison Symphonique concert hall and 82 third-order Ambisonic RIRs from Montreal's
+  former planetarium (Centech), made for 6DoF navigation, with glTF 3D models of both spaces (the paper's abstract says
+  240 and 67).
 expected:
-  n_irs: 307
+  n_irs: 287
   n_rooms: 2
+  note: 287 WAV files on the Internet Archive item (its own count). The DAFx 2022 paper's abstract says 240 Maison Symphonique
+    and 67 Centech IRs (307); the item holds 205 Maison Symphonique (183 mono, 22 Ambisonic) and 82 Centech, matching the
+    paper's Table 3 and sections 3.3-3.5 (25 coupled, 24 furniture, 24 per-driver gallery, 9 gallery diameter)
 room_info:
   geometry: 'yes'
   conditions: partial
+  where: 'Piquet et al., DAFx 2022 (nicolasbouillot.net/papers/2022IRdatasets.pdf): Maison Symphonique positions in metres
+    (Table 1), source-listener distances (Table 2), plan (Fig. 2); Centech positions in polar coordinates (Table 3, Fig.
+    3), distances (Table 4), RT30 with and without furniture (Fig. 4); 3DMODELS/OSM.gltf and Centech.gltf'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://archive.org/details/savr_rir_dataset_202204
+defects:
+- what: 'The mono Maison Symphonique files end with an 8 to 9 kHz component that rises 3 to 5 s after the sound starts
+    (not noise), so their 8 kHz T30 (median 11.3 s) is wrong: read 4 s from the onset they give 1.4 to 1.6 s, as the
+    Ambisonic files of the hall do. Their mid-band values (about 2.9 s) are right.'
+  files: '^DATASET-RIR/Maison_symphonique/.*_mono\.wav$'
 web_check:
   checked: '2026-10-14'
   found_as: SAV+R RIR dataset (Maison Symphonique and former Montreal planetarium)

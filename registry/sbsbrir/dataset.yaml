@@ -3,24 +3,34 @@ id: sbsbrir
 name: SBSBRIR
 year: 2014
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-0pt5y-0pt5.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0pt5y-0pt5.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-0pt5y0.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0pt5y0.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-0pt5y-1.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0pt5y-1.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0y-0pt5.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0y0.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x0y-1.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-1y-0pt5.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x1y-0pt5.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-1y0.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x1y0.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x-1y-1.sofa","https://data.bbcarp.org.uk/sbsbrir/sofa/SBSBRIR_x1y-1.sofa"]}
-content: Measured BRIRs from a B&K head-and-torso simulator at 15 listener positions in the University of Salford's
-  ITU-R BS.1116 listening room, for 12 loudspeakers in a ring, with the head turned in 2° steps.
+adapter: {name: sofa, params: {glob: SBSBRIR_*.sofa, pattern: '^SBSBRIR_(?P<rcv>x(?P<rcv_x>-?[0-9pt]+)y(?P<rcv_y>-?[0-9pt]+))\.sofa$', room_from: dataset, capture_format: binaural, roles: [L, R], emitter_positions: true, m_select: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150, 152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182, 184, 186, 188, 190, 192, 194, 196, 198, 200, 202, 204, 206, 208, 210, 212, 214, 216, 218, 220, 222, 224, 226, 228, 230, 232, 234, 236, 238, 240, 242, 244, 246, 248, 250, 252, 254, 256, 258, 260, 262, 264, 266, 268, 270, 272, 274, 276, 278, 280, 282, 284, 286, 288, 290, 292, 294, 296, 298, 300, 302, 304, 306, 308, 310, 312, 314, 316, 318, 320, 322, 324, 326, 328, 330, 332, 334, 336, 338, 340, 342, 344, 346, 348, 350, 352, 354, 356, 358]}}
+capture_formats:
+- binaural
+fs_hz:
+- 48000
+content: Measured BRIRs from a B&K head-and-torso simulator at 15 listener positions in the University of Salford's ITU-R
+  BS.1116 listening room, for 12 loudspeakers in a ring, with the torso turned in 2° steps (the files add 1° steps interpolated
+  by the authors, which RIRDB does not index).
 expected:
-  n_irs: 64800
+  n_irs: 32400
   n_rooms: 1
+  note: '15 listener positions x 12 loudspeakers x 180 measured torso orientations (2 degree steps). The files hold 360
+    orientations (64,800 BRIRs): the odd ones are linear interpolations by the authors and are not read.'
 room_info:
-  dimensions: partial
-  volume: 'no'
+  dimensions: 'yes'
+  volume: 'yes'
   geometry: partial
   materials: 'no'
   positions: 'yes'
   images: partial
   reference_acoustics: partial
   conditions: partial
+  where: 'the SOFA files'' metadata: Comment, RoomDescription (mid-frequency RT 0.27 s, background noise 5.7 dBA), RoomType
+    shoebox and RoomCornerA/B (6.60 x 5.72 x 2.80 m, so 105.7 m3), ListenerPosition, SourcePosition and EmitterPosition'
 license:
   spdx: CC-BY-NC-SA-4.0
 homepage: https://data.bbcarp.org.uk/sbsbrir/

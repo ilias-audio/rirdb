@@ -3,23 +3,34 @@ id: niels_bohr_auditorium
 name: 'RIR Dataset: Niels Bohr Institute Auditorium A'
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["14212820"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
-content: 'RIRs measured in Auditorium A of the Niels Bohr Institute, Copenhagen (about 126 m³): a robot arm moved
-  a microphone along a line, plus distributed Eigenmike em32 array measurements; one loudspeaker, 48 kHz.'
+adapter: {name: h5_sets, params: {groups: [{glob: rir_NBI_em32.h5, sets: '(?P<set>eigenmike\d+)/impulse_response', rows: channels, time_axis: 1, fs_attr: sampling_rate, positions: position_centre, src_position: source/position, src_default: BM6, room_default: auditorium-a, capture_format: em32_raw, reference_role: mean}, {glob: rir_NBI_line.h5, sets: '(?P<set>line\d+)/impulse_response', rows: records, time_axis: 1, fs_attr: sampling_rate, positions: posRIR, src_position: source/position, src_default: BM6, room_default: auditorium-a, capture_format: mono_omni}]}}
+capture_formats:
+- mono_omni
+- em32_raw
+content: 'RIRs measured in Auditorium A of the Niels Bohr Institute, Copenhagen (about 126 m³), from one loudspeaker at
+  a fixed position, 48 kHz: 22 Eigenmike em32 positions (32 channels each) and 504 mono IRs measured by a robot arm along
+  a line (three segments of 201, 201 and 102 points 1 cm apart).'
 fs_hz:
 - 48000
 expected:
   n_rooms: 1
+  n_irs: 526
+  note: 22 em32 positions + 504 line positions (201 + 201 + 102), counted from the HDF5 files; the readme and the record
+    give no count
 room_info:
   volume: 'yes'
   geometry: partial
   materials: partial
   reference_acoustics: 'yes'
   conditions: partial
+  positions: 'yes'
+  images: 'yes'
+  where: Readme_NBI_em32_Line.pdf (volume, shape, octave-band T30, equipment, photos and a sketch of the setup) and the
+    HDF5 attributes and position arrays
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/14212820

@@ -3,16 +3,37 @@ id: aalborg_low_frequency
 name: RIRs for Low-Frequency Sound Field Control
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
-source: {kind: zenodo, records: ["11098543"]}
+source:
+  kind: zenodo
+  records:
+  - '11098543'
+  exclude:
+  - RIR_LF_SFC_Full.zip
+adapter: {name: ndarray, params: {glob: RIR_LF_SFC_Light/RIR_LF_SFC_Light/RIRs/*/*.mat, pattern: 'RIRs/(?:MC|LS) Room - (?:Design|Evaluation)/(?P<room>MC|LS)_(?:Des|Eval)_(?P<cond>\d+m?s-[0-9.]+m?s)_(?P<rcv>A\d_P\d_\d+)\.mat$', container: mat, array: RIRs_1200Hz, time_axis: 1, channel_axis: 0, record_axes: [2], record_is: src, fs: 1200, capture_format: array_raw}}
+capture_formats:
+- array_raw
+analysis:
+  keep_s: 2.0
+defects:
+- what: The IRs from the 36, 50 and 100 ms sweeps (both rooms) and from the 200 ms sweep in the Listening Room end 31-194
+    ms after the sound starts, before the room has decayed, so their decay times, EDT and clarity are biased (C80 by up
+    to +16 dB at 250 Hz, +19 dB broadband), and the 36 and 50 ms ones are too short to analyse. The 15 s and 1 s sweep IRs
+    at the same positions give the room's values.
+  files: _(?:36ms-18ms|50ms-25ms|100ms-50ms)_|LS_Des_200ms-100ms_
 content: Low-frequency RIRs (15-600 Hz sweeps, stored at 1.2 kHz) measured in a multichannel room and a listening
   room at Aalborg University with sweeps of 36 ms to 15 s, as design and evaluation sets for sound zones.
 fs_hz:
 - 1200
 expected:
   n_rooms: 2
+  n_irs: 512
+  note: '64 files x 8 subwoofers, each IR a 15-microphone grid (3 x 5, 10 cm apart): 7,680 single-channel RIRs at 1.2 kHz
+    (15-600 Hz). Design set: position 5 of 2 areas at 2 heights, 6 sweep lengths; evaluation set: positions 1-4, 15 s sweep.
+    The P1to4 files repeat positions 1-4 stacked and are not read; the Full ZIP''s RIRs folder is the same as the Light
+    one, and its recordings and sweep signals are not IRs.'
 room_info:
   dimensions: 'yes'
   volume: 'yes'
@@ -21,6 +42,10 @@ room_info:
   positions: partial
   images: 'yes'
   reference_acoustics: 'yes'
+  where: 'RIR_LF_SFC_Light/RIR_LF_SFC_Light/Documentation.pdf (Table 2: rooms, dimensions, T20; Figures 1-3: the array positions
+    in both areas and each room''s loudspeaker layout, drawn without coordinates; Figure 4: microphone numbering; Table
+    3: file names); the JASA 2024 paper (Cadavid et al., sections III.A-C) for the set-up (whether it gives coordinates
+    is not checked)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/11098543
@@ -45,8 +70,10 @@ web_check:
   - https://zenodo.org/api/records/4501339
   confidence: high
   caveats:
-  - Covers only about 15-600 Hz and is stored at 1.2 kHz, so it suits low-frequency sound-zone work, not full-band
-    reverb.
-  - The 481 MB Light ZIP has the ready-to-use RIRs; the 8 GB Full ZIP adds the original 48 kHz sweeps and recordings.
-  - Room sizes, source positions and T20 values are in the companion JASA 2024 paper (Cadavid et al.), not on the
-    record.
+  - Covers only about 15-600 Hz and is stored at 1.2 kHz, so it suits low-frequency sound-zone work, not full-band reverb.
+    Only the 63, 125 and 250 Hz octaves are analysed; rt_broadband covers about 45-540 Hz, and drr_db and mixing_time_ms
+    mean little at this rate.
+  - The 481 MB Light ZIP has the ready-to-use RIRs; the 8 GB Full ZIP adds the original 48 kHz sweeps and recordings (its
+    RIRs are the same files); RIRDB leaves it out.
+  - Room sizes and T20 are in Documentation.pdf (Table 2); source and array positions are drawn in its figures without coordinates,
+    so RIRDB gives none.

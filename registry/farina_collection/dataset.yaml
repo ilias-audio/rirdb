@@ -2,13 +2,32 @@
 id: farina_collection
 name: Angelo Farina's public IR collection
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"wget_mirror","urls":["https://www.angelofarina.it/Public/IMP-RESP/"],"accept":["[!bciS]*.wav","*.WAV","*.tim","*.TIM","*.txt","*.TXT","*.xls"]}
+adapter: {name: wav_tree, params: {glob: '**/*.[wW][aA][vV]', max_s: 60, tokens: true, orientation_known: false, join: '[-_](?P<ch>WX|YZ|W-Y|X-Z|SWY|SXZ|WY|XZ)(?=[-_.])', pattern: '^(?:(?P<room>Basilica di Foligno|La Fenice|Palasport MO|S\.Lucia|Teatro Alcorcon \(Madrid\)|Teatro di Cagliari|Teatro dell.Aquila|Teatro Verdi di Trieste|Teatro Comunale di Firenze)/(?:Nuove/)?(?!COFIR-convoluto|y\.WAV|INV-MLS|test-dod|palco22b?\.wav)(?:(?<=Aquila/)[pP](?P<rcv_4>\d+)(?:-(?P<rcv_5>[135]))?(?:-(?P<src_6>s\d))?(?P<rcv_7>bis)?\.(?i:wav)|(?<=Nuove/)palco(?P<rcv_6>22)c\.wav|(?<!Aquila/)(?<!Nuove/)[^/]+)|(?P<room_2>Teatro Comunale di Ferrara)/(?:1995/[^/]+|1998/IRsweep-Ambassador-palco11-salavuota-L\.wav)|(?P<room_3>Bergamo)/(?P<src>[^/]+)/[^/]+|(?P<room_4>Musikverein)/IR-(?P<cond>Seats|NoSeats)/Point(?P<rcv>\d+)(?P<src_2>[LCR])?-[WXYZ]-[WXYZ]\.wav|Santa_Cecilia_(?P<room_5>Roma)/Measurements-(?P<cond_2>2003)/Rome_Auditorium_[A-Za-z]+/1st_IR/IR_RM(?P<room_6>\d+)_[A-Z]+_Pt(?P<rcv_2>\d)(?P<src_3>[CLR])\.wav|Santa_Cecilia_(?P<room_7>Roma)/Measurements-(?P<cond_3>2005)/Soundfield\+Binaural/FirstIR_Sala(?P<room_8>\d+)-(?P<src_4>Dodec|Genelec)(?:ec)?-(?P<src_5>Center|Left|Right)-Pt\.(?P<rcv_3>\d)-[A-Z]+\.wav|(?:Varie/(?=(?:GOLDONI1|PERGOLA|POGG-IMP|SALESA|S-LORFI)\.WAV$)|OLD_IRs/(?=(?:AULA-01\.WAV|SCALA\.WAV|UFFICIO\.WAV|pogg-22\.wav)$))(?P<room_9>GOLDONI|PERGOLA|POGG|pogg|SALESA|S-LORFI|AULA|SCALA|UFFICIO)[^/]*)$', room_from: pattern, preferred_regex: '^(?!.*(?:-MS\.wav$|IR-MLS1-|Mls-TEF20))', layout_from_regex: {'(?i)[-_]bin(?:aural)?[-_.]|ambassador': {2: {roles: [L, R], format: binaural}}, '[-_](?:WX|YZ)[-_.]': {4: {roles: [W, X, Y, Z], format: foa_fuma, sh_norm: FuMa}}, '[-_](?:W-Y|X-Z|SWY|SXZ|WY|XZ)[-_.]': {4: {roles: [W, Y, X, Z], format: foa_fuma}, 2: {roles: [W, Y], format: array_raw}}}}}
+capture_formats:
+- mono_omni
+- stereo
+- binaural
+- foa_fuma
+- array_raw
+analysis:
+  keep_s: 3.3
+expected:
+  n_irs: 245
+  n_rooms: 23
+  note: No count is published. 245 IRs read once each from the WAV files of 23 spaces (B-format pairs joined); copies, test
+    signals, two noise-dominated files, violin bodies, a convolved music file, recordings over 60 s and the 95 MLSSA .TIM
+    files (La Scala, Parmalat and others) are left out.
 content: Measured IRs (mono, stereo, binaural and B-format) from over 15 venues, mostly Italian theatres, concert
   halls and churches plus Vienna's Musikverein, in Angelo Farina's public web folder.
 fs_hz:
+- 22050
+- 32000
+- 43955
+- 43956
 - 44100
 - 48000
 - 96000
@@ -20,6 +39,10 @@ room_info:
   positions: partial
   images: partial
   conditions: partial
+  where: 'the folder names (venues); Bergamo/Readme.txt (Bergamo Cathedral, AES workshop 1999: loudspeakers, BIN/MS/WX/YZ);
+    Musikverein/Musikverhein-notes.txt and Memo.txt (seats = concert, no seats = ballroom; channel order W Y X Z; source
+    and microphone heights); Santa_Cecilia_Roma/Measurements-2005/Notes.txt (sources and microphones); La Scala SCALA1.TXT
+    and SCALA2.TXT (source near the conductor or in the pit). Venue codes in OLD_IRs and Varie are not explained.'
 license:
   spdx: LicenseRef-unspecified
 homepage: https://www.angelofarina.it/Public/IMP-RESP/

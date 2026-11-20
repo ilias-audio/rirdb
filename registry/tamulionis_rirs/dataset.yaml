@@ -3,10 +3,13 @@ id: tamulionis_rirs
 name: Room-Impulse-Response-dataset (tamulionism)
 year: 2021
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"github","records":["tamulionism/Room-Impulse-Response-dataset@main"]}
+adapter: {name: wav_tree, params: {glob: '**/Source[12]/*.Wav', pattern: '/Source\d/(?P<src>S\d)(?P<rcv>R\d+)\.Wav$', room_from: dataset, roles: {'2': [omni, omni_copy]}, channel_formats: {'2': mono_omni}, reference_roles: {'2': omni}}}
+capture_formats:
+- mono_omni
 content: 50 measured RIRs (2 Genelec 8010A loudspeakers x 25 receiver points on a 0.5 m grid) in one 5.36 x 5.85
   x 2.86 m room, shared as 44.1 kHz/24-bit WAV files on GitHub.
 fs_hz:
@@ -14,6 +17,7 @@ fs_hz:
 expected:
   n_irs: 50
   n_rooms: 1
+  note: 2 sources x 25 receivers (README.md); every WAV holds the one microphone signal twice
 room_info:
   dimensions: 'yes'
   volume: 'no'
@@ -23,6 +27,8 @@ room_info:
   images: partial
   reference_acoustics: 'no'
   conditions: 'no'
+  where: README.md (room size, source coordinates, five receiver coordinates, 0.5 m grid, heights, equipment) and 'Sources
+    and recevers scheme.png' (an ODEON plan of the room with the grid numbering)
 license:
   spdx: LicenseRef-unspecified
   note: There is no LICENSE file; the README only invites people to download the data and use it for their research.

@@ -3,14 +3,26 @@ id: lexicon_480l_nelson
 name: Grant Nelson's Lexicon 480L IRs
 year: 2014
 type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.housecallfm.com/download.php?f=BGLex480.zip#BGLex480.zip"]}
+ir_kinds:
+- digital_reverb
+capture_formats:
+- stereo
+fs_hz:
+- 44100
+space_type: device
+adapter: {name: wav_tree, params: {glob: '*/*/*.aif', room_from: file}}
 content: Free impulse responses of 54 programs of producer Grant Nelson's own Lexicon 480L hardware reverb (halls,
   plates, rooms, ambience, effects), as AIFF files with Altiverb and Space Designer presets.
 expected:
   n_irs: 54
+  n_rooms: 54
+  note: 54 programs of one Lexicon 480L (the download page and the 54 .aif files), one stereo IR each. The decay values of
+    the Effects-bank programs are not reverberation times. The dropouts flag on 17 programs marks the left channel ending
+    early in digital silence (its last 14-530 ms), not a fault in the audio.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -20,6 +32,8 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'the file names (program) and the Space Designer preset names (BG Lexicon 480L/<bank> - <program>.pst: the bank);
+    INSTALL.txt (Logic install notes only)'
 license:
   spdx: LicenseRef-unspecified
 homepage: https://www.housecallfm.com/download-gns-personal-lexicon-480l

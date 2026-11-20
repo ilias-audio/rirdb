@@ -3,17 +3,26 @@ id: epfl_rectangular_room
 name: Room Impulse Response measurements of a rectangular room
 year: 2018
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1169161"]}
-content: 132 RIRs (one source, 132 microphone positions) measured in a real rectangular room of about 3 x 5.6 x
-  3.53 m at EPFL, stored as transfer functions with MATLAB scripts; made for low-frequency room-mode estimation.
+adapter: {name: tf_mat, params: {file: TF_data.mat, var: txy, freq_var: f, positions: position_132mic.mat, src_pos: [0.64, 4.21, 0.11], src_key: S1, room_default: rectangular-room, low_cut_hz: 10}}
+capture_formats:
+- mono_omni
+analysis:
+  keep_s: 3.0
+content: 132 room transfer functions (one loudspeaker, 132 microphone positions in 12 groups of 11) measured in a real rectangular
+  room at EPFL, 0.14 Hz to 2 kHz, stored in a MATLAB file with the authors' scripts; made for low-frequency room-mode estimation.
+  The guidelines give the room as 3.0 x 6.6 x 3.53 m, the ICASSP 2018 paper as about 3 x 5.6 x 3.53 m. RIRDB turns each
+  transfer function into a 7 s IR at 4 kHz by inverse FFT.
 fs_hz:
 - 4000
 expected:
   n_irs: 132
   n_rooms: 1
+  note: 132 microphone positions (12 groups of 11), one loudspeaker; each IR is computed by inverse FFT of a published transfer
+    function (7 s at 4 kHz, content to 2 kHz, bins up to 10 Hz zeroed)
 room_info:
   dimensions: partial
   volume: 'no'
@@ -22,6 +31,8 @@ room_info:
   positions: 'yes'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: Guidelines_official.pdf (room size, loudspeaker position, photo and plan); position_132mic.mat (microphone x, y,
+    z)
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/1169161

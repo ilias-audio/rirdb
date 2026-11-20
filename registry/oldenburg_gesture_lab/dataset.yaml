@@ -3,16 +3,26 @@ id: oldenburg_gesture_lab
 name: Oldenburg Gesture Lab hearing-aid HRIRs
 year: 2020
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3736487"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_from": "dataset"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: mat_struct, params: {groups: [{glob: raw/ir_2020_02_12_*_platform.mat, pattern: '_(?P<cond>with_platform|without_platform)\.mat$', var: sIR, records: elements, field: ir, fs_field: fs, src_field: label, pos_fields: [az, el, r], roles_var: csMicLabels, rcv: centre, capture_format: array_raw}, {glob: raw/ir_2020_02_21_omni_without_platform.mat, pattern: '_(?P<cond>without_platform)\.mat$', var: sIR, records: elements, field: ir, fs_field: fs, src_field: label, pos_fields: [az, el, r], roles_var: csMicLabels, rcv: centre, capture_format: mono_omni}]}}
+analysis:
+  reference_role: InEar.L
+capture_formats:
+- array_raw
+- mono_omni
+fs_hz:
+- 44100
 content: 8-channel head- and hearing-aid-related IRs (dummy-head in-ear mics plus 6 behind-the-ear dummy mics) for
   29 loudspeakers in Oldenburg's sound-treated Gesture Lab, with and without a platform.
 expected:
-  n_irs: 58
+  n_irs: 87
   n_rooms: 1
+  note: 58 eight-channel HATS and hearing-aid IRs (29 loudspeakers, without and with the platform), the HRIRs README.md
+    describes and the earlier expected count, plus the 29 omni IRs at the listening position that the README uses for the
+    room's RT30. The processed copies of the 58 (6,000 samples, cut, filtered and rescaled) are not read.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -22,6 +32,9 @@ room_info:
   images: partial
   reference_acoustics: 'yes'
   conditions: partial
+  where: 'README.md (room: sound-treated, RT30 0.17 s, EDT 0.08 s, DRR 6.9 dB from the omni IRs; loudspeaker rings and heights;
+    platform 1.2 x 1.2 m, 0.3 m high; channel order), the az, el and r of each sIR element (source positions) and raw/lidhan_3d.spk
+    (the layout file, which puts the upper and lower rings at 34 and -38 degrees where the IR files store 30 and -40); microphone_positions.png'
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/3736487

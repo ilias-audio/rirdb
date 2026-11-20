@@ -3,10 +3,20 @@ id: anu_md_omp
 name: RIRs for MD-OMP Monte Carlo (ANU)
 year: 2025
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["17500576"]}
+adapter: {name: anu_md_omp, params: {glob: rir/rir_rt*.mat, fs: 16000, room_default: md-omp-room}}
+capture_formats:
+- mono_omni
+ir_kinds:
+- virtual
+defects:
+- what: The simulated responses stop about 0.28 s after they start and the rest of each 1 s file is numerically silent,
+    so the late decay is cut short. For the stated 0.4-0.8 s, T30 (500 Hz-1 kHz) measures only about 0.32-0.34 s and T20
+    about 0.36-0.40 s, while EDT still rises with the stated value (about 0.33-0.65 s).
+  files: rir_rt0[4-8]_
 content: Simulated RIRs from four sources to a 28-microphone perimeter array around the walls of a 3.36 x 4.48 x
   4.1 m room, 100 Monte Carlo trials at each RT of 0.2-0.8 s, 16 kHz, for sound source localisation.
 fs_hz:
@@ -14,6 +24,8 @@ fs_hz:
 expected:
   n_irs: 78400
   n_rooms: 1
+  note: 700 files (7 reverberation times x 100 trials) x 4 sources x 28 wall microphones; the record gives the files and
+    the 4 sources, the 28 microphones are in the GitHub code (pos.perimetermic)
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +35,8 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'GitHub weiting-lai/MD-OMP_Localization: demo_monte_t60.m (room 3.36 x 4.48 x 4.1 m, 16 kHz, RT 0.2-0.8 s) and
+    +function/+pos/perimetermic.m (the 28 microphone positions); the 4 source positions in each file''s `source`'
 license:
   spdx: CC-BY-4.0
   note: The Zenodo record lists both CC BY 4.0 and MIT without saying which part each covers; both allow commercial

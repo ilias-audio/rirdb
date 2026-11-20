@@ -11,6 +11,7 @@ END = "<!-- END DATASETS -->"
 
 _FORMAT_LABELS = {
     "mono_omni": "mono",
+    "mono_directional": "mono (directional)",
     "stereo": "stereo",
     "binaural": "binaural",
     "foa_fuma": "FOA (FuMa)",

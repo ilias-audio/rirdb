@@ -2,16 +2,24 @@
 id: farina_car_irs
 name: Farina 2x2 car-interior IRs (Cars+Sennheiser)
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Astra-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Audi80-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Audi100-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Bmw730-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Croma-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Dedra-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Evasion-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Passat-2x2.WAV","https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/Punto-2x2.WAV"]}
+adapter: {name: wav_tree, params: {glob: '*-2x2.WAV', pattern: '^(?P<room>[A-Za-z0-9]+)-2x2\.WAV$', room_from: pattern, segments: 2, segment_names: [L, R], roles: {2: [L, R]}, channel_formats: {2: binaural}}}
+capture_formats:
+- binaural
+space_type: vehicle
 content: Nine undocumented 2x2 IR files measured in car cabins (Astra, Audi 80, Audi 100, BMW 730, Croma, Dedra,
   Citroën Evasion, Passat, Punto) stored as short 2-channel WAVs in Angelo Farina's open web archive, Italy.
 fs_hz:
 - 44100
 expected:
   n_rooms: 9
+  n_irs: 18
+  note: 'No documentation. Nine files of 8130 frames in Aurora''s 2x2 format, each holding two binaural IRs in a row in
+    time (left loudspeaker, then right loudspeaker), cut in two at sample 4065: 9 cars x 2 loudspeakers = 18 binaural IRs
+    of 92 ms.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -21,6 +29,8 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: 'the file names (car models); the folder name (Cars+Sennheiser: Sennheiser binaural microphones); Aurora''s Synchronous
+    Average help (angelofarina.it/Aurora_XP) for the 2x2 layout'
 license:
   spdx: LicenseRef-unspecified
 homepage: https://www.angelofarina.it/Public/Bin-B/2x2-ImpResp/Cars+Sennheiser/
@@ -29,7 +39,7 @@ web_check:
   found_as: Angelo Farina public archive – 2x2 car-interior impulse responses
   availability: open
   families:
-  - stereo
+  - binaural
   host: Personal website
   size: 0.3 MB
   file_formats: WAV (2-channel, 16-bit PCM, 44.1 kHz)
@@ -46,8 +56,7 @@ web_check:
   - https://www.kvraudio.com/forum/viewtopic.php?p=9155741
   confidence: medium
   caveats:
-  - Only nine car files of about 32 KB each (2-channel, 16-bit, 44.1 kHz, about 0.18 s); sibling folders hold 2x2
-    IRs of loudspeaker and dummy-head setups.
-  - 'No documentation: the meaning of ''2x2'' and ''Sennheiser'', the positions and the measurement method are not
-    stated.'
+  - Only nine car files of about 32 KB each (2-channel, 16-bit, 44.1 kHz, about 0.18 s); sibling folders hold 2x2 IRs of
+    loudspeaker and dummy-head setups.
+  - 'No documentation: the meaning of ''2x2'' and ''Sennheiser'', the positions and the measurement method are not stated.'
   - No licence or terms of use anywhere in the folder or at the archive root.

@@ -3,23 +3,35 @@ id: dirha_wsj
 name: DIRHA English WSJ training IRs (FBK)
 year: 2017
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"github","records":["SHINE-FBK/DIRHA_English_wsj@master"]}
-content: Measured IRs from 3 loudspeaker positions to 63 microphones in the living room of the DIRHA project apartment,
-  as MATLAB files with mic and source coordinates, shared in FBK's DIRHA English WSJ GitHub repo.
+adapter: {name: ndarray, params: {groups: [{glob: '*/Training_IRs/*/L*.mat', container: mat, array: risp_imp, time_axis: 0, fs: 48000, pattern: 'Training_IRs/(?P<src>T\d_O\d)/(?P<rcv>L(?:[1-4][CLR]|A[1-6]|D\d\d))\.mat$', room_default: living-room, capture_format: mono_omni, roles: [omni]}, {glob: '*/Training_IRs/*/LM*.mat', container: mat, array: risp_imp, time_axis: 1, fs: 48000, pattern: 'Training_IRs/(?P<src>T\d_O\d)/(?P<rcv>LM[1-6])\.mat$', room_default: living-room, capture_format: mono_omni, roles: [omni]}, {glob: '*/Training_IRs/*/LDM*.mat', container: mat, array: risp_imp, time_axis: 1, fs: 16000, pattern: 'Training_IRs/(?P<src>T\d_O\d)/(?P<rcv>LDM\d\d)\.mat$', room_default: living-room, capture_format: mono_omni, roles: [omni]}, {glob: '*/Training_IRs/*/K*.mat', container: mat, array: risp_imp, time_axis: 0, fs: 48000, pattern: 'Training_IRs/(?P<src>T\d_O\d)/(?P<rcv>K(?:[1-3][CLR]|A[1-6]))\.mat$', room_default: kitchen, capture_format: mono_omni, roles: [omni]}]}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 48000
+- 16000
+content: Measured IRs from 3 loudspeaker positions in the living room of the ITEA apartment (DIRHA project, FBK) to 63 microphones,
+  50 in the living room and 13 in the kitchen next to it, as MATLAB files with microphone and source coordinates, shared
+  in FBK's DIRHA English WSJ GitHub repo.
 expected:
   n_irs: 189
-  n_rooms: 1
+  n_rooms: 2
+  note: '3 loudspeaker positions (T1_O6, T2_O5, T3_O3, all in the living room) x 63 microphones: 50 in the living room,
+    13 in the kitchen. The kitchen IRs are read as a second, coupled space. Each folder also holds 5 Beam_* files (beamformer
+    outputs) and ref-chirp.mat, which are not microphone IRs and are left out.'
 room_info:
-  dimensions: 'no'
+  dimensions: partial
   volume: 'no'
   geometry: 'no'
   materials: 'no'
   positions: 'yes'
   images: 'no'
   reference_acoustics: partial
+  where: Training_IRs/<position>/<mic>.txt (microphone and source coordinates in cm; T60 and time of flight for each living-room
+    microphone); Ravanelli et al., ASRU 2015 (arXiv:1710.02560), Fig. 1 (microphone layout; living room 453 cm x 485 cm)
 license:
   spdx: LicenseRef-unspecified
   note: The repository has no licence file; the README only asks users to cite Ravanelli et al. (ASRU 2015, Interspeech

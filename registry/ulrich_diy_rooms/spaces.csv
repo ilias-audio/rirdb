@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+bathroom,"Bathroom, the author's apartment",domestic,,,,,,,,"files ir_bathroom1 and ir_bathroom2 (two positions, not described)",
+bedroom-foyer,"Bedroom and foyer, the author's apartment",domestic,,,,,,,,"one coupled space: ir_bedroomfoyer(_1) and ir_foyerbedroom_C, L, R, dL, dR, hall1, hall2; the letters are positions the page does not explain",
+diningroom,"Dining room, the author's apartment",domestic,,,,,,,,"one file, ir_diningroom",

@@ -3,24 +3,44 @@ id: tuil_highres_srirs
 name: High-resolution SRIRs for different room configurations
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["10450779"]}
+adapter: {name: sofa, params: {glob: HL*/HL*/*.sofa, pattern: '^(?P<cond>HL\d\dW[LP]?)/[^/]+/HL[^_/]*_(?P<rcv>-?[\d.]+X_-?[\d.]+Y)\.sofa$', pattern_on: path, room_from: dataset, room_default: hl, capture_format: sdm_array, reference_role: mic_6}}
+capture_formats:
+- sdm_array
+fs_hz:
+- 48000
+analysis:
+  keep_s: 1.25   # every SRIR has a burst about 1.35 s after the file start
 content: Robot-measured spatial RIRs on a 25 cm grid in an ITU-R BS.1116 listening room at TU Ilmenau, with reflective
   walls added in 9 configurations; open mic array, 5 loudspeakers, SOFA files.
 expected:
   n_irs: 18535
   n_rooms: 1
+  note: '3,707 grid positions x 5 loudspeakers (one preselected SRIR each, as the record states); 9 wall configurations
+    of one room: HL00W 466, HL01W 466, HL02WL 467, HL02WP 467, HL03W 467, HL04W 467, HL05W 412, HL06W 307, HL08W 188 positions'
 room_info:
   geometry: partial
   materials: partial
   positions: 'yes'
   images: 'yes'
   reference_acoustics: 'no'
-  conditions: partial
+  conditions: 'yes'
+  dimensions: partial
+  where: Floor_plan.jpg (8.43 x 7.54 m footprint, loudspeakers SiL FC FR SiR BC with coordinates, grid); Roomconfigurations.jpg
+    (the 9 wall layouts); the Zenodo record (walls 2.5 m high, 1.6 cm painted pressboard); SOFA RoomDescription (Audio Technology
+    Lab, ITU-R BS.1116-3, HL) and Source/ListenerPosition
 license:
-  spdx: CC-BY-4.0
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-NC-SA-4.0
+    where: SOFA file headers (License attribute, seen in HL00W and HL08W files)
+  redistribute_audio: 'yes'
+  note: 'Conflicting statements: the strictest is used (as for tuil_robot_coupled). Ask the authors to confirm.'
 homepage: https://zenodo.org/records/10450779
 doi: 10.5281/zenodo.10450779
 web_check:

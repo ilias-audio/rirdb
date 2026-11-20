@@ -3,18 +3,32 @@ id: tuburo
 name: TuBuRo (64-channel loudspeaker array RIRs and BRIRs)
 year: 2015
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"depositonce","records":["20da15a0-6ef9-4939-8f5d-5d5a1971fe60"],"include":["RIRs.zip","BRIRs.zip","AdditionalInformation.pdf"],"exclude":["pictures.zip"]}
-content: RIRs of a 64-loudspeaker square array in the University of Rostock Audio Lab at 3 receiver positions x
-  4 absorber set-ups, plus KEMAR BRIRs (head ±80° in 2° steps) for 7 combinations, as SOFA.
+adapter: {name: sofa, params: {groups: [{glob: BRIRs/*.sofa, pattern: '^BRIR_(?P<cond>[A-Za-z]+)_(?P<rcv>[A-Za-z]+Centre)_Emitters1to64(?:_shifted)?\.sofa$', room_from: dataset, capture_format: binaural, roles: [L, R]}, {glob: RIRs/*.sofa, pattern: '^RIR_(?P<cond>[A-Za-z]+)_(?P<rcv>[A-Za-z]+Centre)_Emitters1to64\.sofa$', room_from: dataset, capture_format: mono_omni, roles: [omni]}]}}
+capture_formats:
+- binaural
+- mono_omni
+fs_hz:
+- 44100
+content: RIRs of a 64-loudspeaker square array in the University of Rostock Audio Lab at 3 receiver positions x 4 absorber
+  set-ups, plus KEMAR BRIRs (81 head orientations in 2° steps, ±80°; -74° to +86° in one file) for 7 combinations, as SOFA.
 expected:
   n_rooms: 1
+  n_irs: 37056
+  note: 'The authors give no IR count. RIRs: 3 positions x 4 absorber set-ups x 64 loudspeakers = 768; BRIRs: 7 position
+    and set-up combinations x 81 head orientations in 2-degree steps (-80 to +80 degrees; -74 to +86 in the NoCeilingAbsorbers
+    file, named _shifted) x 64 loudspeakers = 36,288.'
 room_info:
-  positions: partial
+  positions: 'yes'
   images: 'yes'
   conditions: 'yes'
+  dimensions: 'yes'
+  reference_acoustics: 'yes'
+  where: AdditionalInformation.pdf (loudspeaker coordinates, Fig. 1, octave-band reverberation times per absorber set-up)
+    and the SOFA files' metadata (RoomDescription, RoomCornerA/B, ListenerPosition)
 license:
   spdx: CC-BY-4.0
 homepage: https://depositonce.tu-berlin.de/items/20da15a0-6ef9-4939-8f5d-5d5a1971fe60

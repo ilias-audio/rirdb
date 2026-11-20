@@ -3,17 +3,38 @@ id: parirset
 name: PaRIRset
 year: 2026
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"hf","records":["enricguso/parirset@main"],"exclude":["*_GP_ACE.wav","*_GP_MIT.wav","*_GP_SLR28.wav"]}
+adapter: {name: wav_tree, params: {glob: '*/*.wav', pattern: '^(?:train/\d\d[02468]0_\d\d_(?P<room>[A-Za-z0-9]+?)(?P<cond>NewPA)?_d1_orig|test/\d\d[02468]0_\d\d_(?P<room_2>[A-Za-z0-9]+)_test|train/0583_4[01]_(?P<room_3>K2)(?P<rcv>p[13])_d1_orig)\.wav$', room_from: pattern, roles: {2: [PA_L, PA_R]}, channel_formats: {2: mono_omni}, reference_roles: {2: PA_L}}}
+capture_formats:
+- mono_omni
+analysis:
+  start_s: 0.085
+defects:
+- what: 'The two K2 files (Parc del Forum, Barcelona) are ''cropped before ER, unknown mic'' (venues.csv): the early part
+    of the response is missing and the microphone is not known. Their values are therefore not those of the venue: the mid-frequency
+    EDT is about 0.04 s and the DRR about +21 to +23 dB, no T20, T30, C50 or C80 is valid at 500 Hz and 1 kHz, and the T20,
+    T30, C50 and C80 published in some other octaves come from the same cropped response.'
+  files: _K2p[13]_
 content: Stereo RIRs from 40 concert venues in Spain (indoor and outdoor), measured through each venue's left/right
   PA at front of house with a reference mic and a Zylia ZM-1, for live-music source separation.
 fs_hz:
 - 44100
 expected:
-  n_irs: 2376
-  n_rooms: 40
+  n_irs: null
+  n_rooms: 37
+  note: 'The authors publish 2,376 files (2,216 train, 160 test; the train split includes RIRs bundled from ACE, the MIT
+    IR Survey and OpenSLR 28, which are not downloaded) and about 2,200 stereo RIRs in the paper, from 40 venues. Almost
+    all are augmentations of one front-of-house measurement per venue, so RIRDB states no authors'' IR count. Read: the
+    unmodified D1 RIR of each venue in the repository (the 8 test venues, 29 train venues and the two single K2 files at
+    the Parc del Forum, Barcelona) = 39 IRs in 37 spaces: Moon (Valencia) is measured twice (2023, and 2025 as condition
+    NewPA) and K2 holds two receivers (p1, p3). The authors'' 40 venues count Moon twice and include Falset (38) and Empuries
+    (39), which venues.csv lists but which have no files in the repository (commit bb65010).
+    The gated files keep 30-60 dB of decay, so rt_mid comes from T20 in 16 of the 39 IRs and is empty for Magma (Alicante),
+    Sala Acapulco (Gijon), Monocicle and the Vilafranca auditorium backyard; removing the 50 ms end fade changes rt_mid by
+    under 6 % (Figueres, Festival Acustica, by 12 %).'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +44,8 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: partial
+  where: venues.csv (venue name, city, address, indoors or outdoors, date, PA system, comments, which microphones are included)
+    and the README's file naming and measurement method; the paper (arXiv 2607.27828), section 3
 license:
   spdx: CC0-1.0
   note: The card releases everything under CC0 1.0, but the train split also bundles RIRs from ACE, MIT IR Survey

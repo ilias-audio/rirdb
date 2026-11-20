@@ -3,16 +3,22 @@ id: robocop_srirs
 name: RoboCoP Sparse SRIRs
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["20391764"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset", "m_is": "src"}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: sofa, params: {glob: RoboCoP_Sparse.sofa, room_from: dataset, room_default: rtk6, m_is: src, capture_format: sdm_array, roles: [front, right_bottom, right_top, back, left_top, left_bottom, centre], reference_role: centre}}
+capture_formats:
+- sdm_array
+fs_hz:
+- 48000
 content: Spatial RIRs from 60 loudspeaker positions to one 7-mic SDM array (Earthworks M30 plus six capsules) in
   room RTK6 at TU Ilmenau, made for a robot co-presence study; SOFA files plus IFC/OBJ room geometry.
 expected:
   n_irs: 60
   n_rooms: 1
+  note: 60 source positions, one receiver (Zenodo record); read from the single MIMO SOFA file (the ZIP's 55 per-position
+    files are copies of 55 of them)
 room_info:
   dimensions: 'yes'
   volume: 'no'
@@ -21,6 +27,8 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: the Zenodo record's description (room, dimensions, added walls), the SOFA metadata (RoomDescription, positions,
+    array), the DAGA 2026 paper (measurement setup, EDT map), Floor_plan.pdf and RoboCoP_Geometry-URZ.ifc/.obj
 license:
   spdx: CC-BY-4.0
   note: >-

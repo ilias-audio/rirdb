@@ -4,17 +4,29 @@ name: HybridReverb2 IR database
 year: 2011
 type: simulated
 ir_kinds: [room]
-capture_formats: [stereo, binaural]
+capture_formats:
+- array_raw
 content: 118 presets (472 FLAC files) of 7 virtual shoebox rooms (bathroom to church) from hybrid room-acoustic simulation, made for the HybridReverb2 convolution reverb at Ruhr-Universitat Bochum.
-expected: {n_irs: 118, n_rooms: 7, note: "118 presets of 4 channels (checked 2026-10-13)"}
+expected:
+  n_irs: 118
+  n_rooms: 7
+  note: 'HybridReverb2_presets.xml: 118 presets, each four files (the left and right input to a front or a rear loudspeaker
+    pair). RIRDB joins each input''s four loudspeaker feeds (FL FR SL SR) into one IR: 59 room/damping/distance folders
+    x 2 inputs = 118 four-channel IRs, the same 472 files.'
 fs_hz: [48000]
 license: {spdx: CC-BY-SA-4.0, redistribute_audio: yes}
 access: open
 source: {kind: github, records: ["jpcima/HybridReverb2-impulse-response-database@master"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(music|speech)/", "room_level": 2, "condition_level": 4}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: '*/RIR_Database/*/*/*/*.flac', join: '/(?:left|right)_(?P<ch>fl|fr|sl|sr)\.flac$', pattern: '/RIR_Database/(?P<room>[^/]+)/(?P<cond>education|music|speech)/(?P<src>\d+m)/(?P<src_2>left|right)_(?:fl|fr|sl|sr)\.flac$', room_from: pattern, roles: {4: [feed_FL, feed_FR, feed_SL, feed_SR]}, capture_format: array_raw}}
+space_type: virtual
+analysis:
+  reference_role: mean
+room_info:
+  where: 'HybridReverb2_presets.xml (each preset''s notes: room size, damping/purpose, distance, playback front or rear;
+    the church''s T60 8.8 s for music and 5.5 s for speech); README.md (licence)'
 wave: 4
 homepage: https://github.com/jpcima/HybridReverb2-impulse-response-database
-status: planned   # 16 Nov 2026: tier B, fetched by scripts/onboard
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 web_check:
   checked: '2026-10-14'
   institution: Ruhr-Universitat Bochum

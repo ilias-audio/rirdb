@@ -3,22 +3,33 @@ id: aalto_coupled_simulated
 name: Simulated RIRs in three coupled rooms (Aalto)
 year: 2024
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["13338346"]}
-content: Spatial RIRs simulated with Treble (wave-based below about 750 Hz, geometrical above) on a 0.3 m receiver
-  grid across three coupled rooms of different absorption, with common-slope decay analysis results.
+adapter: {name: ndarray, params: {glob: srirs.mat, container: h5, array: srirDataset/srirs, time_axis: 1, channel_axis: 0, record_axes: [2], fs_dataset: srirDataset/fs, room_default: three-coupled-rooms, capture_format: hoa_sh, roles: [W, Y, Z, X, ACN4, ACN5, ACN6, ACN7, ACN8], orientation_known: false, cache_arrays: 1, positions: {rcv: {array: srirDataset/rcvPos}, src: {array: srirDataset/srcPos}}}}
+capture_formats:
+- hoa_sh
+fs_hz:
+- 32000
+content: Spatial RIRs simulated with Treble (hybrid; the file's own description, srirDataset/type, puts the transition from
+  wave-based to geometrical acoustics at 1 kHz, where the web check of 14 October 2026 recorded about 750 Hz) on a 0.3 m
+  receiver grid across three coupled rooms of different absorption, with common-slope decay analysis results.
 expected:
-  n_rooms: 3
+  n_rooms: 1
+  n_irs: 838
+  note: 838 receivers on a 0.3 m grid at 1.5 m, one source; three coupled rooms simulated as one scene (one space). By rcvPos
+    and the room outlines 329 receivers are in room 1, 171 in room 2 and 338 in room 3.
 room_info:
   dimensions: partial
   geometry: partial
-  materials: 'yes'
-  positions: partial
-  images: 'no'
+  materials: partial
+  positions: 'yes'
+  images: partial
   reference_acoustics: partial
   conditions: 'no'
+  where: room_geometry2.pdf (dimensioned plan and absorption of the three rooms); srirs.mat srirDataset/type, srcPos, rcvPos;
+    room_walls and the common-slope results in Common_Slope_Analysis_Results/*.mat
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/13338346
@@ -42,5 +53,13 @@ web_check:
   confidence: medium
   caveats:
   - All IRs sit in one 7.5 GB MATLAB file (srirs.mat).
-  - The record does not state the sample rate, the number of receivers or the spatial format/order of the SRIRs.
-  - 'Simulated only: wave-based below about 750 Hz, geometrical acoustics above.'
+  - The Zenodo record does not state the sample rate, the number of receivers or the spatial format; the file gives 32 kHz
+    and 838 receivers, and its 9 channels per receiver are second-order Ambisonics. Neither the record nor the file states
+    the channel order (ACN) or the normalisation (SN3D); RIRDB judged them from the channel levels of the direct sound,
+    so sh_norm is left empty.
+  - 'Simulated only: the file''s own description (srirDataset/type) puts the transition from wave-based to geometrical acoustics
+    at 1 kHz; the web check of 14 October 2026 recorded about 750 Hz.'
+  - The 838 IRs are stored as one compressed 7.46 GB array whose chunks span every receiver, so reading any one IR decompresses
+    the whole file (about 40 s). RIRDB's reader reads the array whole once (about 44 s and 7.7 GB of memory) and keeps it
+    for the following IRs, so rirdb get needs the full download and about 9 GB of free memory for this dataset (8.5 GB at
+    peak in our test); get --dataset aalto_coupled_simulated alone copies the files as published without reading them.

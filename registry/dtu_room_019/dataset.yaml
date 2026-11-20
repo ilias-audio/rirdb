@@ -3,10 +3,15 @@ id: dtu_room_019
 name: RIR Dataset - ACT, DTU Electro (019)
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["25867705"]}
+adapter: {name: h5_sets, params: {glob: rir_019_spk*/rir_019_spk*.h5, pattern: 'rir_019_(?P<src>spk\d)\.h5$', sets: 'dataset_(?P<set>(?:lin|sph)\d)/impulse_response', time_axis: 1, fs_attr: sampling_frequency, positions: position, src_position: source/position, room_default: room-019}}
+capture_formats:
+- mono_omni
+analysis:
+  keep_s: 1.2
 content: '2,772 RIRs in a furnished, partly absorptive classroom at DTU (room 019): a robot arm moved one microphone
   over spheres and lines for each of two loudspeaker positions; 48 kHz, 5 s IRs in HDF5.'
 fs_hz:
@@ -14,6 +19,7 @@ fs_hz:
 expected:
   n_irs: 2772
   n_rooms: 1
+  note: '1,386 per loudspeaker position (spk1, spk2): 3 robot positions x (310 sphere + 152 line points)'
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +29,8 @@ room_info:
   images: 'yes'
   reference_acoustics: 'yes'
   conditions: partial
+  where: Readme.html (room, dimensions, octave T30, positions); receiver and source positions in the HDF5 files; photos
+    room019_*.jpg, layouts room_spk1.png and room_spk2.png
 license:
   spdx: CC-BY-NC-4.0
   statements:

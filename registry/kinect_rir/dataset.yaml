@@ -3,18 +3,37 @@ id: kinect_rir
 name: Kinect RIR
 year: 2019
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3520737"]}
-content: Simulated 4-channel RIRs for a Kinect-like linear microphone array in random rooms (3-9 m sides, RT60 0.3-1
-  s) at 16 kHz, used to build the Kinect-WSJ reverberant two-speaker mixtures (Inria Nancy).
+adapter: {name: kinect_rir_txt, params: {glob: kinect_rir/*/*/rir/*.rir.gz, fs: 16000}}
+capture_formats:
+- array_raw
+space_type: virtual
+expected:
+  n_irs: 84000
+  n_rooms: 28000
+  note: 'Counted from the files: 28,000 simulated rooms (400 per folder; 200 in cv/012 and tt/007) x 3 sources = 84,000
+    four-channel IRs (tr 60,000, cv 15,000, tt 9,000). The record and the paper state no count. tr/000 also holds one uncompressed
+    .rir identical to its .rir.gz, not read. The generator made every IR int(rt60 * 16000) samples long, so each is cut
+    at its nominal RT60.'
+content: Simulated 4-channel RIRs for a Kinect-like linear microphone array in 28,000 random shoebox rooms (floor sides
+  2-9 m, 2.3-4.5 m high, RT60 0.3-1 s), 3 source positions per room, at 16 kHz, used to build the Kinect-WSJ reverberant
+  two-speaker mixtures (Inria Nancy).
 fs_hz:
 - 16000
 room_info:
   positions: 'yes'
   images: 'no'
   conditions: 'no'
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'yes'
+  materials: 'no'
+  reference_acoustics: 'yes'
+  where: the file names (RT60, room size, the 4 microphone positions and the source position, in metres) and <split>/<nnn>/list.yaml
+    (the same per room, with the source angle); github.com/sunits/Reverberated_WSJ_2MIX config.py (16 kHz)
 license:
   spdx: CC-BY-1.0
   note: Zenodo stores the generic 'cc-by' licence id and displays it as Creative Commons Attribution 1.0 Generic.
@@ -42,7 +61,9 @@ web_check:
   confidence: medium
   caveats:
   - Single 7.4 GB tar.gz; the Zenodo record has a one-line description and no file listing.
-  - Details (simulated with RIR-Generator, 16 kHz, 3-9 m rooms, RT60 0.3-1 s, 4-mic Kinect-like array) come from
-    the Kinect-WSJ code and the EUSIPCO 2020 paper (arXiv:1910.11114).
-  - Companion code reads mic and source positions from list.yaml files inside the archive; IR and room counts are
-    not stated.
+  - Details (simulated with RIR-Generator, 16 kHz, RT60 0.3-1 s, 4-mic Kinect-like array) come from the Kinect-WSJ code
+    and the EUSIPCO 2020 paper (arXiv:1910.11114). The paper and config.py give room sides of 3-9 m, but the file names
+    give floor sides of 2.0 to 9.0 m and heights of 2.3 to 4.5 m.
+  - Companion code reads mic and source positions from list.yaml files inside the archive; IR and room counts are not stated
+    (RIRDB counted 84,000 IRs in 28,000 rooms from the files).
+  - Each IR is cut at its nominal RT60 (int(rt60 * 16000) samples), so the late tail is truncated.

@@ -1,26 +1,41 @@
 # Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
 id: dtu_frequency_responses
-name: DTU acoustic frequency responses (classroom, cuboid room)
+name: DTU acoustic frequency responses (classroom)
 year: 2021
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["13315286"]}
-content: Room frequency responses measured by a robot-positioned microphone on dense planar grids in a DTU classroom
-  (4,761 points) and an empty cuboid room (2,023 points), stored as HDF5.
+adapter: {name: h5_freqresp, params: {glob: classroom_frequency_responses.h5, pattern: '(?P<room>classroom)_frequency_responses\.h5$', sets: 'aperture_(?P<set>z\d+mm)/response', freq_axis: 0, frequency: frequency, positions: xyz, pos_scale: 0.001}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 10000
+analysis:
+  keep_s: 0.8
+content: Complex room frequency responses (0-5 kHz in 1 Hz steps) measured with a robot-positioned microphone at 4,761 points
+  of a 25 mm planar grid (1.7 x 1.7 m at z = 1866 mm) in DTU classroom 019, stored as HDF5 (record DTU.13315286). RIRDB
+  turns each response into a 1 s IR at 10 kHz by inverse FFT. The authors' empty cuboid room (2,023 points) is a separate
+  record, DTU.13315289, which is not included.
 expected:
-  n_irs: 6784
-  n_rooms: 2
+  n_irs: 4761
+  n_rooms: 1
+  note: 'The classroom record (DTU.13315286) only: one IR per point of the one aperture published (z = 1866 mm, 4,761 of
+    the 7,211 points measured), each computed by inverse FFT of the published frequency response (1 s at 10 kHz, content
+    to 5 kHz). The empty cuboid room (record DTU.13315289, 2,023 points) is not included.'
 room_info:
   dimensions: 'yes'
   volume: 'yes'
   geometry: partial
   materials: partial
-  positions: 'yes'
+  positions: partial
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: classroom_readme.md (room size, T60, setup) and classroom_sketch.pdf (axes from a floor corner, the aperture, the
+    loudspeaker drawn in a far corner); receiver positions in the HDF5 file (xyz, mm); no source position is published (the
+    readme says only a room corner)
 license:
   spdx: CC-BY-4.0
 homepage: https://data.dtu.dk/articles/dataset/Acoustic_frequency_responses_in_a_conventional_classroom/13315286

@@ -36,6 +36,7 @@ IRKind = Literal[
 ]
 CaptureFormat = Literal[
     "mono_omni",
+    "mono_directional",  # one directional microphone (cardioid, supercardioid, ...): the pattern is the channel role
     "stereo",
     "binaural",
     "foa_fuma",      # first-order B-format, FuMa ordering/normalisation

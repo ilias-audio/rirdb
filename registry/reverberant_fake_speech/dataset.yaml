@@ -2,15 +2,28 @@
 id: reverberant_fake_speech
 name: Synthetic Room Impulse Responses and Reverberant Fake Speech
 year: 2025
-type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+type: simulated   # only the synthetic variants are read (the recorded copies of mit_survey are left out)
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["17180301"]}
-content: About 132,000 synthetic RIRs made by re-shaping the T60 and DRR of 264 MIT IR Survey recordings (500 variants
-  each), plus those 264 originals and ASVspoof 2021 fake speech reverberated with them.
+adapter: {name: wav_tree, params: {glob: rir-*/rir-*/wav16k/*.wav, exclude: ^rir-real-, pattern: '^(?=rir-syn-(?:train|test)/[^/]+/wav16k/(?P<room>h\d+_[^/]+?)_T60[0-9.]+_DRR-?[0-9.]+_(?:NORM|NONE)\.wav$)rir-(?P<room_2>syn)-', ir_kind_from_regex: {^rir-syn-: virtual}, roles: {'1': [omni]}}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 16000
+space_type: virtual
+content: '131,999 synthetic RIRs at 16 kHz: 500 variants of each of 264 MIT IR Survey recordings, synthesised to target
+  T60 and DRR values (the DRR follows its target; the decay stays the recording''s or gets shorter). The record also holds
+  the 264 recordings resampled to 16 kHz and ASVspoof 2021 fake speech reverberated with these RIRs; neither is read.'
 expected:
-  n_irs: 132264
+  n_irs: 131999
+  n_rooms: 264
+  note: '264 MIT IR Survey places (234 train, 30 test) and 500 synthetic variants of each; the paper (arXiv 2409.14712)
+    states 117,000 training and 15,000 test variants, but rir-syn-train.tgz and rir-syn-train_info.csv hold 116,999: h249_Classroom_1txts
+    has 499, because rir-syn-train/analysis.test.txt names one of its files twice and one overwrote the other. The 264 recordings
+    (rir-real-*, mit_survey''s recordings resampled to 16 kHz) are copies and are left out; C1R1 and C1R2 (67,981 files
+    each) are reverberant speech, not IRs, and are not read.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -20,6 +33,12 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: 'no'
+  where: 'the file names (the MIT IR Survey place, then the stated T60 and DRR and NORM or NONE of each variant); rir-syn-train_info.csv
+    and rir-syn-test_info.csv (the same per variant). These are the synthesis targets logged in rir-syn-*/analysis.test.txt,
+    which README.txt calls estimates that can be highly inaccurate: the measured DRR follows them (rank correlation 0.94,
+    RIRDB''s a median 4.9 dB higher, p10-p90 2.0-11.7 dB), the measured T60 does not (rank correlation about 0.00, -0.05
+    to 0.06 within a place): a variant''s decay time is a median 0.91 times the recording''s and only 4 % exceed 1.2 times
+    it, although 76 % of the targets are longer than the recording. The places are those of mit_survey'
 license:
   spdx: CC-BY-4.0
   note: >-

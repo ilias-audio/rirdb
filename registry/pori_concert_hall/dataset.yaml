@@ -3,17 +3,25 @@ id: pori_concert_hall
 name: Concert Hall Impulse Responses - Pori, Finland
 year: 2005
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["http://legacy.spa.aalto.fi/projects/poririrs/wavs/binaural.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/cardioid.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/omni.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/omni_p.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/sndfld.zip","http://legacy.spa.aalto.fi/projects/poririrs/wavs/sndfld_p.zip","http://legacy.spa.aalto.fi/projects/poririrs/docs/readme.txt","http://legacy.spa.aalto.fi/projects/poririrs/docs/poriref.pdf"]}
+adapter: {name: wav_tree, params: {glob: '*/*.wav', pattern: '^(?:binaural|cardioid|omni|omni_p|sndfld|sndfld_p)/(?P<src>s\d)_(?P<rcv>[rp]\d)_(?:b|(?P<rcv_2>c)|o|sf)\.wav$', room_from: dataset, format_from_regex: {^binaural/: binaural, ^cardioid/: stereo, '^omni(_p)?/': stereo, '^sndfld(_p)?/': foa_fuma}, roles: {'2': [L, R], '4': [W, X, Y, Z]}, sh_norm: FuMa, orientation_known: false, preferred_regex: '^omni(_p)?/'}}
+capture_formats:
+- stereo
+- binaural
+- foa_fuma
 content: Impulse responses for 3 stage sources and 7 receiver positions (4 in the audience, 3 on stage) in the Pori
   Promenadikeskus concert hall, Finland, captured with omni, cardioid, dummy-head and SoundField mics in 2002.
 fs_hz:
 - 48000
 expected:
-  n_irs: 21
+  n_irs: 66
   n_rooms: 1
+  note: '21 source-receiver pairs (3 sources x 7 receivers); 66 responses in the 6 packages fetched: omni pair 21, SoundField
+    21, HATS 12, cardioid pair 12 (readme.txt, section 3). The diffuse-field-equalised HATS copies and the SIRR 5.0 renderings
+    (24 more files) are processed versions, not fetched'
 room_info:
   dimensions: 'yes'
   volume: 'yes'
@@ -21,6 +29,8 @@ room_info:
   positions: 'yes'
   images: 'yes'
   reference_acoustics: 'yes'
+  where: 'poriref.pdf (Merimaa, Peltonen, Lokki 2005): hall description, Table 1 (average T30, EDT, C80 ...), Table 2 and
+    Fig. 5 (positions), photos; readme.txt (files, microphones, channel order)'
 license:
   spdx: LicenseRef-custom
   note: Free for non-commercial purposes if the authors are cited; commercial use needs written permission from

@@ -3,18 +3,32 @@ id: openslr26
 name: OpenSLR SLR26 simulated RIRs
 year: 2017
 type: simulated
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.openslr.org/resources/26/sim_rir_16k.zip"]}
+adapter: {name: wav_tree, params: {glob: simulated_rirs_16k/*room/Room*/Room*-*.wav, pattern: '^simulated_rirs_16k/(?P<room>small|medium|large)room/(?P<room_2>Room\d{3})/Room\d{3}-(?P<src>\d{5})\.wav$', roles: {'1': [omni]}}}
+capture_formats:
+- mono_omni
+space_type: virtual
+expected:
+  n_irs: 60000
+  n_rooms: 600
+  note: 'The README: 3 sets x 200 rooms x 100 RIRs (Ko et al., ICASSP 2017). The 16 kHz release only; the 8 kHz release
+    holds the same RIRs at 8 kHz and is not fetched. The medium and large rooms are flat (plan 4-18 times their height),
+    so the image-method decay is double-sloped: the mid-frequency decay time is the late horizontal decay, 2-5 times the
+    Sabine value for the stated absorption, and EDT is far shorter. The RIRs end abruptly (after 0.17-0.30 s in the small
+    set), so in the least absorbent small rooms the decay time reads below Eyring and many IRs are grade C.'
 content: Simulated room impulse responses with various room configurations, released at 8 kHz and 16 kHz for reverberant-speech
   data augmentation in speech recognition (Ko et al., ICASSP 2017).
 fs_hz:
-- 8000
 - 16000
 room_info:
   images: 'no'
   conditions: 'no'
+  where: 'simulated_rirs_16k/README (how the rooms were drawn: length and width 1-10, 10-30 or 30-50 m by set, height 2-5
+    m, absorption 0.2-0.8, sources within 5 m of the receiver; image method, Habets RIR generator) and simulated_rirs_16k/<set>room/room_info
+    (each room''s size, receiver position and absorption coefficient)'
 license:
   spdx: Apache-2.0
 homepage: https://www.openslr.org/26/

@@ -3,15 +3,23 @@ id: tuil_tv_studio_brirs
 name: Position-dynamic auditory AR BRIRs (TV studio)
 year: 2018
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["1321996"]}
+adapter: {name: mat_struct, params: {glob: '10[1-9]/10[1-9]/brir*.mat', pattern: '^(?P<rcv>10[1-9])/10[1-9]/brir(?P<rcv_2>\d{3})\.mat$', var: brirData, field: impulseResponse, records: cells, cell_column: 1, name_column: 0, fs_field: fs, time_axis: 0, room_default: tv-studio, capture_format: binaural, roles: [L, R]}}
+ir_kinds:
+- room
+capture_formats:
+- binaural
+fs_hz:
+- 48000
 content: KEMAR BRIRs for six loudspeakers (5.0 surround plus one) at nine positions in a 4 x 4 m area, head turned
   360° in 5° steps, in a TU Ilmenau TV studio (19.5 x 11.5 x 5.5 m, RT60 about 0.7 s); MATLAB files.
 expected:
   n_irs: 3888
   n_rooms: 1
+  note: 9 positions x 72 head angles x 6 loudspeakers (5.0 surround at 3.5 m plus S at 1.35 m), as description.txt states
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -21,6 +29,8 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: description.txt (19.5 x 11.5 x 5.5 m, RT60 about 0.7 s, C50 15 dB, C80 17 dB, loudspeaker layout); scheme.png (positions
+    101-109 on the 4 x 4 m area, head turned counterclockwise in 5-degree steps); studio.jpg; brirData.room in each file
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/1321996

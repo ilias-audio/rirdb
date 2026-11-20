@@ -3,20 +3,40 @@ id: spheres
 name: The Spheres Dataset (RIRs)
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
-source: {kind: zenodo, records: ["17347681"], exclude: ["TheSpheresDataset-ClapsAndSweeps.zip"]}
+source:
+  kind: zenodo
+  records:
+  - '17347681'
+  exclude:
+  - TheSpheresDataset-ClapsAndSweeps.zip
+  - TheSpheresDataset-StereoMix.zip
+  - TheSpheresDataset-Multichannel.zip
+adapter: {name: ndarray, params: {groups: [{glob: TheSpheresDataset-RIRs/TheSpheresDataset-RIRs/npy/source_*.npy, container: npy, time_axis: 1, record_axes: [0], fs: 48000, pattern: 'npy/source_(?P<src>[A-Za-z0-9_]+)\.npy$', room_default: main-room, select: {0: [0, 1, 2, 3, 4]}, axis_keys: {0: {as: rcv, names: [Amb_L, Amb_R, Main_L, Main_R, Main_C, Close_spot, Vln1, Vln2, Vla, Vcl, DBass1, DBass2, Flutes, Oboes, Clarinets, Bassoons, Horns, Trumpets, Trombones, Tuba, Timpani, BD_and_Cymbals, Harp]}}, capture_format: mono_omni, roles: [omni]}, {glob: TheSpheresDataset-RIRs/TheSpheresDataset-RIRs/npy/source_*.npy, container: npy, time_axis: 1, record_axes: [0], fs: 48000, pattern: 'npy/source_(?P<src>[A-Za-z0-9_]+)\.npy$', room_default: main-room, select: {0: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]}, axis_keys: {0: {as: rcv, names: [Amb_L, Amb_R, Main_L, Main_R, Main_C, Close_spot, Vln1, Vln2, Vla, Vcl, DBass1, DBass2, Flutes, Oboes, Clarinets, Bassoons, Horns, Trumpets, Trombones, Tuba, Timpani, BD_and_Cymbals, Harp]}}, capture_format: mono_directional, roles: [cardioid]}]}}
+capture_formats:
+- mono_omni
+- mono_directional
+fs_hz:
+- 48000
 content: Measured RIRs from a loudspeaker at 17 instrument positions to the 23 studio microphones of an orchestral
   session in the main room of The Spheres studio (Italy), as NumPy arrays with plots.
 expected:
-  n_irs: 391
+  n_irs: 374
   n_rooms: 1
+  note: '17 loudspeaker positions x 23 microphones = 391 rows in the 17 .npy files; row 5 (Close_spot, the spot microphone
+    moved to each instrument) holds no IR in any file, so 17 x 22 = 374 are read: 85 from the five omni microphones (ambient
+    pair, mains) and 289 from the 17 cardioid section spots. The RIR sampling rate is not stated; 48 kHz is the rate of
+    the session''s recordings.'
 room_info:
   dimensions: 'yes'
-  volume: partial
+  volume: 'yes'
   positions: partial
   reference_acoustics: partial
+  where: 'paper (arXiv 2511.21247): room size 15 x 9 x 8 m and treatment, the 23 microphones (Table II), loudspeaker at
+    the first chair of each section; plots/source_*.pdf (microphone name of each row); TheSpheres_metadata_*.json (48 kHz,
+    music only)'
 license:
   spdx: CC-BY-SA-4.0
 homepage: https://zenodo.org/records/17347681

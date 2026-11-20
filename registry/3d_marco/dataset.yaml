@@ -3,10 +3,19 @@ id: 3d_marco
 name: 3D-MARCo (impulse responses)
 year: 2019
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3477602"], include: ["03 3D-MARCo Impulse Responses.zip", "01 3D-MARCo Documentation.zip"]}   # the IRs only: 04-10 are music recordings (22.9 GB)
+adapter: {name: wav_tree, params: {glob: 03 3D-MARCo Impulse Responses/3D-MARCo Impulse Responses/*/*.wav, pattern: '/\d\d_Speaker_(?P<src>[+-]?\d+deg_\dm)/[+-]?\d+deg_\d+_(?P<rcv>Eigen|[A-Za-z0-9]+)', room_from: dataset, orientation_known: false, join: '_(?P<ch>\d+)_[A-Za-z0-9]+(?:_Raw)?_(?P<ch_2>\d+(?:_[A-Za-z]*(?:_\d+m)?)?)\.wav$', roles: {'1': [VOG], '2': [L, R], '3': [FLf, FRf, FCf], '9': [FL, FR, FC, RL, RR, FLh, FRh, RLh, RRh], '12': [FL, FR, RL, RR, FLh_0m, FRh_0m, RLh_0m, RRh_0m, FLh_1m, FRh_1m, RLh_1m, RRh_1m], '25': [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15, ACN16, ACN17, ACN18, ACN19, ACN20, ACN21, ACN22, ACN23, ACN24]}, format_from_regex: {_KU100_: binaural, _ORTF_: stereo, _Ambeo_Raw_: tetra_raw, _Eigenmike_Raw_: em32_raw, _Eigen_4th_Bformat_ACN_SN3D: hoa_sh}, channel_formats: {'1': mono_omni}, sh_norm: SN3D, preferred_regex: '^(?!.*_Eigenmike_Raw_)'}}
+capture_formats:
+- array_raw
+- binaural
+- stereo
+- mono_omni
+- tetra_raw
+- em32_raw
+- hoa_sh
 content: Impulse responses for 13 stage loudspeaker positions in St Paul's concert hall, Huddersfield, each captured
   by 64 microphones (3D arrays, dummy head, FOA) plus a 32-capsule Eigenmike, released with music recordings.
 fs_hz:
@@ -14,6 +23,10 @@ fs_hz:
 - 48000
 expected:
   n_rooms: 1
+  n_irs: 169
+  note: The authors give no IR count. 13 loudspeaker positions x 13 layouts (PCMA-3D, OCT-3D, 2L-Cube, Decca Cuboid, Hamasaki
+    Square, Side, VOG, Floor, KU100, ORTF, Ambeo A-format, Eigenmike raw, Eigenmike 4th-order B-format), read from 858 WAV
+    files.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -23,6 +36,8 @@ room_info:
   images: 'yes'
   reference_acoustics: partial
   conditions: 'no'
+  where: '01 3D-MARCo Documentation: 3D-MARCo White Paper.pdf (Table 1: arrays, channels and microphones; section 3: the
+    hall, average RT60 2.1 s, and the setup) and README.pdf (file names)'
 license:
   spdx: CC-BY-NC-3.0
   statements:

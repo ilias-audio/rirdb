@@ -1,0 +1,4 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+arundel,"Arundel Cathedral, nave",worship,,,,,,,,stereo; method and positions not stated,
+ely-choir,"Ely Cathedral, choir",worship,,,,,,,,"stereo; method and positions not stated; source and microphone are close together (DRR +7.7 dB, C50 +9.7 dB): EDT 0.35 s against T30 3.1 s, and the late decay is double-sloped (T20 2.6 s), so the values describe the choir position, not the whole cathedral",
+ely-lady-chapel,"Ely Cathedral, Lady Chapel",worship,,,,ely_lady_chapel/ely-lady-chapel,,,,"stereo; method and positions not stated; the Lady Chapel is a separate building joined to the cathedral",

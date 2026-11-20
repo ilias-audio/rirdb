@@ -3,18 +3,28 @@ id: operarir
 name: OperaRIR
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["8096639"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 2, "channel_formats": {"32": "em32_raw", "25": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: OperaRIR_*/**/*_48k.wav, exclude: '(^|/)(__MACOSX|\._)|/\.DS_Store$|_t[123]_Source[12]_', pattern: '(?P<rcv>Row\d+_Seat\d+)_(?P<src>Source[12])_(?:mic|hoa)_48k\.wav$', room_from: dataset, roles: {25: [W, ACN1, ACN2, ACN3, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15, ACN16, ACN17, ACN18, ACN19, ACN20, ACN21, ACN22, ACN23, ACN24], 32: [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32]}, channel_formats: {25: hoa_sh, 32: em32_raw}, reference_roles: {25: W, 32: mean}, preferred_regex: _hoa_48k\.wav$, orientation_known: false}}
+capture_formats:
+- hoa_sh
+- em32_raw
+analysis:
+  start_s: 2.0
+  keep_s: 6.0
 content: 210 spatial impulse responses measured with an Eigenmike at 97 parterre seats from two stage loudspeakers
   in the main auditorium of the Finnish National Opera and Ballet, Helsinki, as em32 and 4th-order Ambisonic files.
 fs_hz:
 - 48000
 expected:
-  n_irs: 210
+  n_irs: 388
   n_rooms: 1
+  note: 'The authors'' 194 main SRIRs (97 seats x 2 sources), each in two formats: 4th-order Ambisonics (preferred) and
+    the Eigenmike capsule signals it is encoded from (not preferred). The control set''s repeat takes (t1 repeats the main
+    measurement; t2 and t3 at 4 control seats x 2 sources, 32 files) are not read: as in tier A, a repeated measurement
+    is indexed once. The control HOA files are also rotated differently from the main ones.'
 room_info:
   dimensions: partial
   volume: 'no'
@@ -24,6 +34,9 @@ room_info:
   images: 'no'
   reference_acoustics: partial
   conditions: partial
+  where: the Zenodo record's description (seats, sources and their coordinates, control points, formats) with OperaRIR_layout.mat
+    (XY coordinates and rotation angle of each measurement point) and OperaRIR_measurement_layout.pdf (top-view plan); the
+    paper (Forum Acusticum 2023, https://dael.euracoustics.org/confs/fa2023/data/articles/000833.pdf)
 license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/8096639

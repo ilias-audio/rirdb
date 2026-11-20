@@ -3,19 +3,28 @@ id: ely_lady_chapel
 name: The Acoustics of Ely Cathedral's Lady Chapel
 year: 2021
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5150020"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "format_from_regex": {"(?i)fuma|b[ _-]?format": "foa_fuma"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: '**/*.[wW][aA][vV]', pattern: '/(?:CA-MRIR-EC-LC/MRIR_EC_(?P<src>S\d)_DO_Sw_(?P<rcv>R\d\d)_Bformat|(?P<room>CA-SRIR-EC-LC)/EC_LC_Bformat_(?P<cond>(?:14c|1930|2019) model)/[^/]*_DO_Sw_(?P<src_2>S\d)_(?P<rcv_2>R\d\d)_BFormat\d\d)\.[wW]av$', room_from: pattern, room_default: ely-lady-chapel, roles: {'4': [W, X, Y, Z]}, channel_formats: {'4': foa_fuma}, sh_norm: FuMa, orientation_known: false, ir_kind_from_regex: {/CA-SRIR-EC-LC/: virtual}}}
+capture_formats:
+- foa_fuma
+fs_hz:
+- 48000
 content: 8 measured and 24 simulated B-format RIRs (one source, eight receivers; models of its 14th-century, 1930
   and 2019 states) of the Lady Chapel of Ely Cathedral, from York's Cathedral Acoustics project.
 expected:
   n_irs: 32
-  n_rooms: 1
+  n_rooms: 2
+  note: 8 measured (S0 x R01-R08) and 24 simulated (the same 8 positions in the 14c, 1930 and 2019 ODEON models), README.txt
+    and the two Info.txt files
 room_info:
   geometry: 'no'
   images: 'no'
+  where: 'Info.txt in CA-MRIR-EC-LC and CA-SRIR-EC-LC (file names, equipment, one source in front of the altar, 8 receivers);
+    Alvarez-Morales et al., I3DA 2021 (eprints.whiterose.ac.uk/198111): plan with S0 and R1-R8 (Fig. 1), volume about 7,930
+    m3, vault about 18 m high, materials (Tables I-III), simulated T30 per model (Fig. 5)'
 license:
   spdx: CC-BY-NC-SA-4.0
   statements:

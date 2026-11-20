@@ -3,14 +3,30 @@ id: mardy
 name: MARDY
 year: 2006
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://www.commsp.ee.ic.ac.uk/~sap/uploads/data/MARDY.rar"]}
+adapter: {name: wav_tree, params: {glob: ir_*.wav, join: '_(?P<ch>[1-8])\.wav$', pattern: '^ir_(?P<rcv>[1-3])_(?P<src>[LCR])_[1-8]\.wav$', room_from: dataset, roles: {8: [mic_1, mic_2, mic_3, mic_4, mic_5, mic_6, mic_7, mic_8]}, channel_formats: {8: array_raw}}}
+capture_formats:
+- array_raw
+fs_hz:
+- 48000
+expected:
+  n_irs: 9
+  n_rooms: 1
+  note: 72 single-microphone files (3 loudspeakers x 3 distances x 8 microphones) joined into 9 eight-channel linear-array
+    IRs. The paper describes four distances and two panel settings; the public archive holds three distances and three loudspeakers,
+    panel setting not stated.
 content: 'Classic dereverberation set of multichannel RIRs: three loudspeakers (left, centre, right) to an 8-element
   microphone array at three distances, measured with MLS at York.'
 room_info:
   positions: partial
+  dimensions: partial
+  conditions: 'no'
+  where: 'the archived project page (file naming ir_d_P_n.wav: d = distance in m to the centre loudspeaker, P = left/centre/right
+    loudspeaker, n = microphone) and Wen et al., IWAENC 2006, section 2 and Fig. 1 (Trevor Jones recording facility, University
+    of York; 8 AKG C417 at 5 cm, loudspeaker and array 1 m above the floor; plan 12.0 m and 9.3 m, height 3 m)'
 license:
   spdx: LicenseRef-unspecified
   note: Neither the live file nor the archived project page states a licence or terms of use.

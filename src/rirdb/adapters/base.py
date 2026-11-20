@@ -27,6 +27,25 @@ def make_ir_id(dataset_id: str, local_key: str) -> str:
     return f"{dataset_id}:{hashlib.blake2b(local_key.encode(), digest_size=8).hexdigest()}"
 
 
+def audio_hash(x: np.ndarray) -> str:
+    """The SHA-1 of the samples x (channels, samples) as float32, channel after channel (analyser v1)."""
+    return hashlib.sha1(np.ascontiguousarray(x, dtype=np.float32).tobytes()).hexdigest()
+
+
+def ir_hash(adapter, locator: dict, root: Path, x: np.ndarray) -> str:
+    """The hash recorded as an IR's audio_hash.
+
+    For most readers, the hash of the samples x the reader returned (audio_hash). A reader that computes its
+    samples (an inverse FFT, subband filters) has a method published_values(locator, root) -> bytes: the stored
+    values the IR is computed from, as read from the file, and the reader's settings. The hash is then the SHA-1
+    of those bytes, which is the same on any numpy build, where the computed samples can differ in the last bits.
+    """
+    published_values = getattr(adapter, "published_values", None)
+    if published_values is None:
+        return audio_hash(x)
+    return hashlib.sha1(published_values(locator, root)).hexdigest()
+
+
 @dataclass
 class IRRecord:
     dataset_id: str

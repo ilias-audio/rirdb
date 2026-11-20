@@ -3,14 +3,25 @@ id: reaper_blog_irs
 name: REAPER Blog free reverb IR library
 year: 2018
 type: production
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://reaper.blog/wp-content/uploads/2018/11/reaperblog-IRs.zip"]}
+adapter: {name: wav_tree, params: {glob: reaperblog IRs/*.wav, pattern: '/(?P<room>IRx\d+)_(?P<cond>0[1-4][ABC])\.wav$', room_from: pattern}}
+ir_kinds:
+- creative
+capture_formats:
+- stereo
+fs_hz:
+- 48000
+space_type: virtual
 content: 48 synthetic reverb IRs made in REAPER (decays of 125-1000 ms, three fade/low-pass shapes, plain or with
   doubler, delay-widener or formant-shift effects); not captures of real spaces or devices.
 expected:
   n_irs: 48
+  n_rooms: 4
+  note: '48 synthetic IRs: 4 decay times x 4 effects x 3 fade shapes (the blog post explains the names). No real space or
+    device was captured.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -19,7 +30,9 @@ room_info:
   positions: 'no'
   images: 'no'
   reference_acoustics: 'no'
-  conditions: partial
+  conditions: 'yes'
+  where: 'the blog post (https://reaper.blog/2018/11/free_reverb_irs/): decay time, effect and fade shape coded in the file
+    names'
 license:
   spdx: LicenseRef-unspecified
 homepage: https://reaper.blog/2018/11/free_reverb_irs/

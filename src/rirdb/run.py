@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -23,6 +22,7 @@ import pandas as pd
 
 from rirdb import paths
 from rirdb.adapters import get_adapter
+from rirdb.adapters.base import ir_hash
 from rirdb.analysis import ANALYZER_VERSION
 from rirdb.analysis.config import load_config
 from rirdb.index import load_irs
@@ -103,9 +103,10 @@ def _analyze_row(row: dict) -> tuple[dict, dict]:
     d, adapter, root, cfg = _WORKER["dataset"], _WORKER["adapter"], _WORKER["root"], _WORKER["cfg"]
     t0 = time.perf_counter()
     try:
-        x, fs = adapter.load(json.loads(row["locator"]), root)
+        locator = json.loads(row["locator"])
+        x, fs = adapter.load(locator, root)
         roles = tuple(row["channel_roles"].split(","))
-        content_sha1 = hashlib.sha1(np.ascontiguousarray(x, dtype=np.float32).tobytes()).hexdigest()
+        content_sha1 = ir_hash(adapter, locator, root, x)
         x = analysed_part(x, fs, d.analysis.keep_s, cfg.preprocess.digital_silence_abs, d.analysis.start_s)
         xs, rs = _select_channels(x, roles, row.get("reference_role") or d.analysis.reference_role)
         a = analyze_ir(xs, fs, roles=rs, capture_format=row["capture_format"], sh_norm=row.get("sh_norm"),

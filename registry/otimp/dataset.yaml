@@ -3,17 +3,34 @@ id: otimp
 name: OTIMP
 year: 2019
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["5040465"], exclude: ["00_raw.zip"]}
+adapter: {name: otimp_mat, params: {glob: 02_default_calibrated/02_default_calibrated/mat/subject_*.mat, room_default: otimp-listening-room}}
+capture_formats:
+- array_raw
+fs_hz:
+- 44100
+analysis:
+  reference_role: BTE_L_front
+defects:
+- what: 'Subject 40''s in-ear channels (ear_L, ear_R) are NaN as published: the recorded sweeps clipped (README.md, in_ear_valid
+    0).'
+  files: subject_40\.mat$
 content: IRs from 29 loudspeakers on a sphere to a pair of behind-the-ear hearing aids worn by 46 individuals (people
   and mannequins) in a mildly reverberant listening room; raw and calibrated MATLAB files.
 expected:
   n_rooms: 1
+  n_irs: 4002
+  note: '46 subjects (metadata.csv: 27 m, 14 f, 5 x = mannequin, i.e. 4 mannequins with the HATS measured twice as 28 and
+    42, Moore et al. 2019) x 3 chair rotations x 29 loudspeakers = 4002 IRs of 6 microphones each, from the calibrated database
+    (02); the authors give no IR count'
 room_info:
   positions: partial
   images: partial
+  where: Moore et al., JASA 145(5) 2971 (2019), section II (room 7.9 x 6.0 x 3.5 m, T 250 ms, 29 Genelec 8050A on a 1.9
+    m sphere); README.md, doc/*.pdf and mat/metadata.csv of each part
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/5040465

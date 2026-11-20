@@ -102,9 +102,9 @@ ids_from_args() {
 
 raw_dir() { echo "$RIRDB_ROOT/raw/$1"; }
 
-is_archive() {
-    case "$1" in
-        *.zip|*.z[0-9][0-9]|*.tar|*.tar.gz|*.tgz|*.tbz2|*.tar.bz2|*.tar.xz|*.rar) return 0 ;;
+is_archive() {     # any case: PRAIRE publishes .ZIP
+    case "${1,,}" in
+        *.zip|*.z[0-9][0-9]|*.tar|*.tar.gz|*.tgz|*.tbz2|*.tar.bz2|*.tar.xz|*.rar|*.tar.part.[a-z][a-z].gz) return 0 ;;
         *) return 1 ;;
     esac
 }
@@ -133,8 +133,8 @@ pin_extract_to() {
     old=${2:-}
     if [ -n "$old" ] && [ -f "$old" ]; then cp "$old" "$pinned"; fi
     awk -F'\t' -v OFS='\t' -v pinned_file="$pinned" '
-        function is_archive(p) { return p ~ /\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar)$/ }
-        function stem(p) { sub(/\.(tar\.gz|tar\.bz2|tar\.xz|tgz|tbz2|tar|zip|rar)$/, "", p); return p }
+        function is_archive(p) { return tolower(p) ~ /\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz)$/ }
+        function stem(p) { sub(/\.([Tt][Aa][Rr]\.part\.aa\.gz|[Tt][Aa][Rr]\.[Gg][Zz]|[Tt][Aa][Rr]\.[Bb][Zz]2|[Tt][Aa][Rr]\.[Xx][Zz]|[Tt][Gg][Zz]|[Tt][Bb][Zz]2|[Tt][Aa][Rr]|[Zz][Ii][Pp]|[Rr][Aa][Rr])$/, "", p); return p }
         FILENAME == pinned_file { if (FNR > 1 && NF >= 8 && $8 != "") pin[$1] = $8; next }
         FNR == 1 { next }
         { n++; rel[n] = $1; line[n] = $1; for (j = 2; j <= 7; j++) line[n] = line[n] OFS $j; if (is_archive($1)) n_arch++ }

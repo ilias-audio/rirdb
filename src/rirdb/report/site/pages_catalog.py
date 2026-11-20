@@ -28,7 +28,8 @@ from rirdb.report.site.core import SITE_NAME, SITE_URL, Site, doi_url
 
 # ----------------------------------------------------------------------------- vocabulary (as in the guide)
 
-FAM = {"mono_omni": "mono", "stereo": "stereo", "binaural": "binaural", "foa_fuma": "ambisonic", "foa_ambix": "ambisonic",
+FAM = {"mono_omni": "mono", "mono_directional": "mono", "stereo": "stereo", "binaural": "binaural", "foa_fuma": "ambisonic",
+       "foa_ambix": "ambisonic",
        "hoa_sh": "ambisonic", "em32_raw": "ambisonic", "sma_raw": "ambisonic", "tetra_raw": "ambisonic",
        "array_raw": "array", "sdm_array": "array"}
 FAM_ORDER = ["mono", "stereo", "binaural", "ambisonic", "array"]

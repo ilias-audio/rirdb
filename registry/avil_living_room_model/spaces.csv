@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+living-room,"Simulated living room (ODEON), rendered for DTU's AVIL loudspeaker array",virtual,virtual,302.4,12 x 9 x 2.8,,,,,"shoebox from the surface areas in AVcocktailpartyRoom.Materials.00001.txt (floor and ceiling 108 m2, walls 33.6 and 25.2 m2, so 12 x 9 x 2.8 m); wooden floor, perforated gypsum ceiling, slotted absorber panels on two walls; listener at (4.7, 5.0, 1.2) m; LoRA rendering to the 64 loudspeakers of the Audio-Visual Immersion Lab",

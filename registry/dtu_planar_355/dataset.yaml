@@ -3,17 +3,25 @@ id: dtu_planar_355
 name: Planar RIR Dataset - ACT, DTU Electro (b. 355 r. 008)
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["21740453"]}
-content: 1,800 RIRs on a 30 × 30 grid covering 80 × 80 cm, measured with a robot-moved microphone in DTU's 'sound
-  field control' room (6.1 × 5.8 × 3.1 m) for two loudspeakers; 48 kHz, HDF5.
+adapter: {name: ndarray, params: {glob: '**/*.h5', container: h5, array: RIRs_bottom, time_axis: 1, record_axes: [0], fs_attr: '@fs', pattern: '^(?:(?P<src>\d{8})/)?[^/]+\.h5$', room_default: room-355-008}}
+capture_formats:
+- mono_omni
+content: 900 RIRs on a 30 × 30 grid covering 80 × 80 cm, measured with a robot-moved microphone in DTU's 'sound field control'
+  room (6.1 × 5.8 × 3.1 m) for one of the authors' two loudspeakers (a Dynaudio in a corner, record DTU.21740453); 48 kHz,
+  HDF5. The same grid measured with the second loudspeaker (Odeon Omni, 900 more RIRs, record DTU.21740645) is still to
+  be added.
 fs_hz:
 - 48000
 expected:
-  n_irs: 1800
+  n_irs: 900
   n_rooms: 1
+  note: 'The Dynaudio record (DTU.21740453) only: its 900 RIRs (RIRs_bottom, one per grid point); the 36 noise recordings
+    and the sweep signal are left out. The authors measured the same grid with a second loudspeaker (Odeon Omni, 900 more
+    RIRs) in record DTU.21740645, which is not included yet.'
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +31,8 @@ room_info:
   images: 'yes'
   reference_acoustics: 'no'
   conditions: partial
+  where: HDF5 attributes (room_dimensions, loudspeaker_position, grid_bottom, sweep range); the DTU Data record's description;
+    2D_layout_Dynaaudio.pdf and 3D_layout_Dynaaudio.pdf. README.md is a copy of the Odeon record's
 license:
   spdx: CC-BY-4.0
 homepage: https://data.dtu.dk/articles/dataset/Planar_Room_Impulse_Response_Dataset_-_ACT_DTU_Electro_b_355_r_008_/21740453

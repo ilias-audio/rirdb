@@ -3,23 +3,36 @@ id: tampere_distance
 name: Speaker Distance Estimation Datasets (Tampere)
 year: 2026
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["23096979"]}
+adapter: {name: npz_scene, params: {glob: shared_rir/shared_rir/sample_*_rir.npz, array: h_full, fs: 16000}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 16000
+space_type: virtual
 content: 2,500 simulated RIRs (pyroomacoustics image-source method, reflection order 100) of randomised rooms, shared
   by a 40,000-clip reverberant speech corpus for single-channel speaker distance estimation.
 expected:
   n_irs: 2500
+  n_rooms: 2500
+  note: 'DATASET.md: 2,500 RIRs, one per scene, shared by the four synthetic configurations. Each .npz also holds h_direct,
+    h_no_early and h_no_late, the authors'' cut versions of the same RIR, which are not indexed; the reverberant speech
+    clips (synthetic_*.zip) and the STARSS23 clips are not IRs.'
 room_info:
-  dimensions: 'no'
+  dimensions: 'yes'
   volume: 'yes'
   geometry: 'no'
   materials: partial
   positions: partial
   images: 'no'
-  reference_acoustics: partial
+  reference_acoustics: 'no'
   conditions: 'no'
+  where: 'shared_rir/shared_rir/sample_<NNNNN>_rir.npz (room_dim, distance_m, absorption_coeff of each scene) and labels_and_splits/DATASET.md
+    (generation, realised ranges: distance 1-11 m, volume 87-883 m3, absorption 0.10-0.45); metadata_variants_*.csv repeat
+    distance, volume, mean free path and mixing time per scene'
 license:
   spdx: CC-BY-NC-4.0
   note: The record is CC BY-NC 4.0 (the authors attribute the NC term to the EARS speech) while its table lists
@@ -44,8 +57,10 @@ web_check:
   - https://github.com/michaelneri/audio-distance-estimation
   confidence: high
   caveats:
-  - Only shared_rir.zip (2.2 GB, 2,500 .npz files) holds the RIRs; the rest of the 28 GB record is reverberant speech,
-    STARSS23 clips and labels.
+  - Only shared_rir.zip (2.2 GB, 2,500 .npz files) holds the RIRs; the rest of the 28 GB record is reverberant speech, STARSS23
+    clips and labels.
   - Non-commercial licence (CC BY-NC 4.0) applies to the record, including the RIR archive.
-  - RIR sample rate, room dimensions and positions are not stated; per-scene volume, absorption and source distance
-    are in metadata_variants.csv (corpus audio is 16 kHz).
+  - The RIR sample rate is not stated. RIRDB reads the RIRs at 16 kHz, the rate of the corpus convolved with them (DATASET.md);
+    the cut indices stored in every .npz agree (from the direct sound to the early/late cut is the scene's mixing time at
+    16,000 Hz, and the 2 ms direct window is 32 samples, in all 2,500 files). Each .npz gives the room size, the source-microphone
+    distance and the absorption coefficient, but not the source and microphone positions.

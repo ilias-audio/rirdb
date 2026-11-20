@@ -3,20 +3,34 @@ id: stonehenge
 name: Stonehenge impulse response measurements
 year: 2020
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["12687554"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: stonehenge_octave, params: {exclude: ^calibration/|^configurations/InnerTrilithonHorseshoe\+OuterSarsenCircleUprights\+OuterSarsenCircleLintels\+OuterBluestoneCircle\+InnerBluestoneOval/|^2200BC model/s1-m26a/, room: stonehenge-scale-model, label: 'Stonehenge, 1:12 acoustic scale model (University of Salford)'}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 16000
+analysis:
+  reference_role: mean
 content: Octave-band IRs for 61 measurements in a 1:12 acoustic scale model of Stonehenge, the prehistoric stone
   circle, with derived acoustic parameters in a spreadsheet.
 expected:
   n_irs: 61
   n_rooms: 1
+  note: '61 measurements, as the figshare record says: the 37 positions of the complete model (JOAS_derived_acoustic_parameters.xlsx,
+    where s1-m26 averages two takes, s1-m26 and s1-m26a; the second take is left out) and 4 partial configurations x 6 positions.
+    The fifth configuration folder copies the complete model''s sc-* folders and the free-field calibration is not the model;
+    both are left out.'
 room_info:
   volume: 'no'
   images: 'yes'
   reference_acoustics: 'yes'
+  where: 'readme.docx (folders, processing: 800 Hz-96 kHz sweep, Kirkeby inversion, octave filters, noise tail replaced,
+    air absorption corrected to full scale), process_impulse_responses.m (gains), JOAS_derived_acoustic_parameters.xlsx
+    (EDT, T30, C80, D50, G per position; the stone groups of each configuration); positions in Fig. 2 of Cox, Fazenda, Greaney
+    2020, J. Archaeol. Sci. 122, 105218'
 license:
   spdx: CC-BY-4.0
 homepage: https://salford.figshare.com/articles/dataset/Stonehenge_impulse_response_measurements/12687554

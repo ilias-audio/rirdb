@@ -3,11 +3,30 @@ id: salford_room_in_room
 name: Salford room-in-room effect data (AES 141)
 year: 2016
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["3457733"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2, "channel_formats": {"2": "binaural", "8": "array_raw"}}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: mat_struct, params: {glob: AES141_Room-in-room_supporting_data/Measurements/**/*.mat, pattern: 'Measurements/(?:(?P<room>Church|Classroom|Corridor_narrow)/Position_(?P<rcv>\d)_(?P<src>[A-G])_(?:Omni|SF)|(?P<room_2>Car)/(?P<rcv_2>Front_Pass|Rear_Pass_Middle)_(?:Omni|SF)(?:_(?P<cond>II))?|(?P<room_3>Newton_AudioBooth|Newton_ListeningRoom)/Unaltered_plus_height/Meas_files/(?:Omni|SF)_(?P<src_2>Spk_\d+))\.mat$', var: obj, field: measurements.ir, fs_field: device.fs, time_axis: 0, channel_formats: {1: mono_omni, 4: foa_fuma}, roles: {1: [omni], 4: [W, X, Y, Z]}, sh_norm: FuMa, orientation_known: false, ir_kind_from_regex: {/Measurements/Car/: vehicle}}}
+ir_kinds:
+- room
+- vehicle
+capture_formats:
+- foa_fuma
+- mono_omni
+fs_hz:
+- 48000
+expected:
+  n_irs: 148
+  n_rooms: 6
+  note: 'counted from the measurement files (the record gives no count): church 42 (3 receivers x 7 sources x omni and B-format),
+    classroom 28 (2 x 7 x 2), corridor 6 (3 x 2), car 8 (2 seats x 2 takes x 2), audio booth 32 and listening room 32 (16
+    loudspeakers x 2)'
+room_info:
+  where: Measurements/RIR_proforma/*.pdf (source-receiver distances of the church and classroom; the scanned sheets PP_01,
+    PP_03 and PP_04 give the equipment, the church's plan and the car's seats and distances) and ReadMe.txt (corridor distances);
+    Make_input_file_from_measured.m in each reproduction room's Meas_files (loudspeaker angles and distances); the save_options
+    and measurements.timestamp fields of each .mat struct
 content: 'Supporting data for a listening test on the room-in-room effect: measured first-order B-format IRs of
   various environments and BRIR sets used to build the stimuli, plus MATLAB code and listener responses.'
 license:

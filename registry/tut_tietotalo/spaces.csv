@@ -1,0 +1,2 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+tietotalo-corridor,"Corridor, Tietotalo building, Tampere University of Technology",circulation,room,,,,,,,"a large corridor with classrooms around it; no size published; sources at 1 m and 2 m round one em32 (positions relative to the array); the propagation delay was removed, so the direct sound arrives at about 2-3 ms at both distances; the responses are rebuilt from 4-tap STFT-domain filters: about 70-75 ms of room sound, nothing above about 15.5 kHz",

@@ -3,22 +3,37 @@ id: fuss_rirs
 name: FUSS RIR data
 year: 2020
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["4012661"]}
+adapter: {name: wav_tree, params: {glob: FUSS_rir_data/rir_data/*/rirs_*/*.wav, pattern: '^FUSS_rir_data/rir_data/(?:train|validation|eval)/(?P<room>rirs_0x[0-9a-f]+)/(?P<src>(?:background|foreground)\d)\.wav$', roles: {'1': [omni]}}}
+capture_formats:
+- mono_omni
+space_type: virtual
 content: Simulated single-microphone RIRs for 22,000 random shoebox rooms (image method with frequency-dependent
   walls), released as a separate 5.8 GB archive of Google's FUSS sound-separation dataset.
 fs_hz:
 - 16000
 expected:
   n_rooms: 22000
+  n_irs: 176000
+  note: The paper (Wisdom et al. 2020, section 3) gives 20,000 train, 1,000 validation and 1,000 test rooms but no IR count;
+    FUSS_rir_data holds 8 RIRs per room (one background and seven foreground source positions, one microphone), 176,000
+    in all, counted from the archive. The other archives of the record (mixtures, source clips, models) are not RIRs and
+    are not read. Under 1% of the RIRs (30 of 4,000 sampled) are cut at 0.625 s while still above -60 dB re peak and falling.
+    That count is relative to the direct-sound peak and understates the cut decays; about 6 % of the RIRs (in 1,888 rooms)
+    have a mid-frequency T30 above 0.6 s, close to or longer than the 0.625 s files hold, so their decay times come from
+    a cut decay (most of the 1,062 grade C IRs).
 room_info:
   dimensions: partial
   geometry: partial
   materials: partial
   images: 'no'
   conditions: 'no'
+  where: 'FUSS_rir_data/rir_data/<split>/rirs_<id>/room_info.txt (room_dims, 8 source_locations and 8 receiver_locations
+    in metres); FUSS_license_doc README.md and the paper (arXiv 2011.00803, section 3: image method with frequency-dependent
+    walls, rooms 3-7 x 4-8 x 2.13-3.05 m, source images jittered by up to 8 cm)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/4012661

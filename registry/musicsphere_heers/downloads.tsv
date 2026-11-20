@@ -1,2 +1,4 @@
 relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
-Overview Measurements of Sint-Martinus Church Heers.pdf	https://zenodo.org/api/records/22111389/files/Overview%20Measurements%20of%20Sint-Martinus%20Church%20Heers.pdf/content	5148095	md5	587a501b9706473f82664910f40c58c4	zenodo:22111389	2026-11-16T11:01:15Z	-
+22111389/Overview Measurements of Sint-Martinus Church Heers.pdf	https://zenodo.org/api/records/22111389/files/Overview%20Measurements%20of%20Sint-Martinus%20Church%20Heers.pdf/content	5148095	md5	587a501b9706473f82664910f40c58c4	zenodo:22111389	2026-11-20T10:30:20Z	-
+22686848/ROAM-MHE-1m.zip	https://zenodo.org/api/records/22686848/files/ROAM-MHE-1m.zip/content	8616961333	md5	7891e5d57e8718c7f44498e8714ef0e3	zenodo:22686848	2026-11-20T10:30:20Z	22686848/ROAM-MHE-1m
+22686848/ROAM-MHE-fine.zip	https://zenodo.org/api/records/22686848/files/ROAM-MHE-fine.zip/content	3082136136	md5	f240a3f97732d14668225f1d8dae1fc0	zenodo:22686848	2026-11-20T10:30:20Z	22686848/ROAM-MHE-fine

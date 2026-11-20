@@ -3,17 +3,29 @@ id: grap
 name: GRAP
 year: 2018
 type: simulated
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"depositonce","records":["bc297d68-9361-4257-9454-d72e4a35cdc0"],"include":["GRAP_DATABASE_V2.rar","Documentation.pdf"]}
+adapter: {name: wav_tree, params: {glob: '*/2 IRs/**/*.flac', pattern: '^(?P<room>\d\d_[^/]+)/2 IRs/(?:RNo\d+_(?P<rcv>R\d)_RIR|RNo\d+_R\d_BRIR/RNo\d+_(?P<rcv_2>R\d)_BRIR_(?P<rcv_3>\d{3}))\.flac$', roles: {'1': [omni], '2': [L, R]}, channel_formats: {'1': mono_omni, '2': binaural}, preferred_regex: _RIR\.flac$}}
+capture_formats:
+- mono_omni
+- binaural
+defects:
+- what: In room 33 (Frosinone), 56 pairs of neighbouring R1 head orientations are byte-identical as published (version 4),
+    for example 121 and 122 degrees, so in each pair at least one file does not hold the orientation its name gives.
+  files: RNo33_R1_BRIR_(084|085|087|088|090|091|093|094|096|097|104|105|107|108|110|111|113|114|121|122|124|125|127|128|130|131|133|134|141|142|144|145|147|148|150|151|153|154|158|159|161|162|166|167|171|172|177|178|183|184|188|189|194|195|200|201|205|206|211|212|217|218|223|224|228|229|234|235|240|241|245|246|251|252|257|258|262|263|268|269|274|275|280|281|285|286|291|292|297|298|302|303|308|309|314|315|319|320|325|326|328|329|333|334|338|339|345|346|350|351|355|356)\.flac$
 content: 35 virtual rooms (some modelled on real venues) simulated in RAVEN; each has one source and two receivers
   with a mono RIR and 360 BRIRs (1° head turns), plus 3D models, materials and listening-test scores.
 fs_hz:
 - 44100
 expected:
-  n_irs: 70
+  n_irs: 25270
   n_rooms: 35
+  note: '35 rooms x 2 receivers (one source): 70 monaural RIRs (the preferred representation) and 70 x 360 = 25,200 BRIRs,
+    one per head orientation (1 degree steps). Against the authors'' Parameters.csv, RIRDB''s T30 is within 10 % for 50 of
+    the 69 mono RIRs compared (median ratio 1.03) and its EDT is a median 15 % higher; the four rooms that differ more
+    have room notes.'
 room_info:
   dimensions: partial
   geometry: 'yes'
@@ -21,6 +33,9 @@ room_info:
   positions: 'yes'
   images: 'no'
   reference_acoustics: 'yes'
+  where: Documentation.pdf (structure, naming, head orientations, FABIAN HRTFs, 44.1 kHz); per room, 1 Geometry (SketchUp
+    model with source and receiver positions, absorption and scattering CSVs) and 2 IRs/RNoXX_Rn_Parameters.csv (ISO 3382-1
+    parameters per third octave)
 license:
   spdx: CC-BY-NC-SA-4.0
   note: The documentation asks anyone wanting commercial use to contact the authors.

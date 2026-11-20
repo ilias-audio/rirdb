@@ -3,21 +3,44 @@ id: chalmers_baffled_array
 name: Baffled Microphone Array RIRs at Three Elevations
 year: 2024
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["11199830"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "pattern": "^(?P<room>[^/]+)/", "pattern_on": "path", "m_is": "src", "capture_format": "binaural", "roles": ["L", "R"]}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: sofa, params: {groups: [{glob: DATA*/resources/ARIR_processed/*_KEMAR_Src*.sofa, m_is: rcv, capture_format: binaural, roles: [L, R], pattern: '^(?P<room>Anechoic|Hall|Lab)(?P<cond>Dry|Wet)?_(?P<rcv>KEMAR)_(?P<src>Src(?:Ear|High|Low))\.sofa$'}, {glob: DATA*/resources/ARIR_processed/*_SMA_*_Src*.sofa, m_is: rcv, capture_format: sma_raw, pattern: '^(?P<room>Anechoic|Hall|Lab)(?P<cond>Dry|Wet)?_(?P<rcv>SMA_(?:LE\d+|TD146))_(?P<src>Src(?:Ear|High|Low))\.sofa$'}, {glob: DATA*/resources/ARIR_processed/*_XMA18*_Src*.sofa, m_is: rcv, capture_format: array_raw, pattern: '^(?P<room>Anechoic|Hall|Lab)(?P<cond>Dry|Wet)?_(?P<rcv>XMA18(?:v2)?)_(?P<src>Src(?:Ear|High|Low))\.sofa$'}]}}
+capture_formats:
+- binaural
+- sma_raw
+- array_raw
+fs_hz:
+- 48000
+defects:
+- what: 'Every SOFA file states the same placeholder positions, source (1, 0, 0) and listener (0, 0, 0), in every room and
+    for all three loudspeaker heights (on the floor, at ear height and above it). So the published source and receiver positions
+    and the 1.0 m distance are placeholders, not measurements: in the lab and the hall the loudspeakers stood 2.62 m and
+    9.23 m from the receiver (the authors'' processing script).'
 content: Array RIRs from spherical, equatorial and non-spherical baffled arrays (up to 2,702 directions) and KEMAR
   BRIRs at 360 head orientations, in a damped lab, a reverberant hall and an anechoic room; 3 source heights.
 expected:
   n_rooms: 3
+  n_irs: 4655
+  note: 'The authors give no IR count. Measured sets only: 3,600 KEMAR BRIRs (10 files x 360 head orientations), 1,044 18-microphone
+    array IRs (XMA18 and XMA18v2; 36 orientations in the rooms, 360 in the anechoic chamber) and 11 spherical-array IRs
+    (1,202 or 2,702 channels; one 146-channel t-design). Per space: lab 2,383, hall 1,191, anechoic chamber 1,081 (KEMAR
+    360, XMA18 360, XMA18v2 360, spherical array 1). Left out: 124 grids interpolated from the spherical measurements, 22
+    XMA6/XMA9 channel subsets, 16 simulations and 7 characterisations.'
 room_info:
   dimensions: 'yes'
   materials: partial
   positions: partial
   images: 'yes'
   conditions: 'yes'
+  where: 'DOCUMENTATION/documentation (photos; Room Lab - Dimensions.pdf and Room Hall - Dimensions.jpg, hand sketches),
+    CODE_AND_PLOTS/dependencies/params_room_*.py and params_source_*.py (room names, floor states, loudspeaker heights in
+    words), the SOFA metadata (RoomDescription, ListenerShortName: recording chain and pre-amp gain), CODE_AND_PLOTS/x2_Gather_And_Plot_Measurements.m
+    lines 28-41 (a commented calculation: loudspeakers 2.62 m from the receiver in the lab and 9.23 m in the hall, horizontally,
+    at 0.26, 1.23 and 2.25 m, the hall''s high one at 4.62 m). The SOFA positions are placeholders (a known defect); the
+    real geometry is only in the hand sketches and that calculation.'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/11199830

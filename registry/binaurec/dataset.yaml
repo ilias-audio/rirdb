@@ -3,17 +3,22 @@ id: binaurec
 name: BinauRec
 year: 2022
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["7256984"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(^|/)(noise)/|(^|/)(sigrec|sweep|scene_|noise|ambien|excitation|truncated_)", "room_level": 1, "condition_level": 2}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: data/rir/**/*.wav, pattern: '^data/rir/(?:measured/(?P<cond>with_head|without_head)|(?P<room>simulated))/(?P<src>spk\d)_', join: '_(?P<ch>left|right)_(?P<ch_2>front|rear)\.wav$', room_from: pattern, room_default: nancy-audiology-room, roles: {'4': [LF, LB, RF, RB]}, channel_formats: {'4': array_raw}, ir_kind_from_regex: {^data/rir/simulated/: virtual}}}
+capture_formats:
+- array_raw
 content: Swept-sine RIRs from 4 loudspeakers to behind-the-ear hearing-aid mics, with and without a KEMAR head,
   in one room in Nancy, plus simulated RIRs of the same scenes and matching speech-in-noise recordings.
 fs_hz:
 - 16000
 expected:
-  n_rooms: 1
+  n_rooms: 2
+  n_irs: 12
+  note: '48 mono files joined into 12 four-channel IRs (2 BTE shells x 2 microphones): 4 loudspeakers x (measured with the
+    head, measured without it, simulated). One room; RIRDB lists its Pyroomacoustics model as a second, virtual space (simulated).'
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +28,7 @@ room_info:
   images: partial
   reference_acoustics: partial
   conditions: partial
+  where: README.md (room size, RT60, head and loudspeaker positions, scenarios) and loudspeaker_location.svg
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/7256984

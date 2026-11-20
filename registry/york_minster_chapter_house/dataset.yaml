@@ -3,29 +3,43 @@ id: york_minster_chapter_house
 name: York Minster Chapter House RIRs
 year: 2020
 type: hybrid
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["4040994"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 1, "condition_level": 2, "format_from_regex": {"(?i)fuma|b[ _-]?format": "foa_fuma"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: '**/*.[wW][aA][vV]', pattern: '(?:CA-MRIR-YM-CH/MRIR_YM_(?P<src>S\d+)_DO_Sw_(?P<rcv>R\d+)_Bformat|(?P<room>CA-SRIR-YM-CH)/CA_YM_CH_SRIR_(?P<cond>model0\d)\(Hy\d\)/SRIR_YM_CH_model0\d_DO_Sw_(?P<src_2>S\d+)_(?P<rcv_2>R\d+)_BFormat\d+)\.[wW][aA][vV]$', room_from: pattern, room_default: york-minster-chapter-house, ir_kind_from_regex: {CA-SRIR-YM-CH/: virtual}, roles: {'4': [W, X, Y, Z]}, channel_formats: {'4': foa_fuma}, sh_norm: FuMa, orientation_known: false}}
+capture_formats:
+- foa_fuma
+fs_hz:
+- 48000
 content: Measured (18) and simulated (86, from two models) B-format RIRs of York Minster's 13th-century octagonal
   Chapter House, with energy-parameter spreadsheets; data for an Acoustics 2020 paper.
 expected:
   n_irs: 104
-  n_rooms: 1
+  n_rooms: 2
+  note: 18 measured (S1 x R01-R10, S2 x R01, R04-R06, R08-R11) and 86 simulated (ODEON 14; 43 per model, S1-S3 x up to 17
+    receivers) B-format RIRs, as the record states. The ODEON IRs are a second, virtual space (ca-srir-ym-ch) with the models
+    as conditions (model01 today, model02 before the restoration).
 room_info:
   geometry: 'no'
   images: 'no'
   reference_acoustics: 'yes'
+  dimensions: partial
+  volume: 'yes'
+  positions: partial
+  where: 'CA-MRIR-YM-CH/Info.txt and CA-SRIR-YM-CH/Info.txt (file naming, sources, receivers, the two models); the paper
+    (Acoustics 2020, doi 10.3390/acoustics2010003): Table 1 (volume 5,280 m3, height 20.3 m, length 19.2 m, floor 240 m2),
+    Figure 1 (source and receiver plan), Table 2 (measured source-receiver pairs), Section 3.2.2 (S3 and R12-R17, model
+    only), Table 5 (T30 of the model before restoration)'
 license:
   spdx: CC-BY-NC-SA-4.0
   statements:
   - licence: CC-BY-4.0
     where: Zenodo licence field
   - licence: CC-BY-NC-SA-4.0
-    where: Zenodo record description (the LICENCE.txt inside the ZIP was not checked)
-  note: Zenodo's licence field says CC BY 4.0, while the record description says the work is licensed under CC BY-NC-SA
-    4.0; the ZIP also holds a LICENCE.txt that was not checked.
+    where: Zenodo record description; LICENCE.txt and METADATA.txt inside the ZIP
+  note: Zenodo's licence field says CC BY 4.0, while the record description and the LICENCE.txt and METADATA.txt inside
+    the ZIP (checked 16 Nov 2026) say CC BY-NC-SA 4.0.
 homepage: https://zenodo.org/records/4040994
 doi: 10.5281/zenodo.4040994
 web_check:

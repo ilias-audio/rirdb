@@ -3,10 +3,13 @@ id: jabra_planar_field
 name: Sparsely sampled planar sound field (Jabra - GN Audio)
 year: 2023
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: figshare, records: ["23093495"]}
+adapter: {name: h5_sets, params: {glob: Jabra_measurements.h5, sets: '(?P<set>rirs|ref_rirs)', set_names: {rirs: grid, ref_rirs: ref}, time_axis: 1, fs_attr: fs, positions: {rirs: mic_grid, ref_rirs: ref_mic_grid}, src_position: loudspeaker_position, room_default: jabra-meeting-room}}
+capture_formats:
+- mono_omni
 content: 136 RIRs in a furnished meeting room (8 × 5 × 2.5 m) at Jabra / GN Audio offices in Ballerup, with microphone
   and loudspeaker positions tracked by a Vicon motion-capture system; 32 kHz, HDF5.
 fs_hz:
@@ -14,6 +17,7 @@ fs_hz:
 expected:
   n_irs: 136
   n_rooms: 1
+  note: 130 grid positions (rirs) and 6 near-field reference positions (ref_rirs)
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -23,6 +27,8 @@ room_info:
   images: partial
   reference_acoustics: partial
   conditions: partial
+  where: README.md (room size, T60, how the positions were chosen) and Jabra_measurements.png (layout); microphone and loudspeaker
+    positions in the HDF5 file
 license:
   spdx: CC-BY-4.0
 homepage: https://data.dtu.dk/articles/dataset/Sparsely_sampled_planar_sound_field_in_a_furnished_room_Jabra_-_GN_Audio_/23093495

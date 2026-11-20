@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import shutil
 import subprocess
 from concurrent.futures import ProcessPoolExecutor
@@ -36,8 +37,8 @@ HERE = Path(__file__).parent
 ANALYSER = "v1"
 OCTAVES = [31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]     # t30_<band> columns of irs
 OCTAVE_HZ = {31: 31.5}                                                # column name -> nominal centre
-FORMAT_OF_LAYOUT = {"mono_omni": "mono", "stereo": "stereo", "binaural": "binaural", "foa_fuma": "ambisonic",
-                    "foa_ambix": "ambisonic", "hoa_sh": "ambisonic"}  # every other layout is an array
+FORMAT_OF_LAYOUT = {"mono_omni": "mono", "mono_directional": "mono", "stereo": "stereo", "binaural": "binaural",
+                    "foa_fuma": "ambisonic", "foa_ambix": "ambisonic", "hoa_sh": "ambisonic"}  # every other layout is an array
 DEVICE_KINDS = {"device", "plate", "spring", "digital_reverb", "creative"}
 
 
@@ -436,7 +437,8 @@ def known_defect(d: Dataset, files: pd.Series) -> pd.Series:
     """The registry's known defects of each IR (`defects`, matched on its file): their words, or empty."""
     out = pd.Series("", index=files.index, dtype=object)
     for k in d.defects:
-        hit = files.str.contains(k.files, regex=True) if k.files else pd.Series(True, index=files.index)
+        rx = re.compile(k.files) if k.files else None       # its groups only group: no match is extracted
+        hit = files.map(lambda f: bool(rx.search(f))) if rx else pd.Series(True, index=files.index)
         out = out.where(~hit, (out + " " + " ".join(k.what.split())).str.strip())
     return out
 

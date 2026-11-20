@@ -3,16 +3,26 @@ id: cavemove
 name: CAVEMOVE
 year: 2025
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["17404917"]}
+adapter: {name: wav_tree, params: {glob: cavemove_dataset/*/*/*IRs/*.wav, pattern: '^cavemove_dataset/(?P<room>[^/]+)/(?P<rcv>array|distributed)/(?:IRs/(?P<src>[a-z0-9]+)_|(?P<src_2>radio)_IRs/)(?P<cond>w[0-3])\.wav$', channel_formats: {8: array_raw}}}
+ir_kinds:
+- vehicle
+space_type: vehicle
+capture_formats:
+- array_raw
 content: 8-channel IRs measured in parked cars (4 models in the paper) from a talk-box at the seats and from the
   car audio, with a compact dashboard array and distributed mics, plus driving and ventilation noise; 16 kHz WAV.
 fs_hz:
 - 16000
 expected:
   n_rooms: 4
+  n_irs: 198
+  note: 176 TalkBox IRs (driver, front and rear passengers, with shifted, raised and rotated variants) and 22 car-audio
+    IRs, each per window state w0-w3, as listed per car and setup in dataset_documentation.pdf section 6; the Alfa Romeo
+    has the distributed setup only and no car audio. Noise, ventilation and uncontrolled recordings are not IRs.
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -21,6 +31,8 @@ room_info:
   positions: partial
   reference_acoustics: 'no'
   conditions: 'yes'
+  where: 'dataset_documentation.pdf (section 5: seat and window codes; section 6: per car and setup the IR list, microphone
+    positions in figures, driver and passenger offsets); info.json per car (make, model, year)'
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/17404917

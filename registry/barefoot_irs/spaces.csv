@@ -1,0 +1,11 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+sound-room-a,"Sound Room A, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"main live room; KM184 pair at 5', 15', 25' and full distance, each pointing at the loudspeaker (Direct) or away (Indirect)",
+sound-room-b,"Sound Room B, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"second live room; KM184 pair close and far, Direct or Indirect; a very dead room, RIRDB measures rt_mid 0.13 s",
+iso-booth-a,"Iso Booth A, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"isolation booth; KM184 pair at 3' and 10', Direct or Indirect",
+chamber-a,"Echo Chamber A, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"reverberation chamber",
+chamber-b,"Echo Chamber B, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"reverberation chamber",
+chamber,"Echo Chambers A and B in series, Barefoot Recording, Hollywood",studio_booth,creative,,,,,,,"the two chambers chained (condition A_B: A then B; B_A: B then A): a chain of two rooms, not a room, so typed creative",
+lounge-a,"Lounge A, Barefoot Recording, Hollywood",domestic,room,,,,,,,"studio lounge",
+hallway-a,"Hallway A, Barefoot Recording, Hollywood",circulation,room,,,,,,,,
+hallway-b,"Hallway B, Barefoot Recording, Hollywood",circulation,room,,,,,,,,
+drumbrella,"Drumbrella drum position, Barefoot Recording, Hollywood",studio_booth,room,,,,,,,"the drum position under the Drumbrella, a cloud hung over the kit on a pulley; conditions are its height (5', 7', 10', all the way up); the room it hangs in is not named, but its decay matches Sound Room A (about 1.0-1.1 s at mid, with the same band profile), so it most likely hangs there",

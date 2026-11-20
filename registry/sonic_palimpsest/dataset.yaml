@@ -3,14 +3,29 @@ id: sonic_palimpsest
 name: Sonic Palimpsest Impulse Response Library
 year: 2022
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://drive.usercontent.google.com/download?id=1utDu8wCdpj6fj0AlXNMXMIeWgn93arEF&export=download&confirm=t#sonic_palimpsest_ir_library.zip"]}
-content: Deconvolved stereo and first-order Ambisonic IRs (Ambisonics also decoded to binaural and stereo) of 15
-  spaces at Chatham Historic Dockyard, incl. a ropery, a destroyer and a submarine.
+adapter: {name: wav_tree, params: {glob: Sonic Palimpsest -Impulse Response Library/**/*.wav, pattern: '^Sonic Palimpsest -Impulse Response Library/(?:[^/]+/)+(?:(?P<room>0[3-6][a-f])|(?P<room_2>0[12])(?P<rcv>[ab])?|(?P<room_3>07)(?P<src>[a-c]))[-_](?:Cavalier_(?:Rear|Front)Mess(?P<rcv_2>0[12])-)?[^/]*?(?:(?P<rcv_3>DPA) ?4061|(?P<rcv_4>KM184)|(?P<rcv_5>ST)(?:450|540))(?:-(?P<rcv_6>Centre|CentreInwards|Distant|MidSpace|NorthSide)-)?[^/]*\.wav$', room_from: pattern, format_from_regex: {'(?i)ST(?:450|540)\W*Binaural': binaural}, channel_formats: {'2': stereo}, layout_from_regex: {'(?i)ST(?:450|540)\W*Binaural': {'2': {roles: [L, R]}}}}}
+capture_formats:
+- stereo
+- binaural
+fs_hz:
+- 48000
+room_info:
+  images: 'yes'
+  where: 'the project page (https://research.kent.ac.uk/sonic-palimpsest/impulse-responses/: the spaces, microphones and
+    capture matrix), the photos and plans in each site folder (01-Ropery.jpg, 02-TYS.png, 03-#3Slip.png, 04-CavalierMess.png,
+    05-O Class layout.jpeg, 06*.jpg, AirRaidShelter.jpg/.png) and the authors'' info file in the 07 DPA folder'
+content: Stereo IRs (DPA 4061 and Neumann KM184 pairs) and stereo and binaural decodes of SoundField ST450 captures, of
+  15 spaces at Chatham Historic Dockyard, incl. a ropery, a destroyer and a submarine. All 44 files have two channels; the
+  pack holds no Ambisonic (B-format) files.
 expected:
   n_rooms: 15
+  note: The authors give no IR count. The library holds 44 two-channel WAV files, one IR each, from the 15 spaces the project
+    page lists (the Ropery, the Tarred Yarn Store, No. 3 Covered Slip mezzanine and ground, HMS Cavalier rear and front
+    mess, HMS Ocelot front and rear, six rooms of the Commissioner's House, the Air Raid Shelter).
 license:
   spdx: CC-BY-4.0
 homepage: https://research.kent.ac.uk/sonic-palimpsest/impulse-responses/

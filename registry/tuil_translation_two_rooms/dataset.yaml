@@ -3,25 +3,43 @@ id: tuil_translation_two_rooms
 name: BRIRs for interactive listener translation in two rooms
 year: 2020
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["3457782"]}
-adapter: {"name": "sofa", "params": {"exclude": "(^|/)(__MACOSX|\\._)|\\.DS_Store$|(?i:hrtf|hrir)|(?i:[_-]?(pos)?all\\.sofa$)", "room_from": "dataset", "m_is": "src", "capture_format": "binaural", "roles": ["L", "R"]}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: sofa, params: {exclude: (^|/)(__MACOSX|\._)|\.DS_Store$, groups: [{glob: BRIRs_*.sofa, pattern: '^BRIRs_(?P<room>Listening|Seminar)(?P<room_2>Lab|Room)_2m_LS-(?P<src>Front|Side)(?:_(?P<cond>(?P<rcv>withHeadphones)))?\.sofa$', room_from: pattern, m_is: rcv, capture_format: binaural, roles: [L, R]}, {glob: RIRs_*.sofa, pattern: '^(?P<rcv>RIRs)_(?P<room>Listening|Seminar)(?P<room_2>Lab|Room)_(?P<src>Front|Side)LS_9Pos\.sofa$', room_from: pattern, m_is: rcv, capture_format: mono_omni, roles: [omni]}]}}
+capture_formats:
+- binaural
+- mono_omni
 content: KEMAR BRIRs at 9 points along a 2 m line (full 360° head rotation in 4° steps) for a front and a side loudspeaker,
   in a listening lab (T60 0.27 s) and a seminar room (T60 1.0 s), plus omni RIRs.
 fs_hz:
 - 48000
 expected:
   n_rooms: 2
+  n_irs: 6516
+  note: 'derived: the record describes 3,240 BRIRs (2 rooms x 2 loudspeakers x 9 positions x 90 orientations) and 36 omni
+    RIRs (4 x 9); the download adds 3,240 seminar-room BRIRs measured with AKG K1000 headphones on the dummy head (2 x 9
+    x 180 in 2-degree steps, from the SOFA ListenerView; their ReadMe.txt says 90 at 4 degrees), read as condition withHeadphones
+    with receivers withHeadphones_m<k>, because m counts 2-degree steps there and 4-degree steps in the other sets'
 room_info:
   materials: 'no'
-  positions: partial
+  positions: 'yes'
   images: 'yes'
   reference_acoustics: partial
-  conditions: 'no'
+  conditions: 'yes'
+  dimensions: 'yes'
+  where: Zenodo record description; Illustration_Measurement_ListeningLab.png and _SeminarRoom.png (plans with positions);
+    SOFA RoomDescription (sizes, T60); ReadMe.txt in each BRIR set (48 kHz, head rotation, headphones)
 license:
-  spdx: CC-BY-4.0
+  spdx: CC-BY-NC-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record
+  - licence: CC-BY-NC-SA-4.0
+    where: SOFA file headers (License attribute of every SOFA file)
+  redistribute_audio: 'yes'
+  note: 'Conflicting statements: the strictest is used (as for tuil_robot_coupled). Ask the authors to confirm.'
 homepage: https://zenodo.org/records/3457782
 doi: 10.5281/zenodo.3457782
 web_check:

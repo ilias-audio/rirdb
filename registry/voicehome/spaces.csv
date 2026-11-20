@@ -1,0 +1,13 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+home2-room1,"Living and dining room, flat EV, Nancy (voiceHome home 2)",domestic,,,,,,,,"salon / salle a manger (documentation v1.2, section 3.4)",
+home2-room2,"Kitchen, flat EV, Nancy (voiceHome home 2)",domestic,,,,,,,,cuisine,
+home2-room3,"Bedroom, flat EV, Nancy (voiceHome home 2)",domestic,,,,,,,,chambre,
+home2-room4,"Bathroom, flat EV, Nancy (voiceHome home 2)",domestic,,,,,,,,salle de bain,
+home3-room1,"Living room, flat D, Nancy (voiceHome home 3)",domestic,,,,,,,,salon,
+home3-room2,"Kitchen, flat D, Nancy (voiceHome home 3)",domestic,,,,,,,,cuisine,
+home3-room3,"Bedroom, flat D, Nancy (voiceHome home 3)",domestic,,,,,,,,chambre,
+home3-room4,"Bathroom, flat D, Nancy (voiceHome home 3)",domestic,,,,,,,,salle de bain,
+home4-room1,"Living and dining room, flat II, Nancy (voiceHome home 4)",domestic,,,,,,,,"salon / salle a manger; the documentation's table heads this flat 'home3' a second time, the files name it home4",
+home4-room2,"Kitchen, flat II, Nancy (voiceHome home 4)",domestic,,,,,,,,cuisine,
+home4-room3,"Bedroom, flat II, Nancy (voiceHome home 4)",domestic,,,,,,,,chambre,
+home4-room4,"Bathroom, flat II, Nancy (voiceHome home 4)",domestic,,,,,,,,salle de bain,
