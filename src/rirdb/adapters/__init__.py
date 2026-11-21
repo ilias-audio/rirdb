@@ -2,23 +2,33 @@
 
 from __future__ import annotations
 
+from rirdb.adapters.acousticrooms import AcousticRoomsAdapter
 from rirdb.adapters.asn_database import AsnJsonAdapter
 from rirdb.adapters.base import Adapter, IRRecord, make_ir_id, slug
+from rirdb.adapters.bird import BirdAdapter
+from rirdb.adapters.clarity_cec1 import ClarityScenesAdapter
 from rirdb.adapters.computed import H5SpectraAdapter, StftSubbandAdapter, TfMatAdapter
 from rirdb.adapters.csv_tree import CsvTreeAdapter
+from rirdb.adapters.foa_meir import FoaMeirBinAdapter
+from rirdb.adapters.gtu_rir import GtuRirPickleAdapter
 from rirdb.adapters.custom import (AirMatAdapter, AnuMdOmpAdapter, MatArrayAdapter, NpzSceneAdapter, OpenAirAdapter,
                                    OpenSLR28Adapter, OtimpAdapter, SofaAdapter, TauSrirAdapter)
+from rirdb.adapters.gwa import GwaAdapter
 from rirdb.adapters.h5_sets import H5SetsAdapter
+from rirdb.adapters.hf_parquet import HfParquetAdapter
 from rirdb.adapters.iem_digital_twins import IemDigitalTwinsAdapter
 from rirdb.adapters.ita_audio import ItaAudioMatAdapter
 from rirdb.adapters.kinect_rir import KinectRirAdapter
 from rirdb.adapters.mat_struct import MatStructAdapter
 from rirdb.adapters.ndarray import NdArrayAdapter
+from rirdb.adapters.raf import RafAdapter
 from rirdb.adapters.rir_mega import RirMegaAdapter
+from rirdb.adapters.sms_wsj import SmsWsjAdapter
 from rirdb.adapters.stonehenge import StonehengeOctaveAdapter
 from rirdb.adapters.tugraz_speech_rirs import TugrazSpeechRirAdapter
 from rirdb.adapters.wav_channels import WavChannelsAdapter
 from rirdb.adapters.wav_tree import WavTreeAdapter
+from rirdb.adapters.wav_tree_split import WavTreeSplitAdapter
 
 ADAPTERS: dict[str, type] = {
     "wav_tree": WavTreeAdapter,
@@ -46,6 +56,16 @@ ADAPTERS: dict[str, type] = {
     "stonehenge_octave": StonehengeOctaveAdapter,
     "tugraz_rir_bin": TugrazSpeechRirAdapter,
     "iem_digital_twins": IemDigitalTwinsAdapter,
+    "hf_parquet": HfParquetAdapter,
+    "gtu_rir_pickle": GtuRirPickleAdapter,
+    "acousticrooms_zip": AcousticRoomsAdapter,
+    "bird_csv": BirdAdapter,
+    "foa_meir_bin": FoaMeirBinAdapter,
+    "sms_wsj_json": SmsWsjAdapter,
+    "raf_tree": RafAdapter,
+    "clarity_scenes_json": ClarityScenesAdapter,
+    "gwa_stats": GwaAdapter,
+    "wav_tree_split": WavTreeSplitAdapter,
 }
 
 

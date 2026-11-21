@@ -3,20 +3,45 @@ id: bird
 name: BIRD - Big Impulse Response Dataset
 year: 2020
 type: simulated
-ir_kinds: [room]
-capture_formats: [array_raw]
-content: 100,000 two-microphone RIRs from the image method (Habets) over a wide range of shoebox room sizes and mic spacings, in 10 folds.
-expected: {n_irs: 100000}
-fs_hz: [16000]
-room_info: {dimensions: "yes", positions: "yes", materials: "partial", where: "per-item room size, one absorption coefficient, source and microphone positions (simulation parameters)"}
-license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: zenodo, records: ["4139416"]}
-wave: 4
+wave: 3
+source: {"kind": "zenodo", "records": ["4139416"], "urls": ["https://zenodo.org/records/4139416/files/fold01.zip?download=1", "https://zenodo.org/records/4139416/files/fold02.zip?download=1", "https://zenodo.org/records/4139416/files/fold03.zip?download=1", "https://zenodo.org/records/4139416/files/fold04.zip?download=1", "https://zenodo.org/records/4139416/files/fold05.zip?download=1", "https://zenodo.org/records/4139416/files/fold06.zip?download=1", "https://zenodo.org/records/4139416/files/fold07.zip?download=1", "https://zenodo.org/records/4139416/files/fold08.zip?download=1", "https://zenodo.org/records/4139416/files/fold09.zip?download=1", "https://zenodo.org/records/4139416/files/fold10.zip?download=1"], "include": ["fold*.zip"]}
+adapter: {name: bird_csv, params: {}}
+space_type: virtual
+cap: 1
+ir_kinds: [room]
+capture_formats:
+- array_raw
+content: 100,000 two-microphone RIRs from the image method (Habets) over a wide range of shoebox room sizes and mic spacings, in 10 folds.
+expected:
+  n_irs: 400000
+  n_rooms: 100000
+  note: 'Zenodo 4139416 v1.0: 100,000 multichannel RIRs in 10 folds, each an 8-channel FLAC of one simulated shoebox room
+    (4 sources x 2 microphones); RIRDB counts one IR per source, the microphone pair as a 2-channel array: 400,000 IRs.
+    The GitHub README and the original Dropbox release have 1,000,000 (100 folds); Zenodo has folds 1 to 10. Each file is
+    peak-normalised over its 8 channels. The decays are 1.5 to 3.8 times longer than the Sabine RT60 of the CSV''s alpha
+    (the longer, the lower alpha), so alpha is not the absorption the decays show.'
+fs_hz:
+- 16000
+room_info:
+  dimensions: 'yes'
+  positions: 'yes'
+  materials: partial
+  where: 'fold*/fold*/fold*.csv (per room: Lx, Ly, Lz, one alpha for every surface, c, the two microphone and four source
+    coordinates); the paper (arXiv 2010.09930) and github.com/FrancoisGrondin/BIRD (bird.py: channel order, Sabine RT60
+    from alpha)'
+  volume: 'yes'
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+notes: "The files decay like an image-source simulation in which each surface absorbs alpha squared of the energy, not
+  the CSV's alpha. On 120 rooms the files' T30 matches such a simulation within 1 % (p10-p90 0.97-1.06) and is 2.2
+  times what alpha itself gives. The Sabine RT60 the authors compute from alpha (bird.py, paper Fig. 4) therefore
+  understates every decay: RIRDB's rt_mid is a median 2.5 times it (1.6 at alpha 0.7-0.8, 3.6 at 0.3-0.4). Below alpha
+  0.4 half to nearly all of the 1 s files end before 35 dB of decay, which leaves 25,648 of the 100,000 measured IRs
+  without rt_mid (graded C or D). Select by RIRDB's values, not by alpha."
 homepage: https://zenodo.org/records/4139416
 doi: 10.5281/zenodo.4139416
 paper: {title: "BIRD: Big Impulse Response Dataset", url: "https://arxiv.org/abs/2010.09930"}
-status: deferred
 web_check:
   checked: '2026-10-14'
   institution: Universite de Sherbrooke and Mila

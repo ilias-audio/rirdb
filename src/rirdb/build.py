@@ -119,11 +119,18 @@ def uses_of(spdx: str, redistribute: str, d: Dataset) -> dict:
             "use_commercial": u.commercial, "use_training": u.training, "redistribute": u.redistribute}
 
 
+ARCHIVE_EXT = re.compile(r"\.(tar\.part\.aa\.gz|tar\.gz\.partaa|tar\.gz\.part-00|zip\.001|tar\.gz|tar\.bz2|tar\.xz|tgz|tbz2|tar|zip|rar)$",
+                         re.IGNORECASE)
+
+
 def download_of(files: pd.Series, downloads: pd.DataFrame) -> pd.Series:
-    """The download that holds each file: the file itself, or the archive unpacked into its folder (extract_to)."""
+    """The download that holds each file: the file itself, or the archive unpacked into its folder (extract_to).
+    Several archives unpacked into the files folder itself (MB-RIRs: mb.tar.part.aa.gz and src_rec_mb.tar.part.aa.gz):
+    the archive named after the file's first folder."""
     direct = set(downloads.loc[downloads["extract_to"] == "-", "relpath"])
     folders = [(x + "/", r) for x, r in zip(downloads["extract_to"], downloads["relpath"]) if x not in ("-", ".")]
     into_files = downloads.loc[downloads["extract_to"] == ".", "relpath"].tolist()
+    by_stem = {ARCHIVE_EXT.sub("", r): r for r in into_files}
     mirror = downloads.loc[downloads["relpath"] == "@mirror", "relpath"].tolist()
 
     def one(file: str) -> str:
@@ -135,6 +142,8 @@ def download_of(files: pd.Series, downloads: pd.DataFrame) -> pd.Series:
                 return rel
         if len(into_files) == 1:
             return into_files[0]
+        if f.split("/", 1)[0] in by_stem:
+            return by_stem[f.split("/", 1)[0]]
         return mirror[0] if mirror else ""
     return files.map(one)
 
@@ -159,11 +168,14 @@ def judged(bands: pd.DataFrame, duration_s: pd.Series) -> pd.DataFrame:
 
     A decay time whose fitted line would take longer than the analysed IR (duration_s, by ir_id) to fall its
     10, 20 or 30 dB is not valid either: the line was fitted to something other than the decay.
+    Nor is a C50 or C80 beyond validity.energy.max_ratio_db: the late part was numerical silence.
     """
     out = bands.copy()
     length = out["ir_id"].map(duration_s)
     for q, span_db in FIT_SPAN_DB.items():
         out[f"valid_{q}"] = truth(out[f"valid_{q}"]) & ~(finite(out[q]) * span_db / 60 > length)
+    for q in ("c50", "c80"):                    # a ratio beyond any recording's range: numerical silence
+        out[f"valid_{q}"] = truth(out[f"valid_{q}"]) & ~(finite(out[q]).abs() > thresholds()["validity"]["energy"]["max_ratio_db"])
     for q in ("edt", "t20", "t30", "c50", "c80", "d50", "ts"):
         out[q] = finite(out[q]).where(truth(out[f"valid_{q}"]))
     out["decay_range_db"] = finite(out["decay_range_db"])

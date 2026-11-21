@@ -1,0 +1,13 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+clarity_CEC1_metadata.tar.gz	https://zenodo.org/api/records/17068105/files/clarity_CEC1_metadata.tar.gz/content	1963922	md5	9097ff8f7633f9b2ee668b0bda0bbaf2	zenodo:17068105	2026-11-20T12:21:48Z	clarity_CEC1_metadata
+clarity_CEC1_dev.tar.gz	https://zenodo.org/api/records/17068105/files/clarity_CEC1_dev.tar.gz/content	17525673780	md5	15b6efd600e8dae7badbe5f89fe46044	zenodo:17068105	2026-11-20T12:21:48Z	clarity_CEC1_dev
+clarity_CEC1_eval.tar.gz	https://zenodo.org/api/records/17068105/files/clarity_CEC1_eval.tar.gz/content	11075484504	md5	8a5984a5147103e5652ba80d17d79b79	zenodo:17068105	2026-11-20T12:21:48Z	clarity_CEC1_eval
+clarity_CEC1_train.tar.gz.part-01	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-01/content	5368709120	md5	f4a6f3b1b8a42255163e01d9ffecd53d	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-04	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-04/content	5368709120	md5	14976fa7ab9407b3e466a57301551f81	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-00	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-00/content	5368709120	md5	faaa2664b9d68c762185b14d5ab7655a	zenodo:17068105	2026-11-20T12:21:48Z	clarity_CEC1_train
+clarity_CEC1_train.tar.gz.part-03	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-03/content	5368709120	md5	fd9269464095704e8289b30dd145e295	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-02	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-02/content	5368709120	md5	700c69e3dec24631f1caab07a1e59ec2	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-08	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-08/content	1628351615	md5	313ab7bdb250da8acde3ab1e7098a9cd	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-05	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-05/content	5368709120	md5	63d95d10281d0435209e3fb202867b89	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-06	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-06/content	5368709120	md5	fc646304a588a970255eadea287a0e4e	zenodo:17068105	2026-11-20T12:21:48Z	-
+clarity_CEC1_train.tar.gz.part-07	https://zenodo.org/api/records/17068105/files/clarity_CEC1_train.tar.gz.part-07/content	5368709120	md5	3f247a373ab06b2a8022a601ecd1343f	zenodo:17068105	2026-11-20T12:21:48Z	-

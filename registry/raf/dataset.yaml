@@ -3,17 +3,57 @@ id: raf
 name: Real Acoustic Fields (RAF)
 year: 2024
 type: measured
-ir_kinds: [room]
-capture_formats: [array_raw]
-fs_hz: [48000]
-content: About 86,000 RIRs (47k in the empty and 39k in the furnished configuration of one room) from a 36-microphone "Earful Tower", with multi-view images and 6DoF tracking of emitters and listeners (audio-visual room acoustics).
-expected: {n_irs: 86000, n_rooms: 1, note: "one room, empty and furnished (README, checked 2026-10-13)"}
-license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "README and LICENSE.md: CC BY-NC 4.0 (checked 2026-10-13)."}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: manual, instructions: "Public download over plain HTTPS, no account: each file is at https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/<name>, for raf_emptyroom.z01 to .z11 and raf_emptyroom.zip, and raf_furnishedroom.z01 to .z09 and raf_furnishedroom.zip (22 files, about 23 GB; checked 2026-11-06). The same objects are at s3://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15/real_acoustic_fields/rir/archived/ for `aws s3 cp --no-sign-request`. Join each split zip before extracting, e.g. `zip -s 0 raf_emptyroom.zip --out raf_emptyroom_joined.zip`."}
+wave: 3
+source: {"kind": "http", "urls": ["https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z01", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z02", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z03", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z04", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z05", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z06", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z07", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z08", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z09", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z10", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.z11", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_emptyroom.zip", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z01", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z02", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z03", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z04", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z05", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z06", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z07", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z08", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.z09", "https://fb-baas-f32eacb9-8abb-11eb-b2b8-4857dd089e15.s3.amazonaws.com/real_acoustic_fields/rir/archived/raf_furnishedroom.zip"]}
+adapter: {name: raf_tree, params: {}}
+room_info:
+  dimensions: 'yes'
+  volume: 'no'
+  geometry: 'yes'
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: partial
+  conditions: 'yes'
+  where: 'metadata/all_rx_pos.txt and all_tx_pos.txt (per IR: microphone position; loudspeaker quaternion x, y, z, w and
+    position; metres, X front, Y up, Z left, y = 0 the floor, README); paper (arXiv 2403.18821) section 3 (capture, the
+    two parts of the room, the two conditions), Figure 2 (plan and side view with dimensions and positions), Table 1 (372
+    samples/m3), Figure 8 (RT60 distribution, a chart only); textured OBJ meshes of both conditions (real_acoustic_fields/3d_models/)
+    and Eyeful Tower multi-view images (EyefulTower/raf_*room/) on the same S3 bucket, not downloaded'
+defects:
+- what: 'Three furnished-room blocks hold only background noise, no impulse response: the peak is about 1e-4, 43 dB below
+    the median IR''s, and only 4 to 7 dB above the noise at the end of the file, at all 36 microphones. They are the three
+    loudspeaker rotations at its top height (1.62 m) at one location, 0.7 m from the tower; the same location at 1.12 and
+    1.37 m gave normal IRs.'
+  files: FurnishedRoom/data/(00046[89]|0004[7-9]\d|00050[0-3]|0066[6-8]\d|00669[0-5]|02800[89]|0280[1-3]\d|02804[0-3])/
+- what: In the furnished room, the loudspeaker pose and the 36 microphone positions given for these IRs are a byte copy
+    of those of folders 014652 to 014687, but the recordings differ (their first 0.1 s do not correlate, on 4 microphones
+    checked) and their loudest early arrival comes about 7 ms later. The tower stood at that placement for 90 blocks, and
+    the weak first arrival fits the given distances, so the microphone positions and the loudspeaker's location are about
+    right; its height and rotation for these IRs are not known.
+  files: FurnishedRoom/data/0179(6[4-9]|[7-9]\d)/
+ir_kinds:
+- room
+capture_formats:
+- mono_omni
+fs_hz:
+- 48000
+content: About 86,000 RIRs (47k in the empty and 39k in the furnished configuration of one room) from a 36-microphone "Earful Tower", with multi-view images and 6DoF tracking of emitters and listeners (audio-visual room acoustics).
+expected:
+  n_irs: 86616
+  n_rooms: 1
+  note: 'Paper section 3.1: 47K RIRs in the empty room and 39K in the furnished room; the files hold 47,484 and 39,132 mono
+    WAVs, one per microphone of the 36-microphone tower (1,319 and 1,087 blocks of 36, one tracked loudspeaker pose each).
+    One room in two conditions (Figure 2 draws one outline for both). The paper says the RIRs are 4 s long; the released
+    files are 1.5 s.'
+license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "README and LICENSE.md: CC BY-NC 4.0 (checked 2026-10-13)."}
+notes: "The recordings' noise floor is only 45-65 dB below the peak, highest at low frequencies (around 100 Hz): T30
+  is valid at 500 Hz in 66 % (empty) and 43 % (furnished) of IRs and at 125 Hz in 16 % and 3 %, so rt_mid often comes
+  from T20 and most IRs grade B or C."
 homepage: https://facebookresearch.github.io/real-acoustic-fields/
 paper: {title: "Real Acoustic Fields: An Audio-Visual Room Acoustics Dataset and Benchmark", url: "https://arxiv.org/abs/2403.18821"}
-status: manual
 web_check:
   checked: '2026-10-14'
   institution: Meta Reality Labs, with University of Michigan

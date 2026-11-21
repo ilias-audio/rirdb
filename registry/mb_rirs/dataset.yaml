@@ -3,17 +3,25 @@ id: mb_rirs
 name: MB-RIRs Dataset 1.0
 year: 2025
 type: simulated
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {kind: zenodo, records: ["15773093"]}
+adapter: {name: wav_tree, params: {glob: '*/*/*.wav', pattern: '^(?P<cond>mb|src_rec_mb)/(?:train|val|test)/(?:mb|src_rec_mb)_(?P<room>\d+)\.wav$', preferred_regex: ^mb/, roles: {1: [omni]}, capture_format: mono_omni}}
+capture_formats:
+- mono_omni
+space_type: virtual
+keep_archive: false
 content: '59,964 simulated mono shoebox RIRs at 48 kHz (image-source method, MASP library) with frequency-dependent
   absorption, each in its own random room, in two versions: plain, and with speech-source and left-ear directivity.'
 fs_hz:
 - 48000
 expected:
-  n_irs: 59964
+  n_irs: 119928
   n_rooms: 59964
+  note: 'Two versions of the same 59,964 set-ups (README.md): mb (multi-band absorption) and src_rec_mb (the same with speech-source
+    directivity and a KU100 left-ear HRTF), read as two conditions of each room, mb preferred. Each set-up is its own simulated
+    room.'
 room_info:
   dimensions: 'yes'
   volume: 'yes'
@@ -22,9 +30,16 @@ room_info:
   positions: 'yes'
   images: 'no'
   reference_acoustics: 'yes'
-  conditions: 'no'
+  conditions: 'yes'
+  where: 'meta.csv (per id: room size, RT60 overall and in octave bands 125 Hz-4 kHz, head centre and orientation, source
+    position and orientation, split) and README.md (the two versions)'
 license:
   spdx: CC0-1.0
+notes: "The per-band RT60s in meta.csv are the simulator's targets, not values of the files. Each file ends 10 ms after
+  its 125 Hz target (at most 2 s), so 58 % end before their longest band's target and 2,727 of the mb files are under 0.1
+  s; and because the six targets are drawn independently and rendered band by band, a band much shorter than its
+  neighbours decays at their rate. RIRDB's rt_mid reads a median 1.28 times the mean 500 Hz-1 kHz target (p10-p90
+  0.58-2.67): select by RIRDB's values, not by meta.csv."
 homepage: https://zenodo.org/records/15773093
 doi: 10.5281/zenodo.15773093
 web_check:

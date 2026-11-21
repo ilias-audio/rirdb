@@ -1,0 +1,2 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+GWA_Dataset_small.zip	https://obj.umiacs.umd.edu/gamma-datasets/GWA_Dataset_small.zip	15364009395	sha256	eff4b73348413d17458dfbadcfb9dd3131709fd9cdb8e93d4c06e5046a82325f	etag="b67a81f7ee7bb0f5d85200f49e2c6a2b-55";last-modified=Thu, 05 May 2022 18:59:06 GMT	2026-11-20T18:34:52Z	.

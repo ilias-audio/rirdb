@@ -123,17 +123,23 @@ def _analyze_row(row: dict) -> tuple[dict, dict]:
     return s, feats
 
 
-def shard_rows(dataset_id: str, shard: int, n_shards: int, full: bool = False) -> pd.DataFrame:
+def shard_rows(dataset_id: str, shard: int, n_shards: int, full: bool = False, sampled: bool = False) -> pd.DataFrame:
+    """The records of one shard: v1's subsample, every record (full), or the IRs the release table holds (sampled:
+    tables/<id>/index.parquet, which a dataset's `cap` samples; data-model.md section 3)."""
     df = load_irs(dataset_id)
-    if not full:
+    if sampled:
+        idx = pd.read_parquet(paths.tables_dir(dataset_id) / "index.parquet", columns=["ir_id", "sampled"])
+        keep = set(idx.loc[idx["sampled"].astype(bool), "ir_id"])
+        df = df[df["ir_id"].str.replace(":", "-", n=1).isin(keep)]     # v1 writes "id:hash", the table "id-hash"
+    elif not full:
         df = df[df["subsample_v1"]]
     df = df.sort_values("ir_id").reset_index(drop=True)
     return df.iloc[shard::n_shards]
 
 
 def analyze_shard(dataset_id: str, shard: int, n_shards: int, workers: int, full: bool = False,
-                  limit: int | None = None) -> Path:
-    rows = shard_rows(dataset_id, shard, n_shards, full)
+                  limit: int | None = None, sampled: bool = False) -> Path:
+    rows = shard_rows(dataset_id, shard, n_shards, full, sampled)
     if limit:
         rows = rows.head(limit)
     records = rows.to_dict("records")

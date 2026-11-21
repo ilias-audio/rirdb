@@ -48,8 +48,8 @@ def test_active_datasets_say_where_room_information_is():
 def test_conflicting_licences_list_every_statement_and_use_the_strictest():
     conflicts = {d.id: d.license for d in DATASETS if d.license.statements}
     # 12 at step 1; tier B adds 4 whose SOFA headers state another licence than the record: tuil_highres_srirs,
-    # tuil_translation_seminar, tuil_translation_two_rooms, wdr_studios
-    assert len(conflicts) == 16
+    # tuil_translation_seminar, tuil_translation_two_rooms, wdr_studios; clarity_cec1 (Zenodo CC BY, its LICENCE.md CC BY-SA)
+    assert len(conflicts) == 17
     for i, lic in conflicts.items():
         assert len(lic.statements) >= 2, i
         assert lic.spdx == strictest([s.licence for s in lic.statements]), i
@@ -73,7 +73,9 @@ def test_only_very_dense_datasets_have_a_cap():
                                                                            "meshgrid3d": 500}
     # for the 0.9 preview only: what analyser v1 measured (master-plan.md, step 1)
     assert set(caps) == {"sriracha", "miracle", "meshgrid3d", "mp_rir", "meshrir", "soundcam",
-                         "uts_multizone"}   # tier B: 104,160 IRs in 7 spaces, about 14,880 each (decision 4)
+                         "uts_multizone",   # tier B: 104,160 IRs in 7 spaces, about 14,880 each (decision 4)
+                         # simulated, over 100,000 IRs (data-model.md section 3): cap 1, 50 or 500 by rooms
+                         "rir_former", "bird", "cnam_shoebox", "acousticrooms", "sms_wsj", "spadenrir"}
 
 
 @pytest.mark.parametrize("dataset_id", sorted(p.parent.name for p in paths.DATASETS_DIR.glob("*/spaces.csv")))
@@ -98,3 +100,12 @@ def test_room_licences_override_the_dataset_licence():
     assert df["redistribute_audio"].tolist() == ["yes", "unaltered_only", "unknown"]
     assert df.loc[0, "training_use"] == "allowed" and df.loc[0, "license_source"].startswith("https://web.archive.org/")
     assert "theatre41" not in unmatched
+
+
+def test_unpack_exclude_reaches_the_fetch_scripts(tmp_path):
+    """fetch/extract.sh reads unpack_exclude from compiled/sources.tsv: the last column, globs joined with '|'."""
+    from rirdb.registry import Source, compile_sources
+    d = next(d for d in DATASETS if d.source is not None).model_copy(update={"source": Source(
+        kind="zenodo", records=["1"], unpack_exclude=["*/targets/*", "*/anech_brir_*"])})
+    row = dict(zip(*[line.split("\t") for line in compile_sources([d], tmp_path / "s.tsv").read_text().splitlines()]))
+    assert row["unpack_exclude"] == "*/targets/*|*/anech_brir_*" and row["keep_archive"] in ("auto", "0", "1")

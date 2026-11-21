@@ -34,6 +34,7 @@ homepage: https://zenodo.org/records/17387402
 paper: {title: "RIR-Mega: a large-scale simulated room impulse response dataset for machine learning and room acoustics modeling", url: "https://arxiv.org/abs/2510.18917"}
 doi: 10.5281/zenodo.17387402
 status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+notes: "The audio does not follow metadata.csv's per-band absorption: band_rt60s are the Sabine values of absorption_bands, but RIRDB's octave T30s follow the authors' broadband rt60 in every octave (log correlation 0.93-0.98) and not band_rt60s (0.42-0.57), and within one IR they do not rank with the band absorptions; the rooms decay as if one absorption, metadata's mean, applied at all frequencies. Use rt60, not band_rt60s or absorption_bands. RIRDB's mid T30 matches rt60 within 10 % (median ratio 0.93-0.98), except in corridors (1.15). The files are 16-bit and peak-normalised: in 9,778 long-tailed IRs, most of them corridors and warehouses, the tail falls below one quantisation step and leaves runs of exact zeros, which the analyser counts as dropouts and grades C."
 web_check:
   checked: '2026-10-14'
   institution: Mandip Goswami (independent; Amazon affiliation)

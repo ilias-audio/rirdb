@@ -3,13 +3,23 @@ id: mirage
 name: MIRaGe
 year: 2019
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "http", "urls": ["https://drive.usercontent.google.com/download?id=1iWvrjCKrBH4BXO2g-Mky6-ACLamLVTYh&export=download&confirm=t#MIRaGe-100_array-01.mat", "https://drive.usercontent.google.com/download?id=1EFePmB885iD1W0Ji8wEeJm9H9wpgVUy7&export=download&confirm=t#MIRaGe-100_array-02.mat", "https://drive.usercontent.google.com/download?id=1gZYAstFNk63REO7k74ZTVortmqRlkQrO&export=download&confirm=t#MIRaGe-100_array-03.mat", "https://drive.usercontent.google.com/download?id=1bluqOvU02NDILkOKFOQhZn7cvVHDEXqh&export=download&confirm=t#MIRaGe-100_array-04.mat", "https://drive.usercontent.google.com/download?id=1COvTbJr56h1Gdw8eCGAYofUgKpiwGcP_&export=download&confirm=t#MIRaGe-100_array-05.mat", "https://drive.usercontent.google.com/download?id=1saA8w26K-61p7A5iZTNO8IFTLe3bw30S&export=download&confirm=t#MIRaGe-100_array-06.mat", "https://drive.usercontent.google.com/download?id=1EOH5Tsd-eNeL6uoox3aabVix_FJS7Qme&export=download&confirm=t#MIRaGe-300_array-01.mat", "https://drive.usercontent.google.com/download?id=1pYs6c3Is0X0KZaYjK4FAPNBPXucrCmsa&export=download&confirm=t#MIRaGe-300_array-02.mat", "https://drive.usercontent.google.com/download?id=1up6eVuY9Vlnv-ADMvyArvdRVWRsmq2NV&export=download&confirm=t#MIRaGe-300_array-03.mat", "https://drive.usercontent.google.com/download?id=16BZyfgO_gk8dJK1sfPm1p1GckodZgPsd&export=download&confirm=t#MIRaGe-300_array-04.mat", "https://drive.usercontent.google.com/download?id=1z6FYKaxuQOapwDH_bWU4PFkUs7fm-NXZ&export=download&confirm=t#MIRaGe-300_array-05.mat", "https://drive.usercontent.google.com/download?id=1OtnGpeYy2191UqiUtQyJd0uDSEPnPYWc&export=download&confirm=t#MIRaGe-300_array-06.mat", "https://drive.usercontent.google.com/download?id=1VdJfysgZTW_M6l0KYSDiFzv1YN_-WHsG&export=download&confirm=t#MIRaGe-600_array-01.mat", "https://drive.usercontent.google.com/download?id=1xNVopr_R_kV4-7MhjtIuHcZAApj7AB4I&export=download&confirm=t#MIRaGe-600_array-02.mat", "https://drive.usercontent.google.com/download?id=1FQvG44lX1H0eNiwpS6hy4VCiXWtkMDca&export=download&confirm=t#MIRaGe-600_array-03.mat", "https://drive.usercontent.google.com/download?id=1fqVHMUFMWSMDpuZsvoX-5_4oG2vL3oHs&export=download&confirm=t#MIRaGe-600_array-04.mat", "https://drive.usercontent.google.com/download?id=1oovGOfniYU7dSZv_O1OOvPj5hnImUhdz&export=download&confirm=t#MIRaGe-600_array-05.mat", "https://drive.usercontent.google.com/download?id=1C1tGt_feOlZqHvRnBg7g71iL6PR9aUrj&export=download&confirm=t#MIRaGe-600_array-06.mat"]}
+adapter: {name: ndarray, params: {glob: MIRaGe-*_array-*.mat, pattern: '^MIRaGe-\d+_(?P<rcv>array-\d\d)\.mat$', container: h5, array: RIRs_tensor, time_axis: 0, channel_axis: 5, record_axes: [4, 3, 2, 1, 6], fs: 16000, room_default: biu-acoustic-lab, capture_format: array_raw, axis_keys: {4: {as: src, names_from: dim_map/x, format: 'x{:g}'}, 3: {as: src, names_from: dim_map/y, format: 'y{:g}'}, 2: {as: src, names_from: dim_map/z, format: 'z{:g}'}, 1: {as: cond, names_from: dim_map/t60, format: 'T60_{:g}ms'}}}}
+capture_formats:
+- array_raw
 content: Measured multichannel RIRs for 4,104 loudspeaker positions on a dense cube grid (plus 25 more), captured
   by six 5-mic linear arrays in one variable-acoustics lab at Bar-Ilan at T60s of 100, 300 and 600 ms.
 fs_hz:
-- 48000
+- 16000
 expected:
   n_rooms: 1
+  n_irs: 73872
+  note: 4,104 loudspeaker grid positions (24 x 19 x 9) x 6 arrays x 3 T60 settings; each IR has the 5 microphones of one
+    linear array as channels. The 25 out-of-grid positions and the loudspeaker microphone (31) are only in the raw recordings,
+    not in the tensors.
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -18,6 +28,9 @@ room_info:
   positions: 'yes'
   images: partial
   reference_acoustics: partial
+  where: 'arXiv:1907.12421 (Cmejla et al., Sec. 2: room size, panels, T60s, array distances and angles, grid size and steps,
+    equipment) and the homepage asap.ite.tul.cz/downloads/mirage; the README on the tensors'' Google Drive folder (axis
+    order); dim_map in each file (grid coordinates in mm)'
 license:
   spdx: LicenseRef-unspecified
   note: The lab page shows only '© Copyright 2019 - Acoustic Signal Analysis and Processing Group' and the paper

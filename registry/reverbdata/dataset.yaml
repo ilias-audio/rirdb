@@ -3,15 +3,63 @@ id: reverbdata
 name: REVERBDATA
 year: 2024
 type: measured
-status: catalogued
-content: Measured RIRs of 22 significant Portuguese spaces (concert halls, theatres, churches, monasteries) in stereo
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source:
+  kind: manual
+  instructions: >-
+    Each of the 48 space pages of https://reverbdata.ipl.pt/ links a OneDrive-for-Business folder. Open it, then
+    download the files named "Room Impulse Responses - *.rar", README.txt and Documentation.rar (not Photographs,
+    the Audio_* demos or ARTA) into one folder per space, and give that folder to rirdb with --from. A script needs
+    the anonymous cookie that each folder's share link sets; a cookie from one folder gives 403 on the others.
+ir_kinds:
+- room
+- outdoor
+capture_formats:
+- stereo
+- binaural
+- mono_omni
+- foa_ambix
+- hoa_sh
+adapter: {name: wav_tree_split, params: {exclude: '/Octave_band_filtered/|/ID EQ/|^(?!(royal-chapel|hall-of-columns)-of-royal-palace-of-madrid/).*\(ACN-SN3D-[12]\)\.wav$|^(?!lisbon-cathedral-patriarchs-dressing-room/).*_SCALED_|(^|/)(__MACOSX|\._)|/\.DS_Store$', pattern: '^(?P<room>[^/]+)/.*/(?:Stereo_Binaural|Ambisonics_B|Binaural)_IR_(?:SCALED_)?(?:Cartuxa_|Church_|Cistern_|Refectory_|DJoaoIIICloister_)?(?:(?P<cond>ORQ|CM)_)?(?:(?P<src>S\d+|Source\d+)_)?(?:(?P<src_2>Pulpit|Altar|H[Cc][Hh]oir)_)?(?P<rcv>[^/]+?)(?:_(?P<cond_2>with_drapes|without_drapes|Cin|Orq))?(?:_\(ACN-SN3D-3\))?\.wav$', room_from: pattern, room_from_regex: {^garrett/.*_Salao_Nobre\.wav$: garrett-salao-nobre}, roles: {2: [L, R], 4: [W, Y, Z, X]}, channel_formats: {2: binaural, 4: foa_ambix}, sh_norm: SN3D, layout_from_regex: {\(ACN-SN3D-3\)\.wav$: {16: {roles: [W, Y, Z, X, ACN4, ACN5, ACN6, ACN7, ACN8, ACN9, ACN10, ACN11, ACN12, ACN13, ACN14, ACN15], format: hoa_sh, sh_norm: SN3D}}}, split: {'^(?:great|small)-hall-of-esml/.*/Stereo_Binaural_IR_': [{channels: [0], format: mono_omni, roles: [omni], preferred: true}, {channels: [2, 3], format: binaural, roles: [L, R], preferred: false}], /Stereo_Binaural_IR_: [{channels: [0, 1], format: stereo, roles: [SL, SR], preferred: true}, {channels: [2, 3], format: binaural, roles: [L, R], preferred: false}]}, preferred_regex: ^lux-fragil/, orientation_known: false, ir_kind_from_regex: {'^(?:cloister-of-|main-cloister-|lisbon-cathedral-cloister/|unfinished-chapels-)': outdoor}}}
+notes: "The IRs are the authors' processed \"noise-free\" responses: each file is cut at its own length, some end in
+  exact zeros, and the Garrett, Coliseu Micaelense and St George files start at the direct sound. Position names
+  differ in case or wording between the device sets of a space (library: Pos1 and pos1; Lourinha: HChoir and Hchoir;
+  St Dominic: Pos1_esquerda (stereo) and Pos1_esquerda_FRONT (Ambisonic)), so the receiver keys are kept as written.
+  Cartuxa's Cartuxa_PosN files have the source on the altar (Documentation PDF); only the high-choir files name their
+  source (HCHoir). The meaning of ORQ/CM (Gulbenkian), Cin/Orq (St George), SF (Garrett) and conc/voxconc (Lux Fragil)
+  is not explained by the authors; the site calls ORQ the \"orchestral configuration\". RIRDB's values match the
+  authors' <file>_metrics.txt. rt_mid over their 500 Hz-1 kHz T30 (T20 where RIRDB uses T20) has a median of 1.008
+  (p10-p90 0.985-1.057, 97 % within 10 %). EDT gives 1.010, and each octave from 125 Hz to 4 kHz agrees within about 1
+  % (median). C50 reads about 0.6 dB lower and Ts about 4 % longer. At the positions where rt_mid differs by more than
+  10 %, a plain Schroeder fit of the published file gives RIRDB's value, not the authors' (11 of the 12 files read).
+  These are the Gulbenkian stage positions, St Dominic Pos1 and positions in the Jerónimos and D. Dinis cloisters, all
+  with strongly curved decays. At 8 kHz the authors' T30 is longer than the files give in the reverberant rooms: RIRDB
+  reads 0.97 of it in rooms under 1.5 s but 0.66-0.71 above 6 s (National Pantheon about 2.9 s against their 3.9-4.9
+  s), and a plain fit of the file agrees with RIRDB. The files of Coliseu Micaelense, Garrett, the Salão Nobre, São
+  Jorge, the ESML Great Hall and Lux Frágil end before or near the room's T30 (Coliseu: 1.3-1.8 s for 2.2 s). Their
+  decay range is 32-50 dB, so the 125 Hz-2 kHz T30 is often empty and they grade B or C, and 8 IRs (5 Coliseu, 3 ESML
+  Great Hall) have no rt_mid. In the ESML Great Hall at A12 and A23 without drapes, the authors' T30 of 3.1-3.6 s
+  cannot come from files that end about 30 dB down; RIRDB gives T20 there."
+content: Measured RIRs of 48 significant Portuguese spaces (concert halls, theatres, churches, monasteries) in stereo
   and binaural, 1st- and 3rd-order Ambisonics and some mono, with ISO 3382-1 parameters for each RIR.
 fs_hz:
 - 96000
 - 48000
 - 44100
 expected:
-  n_rooms: 22
+  n_rooms: 52
+  n_irs: 1089
+  note: 'The authors give no total. Counted from the files: one IR per position and device. The 344 four-channel stereo+binaural
+    files give 344 binaural IRs, plus 316 A-B stereo IRs and 28 mono IRs (the ESML halls, whose A-B channels are identical).
+    Then 242 third-order Ambisonic IRs (16 ch, 48 kHz; the order-1 and order-2 files hold its first channels), 64 first-order
+    IRs (4 ch, 96 kHz: Gulbenkian, Garrett, Coliseu Micaelense, St George), 49 IRs of the second head (HEAD BSU, LINEAR
+    EQ) and 18 binaural IRs at Lux Fragil. The source check''s estimate of 1,250 counted each 4-channel file once, every
+    order file and both BSU equalisations. Spaces: the 48 folders, plus the Salao Nobre of the D. Maria II National Theatre,
+    which is published in the Garrett folder, and the three spaces the home page links under /reverbdata-old/ (fetched on 21
+    Nov): the Jeronimos sacristy (12 IRs: stereo, binaural, third order) and the Royal Chapel and Hall of Columns of the
+    Royal Palace of Madrid, measured by UPM (16 first-order IRs, their only files).'
 room_info:
   dimensions: partial
   volume: partial
@@ -19,6 +67,11 @@ room_info:
   positions: partial
   images: 'yes'
   reference_acoustics: 'yes'
+  conditions: partial
+  where: '<space>/Documentation/Documentation/: plans with the sources (S1...) and receivers (Pos1...) marked, as JPG, PDF,
+    PNG or BMP (no coordinates; none for Lux Fragil). <space>/README.txt: channel layout and rates. A <file>_metrics.txt
+    beside every IR: SNR, EDT, T30, T20, T15 ... per octave band and channel, by the authors. The space pages of https://reverbdata.ipl.pt/
+    give dimensions, volumes, seats, materials and the source and receiver placement.'
 license:
   spdx: CC-BY-NC-SA-4.0
   note: The footer says 'This website is licensed under CC BY-NC-SA 4.0'. No separate licence for the IR files was

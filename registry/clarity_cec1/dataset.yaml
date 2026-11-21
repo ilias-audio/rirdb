@@ -3,21 +3,64 @@ id: clarity_cec1
 name: Clarity CEC1 dataset (simulated BRIRs)
 year: 2021
 type: simulated
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+# The BRIRs share the tars with the speech, the noise and the mixed scenes: only the rooms are unpacked
+# (rooms/brir, rooms/rpf, rooms/ac), not the 10,000 anechoic direct-path references anech_brir_*.
+source: {"kind": "zenodo", "records": ["17068105"], "include": ["clarity_CEC1_*"], "unpack_exclude": ["*/targets/*", "*/interferers/*", "*/scenes/*", "*/anech_brir_*", "._*", "*/._*"]}
+adapter: {name: clarity_scenes_json, params: {}}
+capture_formats:
+- binaural
+- array_raw
+space_type: virtual
+ir_kinds:
+- room
+expected:
+  n_irs: 40000
+  n_rooms: 10000
+  note: '10,000 scenes (train 6,000, dev 2,500, eval 1,500), each its own simulated cuboid living room with a target and
+    one interferer; 8 stereo BRIR files per scene (2 sources x 4 microphone pairs: eardrum, BTE front, mid, rear), 80,000
+    files. RIRDB counts, per source, the eardrum pair as one binaural IR and the three BTE pairs as one 6-channel IR: 40,000
+    IRs. The 10,000 anechoic direct-path references (anech_brir_*) are not indexed.'
+keep_archive: false
 content: Simulated binaural RIRs (RAVEN geometric model) for 10,000 hearing-aid listening scenes in randomised cuboid
   living rooms, at the eardrum and three behind-the-ear microphones, packed with speech and noise.
 fs_hz:
 - 44100
 room_info:
   dimensions: 'yes'
-  volume: 'no'
+  volume: 'yes'
   geometry: 'yes'
   materials: partial
   positions: 'yes'
   images: 'no'
   conditions: 'no'
+  reference_acoustics: 'no'
+  where: 'scenes.<split>.json (room name and L x W x H, listener, target and interferer positions and view vectors, hrirfilename);
+    rooms/ac/<room>.ac (AC3D model: floor, ceiling, walls, door, windows, curtains, sofa, rug, a material name per surface;
+    x from -W/2 to W/2, y from 0 to L, z up); rooms/rpf/<room>_<t|i1>_CH<k>.rpf (RAVEN settings, source directivity, HRTF
+    set); claritychallenge.org/docs/cec1/data/cec1_scenario (how rooms, positions and materials were drawn)'
 license:
-  spdx: CC-BY-4.0
+  spdx: CC-BY-SA-4.0
+  statements:
+  - licence: CC-BY-4.0
+    where: Zenodo record 17068105
+  - licence: CC-BY-SA-4.0
+    where: LICENCE.md in each of the four archives (clarity_CEC1_<part>/clarity_CEC1_data/LICENCE.md)
+  redistribute_audio: 'yes'
+  note: 'Conflicting statements: the strictest (CC BY-SA 4.0, the archives'' LICENCE.md) is used. The speech, which RIRDB
+    does not index, has its own Clarity speech database licence 1.00 (CC BY-SA 4.0 with exceptions).'
+notes: "The paper gives the reverberation time as 0.2 to 0.4 s on average between 125 Hz and 1 kHz (Graetzer et al.,
+  Interspeech 2021, 2.1). RIRDB's octave T30s, averaged over 125 Hz-1 kHz, fall in that range in 83 % of the IRs. 17 %
+  are longer (p95 0.48 s), nearly all in the quarter of rooms whose walls are concrete: rt_mid median 0.38 s, against
+  0.28 s for plaster and 0.26 s for wood panels. Each room's surface materials are named in rooms/ac/<room>.ac; their
+  absorption coefficients are in RAVEN's material database, which is not published. The files have no noise: each ray
+  was stopped after 60 dB of loss, and the IRs fall to a numerical floor 175-190 dB below the peak within about 0.6 s.
+  On that floor the analyser's noise search fails in most 2 and 4 kHz bands, so a quarter of the IRs have no rt_mid
+  and most grade C; the values it does give are right (deferred.md, item 32). Some rooms with concrete walls have one
+  octave decaying far longer than its neighbours (rt_mid up to 0.9 s on the eardrum IRs), and the files decay that
+  way."
 homepage: https://zenodo.org/records/17068105
 doi: 10.5281/zenodo.17068105
 web_check:

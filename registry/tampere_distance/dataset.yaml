@@ -39,6 +39,7 @@ license:
     labels as CC BY 4.0 and STARSS23 audio and code as MIT; no separate licence is given for the RIRs.
 homepage: https://zenodo.org/records/23096979
 doi: 10.5281/zenodo.23096979
+notes: "absorption_coeff is pyroomacoustics' deprecated amplitude `absorption` argument (generate_all_datasets.py), which pyroomacoustics converts to an energy absorption of 1 - (1 - a)^2: the stated 0.10-0.45 means 0.19-0.70, so the RIRs decay about twice as fast as the stated value read as an energy coefficient would give."
 web_check:
   checked: '2026-10-14'
   found_as: 'Speaker Distance Estimation Datasets: shared synthetic RIRs (Tampere)'

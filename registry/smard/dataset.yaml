@@ -3,16 +3,47 @@ id: smard
 name: SMARD (Aalborg)
 year: 2014
 type: measured
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "http", "urls": ["https://shares01.portal.aau.dk/smard/data/0000_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0001_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0002_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0003_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0010_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0011_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0020_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0021_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0100_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0101_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0102_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0103_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0110_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0111_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0120_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/0121_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1000_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1001_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1002_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1003_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1010_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1011_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1020_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1021_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1100_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1101_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1102_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1103_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1110_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1111_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1120_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/1121_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2000_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2001_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2002_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2003_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2010_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2011_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2020_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2021_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2100_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2101_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2102_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2103_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2110_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2111_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2120_estimated_ir.zip", "https://shares01.portal.aau.dk/smard/data/2121_estimated_ir.zip"]}
+adapter: {name: wav_tree, params: {glob: '*_estimated_ir/*.wav', room_from: dataset, join: '_ch(?P<ch>\d\d)_(?:orth_(?P<ch_2>\d[XYZ])|U[CL]A_(?P<ch_3>\d)[A-C])\.wav$', pattern: '^(?P<src>\d)(?P<src_2>\d)(?P<rcv>\d\d)_estimated_ir/\d{4}_estimated_ir_ch\d\d_(?:(?P<rcv_2>orth|single_mic)|(?P<rcv_3>U[CL]A)_\d(?P<rcv_4>[A-C]))', roles: {1: [omni], 6: [mic_1, mic_2, mic_3, mic_4, mic_5, mic_6], 7: [mic_1, mic_2, mic_3, mic_4, mic_5, mic_6, mic_7], 21: [1X, 2X, 3X, 4X, 5X, 6X, 7X, 1Y, 2Y, 3Y, 4Y, 5Y, 6Y, 7Y, 1Z, 2Z, 3Z, 4Z, 5Z, 6Z, 7Z]}}}
+analysis:
+  keep_s: 2.0
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'no'
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'no'
+  conditions: 'no'
+  where: 'Nielsen, Jensen, Jensen and Christensen, IWAENC 2014 (Sec. 2, Fig. 1-2, Tables 1-2: room, equipment, the configuration
+    code); setup.txt in each configuration folder (room size, temperature, loudspeaker and microphone positions in metres,
+    date) and setup.png (a plot of them)'
 ir_kinds: [room]
-capture_formats: [array_raw]
-fs_hz: [48000]
+capture_formats:
+- array_raw
+- mono_omni
+fs_hz:
+- 48000
 content: Single- and multichannel recordings in a listening room (48 configurations of 3 loudspeakers and up to 22 microphones in single, linear, circular and orthogonal arrays), with estimated IRs for every loudspeaker-microphone pair.
-expected: {n_rooms: 1, note: "48 configurations; estimated IRs ship as one WAV zip per configuration (checked 2026-10-13)"}
+expected:
+  n_rooms: 1
+  note: '48 configurations (3 loudspeakers x 2 loudspeaker positions x 8 array set-ups, paper Table 2); 1,008 loudspeaker-microphone
+    IRs, published one WAV per microphone and read as 120 array IRs: per loudspeaker position, 4 x (orthogonal array of
+    21 mics + single mic), 2 x 3 ULAs of 7, and 2 x (2 UCAs of 6 + 1 ULA of 7).'
+  n_irs: 120
 license: {spdx: LicenseRef-unspecified, redistribute_audio: unknown, note: "No licence; the site only asks users to cite Nielsen et al., IWAENC 2014 (checked 2026-10-13)."}
-access: manual
-source: {kind: manual, instructions: "Estimated IRs: https://shares01.portal.aau.dk/smard/data/<config>_estimated_ir.zip for the 48 configurations listed at https://www.es.aau.dk/research/audio-analysis-lab/smard/download (raw recordings in <config>.zip, about 18 GB)."}
+defects:
+- what: 'In configuration 2003, microphone 7X of the orthogonal array holds no acoustic signal: its file peaks 36 dB below
+    its neighbours, apart from a click at time zero.'
+  files: '2003_estimated_ir_ch07_orth_7X\.wav$'
+- what: 'The file of the first microphone (ULA_1A) starts with a click 18 dB below the direct sound, which RIRDB takes for
+    the direct sound: the DRR of this IR (-28.8 dB) is wrong.'
+  files: '1110_estimated_ir_ch01_ULA_1A\.wav$'
 homepage: https://www.es.aau.dk/research/audio-analysis-lab/smard
-status: manual
 web_check:
   checked: '2026-10-14'
   institution: Aalborg University

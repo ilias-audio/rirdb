@@ -3,20 +3,46 @@ id: acousticrooms
 name: AcousticRooms
 year: 2025
 type: simulated
-ir_kinds: [room]
-capture_formats: [mono_omni]
-content: 300,000+ single-channel RIRs simulated in 260 rooms of 10 categories (apartment, auditorium, office, cafe, ...) with 3D geometry and materials from a 332-material library.
-expected: {n_irs: 300000, n_rooms: 260}
-room_info: {geometry: "yes", materials: "yes", positions: "yes", where: "meshes and per-surface materials from a 332-material library in the release"}
-fs_hz: [22050]
-license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: github, records: ["facebookresearch/AcousticRooms@clean-main"]}
-wave: 4
+wave: 3
+source: {"kind": "http", "urls": ["https://media.githubusercontent.com/media/facebookresearch/AcousticRooms/3c87318a0188e1b441fc75846d54b487ca215fbb/single_channel_ir.zip", "https://media.githubusercontent.com/media/facebookresearch/AcousticRooms/3c87318a0188e1b441fc75846d54b487ca215fbb/metadata.zip"]}
+adapter: {name: acousticrooms_zip, params: {}}
+cap: 500
+ir_kinds: [room]
+capture_formats:
+- mono_omni
+content: 300,000+ single-channel RIRs simulated in 260 rooms of 10 categories (apartment, auditorium, office, cafe, ...) with 3D geometry and materials from a 332-material library.
+expected:
+  n_irs: 302671
+  n_rooms: 260
+  note: 'Paper (arXiv 2504.10746, section 4) and README: over 300,000 RIRs in 260 rooms of 10 categories; the release holds
+    302,671 WAVs. metadata.zip has 302,925 JSONs: 254 source-receiver pairs in 8 rooms (Cafe_idx_1 78, MeetingRoom_idx_24
+    26, six rooms 25 each) have metadata but no WAV. Per room 6 to 100 sources and 14 to 100 receivers (250 IRs in 109 rooms,
+    2,500 in 49, up to 10,000). Treble hybrid simulation (DG below 710 Hz, image sources and ray tracing above), each surface
+    given a random material from a 332-material library. 129 rooms have IRs of at most 1.0 s (57 % of their IRs exactly
+    1.0 s) and IR_norm in their JSONs; 131 rooms have IRs of 0.58 to 7.1 s and positions only.'
+room_info:
+  geometry: 'yes'
+  materials: 'yes'
+  positions: 'yes'
+  where: 'metadata.zip (per IR: source and receiver coordinates, and IR_norm in 129 rooms); the GitHub repository''s room_mesh_obj_format/
+    (room meshes), material_library/ (absorption and reflection coefficients) and simulation_info/ (not downloaded); paper
+    sections 4 and 10 (categories, 20 to 1,000 m3, placement rules, simulation settings)'
+fs_hz:
+- 22050
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
 homepage: https://github.com/facebookresearch/AcousticRooms
 paper: {title: "Hearing Anywhere in Any Environment", url: "https://arxiv.org/abs/2504.10746"}
-status: deferred
-notes: "A full download is about 63 GB: the repository keeps 62.4 GB in 15 Git LFS files (among them single_channel_ir.zip, 4.1 GB; depth_map.zip, 3.6 GB; and the dense simulations, 52.1 GB in 11 zip parts), and the clone itself is about 0.9 GB. The GitHub API gives 618 MB because it leaves Git LFS out (checked 2026-11-06)."
+notes: "A full download is about 63 GB: the repository keeps 62.4 GB in 15 Git LFS files (among them
+  single_channel_ir.zip, 4.1 GB; depth_map.zip, 3.6 GB; and the dense simulations, 52.1 GB in 11 zip parts), and the
+  clone itself is about 0.9 GB. The GitHub API gives 618 MB because it leaves Git LFS out (checked 2026-11-06). The
+  wave solver gives the bands below 710 Hz and the geometrical solver those above, and the two disagree. T30 rises by
+  a median 1.26 times between the 630 Hz and 800 Hz third octaves, while the neighbouring third-octave steps are
+  0.96-1.03, so the 1 kHz octave reads a median 1.29 times the 500 Hz octave and rt_mid averages the two solvers. In
+  the 126 rooms listed in the repository's simulation_info/, each file ends at the simulation's impulseLengthSec (its
+  60 dB decay time) or at 1.0 s, whichever comes first; in 56 of them the simulation ran longer (up to 3.1 s), so
+  their low-octave decays are cut short."
 web_check:
   checked: '2026-10-14'
   institution: Meta Reality Labs, with University of Washington and University of Maryland

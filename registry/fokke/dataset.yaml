@@ -1,17 +1,47 @@
 # Dataset file (docs/decisions/data-model.md, section 7). Fields and allowed values: src/rirdb/registry.py.
 id: fokke
 name: Fokke van Saane impulse responses
-type: production
-ir_kinds: [digital_reverb, plate, spring, device, room, outdoor]
-capture_formats: [stereo]
+type: measured
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "http", "urls": ["https://web.archive.org/web/20120724042016id_/http://fokkie.home.xs4all.nl/Files/Speakers%20and%20telephones.zip", "https://web.archive.org/web/20120724042053id_/http://fokkie.home.xs4all.nl/Files/Claustrofobia%20v1.1.zip", "https://web.archive.org/web/20120724043657id_/http://fokkie.home.xs4all.nl/Files/Factory%20Hall.zip", "https://web.archive.org/web/20120801082440id_/http://fokkie.home.xs4all.nl/Files/Church%20Schellingwoude.zip", "https://web.archive.org/web/20120724034332id_/http://fokkie.home.xs4all.nl/Files/EMT%20244%20(A.%20Bernhard).zip", "https://web.archive.org/web/20120724045756id_/http://fokkie.home.xs4all.nl/Files/Fostex%203180.sit", "https://web.archive.org/web/20120724051457id_/http://fokkie.home.xs4all.nl/Files/IR%20Church%20Buiksloterkerk.sit", "https://web.archive.org/web/20120724051543id_/http://fokkie.home.xs4all.nl/Files/IR%20Domestic.sit", "https://web.archive.org/web/20120724053237id_/http://fokkie.home.xs4all.nl/Files/IR%20Lexicon%20200.sit", "https://web.archive.org/web/20120724041839id_/http://fokkie.home.xs4all.nl/Files/IR%20Master%20Room%20MR-II%20.sit#IR_Master_Room_MR-II.sit", "https://web.archive.org/web/20120724045547id_/http://fokkie.home.xs4all.nl/Files/IR%20Roland%20DEP3.sit", "https://web.archive.org/web/20120801082408id_/http://fokkie.home.xs4all.nl/Files/IR%20Roland%20RE201%20Space%20Echo.sit", "https://web.archive.org/web/20120724051606id_/http://fokkie.home.xs4all.nl/Files/IR%20Small%20Factory%20Hall.sit", "https://web.archive.org/web/20120724041732id_/http://fokkie.home.xs4all.nl/Files/IR%20Vintage%20Spring%20Reverb.sit", "https://web.archive.org/web/20120724041919id_/http://fokkie.home.xs4all.nl/Files/Lexicon%20PCM60.sit", "https://web.archive.org/web/20120801083000id_/http://fokkie.home.xs4all.nl/Files/Mercedes%20van.sit", "https://web.archive.org/web/20120724045718id_/http://fokkie.home.xs4all.nl/Files/forest.sit", "https://web.archive.org/web/20120801083016id_/http://fokkie.home.xs4all.nl/Files/streets.sit"], "include": ["*.zip"]}
+adapter: {name: wav_tree, params: {glob: '**/*.wav', exclude: (^|/)(__MACOSX|\._)|/\.DS_Store$|/Dustbin 3/Dustbin 3\.C\.wav$, join: '(?:\.(?P<ch>[12])|(?P<ch_2> ?\.[LR]))\.wav$', roles: {'1': [omni], '2': [SL, SR]}, pattern: '^(?:EMT 244[^/]*/[^/]+/(?P<cond>[^/]+)\.wav$|Factory Hall/[^/]+/PA horn in hall/(?P<src>PA horn)|.*/(?:Dustbin|Iron Bucket) (?P<rcv>\d)|.*/Car radio (?P<rcv_2>close|wide)/|.*/Small portable (?P<rcv_3>ambient)/|.*/Walkman (?P<cond_2>thin)/|)', room_from_regex: {^Church Schellingwoude/: church-schellingwoude, ^Factory Hall/: factory-hall, ^EMT 244: emt-244, /Coalhod: coal-hod, /Djembe: djembe, /Dustbin: dustbin, /Flower pot 1: flower-pot-1, /Flower pot 2: flower-pot-2, /Glass Cup: glass-cup, /Iron Bucket: iron-bucket, /Iron bath: iron-bath, /Tin Can: tin-can, /Vacuum cleaner tube: vacuum-cleaner-tube, /Washing machine: washing-machine, /70's Philips box: philips-speaker-box, /Blaupunkt tube radio: blaupunkt-tube-radio, /Car radio: car-radio, /Erres tube radio: erres-tube-radio, '/Siemens Iron [Ss]peaker': siemens-iron-speaker, /Small intercom speaker: small-intercom-speaker, /Small portable: portable-cd-player, /Telephone 90 model: telephone-90s, /Telephone T65: telephone-t65, /Very small speaker: very-small-speaker, '/[Ww]alkman': walkman}, ir_kind_from_regex: {^EMT 244: digital_reverb, '^(?:Church Schellingwoude|Factory Hall)/': room, /Car radio: vehicle}, preferred_regex: '^(?!Claustrofobia v1\.1/[^/]+/[^/]*mono)'}}
+fs_hz:
+- 44100
+- 48000
+expected:
+  n_irs: 61
+  n_rooms: 25
+  note: 'The five WAV sets only (the page counts no IRs). Speakers and telephones: 11 devices, 20 IRs (10 mono, 10 stereo);
+    Claustrofobia: 11 objects, 14 stereo IRs and 14 mono IRs (13 of them copies of the left channel, kept as a non-preferred
+    layout); Factory Hall 2; Church Schellingwoude 1; EMT 244 10 settings. The 13 sets published only as StuffIt archives
+    of Sound Designer II files are not fetched.'
+room_info:
+  images: 'yes'
+  where: 'the photos and the ''... text.jpg'' captions in each folder (microphones, preamp, converter, excitation, loudspeaker);
+    the Read me.txt files; the archived page http://fokkie.home.xs4all.nl/IR.htm (Wayback, 2011): set descriptions and the
+    version history'
+ir_kinds:
+- device
+- digital_reverb
+- room
+- vehicle
+capture_formats:
+- stereo
+- mono_omni
 content: Hardware reverb units (Lexicon, EMT, spring, tape echo), speakers/telephones and a few spaces (forest, street, factory hall); site offline, archived on the Wayback Machine as StuffIt archives.
 license: {spdx: LicenseRef-unspecified, redistribute_audio: unknown, note: "Stated as free to use in any convolver."}
-access: open
-source: {kind: wayback, urls: ["https://fokkie.home.xs4all.nl/IR.htm"]}
-wave: 1
+defects:
+- what: 'Mains hum (100 Hz) and a noise floor only about 40 dB below the response at 500 Hz, faded out over the file''s
+    2.9 s: the analyser reads the fade as decay (T30 at 500 Hz about 1.9 s, rt_mid 1.0 s), while the handset decays in
+    about 0.1 s (EDT 0.11 s, T20 0.14 s).'
+  files: 'telephone horn T65\.C\.wav$'
 homepage: https://web.archive.org/web/2012/https://fokkie.home.xs4all.nl/IR.htm
-status: deferred
-notes: "The files are StuffIt (.sit) archives: extract them with The Unarchiver or unar. rirdb has not fetched them yet because its pipeline has no .sit extractor."
+notes: "Only the 5 sets published as WAV are read (61 IRs). The 13 others (Domestic, Mercedes van, forest, streets, Lexicon
+  PCM60 and 200, Roland DEP3 and RE-201, Fostex 3180, Master Room II, Vintage Spring Reverb, Buiksloterkerk, Small Factory
+  Hall) exist only as StuffIt (.sit) archives of Sound Designer II files, which rirdb cannot read yet (deferred.md, item
+  28)."
 web_check:
   checked: '2026-10-14'
   institution: Fokke van Saane (individual)

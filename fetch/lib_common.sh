@@ -31,13 +31,13 @@ curl_json() {
 # Content-Length of the final response after redirects ("-" if unknown).
 http_size() {
     local n
-    n=$(curl -sIL -m 60 -A "$UA" "$1" | tr -d '\r' | awk 'tolower($1)=="content-length:"{v=$2} END{print v}')
+    n=$(curl -sIL -b '' -m 60 -A "$UA" "$1" | tr -d '\r' | awk 'tolower($1)=="content-length:"{v=$2} END{print v}')
     echo "${n:--}"
 }
 
 # ETag / Last-Modified of the final response, as a provenance string.
 http_version() {
-    curl -sIL -m 60 -A "$UA" "$1" | tr -d '\r' \
+    curl -sIL -b '' -m 60 -A "$UA" "$1" | tr -d '\r' \
         | awk 'tolower($1)=="etag:"{e=$2} tolower($1)=="last-modified:"{sub(/^[^:]*: /,""); m=$0} END{printf "etag=%s;last-modified=%s", e, m}' \
         | tr '\t' ' '
 }
@@ -45,14 +45,15 @@ http_version() {
 urldecode() { local s="${1//+/ }"; printf '%b' "${s//%/\\x}"; }
 
 # load_row <id>: sets D_ID D_WAVE D_STATUS D_ACCESS D_KIND D_RECORDS D_URLS
-#                D_INCLUDE D_EXCLUDE D_ACCEPT D_KEEP from sources.tsv
+#                D_INCLUDE D_EXCLUDE D_ACCEPT D_KEEP D_UNPACK_EXCLUDE from sources.tsv
 load_row() {
     local line
     [ -f "$SOURCES_TSV" ] || die "$SOURCES_TSV missing: run 'rirdb dev registry compile' (via sbatch) first"
     line=$(awk -F'\t' -v id="$1" 'NR>1 && $1==id' "$SOURCES_TSV")
     [ -n "$line" ] || die "unknown dataset id '$1'"
     IFS=$'\t' read -r D_ID D_WAVE D_STATUS D_ACCESS D_KIND D_RECORDS D_URLS \
-        D_INCLUDE D_EXCLUDE D_ACCEPT D_KEEP <<<"$line"
+        D_INCLUDE D_EXCLUDE D_ACCEPT D_KEEP D_UNPACK_EXCLUDE <<<"$line"
+    D_UNPACK_EXCLUDE=${D_UNPACK_EXCLUDE:--}   # a sources.tsv compiled before the column
 }
 
 # Print the '|'-joined list field one item per line ("-" = empty).
@@ -104,7 +105,7 @@ raw_dir() { echo "$RIRDB_ROOT/raw/$1"; }
 
 is_archive() {     # any case: PRAIRE publishes .ZIP
     case "${1,,}" in
-        *.zip|*.z[0-9][0-9]|*.tar|*.tar.gz|*.tgz|*.tbz2|*.tar.bz2|*.tar.xz|*.rar|*.tar.part.[a-z][a-z].gz) return 0 ;;
+        *.zip|*.z[0-9][0-9]|*.tar|*.tar.gz|*.tgz|*.tbz2|*.tar.bz2|*.tar.xz|*.rar|*.tar.part.[a-z][a-z].gz|*.tar.gz.part[a-z][a-z]|*.tar.gz.part-[0-9][0-9]|*.zip.[0-9][0-9][0-9]) return 0 ;;
         *) return 1 ;;
     esac
 }
@@ -133,8 +134,8 @@ pin_extract_to() {
     old=${2:-}
     if [ -n "$old" ] && [ -f "$old" ]; then cp "$old" "$pinned"; fi
     awk -F'\t' -v OFS='\t' -v pinned_file="$pinned" '
-        function is_archive(p) { return tolower(p) ~ /\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz)$/ }
-        function stem(p) { sub(/\.([Tt][Aa][Rr]\.part\.aa\.gz|[Tt][Aa][Rr]\.[Gg][Zz]|[Tt][Aa][Rr]\.[Bb][Zz]2|[Tt][Aa][Rr]\.[Xx][Zz]|[Tt][Gg][Zz]|[Tt][Bb][Zz]2|[Tt][Aa][Rr]|[Zz][Ii][Pp]|[Rr][Aa][Rr])$/, "", p); return p }
+        function is_archive(p) { return tolower(p) ~ /\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz|tar\.gz\.partaa|tar\.gz\.part-00|zip\.001)$/ }
+        function stem(p) { sub(/\.([Tt][Aa][Rr]\.part\.aa\.gz|[Tt][Aa][Rr]\.[Gg][Zz]\.partaa|[Tt][Aa][Rr]\.[Gg][Zz]\.part-00|[Zz][Ii][Pp]\.001|[Tt][Aa][Rr]\.[Gg][Zz]|[Tt][Aa][Rr]\.[Bb][Zz]2|[Tt][Aa][Rr]\.[Xx][Zz]|[Tt][Gg][Zz]|[Tt][Bb][Zz]2|[Tt][Aa][Rr]|[Zz][Ii][Pp]|[Rr][Aa][Rr])$/, "", p); return p }
         FILENAME == pinned_file { if (FNR > 1 && NF >= 8 && $8 != "") pin[$1] = $8; next }
         FNR == 1 { next }
         { n++; rel[n] = $1; line[n] = $1; for (j = 2; j <= 7; j++) line[n] = line[n] OFS $j; if (is_archive($1)) n_arch++ }

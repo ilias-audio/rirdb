@@ -3,13 +3,25 @@ id: foa_meir
 name: FOA-MEIR
 year: 2022
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "zenodo", "records": ["6088574"]}
+adapter: {name: foa_meir_bin, params: {glob: FOA_MEIR_Dataset/FOA_MEIR_Dataset/IRrecordings/**/imp_*.bin, exclude: /echo/(anechoic|test)/, rooms: {Office 1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 67], Hallway 1: [15], Hallway 2: [18], Hall 1: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 85], Hallway 3: [29, 30], Meeting room 1: [31, 32, 33, 34, 35], Meeting room 2: [36, 37, 38, 39, 40], Atrium 1: [41, 42, 43], Hall 2: [44, 45, 46, 47, 48, 49, 50, 51, 52, 53], Atrium 2: [55, 56, 68], Meeting room 3: [57, 58, 59], Meeting room 4: [60, 61], Meeting room 5: [62, 63], Meeting room 6: [64, 65, 66], Meeting room 7: [69], Hallway 4: [73, 74], Office 2: [75, 76, 77, 78, 79, 80, 81, 82, 83, 84], Room 1: [86], Hallway 5: [87, 88, 89], Room 2: [90, 91, 92], Japanese room 1: [93, 94, 95], Japanese room 2: [96, 97, 98, 99], Room 3: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111], Anechoic: [200], Room 4: [201], Room 5: [202]}}}
+capture_formats:
+- tetra_raw
+analysis:
+  reference_role: mean
 content: About 2,100 first-order Ambisonic (A-format) impulse responses measured in over 100 environments, from
   an anechoic room to offices, meeting rooms and halls, for sound event localisation and detection research.
 fs_hz:
 - 48000
 expected:
-  n_irs: 2118
+  n_irs: 2112
+  n_rooms: 26
+  note: 'The authors'' table (GitHub README, paper Table 1): Anechoic 1 x 216, Reverb-S 96 x 3, Test 5 x 216, Echo 102 x
+    1, Reverb-C 2 x 216 = 2,118 files. 6 of the Echo files (echo/anechoic, echo/test) are byte copies of anechoic/ and test/
+    files and are not read: 2,112 IRs. 104 places (microphone positions) in 25 rooms and the anechoic chamber.'
 room_info:
   dimensions: 'no'
   volume: 'no'
@@ -18,10 +30,18 @@ room_info:
   positions: partial
   images: 'no'
   reference_acoustics: 'no'
+  where: placeinfo.csv (place names and areas), the file names (loudspeaker distance, azimuth, elevation from the microphone),
+    github.com/nttrd-mdlab/seld-foa-meir README (subset table, file format) and the ICASSP 2022 paper (arXiv 2202.09121),
+    Sec. 4.1
 license:
   spdx: LicenseRef-custom
   note: NTT's evaluation licence allows only internal use to test and evaluate the methods in the authors' paper
     and forbids distribution, modification and transfer; Zenodo tags it 'other-nc'.
+notes: "The authors give no reverberation times. The IRs are cut to 1 s, which leaves only 35-50 dB of decay in the
+  rooms near 1 s (Atria 1 and 2, Hall 2, Hallway 2), and Office 1 has a higher noise floor, so these rooms hold most
+  of the C grades and the IRs without rt_mid. In Meeting rooms 3 and 4 and Hallways 4 and 5 the T30 rises above 1 kHz
+  (Meeting room 4: 0.71 s at 1 kHz, 1.49 s at 4 kHz) while the EDT stays short: a weak, slow high-frequency tail that
+  is in the recordings, not noise."
 homepage: https://zenodo.org/records/6088574
 doi: 10.5281/zenodo.6088574
 web_check:

@@ -3,7 +3,30 @@ id: dcase2025_task4_foa
 name: DCASE2025Task4Dataset (FOA RIRs)
 year: 2025
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "zenodo", "records": ["15117227"], "urls": ["https://zenodo.org/records/15117227", "https://zenodo.org/api/records/15117227/files/DCASE2025Task4Dataset.zip/content", "https://zenodo.org/api/records/15117227/files/DCASE2025Task4Dataset.z01/content", "https://zenodo.org/api/records/15117227/files/LISENCEv2.2.pdf/content"]}
+adapter: {name: sofa, params: {groups: [{glob: final_0402_1/DCASE2025Task4Dataset/dev_set/room_ir/*/dcase2025-task4-rir_pid*.sofa, pattern: '^dcase2025-task4-rir_(?P<room>pid\d{4})\.sofa$', capture_format: foa_ambix, roles: [W, Y, Z, X], sh_norm: SN3D, orientation_known: false, first_per_source: true}, {glob: final_0402_1/DCASE2025Task4Dataset/dev_set/room_ir/*/foa-meir_*.sofa, pattern: '^(?P<room>foa-meir_(?:reverb-c|test)_pid\d{4})\.sofa$', capture_format: foa_ambix, roles: [W, Y, Z, X], sh_norm: SN3D, orientation_known: false, first_per_source: true}]}}
+capture_formats:
+- foa_ambix
+expected:
+  n_irs: 1152
+  note: Development set only. 4 new NTT places x 72 (18 azimuths x 2 elevations x 2 distances) = 288, and 4 FOA-MEIR places
+    x 216 = 864. The challenge paper (arXiv 2506.10676, Sec. 3.4.2) counts 540 new RIRs, 5 positions x 108 (with -20 deg
+    elevation) in 3 rooms; the Zenodo record says six environments. Which places share a room is not published, so each
+    place is a space (8).
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  positions: partial
+  where: the SOFA files (SourcePosition relative to the microphone; Title gives the place id), the challenge paper (arXiv
+    2506.10676, Sec. 3.4.2) and, for the FOA-MEIR places, FOA-MEIR's placeinfo.csv
+defects:
+- what: 'The files state AmbiX with SN3D normalisation, but they are the plain sum and difference of the four A-format capsules
+    (NTT''s convertAB, no scaling): on the direct sound the first-order channels X, Y and Z are about 0.64 of their SN3D
+    level against W (about -3.9 dB; SN3D gives |X,Y,Z| = |W| for a plane wave). Scale X, Y and Z by about 1.6 before decoding
+    them as SN3D. The channel order (W, Y, Z, X) and the directions are right.'
 content: First-order Ambisonic RIRs (Sennheiser Ambeo VR, SOFA, 32 kHz) measured by NTT in six environments, plus
   curated FOA-MEIR RIRs, shipped in the DCASE2025 Task 4 development set with sound events and noise.
 fs_hz:

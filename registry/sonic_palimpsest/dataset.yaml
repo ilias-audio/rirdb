@@ -7,7 +7,7 @@ status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tie
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://drive.usercontent.google.com/download?id=1utDu8wCdpj6fj0AlXNMXMIeWgn93arEF&export=download&confirm=t#sonic_palimpsest_ir_library.zip"]}
-adapter: {name: wav_tree, params: {glob: Sonic Palimpsest -Impulse Response Library/**/*.wav, pattern: '^Sonic Palimpsest -Impulse Response Library/(?:[^/]+/)+(?:(?P<room>0[3-6][a-f])|(?P<room_2>0[12])(?P<rcv>[ab])?|(?P<room_3>07)(?P<src>[a-c]))[-_](?:Cavalier_(?:Rear|Front)Mess(?P<rcv_2>0[12])-)?[^/]*?(?:(?P<rcv_3>DPA) ?4061|(?P<rcv_4>KM184)|(?P<rcv_5>ST)(?:450|540))(?:-(?P<rcv_6>Centre|CentreInwards|Distant|MidSpace|NorthSide)-)?[^/]*\.wav$', room_from: pattern, format_from_regex: {'(?i)ST(?:450|540)\W*Binaural': binaural}, channel_formats: {'2': stereo}, layout_from_regex: {'(?i)ST(?:450|540)\W*Binaural': {'2': {roles: [L, R]}}}}}
+adapter: {name: wav_tree, params: {glob: Sonic Palimpsest -Impulse Response Library/**/*.wav, pattern: '^Sonic Palimpsest -Impulse Response Library/(?:[^/]+/)+(?:(?P<room>0[3-6][a-f])|(?P<room_2>0[12])(?P<rcv>[ab])?|(?P<room_3>07)(?P<src>[a-c]))[-_](?:Cavalier_(?:Rear|Front)Mess(?P<rcv_2>0[12])-)?[^/]*?(?:(?P<rcv_3>DPA) ?4061|(?P<rcv_4>KM184)|(?P<rcv_5>ST)(?:450|540))(?:-(?P<rcv_6>Centre|CentreInwards|Distant|MidSpace|NorthSide)-)?[^/]*\.wav$', room_from: pattern, format_from_regex: {'(?i)ST(?:450|540)\W*Binaural': binaural}, channel_formats: {'2': stereo}, layout_from_regex: {'(?i)ST(?:450|540)\W*Binaural': {'2': {roles: [L, R]}}}, room_from_regex: {'/06a-CHouse-Cellar-KM184-': '06b', '/06b-CHouse-Billiard Room-KM184-': '06a'}}}
 capture_formats:
 - stereo
 - binaural

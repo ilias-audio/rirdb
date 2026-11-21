@@ -39,6 +39,7 @@ license:
   note: Zenodo stores the generic 'cc-by' licence id and displays it as Creative Commons Attribution 1.0 Generic.
 homepage: https://zenodo.org/records/3520737
 doi: 10.5281/zenodo.3520737
+notes: "RIRDB's rt_mid reads a median 16 % above the nominal RT60 in the file names (p10-p90 0.97-1.37), more in flat, elongated or weakly absorbing rooms. In a non-cubic shoebox the image-source decay is longer than the Sabine value the generator used to set the wall absorption. Each IR ends at its nominal RT60, so T30 at 125 Hz is mostly missing (B grades) and 628 IRs have no rt_mid."
 web_check:
   checked: '2026-10-14'
   found_as: Kinect RIR (for simulating CHiME-5-like data)

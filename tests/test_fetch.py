@@ -119,6 +119,73 @@ def test_a_tar_cut_into_gzipped_pieces_is_unpacked(tmp_path):
     assert not split_part_of("src_rec_mb.tar.part.ab.gz", "mb.tar.part.aa.gz")
 
 
+def test_a_gzip_stream_cut_into_pieces_is_unpacked(tmp_path):
+    """SMS-WSJ publishes sms_wsj.tar.gz as sms_wsj.tar.gz.partaa, partab, ...: one gzip stream cut in pieces."""
+    src = tmp_path / "src" / "rirs"
+    src.mkdir(parents=True)
+    (src / "a.bin").write_bytes(bytes(range(256)) * 2000)
+    subprocess.run(["tar", "-czf", str(tmp_path / "x.tar.gz"), "rirs"], cwd=tmp_path / "src", check=True)
+    data = (tmp_path / "x.tar.gz").read_bytes()
+    (tmp_path / "x.tar.gz").unlink()
+    half = len(data) // 2
+    (tmp_path / "x.tar.gz.partaa").write_bytes(data[:half])
+    (tmp_path / "x.tar.gz.partab").write_bytes(data[half:])
+    unpack(tmp_path / "x.tar.gz.partaa", tmp_path / "out")
+    assert (tmp_path / "out" / "rirs" / "a.bin").read_bytes() == (src / "a.bin").read_bytes()
+    assert split_part_of("x.tar.gz.partab", "x.tar.gz.partaa") and not split_part_of("x.tar.gz.partaa", "x.tar.gz.partaa")
+
+
+def test_a_gzip_stream_in_numbered_pieces_gives_only_the_files_asked_for(tmp_path):
+    """Clarity CEC1 publishes its train tar.gz as x.tar.gz.part-00, part-01, ...; the BRIRs share the tar with
+    speech, so only the files of the release are written."""
+    src = tmp_path / "src" / "train"
+    (src / "rooms").mkdir(parents=True)
+    (src / "targets").mkdir()
+    (src / "rooms" / "brir_R1.wav").write_bytes(bytes(range(256)) * 2000)
+    (src / "targets" / "speech.wav").write_bytes(b"s" * 1000)
+    subprocess.run(["tar", "-czf", str(tmp_path / "x.tar.gz"), "./train"], cwd=tmp_path / "src", check=True)
+    data = (tmp_path / "x.tar.gz").read_bytes()
+    (tmp_path / "x.tar.gz").unlink()
+    third = len(data) // 3 + 1
+    for k in range(3):
+        (tmp_path / f"x.tar.gz.part-{k:02d}").write_bytes(data[k * third:(k + 1) * third])
+    unpack(tmp_path / "x.tar.gz.part-00", tmp_path / "out", members=["train/rooms/brir_R1.wav"])
+    assert (tmp_path / "out" / "train" / "rooms" / "brir_R1.wav").read_bytes() == bytes(range(256)) * 2000
+    assert not (tmp_path / "out" / "train" / "targets").exists()          # the speech is not written
+    assert split_part_of("x.tar.gz.part-02", "x.tar.gz.part-00") and not split_part_of("x.tar.gz.part-00", "x.tar.gz.part-00")
+    assert not split_part_of("x.tar.gz.partab", "x.tar.gz.part-00")
+
+
+def test_a_tar_gz_gives_its_files_in_one_pass_and_names_a_missing_one(tmp_path):
+    """Clarity's eval tar.gz (11 GB) holds its BRIRs out of name order: the members are written as the tar goes (a
+    step back would decompress it again from the start), and a file of the release that it lacks is named."""
+    from rirdb.fetch import FetchError
+    src = tmp_path / "src"
+    src.mkdir()
+    names = [f"brir_R{k:02d}.wav" for k in (7, 2, 9, 4)]                 # stored out of order
+    for n in names:
+        (src / n).write_bytes(n.encode() * 100)
+    subprocess.run(["tar", "-czf", str(tmp_path / "e.tar.gz"), *names], cwd=src, check=True)
+    unpack(tmp_path / "e.tar.gz", tmp_path / "out", members=["brir_R02.wav", "brir_R09.wav"])
+    assert sorted(p.name for p in (tmp_path / "out").iterdir()) == ["brir_R02.wav", "brir_R09.wav"]
+    with pytest.raises(FetchError, match="does not hold 1 files"):
+        unpack(tmp_path / "e.tar.gz", tmp_path / "out2", members=["brir_R02.wav", "brir_R99.wav"])
+
+
+def test_a_zip_cut_into_numbered_pieces_is_unpacked(tmp_path):
+    """FOA-MEIR publishes its zip as x.zip.001, x.zip.002, ...: joined into the zip, then unpacked."""
+    with zipfile.ZipFile(tmp_path / "x.zip", "w") as z:
+        z.writestr("ir.wav", bytes(range(256)) * 1000)
+    data = (tmp_path / "x.zip").read_bytes()
+    (tmp_path / "x.zip").unlink()
+    for k in range(3):
+        (tmp_path / f"x.zip.{k + 1:03d}").write_bytes(data[k * 100_000:(k + 1) * 100_000])
+    unpack(tmp_path / "x.zip.001", tmp_path / "out")
+    assert (tmp_path / "out" / "ir.wav").read_bytes() == bytes(range(256)) * 1000
+    assert not (tmp_path / "x.zip").exists()                    # the joined copy is removed
+    assert split_part_of("x.zip.003", "x.zip.001") and not split_part_of("y.zip.002", "x.zip.001")
+
+
 def test_an_upper_case_zip_is_unpacked(tmp_path):
     """PRAIRE publishes some archives as .ZIP."""
     with zipfile.ZipFile(tmp_path / "C023.ZIP", "w") as z:

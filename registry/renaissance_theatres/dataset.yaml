@@ -3,15 +3,47 @@ id: renaissance_theatres
 name: 'Italian Renaissance Theatres: measurements and simulations'
 year: 2014
 type: hybrid
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "depositonce", "records": ["1cc5c6a6-fae7-4bdf-b5bb-23e3c0b14496"], "urls": ["https://api-depositonce.tu-berlin.de/server/api/core/bitstreams/645bf405-9981-4ea6-9132-4d3b7715843c/content"]}
+adapter: {name: wav_tree, params: {glob: '*/Impulse Responses/*/*/RIR_*.wav', pattern: '/RIR_(?P<room>Parma|Sabbioneta|Vicenza)_(?:Measurement|(?P<room_2>Simulation))_(?P<rcv>\d+|AB)\.wav$', room_from: pattern, ir_kind_from_regex: {/Simulation/RIR_: virtual}}}
+ir_kinds:
+- room
+- virtual
+capture_formats:
+- mono_omni
+- stereo
+fs_hz:
+- 44100
+analysis:
+  start_s: 0.01
+  keep_s: 6.0
+defects:
+- what: 'Each measured IR of the Teatro Farnese starts with a click 0.84 ms into the file, before the direct sound (45 to
+    142 ms later): 5 to 13 dB below the direct sound at positions 1 to 4, 7 and 8, as loud as it at positions 5, 6 and the
+    A-B pair. RIRDB analyses from 10 ms into the file; the files are delivered as published.'
+  files: Teatro Farnese Parma/Measurement/
 content: Measured mono IRs at listening positions and one AB-stereo IR in each of three Italian Renaissance theatres
   (Vicenza, Parma, Sabbioneta), plus simulated IRs with audience, CAD models and an anechoic recording.
 expected:
   n_rooms: 3
+  n_irs: 52
+  note: '3 theatres: measured (unoccupied) mono IRs at 9 (Vicenza), 6 (Sabbioneta) and 8 (Parma) positions plus one A-B
+    stereo IR each, and simulated (occupied) IRs at the same positions: 26 measured and 26 simulated IRs. RIRDB lists each
+    theatre''s simulation as a second, virtual space (6 spaces).'
 room_info:
   dimensions: partial
   geometry: 'yes'
   conditions: partial
+  volume: 'yes'
+  positions: partial
+  images: 'yes'
+  reference_acoustics: 'yes'
+  where: 'Receivers_<town>.pdf (plans: source S, numbered receivers, A-B pair) and <theatre>_Simulation_Positions.tif; CAD/
+    (DXF and SKP models); volumes, capacities, T20 (unoccupied and occupied), G, D50 and STI in the poster ''The acoustics
+    of Renaissance theatres in Italy'' (Weinzierl, Sanvito, Schultz, Büttner, TU Berlin) and the paper Weinzierl et al.
+    2015, Acta Acustica united with Acustica 101'
 license:
   spdx: LicenseRef-unspecified
   note: The record has no rights statement; its only licence file is the depositor's agreement with DepositOnce,

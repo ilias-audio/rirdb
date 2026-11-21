@@ -6,6 +6,8 @@ Registry parameters (adapter.params), all optional:
   pattern:     regex with named groups room, src, rcv, cond, label (on the relpath); a key in two parts of the
                path takes two groups, src and src_2 (joined with "_"), and alternatives may each name a group
   room_default: room used when the pattern has no room match
+  room_from_regex: {regex: room} on the relpath, over every other rule (first match wins): a file published under
+               the wrong room's name (sonic_palimpsest's KM184 pair of the cellar and the billiard room)
   room_from:   "pattern" | "parent" | "file" | "dataset"  (default: pattern if it
                has a room group, else "file": every file is its own space)
   category_from: "parent" | "grandparent" | None  -> category_hint
@@ -128,6 +130,7 @@ class WavTreeAdapter:
         roles_map = {int(k): v for k, v in (p.get("roles") or {}).items()} or DEFAULT_ROLES
         fmt_map = {int(k): v for k, v in (p.get("channel_formats") or {}).items()}
         kinds = [(re.compile(rx), kind) for rx, kind in (p.get("ir_kind_from_regex") or {}).items()]
+        room_rx = [(re.compile(rx), r) for rx, r in (p.get("room_from_regex") or {}).items()]
         fmt_rx = [(re.compile(rx), f_) for rx, f_ in (p.get("format_from_regex") or {}).items()]
         default_kind = dataset.ir_kinds[0] if dataset.ir_kinds else "room"
         files = sorted(root.glob(p.get("glob", "**/*.wav")))
@@ -156,6 +159,7 @@ class WavTreeAdapter:
                 room = folders[p["room_level"]] if p["room_level"] < len(folders) else p.get("room_default") or dataset.id
             else:
                 room = stem
+            room = next((r for rx, r in room_rx if rx.search(rel)), room)
             n_ch = info.channels * len(rels)
             if p.get("channels") and n_ch not in p["channels"]:
                 continue

@@ -162,6 +162,7 @@ class Source(_Strict):
     include: list[str] = Field(default_factory=list)   # fnmatch globs on file names; empty = all
     exclude: list[str] = Field(default_factory=list)
     accept: list[str] = Field(default_factory=list)    # wget_mirror --accept patterns
+    unpack_exclude: list[str] = Field(default_factory=list)  # globs on paths inside tar archives, not unpacked
     instructions: str | None = None                    # manual / registration datasets
 
     @model_validator(mode="after")
@@ -343,7 +344,7 @@ def get_dataset(dataset_id: str, datasets: list[Dataset] | None = None) -> Datas
 
 SOURCES_TSV_COLUMNS = (
     "id", "wave", "status", "access", "kind", "records", "urls",
-    "include", "exclude", "accept", "keep_archive",
+    "include", "exclude", "accept", "keep_archive", "unpack_exclude",
 )
 
 
@@ -366,7 +367,7 @@ def compile_sources(datasets: list[Dataset], out: Path) -> Path:
         s = d.source
         lines.append("\t".join(cell(v) for v in (
             d.id, d.wave, d.status, d.access, s.kind, s.records, s.urls,
-            s.include, s.exclude, s.accept, keep,
+            s.include, s.exclude, s.accept, keep, s.unpack_exclude,
         )))
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(lines) + "\n")

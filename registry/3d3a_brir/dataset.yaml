@@ -3,10 +3,19 @@ id: 3d3a_brir
 name: 3D3A Lab BRIR Dataset
 year: 2024
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_50cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_55cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_60cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_65cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_70cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_75cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_80cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_85cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_90cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_95cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/SOFA/BRIR_Y_100cm.sofa","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/README.md","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/Methods.txt","https://g-ef94ef.f0ad1.36fe.data.globus.org/10.34770/6gc9-5787/284/LICENSE.md"]}
+adapter: {name: sofa, params: {glob: BRIR_Y_*.sofa, pattern: '^BRIR_(?P<rcv>Y_\d+cm)\.sofa$', room_from: dataset, capture_format: binaural, roles: [L, R], emitter_positions: true}}
+capture_formats:
+- binaural
+ir_kinds:
+- room
+paper:
+  title: A multi-loudspeaker binaural room impulse response dataset with high-resolution translational and rotational head
+    coordinates in a listening room
+  url: https://doi.org/10.3389/frsip.2024.1380060
 content: '68,376 BRIRs measured with a B&K HATS in a treated listening room at Princeton: 8 loudspeakers, 231 head
   positions on a 5 cm grid and 37 head rotations, stored as SOFA files.'
 fs_hz:
@@ -14,13 +23,19 @@ fs_hz:
 expected:
   n_irs: 68376
   n_rooms: 1
+  note: 11 y-translations x 21 x-translations x 37 head azimuths x 8 loudspeakers (Methods.txt); each IR has the two ears
+    as channels.
 room_info:
-  dimensions: partial
-  geometry: partial
+  dimensions: 'yes'
+  geometry: 'no'
   materials: partial
   positions: 'yes'
-  images: partial
+  images: 'yes'
   reference_acoustics: partial
+  volume: 'no'
+  where: 'Methods.txt and the paper (Frontiers in Signal Processing 2024, arXiv:2403.12258), Fig. 2: photo, plan and section
+    with dimensions, loudspeaker spacing; the SOFA files'' metadata (RoomShortName, RoomDescription, listener, source and
+    emitter positions)'
 license:
   spdx: CC-BY-4.0
 homepage: https://datacommons.princeton.edu/discovery/catalog/doi-10-34770-6gc9-5787

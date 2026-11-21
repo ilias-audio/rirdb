@@ -29,6 +29,9 @@ validity:
     # C50, C80, D50 and centre time, per band
     min_decay_range_db: 20
     min_noise_intersection_s: 0.08
+    # C50 and C80 beyond this many dB: the late part is numerical silence, not a measurement (MB-RIRs: simulated
+    # IRs of 0.11 s whose 4 kHz octave has nothing left after 80 ms gave 150 to 244 dB). The columns' range too.
+    max_ratio_db: 150
   sti:
     # The 8 kHz octave must lie below Nyquist: fs >= 2 * 8000 * sqrt(2).
     min_fs_hz: 22627.4

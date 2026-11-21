@@ -3,23 +3,44 @@ id: cnam_shoebox
 name: Cnam-LMSSC shoebox RIRs
 year: 2025
 type: simulated
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "hf", "records": ["Cnam-LMSSC/shoebox_rir_updated@main"], "exclude": [".gitattributes"]}
+adapter: {name: hf_parquet, params: {glob: room_*/train-*.parquet, audio: audio, room: '{room_id}', room_label: 'Simulated shoebox {room_id} (Cnam-LMSSC)', source: S00, receiver: '{file_stem}', src_pos: position_source, rcv_pos: position_receiver}}
+capture_formats:
+- mono_omni
+fs_hz:
+- 1200
+space_type: virtual
+cap: 50
 content: 'Undocumented upload of shoebox-room RIRs, presumably simulated: 125 rooms with 1,024 source-receiver pairs
   each (1-second clips), stored as parquet with source and receiver coordinates.'
 expected:
   n_irs: 128000
   n_rooms: 125
+  note: '125 configs (room_00001 .. room_00125) of 1,024 rows each (the card''s YAML header: num_examples 1024 per config),
+    one source and 1,024 receivers per room: 128,000 mono RIRs at 1.2 kHz, 1 s each. Above 100,000 IRs, so cap 50: 6,250
+    measured.'
 room_info:
-  dimensions: 'no'
-  volume: 'no'
+  dimensions: 'yes'
+  volume: 'yes'
   geometry: 'no'
   materials: 'no'
   positions: 'yes'
   images: 'no'
   reference_acoustics: 'no'
   conditions: 'no'
+  where: the parquet rows (position_source, position_receiver in metres); the room sizes from the sister upload
+    https://huggingface.co/datasets/Cnam-LMSSC/test_shoebox_dataset (config _metadata)
 license:
   spdx: LicenseRef-unspecified
+notes: "A sister upload, Cnam-LMSSC/test_shoebox_dataset (config _metadata), gives each room's L, W, H and one
+  absorption coefficient. In all 125 rooms the receiver grid lies 1 m in from the walls of that L x W, and the IRs'
+  spectral peaks fall on that room's modes, so these are low-frequency modal simulations of those rooms. They have no
+  propagation delay, so DRR means nothing here. The alpha there sets Sabine's RT60 to 0.60 s in every room, but the
+  files decay with a T30 of 1.0 s in every room and octave (0.94-1.10 s at 63-250 Hz), 1.66 times that value; RIRDB's
+  values describe the files."
 homepage: https://huggingface.co/datasets/Cnam-LMSSC/shoebox_rir_updated
 web_check:
   checked: '2026-10-14'

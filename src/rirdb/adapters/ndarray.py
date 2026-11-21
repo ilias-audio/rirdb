@@ -62,7 +62,9 @@ class NdArrayAdapter:
       fs                   sampling rate, or fs_attr (HDF5 attribute path "dataset@attr" / "@attr"), fs_dataset
                            (an HDF5 scalar dataset) or fs_var (a MATLAB v5 variable)
       pattern              regex on the relative path (groups room, cond, src, rcv); a key in two parts of the
-                           path takes two groups, src and src_2 (joined with "_"), as in wav_tree
+                           path takes two groups, src and src_2 (joined with "_"), as in wav_tree. Its groups
+                           may name the HDF5 paths in braces, "{room}/rir_data/rirs", in `array`,
+                           `positions.*.array` and `axis_keys.*.names_from` (SpaDeNRIR: a group per file)
       room_default, capture_format, roles, reference_role, ir_kind
       src_default          the source key where neither the pattern nor the record index gives one
       sh_norm              FuMa | SN3D | N3D: the normalisation of Ambisonic channels (empty if not Ambisonic)
@@ -165,14 +167,30 @@ class NdArrayAdapter:
                     continue
                 gd = m_.groupdict() if m_ else {}
                 rel = f.relative_to(root).as_posix()
-                arrays = [g.get("array")]
+                gf = self._with_groups(g, gd)
+                arrays = [gf.get("array")]
                 if g.get("array_pattern"):            # one HDF5 array per condition (e.g. dEchorate)
                     import h5py
 
                     with h5py.File(f, "r") as hh:
                         arrays = sorted(k for k in hh.keys() if re.fullmatch(g["array_pattern"], k))
                 for array in arrays:
-                    yield from self._records(dataset, g, gi, f, rel, gd, array)
+                    yield from self._records(dataset, gf, gi, f, rel, gd, array)
+
+    @staticmethod
+    def _with_groups(g: dict, gd: dict) -> dict:
+        """g with the pattern's groups put into the HDF5 paths that name them in braces: "{room}/rir_data/rirs"."""
+        def put(path):
+            return path.format(**gd) if isinstance(path, str) and "{" in path else path
+
+        out = {**g, "array": put(g.get("array"))}
+        if g.get("positions"):
+            out["positions"] = {r: {**s, "array": put(s["array"])} if s.get("array") else s
+                                for r, s in g["positions"].items()}
+        if g.get("axis_keys"):
+            out["axis_keys"] = {a: {**s, "names_from": put(s["names_from"])} if s.get("names_from") else s
+                                for a, s in g["axis_keys"].items()}
+        return out
 
     @staticmethod
     def _read_whole(path: Path, g: dict, name: str) -> np.ndarray:

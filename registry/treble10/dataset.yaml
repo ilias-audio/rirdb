@@ -3,19 +3,45 @@ id: treble10
 name: Treble10-RIR
 year: 2025
 type: simulated
-ir_kinds: [room]
-capture_formats: [mono_omni, array_raw, hoa_sh]
-fs_hz: [32000]
-content: 3,085 broadband RIRs per receiver format (mono, a 6-microphone device, 8th-order Ambisonics) from a hybrid wave-based (<5 kHz) + geometrical solver in 10 furnished real-world rooms (bathrooms, bedrooms, living rooms, meeting rooms), receiver grids at 3 heights.
-expected: {n_irs: 3085, n_rooms: 10, note: "3,085 source-receiver positions, each published as mono, 6-channel and 8th-order HOA files (Hugging Face splits, checked 2026-10-13)"}
-license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes, note: "Hugging Face card: CC BY-NC-SA 4.0 (checked 2026-10-13)."}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: hf, records: ["treble-technologies/Treble10-RIR@main"]}
-wave: 4
+wave: 3
+source: {"kind": "hf", "records": ["treble-technologies/Treble10-RIR@main"], "exclude": [".gitattributes"]}
+adapter: {name: hf_parquet, params: {glob: data/rir_*.parquet, audio: audio, room: '{Room}', room_label: '{Room Description}', source: '{Source Label}', receiver: '{Receiver Label}', src_pos: Source Position, rcv_pos: Receiver Position, layouts: {/rir_mono-: {format: mono_omni, preferred: true}, /rir_6ch-: {format: array_raw, preferred: false}, /rir_hoa8-: {format: hoa_sh, roles: acn, sh_norm: SN3D, orientation_known: false, preferred: false}}, extra: [Frequencies, Receiver Type, 'Room Volume [m³]', 'Direct Path Length [m]', Receiver Position, EDT, T30, C50, Average Absorption (Octave Band), Avg EDT, Avg T30, Avg C50, Avg Absorption (Single Value)]}}
+room_info:
+  dimensions: partial
+  volume: 'yes'
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  images: 'yes'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+  where: arXiv 2510.23141 Table 1 (room names, volumes, mean T30); geometry/room<N>_geometry.png (plan and elevation of
+    each model, with metre grids); the parquet rows (room volume, source and receiver coordinates, octave-band EDT, T30,
+    C50 and average absorption per IR); geometry/6-channel-device.png and README.md (microphone positions of the device)
+ir_kinds:
+- room
+capture_formats:
+- mono_omni
+- array_raw
+- hoa_sh
+fs_hz:
+- 32000
+content: 3,085 broadband RIRs per receiver format (mono, a 6-microphone device, 8th-order Ambisonics) from a hybrid wave-based (<5 kHz) + geometrical solver in 10 furnished real-world rooms (bathrooms, bedrooms, living rooms, meeting rooms), receiver grids at 3 heights.
+expected:
+  n_irs: 9255
+  n_rooms: 10
+  note: '3,085 source-receiver pairs (Hugging Face card and paper), each published as a mono, a 6-channel device and an
+    8th-order Ambisonic (81-channel) RIR: 9,255 IRs, one per layout; the mono ones count in statistics. 10 rooms, 5 sources
+    each, 14 to 137 receivers per room.'
+license: {spdx: CC-BY-NC-SA-4.0, redistribute_audio: yes, note: "Hugging Face card: CC BY-NC-SA 4.0 (checked 2026-10-13)."}
+notes: "The T30 column of the paper's Table 1 is out of order: its ten values are the rooms' means of the authors'
+  per-IR Avg T30 in the data, but eight sit beside the wrong room (the volumes are right). spaces.csv gives each room
+  its value from the data, which RIRDB's octave-band T30 matches within 1 % (median)."
 homepage: https://huggingface.co/datasets/treble-technologies/Treble10-RIR
 paper: {title: "Treble10: A high-quality dataset for far-field speech recognition, dereverberation, and enhancement", url: "https://arxiv.org/abs/2510.23141"}
 doi: 10.57967/hf/6687
-status: deferred
 web_check:
   checked: '2026-10-14'
   institution: Treble Technologies

@@ -3,18 +3,56 @@ id: spadenrir
 name: SpaDenRIR
 year: 2026
 type: simulated
-ir_kinds: [room]
-capture_formats: [mono_omni]
-content: Image-source RIRs on a dense 22 x 22 x 22 cubic grid of omnidirectional points (21.4 mm spacing) for 5 sources in each of 100 generated rooms, truncated to the first 100 ms (direct sound and early reflections) for sound-field reconstruction; 102 GB of HDF5.
-expected: {n_irs: 5324000, n_rooms: 100, note: "100 rooms x 10,648 points x 5 sources (derived from the description; no total stated; checked 2026-10-13)"}
-fs_hz: [48000]
-license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: zenodo, records: ["21618947"]}
-wave: 4
+wave: 3
+source: {"kind": "zenodo", "records": ["21618947"], "include": ["room_*.hdf5"]}
+adapter: {name: ndarray, params: {glob: room_*.hdf5, pattern: '^(?P<room>room_\d{3})\.hdf5$', container: h5, array: '{room}/rir_data/rirs', time_axis: 2, record_axes: [0, 1], fs: 48000, capture_format: mono_omni, axis_keys: {1: {as: src, names: [S0_far, S1_far, S2_close, S3_close, S4_in_array]}}, positions: {src: {array: '{room}/rir_data/source_coords', axis: 1}, rcv: {array: '{room}/rir_data/mic_coords', axis: 0, key_from_position: true, key_prefix: m}}}}
+space_type: virtual
+cap: 50
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'yes'
+  materials: 'yes'
+  positions: 'yes'
+  images: 'no'
+  reference_acoustics: partial
+  conditions: 'no'
+  where: 'Each file''s room_information group: room_corners (the four floor corners, x and y in metres), room_height, volume,
+    the floor, ceiling and four wall materials with absorption (8 values over the octaves 125 Hz-8 kHz), fs, and rt60 and
+    rt60_freq_dependent (the model''s values, method not stated). Its rir_data group: ism_order, mic_coords, source_coords,
+    mic_array_size. The Zenodo description (image-source method, 100 ms, 22^3 grid at 21.4 mm, five sources in distinct
+    regions). github.com/madslangmatthesen/SpaDenRIR: plotting.py (source labels far, far, close, close, in-array) and extras/split.json
+    (70 train, 15 valid, 15 test rooms).'
+defects:
+- what: Room 087 (17 m3, the smallest room) runs out of image sources before the 100 ms end. Up to about 70 ms its level
+    falls a steady 3 dB per 10 ms; by 90-100 ms it lies about 15 dB below that line, and the reflections thin to half. Decay
+    values measured on its IRs therefore come out too short.
+  files: room_087\.hdf5$
+ir_kinds: [room]
+capture_formats:
+- mono_omni
+content: Image-source RIRs on a dense 22 x 22 x 22 cubic grid of omnidirectional points (21.4 mm spacing) for 5 sources in each of 100 generated rooms, truncated to the first 100 ms (direct sound and early reflections) for sound-field reconstruction; 102 GB of HDF5.
+expected:
+  n_irs: 5324000
+  n_rooms: 100
+  note: '100 simulated rooms x 10,648 microphones (a 22 x 22 x 22 grid, 21.44 mm spacing) x 5 sources: 5,324,000 mono IRs
+    of 4,800 samples (100 ms at 48 kHz), as the files hold (rirs of shape 10648 x 5 x 4800 in every file). The record states
+    the grid, the sources and the rooms but no total. Above 100,000 IRs, so cap 50: 5,000 measured, 50 per room.'
+fs_hz:
+- 48000
+license: {spdx: CC-BY-4.0, redistribute_audio: yes}
+notes: "The IRs are the first 100 ms of an image-source simulation, so every room is still decaying when the file
+  ends: the mid-band decay range is 10-30 dB (median 20 dB), against a model RT60 of 0.18-2.94 s. RIRDB's decay and
+  energy values describe only this early part. rt_mid exists for 173 of the 5,000 measured IRs, mostly with the source
+  close to or inside the grid. It reads a median 0.63 times the room's model value (0.07-0.99 times), and EDT reads
+  0.29 times it. C50 (median 15 dB), C80 (26 dB) and DRR count no energy after 100 ms. The RT60 in each room's note is
+  Sabine's formula on the stored geometry and absorption, equal in every octave in all 100 rooms. It is not a decay
+  measured on the simulation, and the files are too short to check it. Select these rooms by the model values in
+  spaces.csv, not by RIRDB's decay values."
 homepage: https://zenodo.org/records/21618947
 doi: 10.5281/zenodo.21618947
-status: deferred
 web_check:
   checked: '2026-10-14'
   institution: Aalborg University and GN Store Nord

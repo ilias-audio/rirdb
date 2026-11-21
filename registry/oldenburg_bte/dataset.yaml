@@ -3,15 +3,35 @@ id: oldenburg_bte
 name: Oldenburg in-ear and BTE HRIR/BRIR database
 year: 2009
 type: measured
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "http", "urls": ["https://sofacoustics.org/data/database/oldenburg/OfficeII.sofa"]}
+adapter: {name: sofa, params: {glob: OfficeII.sofa, room_from: dataset, room_default: office-ii, capture_format: binaural, roles: [L, R, BTE_front_L, BTE_front_R, BTE_middle_L, BTE_middle_R, BTE_rear_L, BTE_rear_R], m_select: [0, 1, 2, 3, 4, 5, 6]}}
+ir_kinds:
+- room
+capture_formats:
+- binaural
+fs_hz:
+- 48000
 content: Eight-channel BRIRs (in-ear plus 3-mic behind-the-ear hearing aids on both ears of a head-and-torso simulator)
   in two offices, a cafeteria and a courtyard, with ambient noise and anechoic HRIRs.
 expected:
-  n_rooms: 4
+  n_rooms: 1
+  n_irs: 7
+  note: 'Office II only (the open sofacoustics.org mirror): 4 loudspeaker positions x 2 head orientations, 8 sets, as in
+    Kayser et al. 2009, Table 1. Each IR has 8 channels: in-ear L/R and the front, middle and rear BTE microphones of each
+    ear. Measurement 7 repeats measurement 3 sample for sample and is left out (m_select): 7 IRs. The other environments
+    (anechoic 296 HRIR sets, Office I 37, cafeteria 12, courtyard 12) need the registered download.'
 room_info:
   geometry: partial
-  positions: partial
-  images: partial
+  positions: 'yes'
+  images: 'yes'
+  dimensions: 'yes'
+  reference_acoustics: 'yes'
+  where: Kayser et al. 2009 (EURASIP JASP, doi 10.1155/2009/298605), section 2.3.3 and Table 3 (T60 300 ms); the Office
+    II sketch on medi.uni-oldenburg.de/hrir (3.30 x 6.00 m, loudspeakers A-D, the two head orientations); the SOFA file's
+    SourcePosition, ListenerPosition and RoomCornerB
 license:
   spdx: LicenseRef-custom
   note: The registration terms grant use for purely research or educational purposes, forbid commercial exploitation

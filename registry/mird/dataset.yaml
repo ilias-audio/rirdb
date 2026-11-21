@@ -3,19 +3,41 @@ id: mird
 name: Multichannel Impulse Response Database (Bar-Ilan)
 year: 2014
 type: measured
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "http", "urls": ["https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.160s__3-3-3-8-3-3-3.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.160s__4-4-4-8-4-4-4.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.160s__8-8-8-8-8-8-8.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.360s__3-3-3-8-3-3-3.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.360s__4-4-4-8-4-4-4.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.360s__8-8-8-8-8-8-8.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.610s__3-3-3-8-3-3-3.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.610s__4-4-4-8-4-4-4.zip", "https://www.iks.rwth-aachen.de/fileadmin/user_upload/downloads/forschung/tools-downloads/Impulse_response_Acoustic_Lab_Bar-Ilan_University__Reverberation_0.610s__8-8-8-8-8-8-8.zip"]}
+adapter: {name: ndarray, params: {glob: '*/*.mat', container: mat, array: impulse_response, time_axis: 0, channel_axis: 1, record_axes: [], fs: 48000, room_default: biu-acoustic-lab, capture_format: array_raw, pattern: '\((?P<cond>Reverberation_0\.\d+s)\)_(?P<rcv>\d-\d-\d-8-\d-\d-\d)_(?P<src>[12]m_\d{3})\.mat$'}}
+fs_hz:
+- 48000
+room_info:
+  dimensions: 'yes'
+  volume: 'yes'
+  geometry: 'no'
+  materials: partial
+  positions: partial
+  images: partial
+  reference_acoustics: 'yes'
+  conditions: 'yes'
+  where: 'Hadad, Heese, Vary and Gannot, IWAENC 2014 (Sec. 1-3, Table 1, Fig. 1-3: room size, 60 reversible panels, RT60
+    per setting, the half-circle geometry relative to the array, a photo); the simpar and metapar structs in each .mat (fs,
+    hardware, spacing, angle, distance)'
 ir_kinds: [room]
-capture_formats: [array_raw]
+capture_formats:
+- array_raw
 content: 234 8-channel RIRs recorded in the same room with 3 levels of reverberation (0.16/0.36/0.61 s) and 3 microphone array spacings (.mat files).
-expected: {n_irs: 234, n_rooms: 1, note: "1 room x 3 reverberation settings"}
+expected:
+  n_irs: 234
+  n_rooms: 1
+  note: 9 recording sessions (RT60 0.160, 0.360, 0.610 s x 3 microphone spacings) x 26 loudspeaker positions (1 m and 2
+    m x 13 angles, -90 to 90 deg); each IR has the 8 microphones of the linear array as channels.
 license: {spdx: ODC-By-1.0, url: "https://web.archive.org/web/20230628221840/https://www.eng.biu.ac.il/gannot/downloads/", redistribute_audio: yes, note: "Bar-Ilan's downloads page (Wayback copy of 2023-06-28; the live page now returns 404): \"This corpus is licensed under Open Data Commons Attribution License (ODC-By) v1.0\". Share and use it with attribution."}
-access: manual
-source:
-  kind: manual
-  instructions: "The Bar-Ilan web firewall rejects scripted requests for these archives (any URL containing parentheses returns an HTML \"Request Rejected\" page with HTTP 200; checked 2026-09-30 and 2026-11-06). Download the nine Impulse_response_Acoustic_Lab_Bar-Ilan_University_(Reverberation_*)_*.zip files from https://www.eng.biu.ac.il/~gannot/RIR_DATABASE/ in a browser into $RIRDB_ROOT/raw/_inbox/mird/, then run `sbatch jobs/download.sh fetch/adopt_manual.sh mird`. RWTH Aachen's IKS institute lists the same nine zips, with underscores in place of the parentheses, at https://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/multi-channel-impulse-response-database/ (seen on the Wayback Machine in April 2026); that host refused connections on 2026-11-06."
-wave: 1
+analysis: {keep_s: 1.0}   # the authors faded out each 10 s file: the fade read as decay below 300 Hz (plausibility, 20 Nov)
+notes: "Each 10 s file is one period of a periodic sweep measurement, faded out by the authors over its last seconds;
+  below 300 Hz the files hold noise only 20 to 50 dB under the peak for their first 4 s. RIRDB analyses the first 1 s
+  of each file."
 homepage: https://www.eng.biu.ac.il/~gannot/RIR_DATABASE/
 paper: {title: "Multichannel audio database in various acoustic environments", url: "https://ieeexplore.ieee.org/document/6954309"}
-status: manual
 web_check:
   checked: '2026-10-14'
   institution: Bar-Ilan University, with RWTH Aachen

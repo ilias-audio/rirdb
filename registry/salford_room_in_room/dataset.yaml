@@ -33,6 +33,7 @@ license:
   spdx: CC-BY-4.0
 homepage: https://salford.figshare.com/articles/dataset/Data_and_supporting_information_for_AES_141_convention_paper_The_room-in-room_effect_and_its_influence_on_perceived_room_size_in_spatial_audio_reproduction_/3457733
 doi: 10.17866/rd.salford.3457733.v1
+notes: "Every file except the church's falls to its noise floor and is then faded from about 1.1-1.3 s to about -150 dB at its 2 s end, so decay ranges of 100-165 dB measure the fade, not the room."
 web_check:
   checked: '2026-10-14'
   found_as: Room-in-room effect data (Salford, AES 141 convention paper)

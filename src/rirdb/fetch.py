@@ -19,6 +19,7 @@ import gzip
 import hashlib
 import io
 import os
+import posixpath
 import re
 import shutil
 import subprocess
@@ -36,6 +37,8 @@ import pandas as pd
 from rirdb import __version__
 
 USER_AGENT = f"rirdb/{__version__}"
+# Cookies kept across redirects, as a browser does: a SharePoint link (gtu_rir) sets one before it serves the file.
+OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor())
 
 
 class FetchError(RuntimeError):
@@ -81,7 +84,7 @@ def download(url: str, dest: Path, attempts: int = 3) -> Path:
         have = part.stat().st_size if part.exists() else 0
         headers = {"User-Agent": USER_AGENT, **({"Range": f"bytes={have}-"} if have else {})}
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=60) as r:
+            with OPENER.open(urllib.request.Request(url, headers=headers), timeout=60) as r:
                 resumed = have > 0 and getattr(r, "status", None) == 206
                 start = have if resumed else 0
                 total = start + int(r.headers.get("Content-Length") or 0)
@@ -126,25 +129,34 @@ def check_download(path: Path, algo: str, expected: str) -> None:
 
 # ------------------------------------------------------------------------------------------- unpacking
 
-# A tar cut into pieces, each gzipped: x.tar.part.aa.gz, x.tar.part.ab.gz, ... (MB-RIRs). The first piece stands
-# for the archive; the others are its parts.
-SPLIT_TAR = re.compile(r"(.+\.tar)\.part\.([a-z]{2})\.gz")
+# Archives cut into pieces (besides the split zip x.z01, x.z02 ... x.zip): the first piece stands for the archive and
+# the others are its parts, fetched and counted with it. (pattern: group 1 the archive, group 2 the piece; the first
+# piece; whether each piece is gzipped on its own)
+SPLIT_PIECES = [
+    (re.compile(r"(.+\.tar)\.part\.([a-z]{2})\.gz"), "aa", True),    # MB-RIRs: a tar, each piece gzipped
+    (re.compile(r"(.+\.tar\.gz)\.part([a-z]{2})"), "aa", False),     # SMS-WSJ: one gzip stream cut in pieces
+    (re.compile(r"(.+\.tar\.gz)\.part-(\d{2})"), "00", False),        # Clarity CEC1: the same, numbered part-00
+    (re.compile(r"(.+\.zip)\.(\d{3})"), "001", False),               # FOA-MEIR: a zip cut in pieces
+]
 
 
 def split_part_of(download: str, archive: str) -> bool:
-    """The parts fetched and counted with an archive: x.z01, x.z02, ... of the split zip x.zip (TAU-SRIR), and
-    x.tar.part.ab.gz, ... of x.tar.part.aa.gz (MB-RIRs)."""
-    first, part = SPLIT_TAR.fullmatch(archive), SPLIT_TAR.fullmatch(download)
-    if first:
-        return bool(first.group(2) == "aa" and part and part.group(1) == first.group(1) and part.group(2) != "aa")
+    """The parts fetched and counted with an archive: x.z01, x.z02, ... of the split zip x.zip (TAU-SRIR), and the
+    later pieces of an archive cut into pieces (SPLIT_PIECES), e.g. x.tar.part.ab.gz of x.tar.part.aa.gz (MB-RIRs)."""
+    for rx, first, _ in SPLIT_PIECES:
+        a = rx.fullmatch(archive)
+        if a:
+            d = rx.fullmatch(download)
+            return bool(a.group(2) == first and d and d.group(1) == a.group(1) and d.group(2) != first)
     return bool(re.fullmatch(re.escape(archive.removesuffix(".zip")) + r"\.z\d\d", download))
 
 
 class Pieces(io.RawIOBase):
-    """The gzipped pieces of a tar, read one after the other as one stream (tarfile reads it in stream mode)."""
+    """The pieces of an archive read one after the other as one stream (tarfile reads it in stream mode); with
+    `gzipped`, each piece is decompressed on its own."""
 
-    def __init__(self, paths: list[Path]):
-        self.paths, self.current = iter(paths), None
+    def __init__(self, paths: list[Path], gzipped: bool):
+        self.paths, self.current, self.gzipped = iter(paths), None, gzipped
 
     def readable(self) -> bool:
         return True
@@ -155,7 +167,7 @@ class Pieces(io.RawIOBase):
                 path = next(self.paths, None)
                 if path is None:
                     return 0
-                self.current = gzip.open(path, "rb")
+                self.current = gzip.open(path, "rb") if self.gzipped else open(path, "rb")
             n = self.current.readinto(buffer)
             if n:
                 return n
@@ -163,15 +175,48 @@ class Pieces(io.RawIOBase):
             self.current = None
 
 
-def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
-    """Unpack the archive into the folder: only `members` where the archive has them all, else everything."""
-    into.mkdir(parents=True, exist_ok=True)
+def write_tar(t: tarfile.TarFile, into: Path, members: list[str] | None, name: str) -> None:
+    """Write a tar read as a stream, in its own order (a .tar.gz read out of order decompresses again from its start
+    for every step back): every member, or only `members`. Tar names use "/" on every system; "./x" and "/x" are x."""
     safe = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}      # no path outside `into`
-    first = SPLIT_TAR.fullmatch(archive.name)
-    if first and first.group(2) == "aa":         # the pieces, in order, are one tar: read as a stream, all of it
-        pieces = sorted(archive.parent.glob(f"{first.group(1)}.part.[a-z][a-z].gz"))
-        with tarfile.open(fileobj=io.BufferedReader(Pieces(pieces)), mode="r|") as t:
-            t.extractall(into, **safe)
+    if members is None:
+        t.extractall(into, **safe)
+        return
+    wanted, written = set(members), set()
+    try:
+        for m in t:
+            if (n := posixpath.normpath(m.name).lstrip("/")) in wanted:
+                t.extract(m, into, **safe)
+                written.add(n)
+    except tarfile.StreamError as e:             # a link to a member that was not written: a stream cannot go back
+        raise FetchError(f"{name}: {e}. Fetch the whole dataset rather than a selection.") from e
+    if wanted - written:
+        raise FetchError(f"{name} does not hold {len(wanted - written)} files of the release, e.g. "
+                         f"{sorted(wanted - written)[:3]}")
+
+
+def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
+    """Unpack the archive into the folder: every file, or only `members` (a zip that lacks one of them: every file)."""
+    into.mkdir(parents=True, exist_ok=True)
+    for rx, first, gzipped in SPLIT_PIECES:
+        m = rx.fullmatch(archive.name)
+        if not m or m.group(2) != first:
+            continue
+        pieces = sorted(p for p in archive.parent.iterdir() if (q := rx.fullmatch(p.name)) and q.group(1) == m.group(1))
+        if m.group(1).endswith(".zip"):          # a zip is read from its end: join the pieces into it, then unpack
+            joined = archive.with_name(m.group(1))
+            with open(joined, "wb") as out:
+                for p in pieces:
+                    with open(p, "rb") as f:
+                        shutil.copyfileobj(f, out)
+            try:
+                unpack(joined, into, members)
+            finally:
+                joined.unlink()
+            return
+        # a tar: the pieces, in order, are one stream
+        with tarfile.open(fileobj=io.BufferedReader(Pieces(pieces, gzipped)), mode="r|" if gzipped else "r|gz") as t:
+            write_tar(t, into, members, archive.name)
         return
     name = archive.name.lower()                  # any case: PRAIRE publishes .ZIP
     split = any(archive.parent.glob(archive.name[:-4] + ".z[0-9][0-9]")) if name.endswith(".zip") else False
@@ -185,9 +230,8 @@ def unpack(archive: Path, into: Path, members: list[str] | None = None) -> None:
     if name.endswith((".zip", ".rar")):          # GRAP and MARDY come as RAR, which Python cannot read
         unpack_with_system_tools(archive, into)
         return
-    with tarfile.open(archive) as t:
-        wanted = [t.getmember(m) for m in members] if members and set(members) <= set(t.getnames()) else None
-        t.extractall(into, members=wanted, **safe)
+    with tarfile.open(archive, "r|*") as t:
+        write_tar(t, into, members, archive.name)
 
 
 def unpack_with_system_tools(archive: Path, into: Path) -> None:
@@ -303,7 +347,7 @@ def fetch_download(dataset: str, source: pd.Series, group: pd.DataFrame, downloa
         check_download(path, part["algo"], part["checksum"])      # also an archive kept from an earlier run
     into = root if source["extract_to"] == "." else root / source["extract_to"]
     prefix = "" if source["extract_to"] == "." else source["extract_to"] + "/"
-    members = None if parts else [f.removeprefix(prefix) for f in group["file"]]
+    members = [f.removeprefix(prefix) for f in group["file"]]
     say(f"{dataset}: unpacking {name}")
     unpack(archives / name, into, members)
     return [archives / p["download"] for p in [*parts, source]]

@@ -3,10 +3,15 @@ id: musicsphere_heers
 name: MusicSphere ROAM-MHE (Sint-Martinus Church, Heers)
 year: 2026
 type: measured
-status: planned   # set by scripts/onboard; a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
-source: {kind: zenodo, records: ["22111389", "22686848"]}   # 22686848: the SRIRs (Part 1); 22111389: the overview
+source:
+  kind: zenodo
+  records:
+  - '22111389'
+  - '22686848'
+adapter: {name: sofa, params: {groups: [{glob: 22686848/**/*.sofa, pattern: 'ROAM-MHE-(?:1m|fine)_(?P<rcv>-?\d+\.\d+X_-?\d+\.\d+Yb?)\.sofa$', capture_format: sdm_array, room_from: dataset, room_default: sint-martinus-heers}]}}
 content: Spatial RIRs from a robot-mounted 7-microphone array at 152 positions in the nave of Sint-Martinus Church,
   Heers (Belgium), with 5 sources near the organ and altar; SOFA files.
 expected:
@@ -16,6 +21,8 @@ room_info:
   positions: 'yes'
   images: 'yes'
   reference_acoustics: 'no'
+  where: Overview Measurements of Sint-Martinus Church Heers.pdf (record 22111389); positions in the SOFA file names (x
+    and y in metres)
 license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/22111389

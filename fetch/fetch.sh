@@ -32,7 +32,7 @@ download() { # url dest  (resumable; falls back to a fresh download if ranges un
     local url=$1 dest=$2 attempt rc
     for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
         rc=0
-        curl -fL -C - --retry 8 --retry-all-errors --retry-delay 15 --connect-timeout 60 \
+        curl -fL -b '' -C - --retry 8 --retry-all-errors --retry-delay 15 --connect-timeout 60 \
              -sS -A "$UA" -o "$dest" "$url" || rc=$?
         [ $rc -eq 0 ] && return 0
         if [ $rc -eq 33 ] || [ $rc -eq 36 ]; then   # range not supported / bad resume

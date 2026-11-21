@@ -27,6 +27,15 @@ headers_only() { # archive
         && log "  7-Zip: a header error only; every file passed its CRC"
 }
 
+# tar into the folder, leaving out the members the source names in unpack_exclude (globs on the paths inside
+# the archive: Clarity CEC1 ships its BRIRs in the same tars as its speech and mixed scenes).
+untar() { # folder tar-options...
+    local into=$1 g; shift
+    local skip=()
+    while IFS= read -r g; do skip+=(--exclude="$g"); done < <(split_list "$D_UNPACK_EXCLUDE")
+    tar --touch --no-same-owner "${skip[@]}" "$@" -C "$into"
+}
+
 extract_archive() { # archive files_dir
     local a=$1 files=$2 base
     case "${a,,}" in                             # any case: PRAIRE publishes .ZIP
@@ -57,11 +66,22 @@ extract_archive() { # archive files_dir
                     find "$files" -mindepth 1 ! -newer "$a" -exec touch -h {} + 2>/dev/null || true
                 fi
             fi ;;
+        *.tar.gz.partaa)                          # SMS-WSJ: one gzip stream cut into pieces, read in order
+            cat "${a%.part*}".part[a-z][a-z] | untar "$files" -xz ;;
+        *.tar.gz.part[a-z][a-z]) return 0 ;;     # its other pieces, with the first
+        *.tar.gz.part-00)                        # Clarity CEC1: the same, its pieces numbered part-00, part-01 ...
+            cat "${a%.part-*}".part-[0-9][0-9] | untar "$files" -xz ;;
+        *.tar.gz.part-[0-9][0-9]) return 0 ;;    # its other pieces, with the first
+        *.zip.001)                                # FOA-MEIR: a zip cut into pieces, joined into one first
+            base=${a%.001}; cat "$base".[0-9][0-9][0-9] > "$base"
+            unzip -DD -q -o "$base" -d "$files" || "$SEVENZIP" x -y -bso0 -bsp0 -o"$files" "$base" || headers_only "$base"
+            rm -f "$base" ;;
+        *.zip.[0-9][0-9][0-9]) return 0 ;;       # its other pieces, with the first
         *.tar.part.aa.gz)                         # MB-RIRs: a tar cut into gzipped pieces, joined in order
-            cat "${a%.part.*}".part.[a-z][a-z].gz | gzip -dc | tar --touch --no-same-owner -x -C "$files" ;;
+            cat "${a%.part.*}".part.[a-z][a-z].gz | gzip -dc | untar "$files" -x ;;
         *.tar.part.[a-z][a-z].gz) return 0 ;;    # its other pieces, with the first
         *.tar|*.tar.gz|*.tgz|*.tbz2|*.tar.bz2|*.tar.xz)
-            tar --touch --no-same-owner -xf "$a" -C "$files" ;;
+            untar "$files" -xf "$a" ;;
         *.rar)                                    # GRAP, MARDY: 7-Zip reads RAR 4 and 5
             "$SEVENZIP" x -y -bso0 -bsp0 -o"$files" "$a"
             find "$files" -mindepth 1 ! -newer "$a" -exec touch -h {} + 2>/dev/null || true ;;
@@ -71,7 +91,7 @@ extract_archive() { # archive files_dir
 
 archive_stem() {
     local b=$1   # keep any record prefix directory
-    for ext in .tar.part.aa.gz .tar.gz .tar.bz2 .tar.xz .tgz .tbz2 .tar .zip .rar; do
+    for ext in .tar.part.aa.gz .tar.gz.partaa .tar.gz.part-00 .zip.001 .tar.gz .tar.bz2 .tar.xz .tgz .tbz2 .tar .zip .rar; do
         case "${b,,}" in *"$ext") echo "${b:0:${#b}-${#ext}}"; return ;; esac   # any case
     done
     echo "$b"
@@ -94,7 +114,7 @@ extract_dir() {
 check_all_extracted() { # okdir
     local missing
     missing=$(tail -n +2 "$(downloads_tsv "$D_ID")" | cut -f1 \
-        | { grep -iE '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz)$' || true; } \
+        | { grep -iE '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz|tar\.gz\.partaa|tar\.gz\.part-00|zip\.001)$' || true; } \
         | while IFS= read -r rel; do [ ! -f "$1/$rel.ok" ] || [ -f "$1/$rel.extracted" ] || echo "$rel"; done)
     [ -z "$missing" ] || die "extract $D_ID: downloaded but not extracted: $(echo $missing)"
 }
@@ -109,7 +129,7 @@ extract_one() {
     # three Omni.zip files all hold Omni/00x00y.wav): each gets its own subfolder.
     # The folder is pinned (extract_to in downloads.tsv), so a re-fetch lays files out
     # identically and a download added later moves nothing. n_arch is for pins without it.
-    n_arch=$(tail -n +2 "$(downloads_tsv "$D_ID")" | cut -f1 | { grep -ciE '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz)$' || true; })
+    n_arch=$(tail -n +2 "$(downloads_tsv "$D_ID")" | cut -f1 | { grep -ciE '\.(zip|tar|tar\.gz|tgz|tbz2|tar\.bz2|tar\.xz|rar|tar\.part\.aa\.gz|tar\.gz\.partaa|tar\.gz\.part-00|zip\.001)$' || true; })
     if [ ! -d "$arch" ] || [ -z "$(ls -A "$arch" 2>/dev/null)" ]; then
         log "extract $D_ID: nothing to extract"
         check_all_extracted "$okdir"
@@ -139,7 +159,7 @@ extract_one() {
     if [ "$keep" -eq 0 ]; then
         find -H "$arch" -type f ! -name '*.part' -print0 | while IFS= read -r -d '' a; do
             rel=${a#"$arch/"}
-            case "$rel" in *.z[0-9][0-9]) rel="${rel%.z[0-9][0-9]}.zip" ;; *.tar.part.[a-z][a-z].gz) rel="${rel%.part.*}.part.aa.gz" ;; esac
+            case "$rel" in *.z[0-9][0-9]) rel="${rel%.z[0-9][0-9]}.zip" ;; *.tar.part.[a-z][a-z].gz) rel="${rel%.part.*}.part.aa.gz" ;; *.tar.gz.part[a-z][a-z]) rel="${rel%.part*}.partaa" ;; *.tar.gz.part-[0-9][0-9]) rel="${rel%.part-*}.part-00" ;; *.zip.[0-9][0-9][0-9]) rel="${rel%.*}.001" ;; esac
             if [ -f "$okdir/$rel.extracted" ]; then rm -f "$a"; fi   # never "[ ] && rm": a last false test fails the loop
         done
     fi

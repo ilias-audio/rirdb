@@ -36,6 +36,7 @@ homepage: https://github.com/maswang32/hearinganythinganywhere
 paper: {title: "Hearing Anything Anywhere", url: "https://arxiv.org/abs/2406.07532"}
 doi: 10.5281/zenodo.11195833
 status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+notes: "RIRDB's octave T30 averaged over 63 Hz-8 kHz is 8-26 % above the paper's Table 1 RT60 in all four rooms."
 web_check:
   checked: '2026-10-14'
   institution: Stanford University

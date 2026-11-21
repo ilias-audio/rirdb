@@ -33,6 +33,9 @@ license:
   spdx: CC-BY-4.0
 homepage: https://zenodo.org/records/6541444
 doi: 10.5281/zenodo.6541444
+notes: 'In the seminar rooms and lecture halls, T30 rises steeply below 250 Hz (1.4-2.7 s at 125 Hz, against
+  0.66-1.31 s at 500 Hz-1 kHz), so the broadband decay time is up to three times rt_mid. The low-frequency decays are
+  clean on all seven capsules, so this comes from the rooms, not from noise.'
 web_check:
   checked: '2026-10-14'
   found_as: TU Ilmenau SRIR dataset in different rooms including visualization (Klein et al.)

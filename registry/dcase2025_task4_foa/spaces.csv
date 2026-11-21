@@ -1,0 +1,9 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+pid0000,"NTT room, DCASE2025 task 4 place 0",,room,,,,,,,"one of the new NTT microphone positions; the challenge paper puts 5 positions in 3 rooms without naming them or saying which share a room; 72 IRs: 18 azimuths (20 deg steps) x elevation 0 and 20 deg x 0.75 and 1.5 m; training split",
+pid0002,"NTT room, DCASE2025 task 4 place 2",,room,,,,,,,"one of the new NTT microphone positions (rooms not published, see pid0000); 72 IRs: 18 azimuths x elevation 0 and 20 deg x 0.75 and 1.5 m; validation split",
+pid0004,"NTT room, DCASE2025 task 4 place 4",,room,,,,,,,"one of the new NTT microphone positions (rooms not published, see pid0000); 72 IRs: 18 azimuths x elevation 0 and 20 deg x 0.75 and 1.5 m; training split",
+pid0005,"NTT room, DCASE2025 task 4 place 5",,room,,,,,,,"one of the new NTT microphone positions (rooms not published, see pid0000); 72 IRs: 18 azimuths x elevation 0 and 20 deg x 0.75 and 1.2 m; validation split",
+foa-meir-reverb-c-pid0201,"FOA-MEIR Room 4 (place 201), AmbiX 32 kHz",,room,,,foa_meir/room-4,,,,"FOA-MEIR's 216 Reverb-C IRs of place 201, converted by NTT to B-format and resampled to 32 kHz (1 s)",
+foa-meir-reverb-c-pid0202,"FOA-MEIR Room 5 (place 202), AmbiX 32 kHz",,room,,,foa_meir/room-5,,,,"FOA-MEIR's 216 Reverb-C IRs of place 202, converted by NTT to B-format and resampled to 32 kHz (1 s)",
+foa-meir-test-pid0067,"FOA-MEIR Office 1, entrance (place 67), AmbiX 32 kHz",office_meeting,room,,,foa_meir/office-1,,,,"FOA-MEIR's 216 Test IRs of place 67, converted by NTT to B-format and resampled to 32 kHz (1 s)",
+foa-meir-test-pid0086,"FOA-MEIR Room 1 (place 86), AmbiX 32 kHz",,room,,,foa_meir/room-1,,,,"FOA-MEIR's 216 Test IRs of place 86, converted by NTT to B-format and resampled to 32 kHz (1 s); validation split",

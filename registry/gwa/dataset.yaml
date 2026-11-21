@@ -3,17 +3,68 @@ id: gwa
 name: GWA - Geometric-Wave Acoustic dataset
 year: 2022
 type: simulated
-ir_kinds: [room]
-capture_formats: [mono_omni]
-content: 2M+ synthetic RIRs in 6.8K professionally designed 3D houses, geometric ray tracing calibrated with FDTD wave simulation below the crossover.
-expected: {n_irs: 2000000, n_rooms: 18968, note: "over 2 million RIRs in 18,968 furnished rooms of 6,813 3D-FRONT houses"}
-license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "GitHub README: dataset CC BY-NC 4.0, code CC BY 4.0; the 3D-FRONT models fall under their own licence agreement (checked 2026-10-13)."}
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
-source: {kind: manual, instructions: "Direct HTTP download, no registration: https://obj.umiacs.umd.edu/gamma-datasets/GWA_Dataset.zip (524 GB) or GWA_Dataset_small.zip (15.4 GB); needs permanent storage."}
-wave: 4
+wave: 3
+source: {"kind": "http", "urls": ["https://obj.umiacs.umd.edu/gamma-datasets/GWA_Dataset_small.zip"]}
+adapter: {name: gwa_stats, params: {}}
+fs_hz:
+- 48000
+space_type: domestic
+room_info:
+  dimensions: 'no'
+  volume: 'no'
+  geometry: partial
+  materials: partial
+  positions: 'yes'
+  reference_acoustics: 'yes'
+  conditions: 'no'
+  where: 'GWA_Dataset_small/stats.csv: per IR, T60_125Hz to T60_8000Hz (python-acoustics) and Source_Pos and Receiver_Pos
+    (metres, the house model''s frame, y up). github.com/GAMMA-UMD/GWA: download/README.md (the layout); tools/sample_src_lis.py
+    (1 m grid, 0.2 m clearance; 5 sources per house); tools/json2obj.py (the house mesh, rebuilt from 3D-FRONT, which must
+    be obtained separately under its own licence agreement); tools/assign_mats.py with files/acoustic_absorptions.json (the
+    material library; the materials given to each house are not published); simulation/sim_gsound.py (48 kHz, not normalised).
+    Paper (arXiv 2204.01787): the 1,400 Hz crossover, the 1.5 s simulation, the energy calibration at 1 m, and a figure
+    of house volume against reverberation time.'
+defects:
+- what: 'No sound above about 1.4 kHz, and very faint: in the simulation, no geometric path joined the source and the receiver.
+    The geometric simulation gives everything above the 1.4 kHz crossover, so only a faint low-frequency part of the wave
+    simulation arrived. In these files the energy above 2 kHz is 52 to 99 dB below the energy under 1 kHz (the median IR:
+    8 dB above), and the peaks are -66 to -220 dBFS (the median IR: -32 dBFS). Octave-band values above 1 kHz are noise.
+    For 14 of these files, stats.csv gives a failed T60 fit (0 s or over 10 s).'
+  files: /(32d0cdae[^/]*/(L1_R0016|L1_R0017|L2_R0053|L3_R0027|L3_R0040)|0493bba4[^/]*/(L2_R0073)|cc3db277[^/]*/(L2_R0029|L5_R0024)|d86d22b5[^/]*/(L4_R0018)|67dd6924[^/]*/(L5_R0113)|88036aee[^/]*/(L3_R0030|L3_R0060|L4_R0027|L4_R0039|L4_R0055)|605034c1[^/]*/(L1_R0137)|d7da27dc[^/]*/(L3_R0003)|5c0a1757[^/]*/(L2_R0002|L2_R0027|L2_R0046)|c1117917[^/]*/(L2_R0010|L2_R0017|L3_R0010|L3_R0017|L4_R0010|L4_R0017)|750af363[^/]*/(L2_R0001|L4_R0001|L4_R0002)|c49b0591[^/]*/(L3_R0040|L4_R0038)|15de4a4c[^/]*/(L3_R0055))\.wav$
+- what: The level does not fall 20 dB between the peak and the end of the 1.5 s file. The median IR falls 83 dB. These are
+    faint IRs (peaks -61 to -145 dBFS) whose peak comes late (0.03 to 1.16 s) or whose decay the file end cuts off, so decay
+    times measured on them are not meaningful.
+  files: /(f655b350[^/]*/(L5_R0050)|32d0cdae[^/]*/(L1_R0016|L1_R0017|L2_R0053|L3_R0027|L3_R0040|L5_R0032)|cc3db277[^/]*/(L5_R0024)|a107277b[^/]*/(L2_R0003)|88036aee[^/]*/(L3_R0030|L4_R0027|L4_R0055)|605034c1[^/]*/(L1_R0137|L3_R0007|L4_R0017|L4_R0131)|5c0a1757[^/]*/(L2_R0002)|30c0c5d6[^/]*/(L4_R0894)|fe74af37[^/]*/(L3_R0014)|bacde876[^/]*/(L2_R0023))\.wav$
+ir_kinds:
+- room
+capture_formats:
+- mono_omni
+content: 2M+ synthetic RIRs in 6.8K professionally designed 3D houses, geometric ray tracing calibrated with FDTD wave simulation below the crossover.
+expected:
+  n_irs: 56773
+  n_rooms: 5699
+  note: 'RIRDB holds the authors'' small subset, GWA_Dataset_small.zip (15.4 GB). download/README.md describes it as "about
+    56,000 IRs, sampling <=10 IRs in each scene". It has 56,773 IRs in 5,699 3D-FRONT houses: 10 in each of 5,654 houses,
+    1 to 9 in the other 45. The full GWA (GWA_Dataset.zip, 488 GB) holds about 2 million IRs in 18,968 furnished rooms of
+    6,813 houses (paper); it was not downloaded. RIRDB counts the house as the space, because each house was simulated whole
+    with open doors between its rooms and stats.csv names no room. Hybrid simulation: FDTD wave simulation below 1.4 kHz,
+    geometric simulation above. 48 kHz, 1.5 s (5,594 files up to 3.0 s), not normalised (energy calibrated to 1 at 1 m).'
+license: {spdx: CC-BY-NC-4.0, redistribute_audio: yes, note: "GitHub README: dataset CC BY-NC 4.0, code CC BY 4.0; the 3D-FRONT models fall under their own licence agreement (checked 2026-10-13)."}
+notes: "RIRDB's octave-band T30 matches the authors' T60 in stats.csv within about 1 % (median) in every octave from
+  250 Hz to 8 kHz; at 125 Hz the median ratio is 1.01 (p90 1.26). rt_mid over the CSV's 500 Hz-1 kHz mean has a median
+  of 1.000 (p10-p90 0.99-1.01, 56,542 IRs). The decay times follow the materials the simulation gave each house, not
+  typical furnished homes. House medians run from 0.06 to 3.1 s (p1-p99 0.14-1.75 s). 28 houses read under 0.1 s, with
+  a DRR of about +17 dB and C50 of about 37 dB at 3 m, so they are nearly anechoic; 26 read over 2 s. T30 often drops
+  across the 1.4 kHz crossover between the wave and the geometric solver: the 2 kHz octave reads a median 0.88 times
+  the 1 kHz octave, 0.55 or less in 10 % of IRs, and as little as a fifth in a few. stats.csv shows the same drop. The
+  tails end in a numerical floor 150-200 dB below the peak, because the rays stop below the threshold of hearing. On
+  this floor analyser v1's noise search fails in some bands. The 4 kHz T30 is empty in 9,443 IRs and the 8 kHz T30 in
+  27,864, so 9,160 IRs grade B instead of S. On the same floor, components below 60 Hz, 70-125 dB below the peak,
+  raise the tonal flag on 584 IRs; 571 of them grade C for it, and their decay times still match stats.csv."
 homepage: https://gamma.umd.edu/pro/sound/gwa/
 paper: {title: "GWA: A Large High-Quality Acoustic Dataset for Audio Processing", url: "https://arxiv.org/abs/2204.01787"}
-status: deferred
 web_check:
   checked: '2026-10-14'
   institution: University of Maryland (GAMMA)

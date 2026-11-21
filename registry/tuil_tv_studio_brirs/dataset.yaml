@@ -35,6 +35,10 @@ license:
   spdx: CC-BY-NC-4.0
 homepage: https://zenodo.org/records/1321996
 doi: 10.5281/zenodo.1321996
+defects:
+- what: 'At position 106, head angle 195 degrees, the BRIRs of all six loudspeakers hold only noise, with no impulse:
+    the measurement failed (so did the L loudspeaker''s BRIR at 190 degrees, which the analyser grades D).'
+  files: '^106/106/brir195\.mat$'
 web_check:
   checked: '2026-10-14'
   found_as: Measured BRIRs for a position-dynamic auditory augmented reality application

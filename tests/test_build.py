@@ -14,6 +14,11 @@ def test_each_file_finds_its_download():
     assert download_of(files, downloads).tolist() == ["a.zip", "b.tar.gz", "notes.pdf", ""]
     one = pd.DataFrame({"relpath": ["all.zip"], "extract_to": ["."]})
     assert download_of(pd.Series(["Audio/x.wav"]), one).tolist() == ["all.zip"]
+    # MB-RIRs: two archives unpacked into the files folder, each named after its first folder
+    two = pd.DataFrame({"relpath": ["mb.tar.part.aa.gz", "mb.tar.part.ab.gz", "src_rec_mb.tar.part.aa.gz", "meta.csv"],
+                        "extract_to": [".", "-", ".", "-"]})
+    got = download_of(pd.Series(["mb/train/mb_1.wav", "src_rec_mb/val/src_rec_mb_2.wav", "meta.csv", "x/y.wav"]), two)
+    assert got.tolist() == ["mb.tar.part.aa.gz", "src_rec_mb.tar.part.aa.gz", "meta.csv", ""]
 
 
 def test_every_space_has_a_primary_layout():
@@ -39,7 +44,10 @@ def test_a_decay_fit_longer_than_the_ir_is_not_published():
     out = judged(bands, pd.Series({"a": 2.0, "b": 2.0}))     # 768 s: 30 dB would take 384 s of a 2 s IR
     assert out["t30"].tolist()[0] == 1.5 and np.isnan(out["t30"].tolist()[1])
     assert out["valid_t30"].tolist() == [True, False]
-    assert out["c50"].tolist() == [1.5, 768.0]                 # clarity is not a decay fit
+    assert out["d50"].tolist() == [1.5, 768.0]                 # an energy ratio is not a decay fit
+    assert np.isnan(out["c50"].tolist()[1]) and np.isnan(out["c80"].tolist()[1])   # 768 dB: numerical silence
+    near = judged(bands.assign(c80=[149.0, -151.0]), pd.Series({"a": 2.0, "b": 2.0}))
+    assert near["c80"].tolist()[0] == 149.0 and np.isnan(near["c80"].tolist()[1])  # validity.energy.max_ratio_db
 
 
 def test_grade_s_needs_every_defect_assessed():

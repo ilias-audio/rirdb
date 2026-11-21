@@ -3,25 +3,49 @@ id: rir_former
 name: RIR-Former datasets (unofficial)
 year: 2026
 type: simulated
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "hf", "records": ["saeedzou/rir-former-datasets@main"], "exclude": [".gitattributes"]}
+adapter: {name: hf_parquet, params: {glob: exp*/train-*.parquet, audio: rir, fs: 8000, per_channel: true, room: 'room-{index:04d}', room_label: 'Simulated shoebox room {index:04d} (rir-generator)', source: '{dir}-source', receiver: '{dir}-mic{ch:02d}', src_pos: src_position, rcv_pos: mic_positions}}
+capture_formats:
+- mono_omni
+space_type: virtual
+cap: 1
 content: Image-method (rir-generator) RIRs for 64-point linear mic arrays in random shoebox rooms (4-8 m, RT60 0.2-0.8
   s) at 8 kHz, with positions, room size and RT60; made for an unofficial RIR-Former reimplementation.
 fs_hz:
 - 8000
 expected:
-  n_irs: 1050880
-  n_rooms: 16420
+  n_irs: 1024000
+  n_rooms: 8000
+  note: 'The card lists 2 configs x (8,000 train + 200 val + 10 test) rows of 64 microphones (1,050,880 responses); every
+    val and test row is a byte copy of a train row of its config (val i = train i+1, test i = train i+2, checked on all
+    rows), so 16,000 distinct rows x 64 microphones = 1,024,000 IRs. exp1 and exp2 train row i are the same room (same dimensions
+    and RT60): 8,000 rooms, each with both set-ups. Above 100,000 IRs, so cap 1: one IR measured per room.'
 room_info:
   dimensions: 'yes'
-  volume: 'no'
-  geometry: partial
+  volume: 'yes'
+  geometry: 'yes'
   materials: 'no'
   positions: 'yes'
   images: 'no'
-  reference_acoustics: 'yes'
+  reference_acoustics: partial
   conditions: 'no'
+  where: the parquet rows (room_dims, rt60 = the generator's target RT60, src_position and mic_positions relative to the
+    room centre); github.com/saeedzou/RIR-Former config.py and dataset_generator.py (room 4-8 x 4-8 x 2.5-4 m, RT60 0.2-0.8
+    s, c = 340 m/s, 15 cm wall margin, array geometry of each set-up)
 license:
   spdx: LicenseRef-unspecified
+notes: "The IRs are the rir-generator output, cut by design for the RIR-Former task: exp1 at 0.128 s and exp2 at 0.256
+  s, at 8 kHz, in rooms whose generator RT60 is 0.2-0.8 s. An image-source calculation of the same rooms matches the
+  files' decay within 2 % up to the cut. The exp1 IRs end about 0.12 s after the direct sound, when the room has
+  decayed only 10-40 dB: 98 % have no T30 or T20, and the 92 that do read about 10 % below the full response's T30. In
+  exp2, rt_mid is within 5 % of the full response's T30 up to RT60 0.4 s and 8 % below it at 0.4-0.5 s. Beyond 0.5 s,
+  most exp2 IRs have no T30 or T20 (rt_mid in 120 of 1,965 such rooms), and those that have one read 13-22 % low. The
+  RT60 in each room's note is the value given to the generator: an image-source room with uniform walls decays at 0.84
+  x RT60 at 0.2 s, rising to about 1.1 x RT60 at 0.6-0.8 s. The high-noise-floor flag is the decay still running at
+  the cut, not noise. B is the best grade possible at 8 kHz (no 4 kHz octave)."
 homepage: https://huggingface.co/datasets/saeedzou/rir-former-datasets
 web_check:
   checked: '2026-10-14'

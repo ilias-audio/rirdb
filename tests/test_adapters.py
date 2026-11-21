@@ -163,6 +163,18 @@ def test_wav_tree_room_from_a_folder_and_tokens_from_file_names(tmp_path):
     assert got["HallB/RIRs/curtains open/Room3.wav"][2:] == (None, None)     # "Room3" is not a receiver token
 
 
+def test_wav_tree_room_from_regex_moves_a_file_published_under_the_wrong_room(tmp_path):
+    """sonic_palimpsest swapped the KM184 files of two rooms: room_from_regex wins over the folder."""
+    import soundfile as sf
+    for rel in ("Cellar/KM184-1.wav", "Cellar/Omni-1.wav", "Billiard/KM184-1.wav"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(str(tmp_path / rel), np.zeros(100), 8000)
+    ds = SimpleNamespace(id="toy", ir_kinds=["room"], adapter=SimpleNamespace(name="wav_tree", params={
+        "room_level": 0, "room_from_regex": {"^Cellar/KM184-": "Billiard", "^Billiard/KM184-": "Cellar"}}))
+    rooms = {r.local_key: r.room_key for r in get_adapter("wav_tree").iter_records(ds, tmp_path)}
+    assert rooms == {"Cellar/KM184-1.wav": "billiard", "Cellar/Omni-1.wav": "cellar", "Billiard/KM184-1.wav": "cellar"}
+
+
 def test_sofa_axes_from_dimension_names(tmp_path):
     """MultiSpeakerBRIR stores Data.IR as (M, R, E, N): the reader takes the order from the dimension names, not
     the SOFA 1 order (M, R, N, E). Read the other way, every sample became a loudspeaker (Two!Ears, Eurecat)."""
@@ -210,3 +222,73 @@ def test_wav_tree_joins_channel_files_and_reads_keys_in_parts(tmp_path):
     assert esma.local_key == "Main/ESMA/Main_ESMA_M01_S01_FL.wav|Main/ESMA/Main_ESMA_M02_S01_FR.wav"
     x, fs = ad.load(esma.locator, tmp_path)
     assert x.shape == (2, 100) and fs == 8000 and x[1, 0] == pytest.approx(0.1, abs=1e-3)   # 16-bit WAV
+
+
+def test_gtu_rir_never_runs_a_pickle_and_reads_samples_at_their_offset(tmp_path):
+    """gtu_rir's RIR.pickle.dat is read without unpickling it freely: a pickle that imports anything but the four
+    numpy names is refused, and an IR's samples are read at the offset its opcodes give."""
+    import os
+    import pickle
+    from rirdb.adapters.gtu_rir import GtuRirPickleAdapter, read_metadata, sample_offsets
+    (tmp_path / "evil.dat").write_bytes(pickle.dumps([os.system]))
+    with pytest.raises(pickle.UnpicklingError, match="posix.system|nt.system|is not allowed"):
+        read_metadata(tmp_path / "evil.dat")
+    ir = np.linspace(-1, 1, 3000, dtype=np.float32)
+    (tmp_path / "x.dat").write_bytes(pickle.dumps([b"short", ir.tobytes()], protocol=4))
+    [(offset, n, op)] = sample_offsets(tmp_path / "x.dat")               # only the long byte string
+    loc = {"relpath": "x.dat", "offset": offset, "opcode": op, "n": n // 4, "dtype": "<f4"}
+    x, fs = GtuRirPickleAdapter().load(loc, tmp_path)
+    assert fs == 44100 and np.array_equal(x[0], ir.astype(np.float64))
+
+
+def test_hf_parquet_reads_channel_lists_per_microphone_and_audio_bytes(tmp_path):
+    """RIR-Former stores each row's channels as lists of floats (one IR per microphone); Treble10 and CNAM store WAV
+    bytes in an HF Audio column, whose file name can key the receiver."""
+    import io
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    import soundfile as sf
+    rir = [[[float(c * 10 + k) for k in range(8)] for c in range(3)] for _ in range(2)]   # 2 rows, 3 mics, 8 samples
+    (tmp_path / "exp1").mkdir()
+    pq.write_table(pa.table({"rir": rir, "room_id": [7, 9]}), tmp_path / "exp1" / "train-00000-of-00001.parquet")
+    ds = SimpleNamespace(id="toy", ir_kinds=["room"], adapter=SimpleNamespace(name="hf_parquet", params={
+        "glob": "exp1/*.parquet", "audio": "rir", "fs": 8000, "per_channel": True, "room": "room-{room_id}",
+        "receiver": "mic{ch:02d}"}))
+    a = get_adapter("hf_parquet", ds.adapter.params)
+    recs = list(a.iter_records(ds, tmp_path))
+    assert len(recs) == 6 and {r.room_key for r in recs} == {"room-7", "room-9"} and recs[4].rcv_key == "mic01"
+    x, fs = a.load(recs[4].locator, tmp_path)                               # row 1, microphone 1
+    assert fs == 8000 and x.tolist() == [rir[1][1]]
+    buf = io.BytesIO()
+    sf.write(buf, np.array([[0.5, -0.5]] * 16), 16000, format="WAV", subtype="FLOAT")
+    audio = pa.array([{"bytes": buf.getvalue(), "path": "room_00001.00_0797.wav"}],
+                     pa.struct([("bytes", pa.binary()), ("path", pa.string())]))
+    pq.write_table(pa.table({"audio": audio}), tmp_path / "exp1" / "data-00000.parquet")
+    ds.adapter.params = {"glob": "exp1/data-*.parquet", "receiver": "{file_stem}"}
+    b = get_adapter("hf_parquet", ds.adapter.params)
+    [rec] = list(b.iter_records(ds, tmp_path))
+    x, fs = b.load(rec.locator, tmp_path)
+    assert rec.rcv_key == "room_00001.00_0797" and rec.channel_roles == ("mic_0", "mic_1") and fs == 16000
+    assert x.shape == (2, 16) and x[0, 0] == 0.5
+
+
+def test_ndarray_paths_take_the_patterns_groups(tmp_path):
+    """SpaDeNRIR keeps each room's arrays under a group named after the file: room_000.hdf5 holds
+    room_000/rir_data/rirs; "{room}" in the paths reads them with one set of params."""
+    rng = np.random.default_rng(3)
+    data = {}
+    for room in ("room_000", "room_001"):
+        rirs = rng.standard_normal((4, 2, 30)).astype(np.float32)        # microphones x sources x time
+        with h5py.File(tmp_path / f"{room}.hdf5", "w") as h:
+            h[f"{room}/rir_data/rirs"] = rirs
+            h[f"{room}/rir_data/mic_coords"] = rng.random((4, 3))
+        data[room] = rirs
+    params = {"glob": "room_*.hdf5", "pattern": r"^(?P<room>room_\d{3})\.hdf5$", "container": "h5",
+              "array": "{room}/rir_data/rirs", "time_axis": 2, "record_axes": [0, 1], "fs": 48000,
+              "positions": {"rcv": {"array": "{room}/rir_data/mic_coords", "axis": 0}}}
+    a = get_adapter("ndarray", params)
+    recs = list(a.iter_records(_dataset(params), tmp_path))
+    assert len(recs) == 16 and {r.room_key for r in recs} == {"room-000", "room-001"}
+    r = recs[-1]                                                          # room_001, microphone 3, source 1
+    x, fs = a.load(r.locator, tmp_path)
+    assert np.allclose(x[0], data["room_001"][3, 1]) and r.rcv_pos is not None

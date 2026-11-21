@@ -1,7 +1,7 @@
 #!/bin/bash
 # Measure datasets with analyser v1 and write tables/<id>/v1/, which `rirdb dev build` reads (data-model.md, section 8).
 # One chain of SLURM jobs per dataset, every dataset at once:
-#   index-v1 -> analyze (array, every IR) -> merge -> audit (array) -> audit-merge -> scripts/one_off/v1_to_tables.py
+#   index-v1 -> analyze (array, every IR of the release table: all, or the sample a `cap` draws) -> merge -> audit (array) -> audit-merge -> scripts/one_off/v1_to_tables.py
 #
 #   jobs/measure_tables.sh <id> ...        # IR counts (for the shards) from reports/onboarding/review.tsv
 #   IRS_TSV=other.tsv jobs/measure_tables.sh <id> ...
@@ -23,7 +23,7 @@ for id in "$@"; do
     if [ -e "$RIRDB_ROOT/metrics/v1/$id" ]; then echo "$id: measured already, skipped"; continue; fi
     n=$(awk -F'\t' -v id="$id" '$1 == id {print $3}' "$counts")
     [ -n "$n" ] && [ "$n" != "-" ] || { echo "$id: no IR count in $counts, skipped"; continue; }
-    [ "$n" -le 100000 ] || { echo "$id: $n IRs, above the 100,000 cap: measure its sample by hand"; continue; }
+    [ "$n" -le "${MEASURE_MAX:-100000}" ] || { echo "$id: $n IRs, above the ${MEASURE_MAX:-100000} guard (MEASURE_MAX): measure its sample by hand"; continue; }
     shards=$(( (n + 299) / 300 )); [ "$shards" -gt 200 ] && shards=200
     shards=${MEASURE_SHARDS:-$shards}
     log="qlogs/ms_${id}"
@@ -31,7 +31,7 @@ for id in "$@"; do
          jobs/quick_cpu.sh pixi run rirdb dev index-v1 "$id")
     an=$(run --dependency=afterok:"$ix" --array=0-$((shards - 1))%50 ${MEASURE_ANALYZE:-} -J "ma_$id" -o "${log}_an_%A_%a.out" \
          -e "${log}_an_%A_%a.err" jobs/cpu_array.sh pixi run rirdb dev analyze --dataset "$id" --shard auto \
-         --n-shards "$shards" --full)
+         --n-shards "$shards" --sampled)
     mg=$(run --dependency=afterok:"$an" -p computeshort -t 0:30:0 -J "mm_$id" -o "${log}_merge_%j.out" \
          -e "${log}_merge_%j.err" jobs/quick_cpu.sh pixi run rirdb dev merge "$id")
     au=$(run --dependency=afterok:"$mg" --array=0-$((shards - 1))%50 ${MEASURE_ANALYZE:-} -J "mu_$id" -o "${log}_au_%A_%a.out" \

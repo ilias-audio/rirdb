@@ -1,0 +1,11 @@
+space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
+room1,"Living room 1 (Treble10 model)",domestic,room,40.91,,,,,,"furnished living room without hallway; mean T30 0.37 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 113 receivers",
+room2,"Living room 2 (Treble10 model)",domestic,room,43.16,,,,,,"furnished living room without hallway; mean T30 0.62 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 100 receivers",
+room3,"Living room with hallway 1 (Treble10 model)",domestic,room,38.66,,,,,,"furnished living room with hallway; mean T30 0.62 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 97 receivers",
+room4,"Living room with hallway 2 (Treble10 model)",domestic,room,46.08,,,,,,"furnished living room with hallway; mean T30 0.38 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 137 receivers",
+room5,"Meeting room 1 (Treble10 model)",office_meeting,room,13.83,,,,,,"furnished meeting room; mean T30 0.19 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 17 receivers",
+room6,"Meeting room 2 (Treble10 model)",office_meeting,room,23.97,,,,,,"furnished meeting room; mean T30 0.43 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 38 receivers",
+room7,"Bedroom 1 (Treble10 model)",domestic,room,15.6,,,,,,"furnished bedroom; mean T30 0.22 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 33 receivers",
+room8,"Bedroom 2 (Treble10 model)",domestic,room,17.65,,,,,,"furnished bedroom; mean T30 0.58 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 39 receivers",
+room9,"Bathroom 1 (Treble10 model)",domestic,room,15.42,,,,,,"furnished bathroom; mean T30 0.77 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 14 receivers",
+room10,"Bathroom 2 (Treble10 model)",domestic,room,18.42,,,,,,"furnished bathroom; mean T30 0.87 s (the authors' per-IR Avg T30 in the data, over octave bands and all pairs); 5 sources, 29 receivers",

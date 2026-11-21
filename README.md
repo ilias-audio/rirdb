@@ -9,7 +9,7 @@ verify IRs by licence, format, origin, quality and room.
 
 **Website:** https://ilias-audio.github.io/rirdb/ (every dataset, and every column of the tables).
 
-**Status: 0.9 preview.** Tables 0.9.6 cover the 182 datasets measured so far, of the 222 catalogued (1,143,127
+**Status: 0.9 preview.** Tables 0.9.7 cover the 208 datasets measured so far, of the 222 catalogued (1,921,535
 IRs in the table). Ids, rows and columns may still change before 1.0.
 
 ## Use it

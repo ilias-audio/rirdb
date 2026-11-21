@@ -24,7 +24,11 @@ notes: 'The record calls these 44.1 kHz RIRs, but they were simulated at 16 kHz:
   wall and no microphone outside the room. Another 34 sources are written -0.0, within 5 mm outside a wall, and are not
   marked. The README says the source distance was redrawn above 5 m, but 7,526 files (all with the source inside the room)
   name a source more than 5 m from the microphone, up to 14.8 m; their direct sound arrives at the named distance (300 sampled
-  files), so the names, not the README, give the geometry.'
+  files), so the names, not the README, give the geometry. The ratio of RIRDB''s mid T30 to the named RT60 grows with the
+  room''s proportions: 1.14 (median) where the longest side is at most twice the shortest, 1.35 up to 4 times, 1.7 up to 8
+  times and 2.0 beyond, as an image-source room with one absorption on all walls gives in disproportionate rooms. 15,851
+  files (32 %) have no mid decay time because they end at the named RT60, and the 816 files of 0.05-0.08 s give no values
+  at all.'
 defects:
 - what: 'The source named in the file lies outside the room (a coordinate below zero, by up to 2.95 m), so the stated source
     position and distance do not match the IR: its first strong arrival comes earlier, from the source''s mirror image across

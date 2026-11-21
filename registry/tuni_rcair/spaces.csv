@@ -1,8 +1,8 @@
 space,label,space_type,ir_kind,volume_m3,dims_m,same_as,licence,redistribute,licence_source,note,licence_note
 audiolab-alb,"Audio Lab (ALB), Tampere University",studio_booth,room,11.96,2 x 2.3 x 2.6,,,,,"studio-like room with some furniture and lights; T60 0.27 s (authors, sine sweep)",
 officerooma-ora,"Office Room-1 (ORA), Tampere University",office_meeting,room,61.15,3.9 x 4.9 x 3.2,,,,,"tables, sofa, chairs; T60 0.486 s (authors, sine sweep)",
-officeroomb-orb,"Office Room-2 (ORB), Tampere University",office_meeting,room,44.06,2.7 x 5.1 x 3.2,,,,,"furnished (the paper names no items); T60 0.314 s (authors, sine sweep)",
-smallmeetingroom-smr,"Small Meeting Room (SMR), Tampere University",office_meeting,room,23.13,2.5 x 3.7 x 2.5,,,,,"table and cupboards; T60 0.416 s (authors, sine sweep)",
+officeroomb-orb,"Office Room-2 (ORB), Tampere University",office_meeting,room,44.06,2.7 x 5.1 x 3.2,,,,,"furnished (the paper names no items); T60 0.314 s (authors, sine sweep); the MLS IRs decay in about 0.6 s at 500 Hz-1 kHz, against the authors' 0.314 s from separate sine sweeps",
+smallmeetingroom-smr,"Small Meeting Room (SMR), Tampere University",office_meeting,room,23.13,2.5 x 3.7 x 2.5,,,,,"table and cupboards; T60 0.416 s (authors, sine sweep); the MLS IRs decay in about 0.6 s at 500 Hz-1 kHz, against the authors' 0.416 s from separate sine sweeps",
 largemeetingroom-lmr,"Large Meeting Room (LMR), Tampere University",office_meeting,room,109.82,6.6 x 5.2 x 3.2,,,,,"table, a few chairs, sofas; T60 0.319 s (authors, sine sweep)",
 glasscorridor-gco,"Glass Corridor (GCO), a staircase, Tampere University",stairwell,room,67.01,7.3 x 2.7 x 3.4,,,,,"the paper calls it one of the university's staircases, with no furniture; T60 1.7 s (authors, sine sweep), much longer than the 0.5 s IRs, whose decay meets the floor by about 0.13 s (0.21 s at the latest)",
 anechoicchamber-aec,"Anechoic Chamber (AEC), Tampere University",anechoic,anechoic,474.56,7.8 x 7.8 x 7.8,,,,,"T60 0.06 s (authors, sine sweep)",

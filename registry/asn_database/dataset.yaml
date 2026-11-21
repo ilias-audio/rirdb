@@ -47,6 +47,7 @@ license:
     which is GPL-3.0.
 homepage: https://zenodo.org/records/8320987
 doi: 10.5281/zenodo.8320987
+notes: "Most IRs have the source in another room (178 of the 202 sources are in the living room), so the small rooms' medians (0.52-0.54 s) are the decay of the coupled flat. With the source in the node's room, rt_mid is 0.35 s in the bedroom, 0.42 s in the toilet, 0.46 s in the hall, 0.50 s in the bathroom and 0.49 s in the living room, against the readme's T30 of 0.31, 0.35, 0.41, 0.44 and 0.46 s."
 web_check:
   checked: '2026-10-14'
   found_as: 'ASN Database v3.2: simulated RIRs for acoustic sensor networks'

@@ -3,15 +3,27 @@ id: praire
 name: PRAIRE
 year: 2023
 type: measured
-status: planned   # set by hand from a checked source (16 Nov 2026, tier B); a person makes it active after the review
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
 access: open
 wave: 3   # onboarded by scripts/onboard
 source: {"kind":"http","urls":["https://last.hit.bme.hu/sites/default/files/documents/C001%20-%20gymnasium.zip","https://last.hit.bme.hu/sites/default/files/documents/C002%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C003%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C004%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C005%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C006%20-%20classroom%20music.zip","https://last.hit.bme.hu/sites/default/files/documents/C007%20-%20event%20school.zip","https://last.hit.bme.hu/sites/default/files/documents/C008%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C009%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C010%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C011%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C012%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C013%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C014%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C015%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C016%20-%20classroom%20music.zip","https://last.hit.bme.hu/sites/default/files/documents/C017%20-%20gymnasium.zip","https://last.hit.bme.hu/sites/default/files/documents/C018%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C019%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C020%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C021%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C022%20-%20classroom.zip","https://last.hit.bme.hu/sites/default/files/documents/C023%20-%20multi%20-%201%20-%20seated.ZIP","https://last.hit.bme.hu/sites/default/files/documents/C023%20-%20multi%20-%202%20-%20seated%20curtains.ZIP","https://last.hit.bme.hu/sites/default/files/documents/C023%20-%20multi%20-%203%20-%20noseat%20curtains.ZIP","https://last.hit.bme.hu/sites/default/files/documents/C023%20-%20multi%20-%204%20-%20noseat.ZIP","https://last.hit.bme.hu/sites/default/files/documents/C024%20-%20studio.zip","https://last.hit.bme.hu/sites/default/files/documents/C025%20-%20multi.zip","https://last.hit.bme.hu/sites/default/files/documents/C026%20-%20chamber.zip","https://last.hit.bme.hu/sites/default/files/documents/C027%20-%20lobby.zip","https://last.hit.bme.hu/sites/default/files/documents/C028%20-%20office.zip","https://last.hit.bme.hu/sites/default/files/documents/C029%20-%20office.zip","https://last.hit.bme.hu/sites/default/files/documents/C030%20-%20office.zip","https://last.hit.bme.hu/sites/default/files/documents/C031%20-%20event.zip","https://last.hit.bme.hu/sites/default/files/documents/C032%20-%20theatre%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C032%20-%20theatre%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C033%20-%20church%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C033%20-%20church%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C033%20-%20church%20-%203.zip","https://last.hit.bme.hu/sites/default/files/documents/C034%20-%20church%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C034%20-%20church%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C034%20-%20church%20-%203.zip","https://last.hit.bme.hu/sites/default/files/documents/C035%20-%20church.zip","https://last.hit.bme.hu/sites/default/files/documents/C036%20-%20church.zip","https://last.hit.bme.hu/sites/default/files/documents/C037%20-%20church%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C037%20-%20church%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C037%20-%20church%20-%203.zip","https://last.hit.bme.hu/sites/default/files/documents/C038%20-%20event%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C038%20-%20event%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C039%20-%20event.zip","https://last.hit.bme.hu/sites/default/files/documents/C040%20-%20concert.zip","https://last.hit.bme.hu/sites/default/files/documents/C041%20-%20multi.zip","https://last.hit.bme.hu/sites/default/files/documents/C042%20-%20lecture.zip","https://last.hit.bme.hu/sites/default/files/documents/C043%20-%20theatre%20-%201.zip","https://last.hit.bme.hu/sites/default/files/documents/C043%20-%20theatre%20-%202.zip","https://last.hit.bme.hu/sites/default/files/documents/C044%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C045%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C046%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C047%20-%20theatre_0.zip","https://last.hit.bme.hu/sites/default/files/documents/C048%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C049%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C050%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C051%20-%20lecture.zip","https://last.hit.bme.hu/sites/default/files/documents/C052%20-%20event.zip","https://last.hit.bme.hu/sites/default/files/documents/C053%20-%20rehearsal.zip","https://last.hit.bme.hu/sites/default/files/documents/C054%20-%20event.zip","https://last.hit.bme.hu/sites/default/files/documents/C055%20-%20theatre.zip","https://last.hit.bme.hu/sites/default/files/documents/C056%20-%20concert.zip","https://last.hit.bme.hu/sites/default/files/documents/C057%20-%20corridor.zip","https://last.hit.bme.hu/sites/default/files/documents/C058%20-%20event.zip","https://last.hit.bme.hu/sites/default/files/documents/C059%20-%20corridor.zip","https://last.hit.bme.hu/sites/default/files/documents/C060%20-%20concert.zip","https://last.hit.bme.hu/sites/default/files/documents/C061%20-%20studio.zip"]}
-adapter: {"name": "wav_tree", "params": {"glob": "**/*.[wWfF][aAlL][vVaA]*", "tokens": true, "room_level": 0, "condition_level": 1, "sh_norm": "FuMa", "channel_formats": {"2": "binaural", "4": "foa_fuma"}, "orientation_known": false}}   # guessed by scripts/onboard/guess.py; see the review
+adapter: {name: wav_tree, params: {glob: '**/*.flac', pattern: '(?P<room>C\d{3})(?: - multi - (?P<cond>[1-4])[^/]*/C\d{3})?-(?(cond)(?:\d(?=\d\d-))?|(?:(?P<cond_2>[1-4])(?=\d\d-))?)(?P<rcv>\d+)-(?:WXYZ|LR|W)\.flac$', exclude: '(^|/)(__MACOSX|\._)|/\.DS_Store$|/(C007-01-LR|C019-01-WXYZ|C023-419-LR|C033-12-WXYZ|C034-01-LR|C035-0[123579]-W|C035-1[0-2]-W|C039-23-LR|C043-01-LR|C046-31-W|C048-01-WXYZ|C05[789]-01-LR|C061-02-W)\.flac$', format_from_regex: {-WXYZ\.flac$: foa_fuma, -LR\.flac$: binaural, -W\.flac$: mono_omni}, roles: {1: [omni], 2: [L, R], 4: [W, X, Y, Z]}, sh_norm: FuMa, orientation_known: false}}
+capture_formats:
+- foa_fuma
+- binaural
+- mono_omni
+fs_hz:
+- 22050
+- 44100
+- 48000
+- 96000
 content: Measured IRs of 61 anonymised real spaces (classrooms, gyms, offices, theatres, churches, concert and event
   halls, corridors, a studio) shared by consultants and researchers; FLAC files with XLS position sheets.
 expected:
   n_rooms: 61
+  n_irs: 1371
+  note: 'files counted (the page gives no IR count): 1,249 extracted + 144 in the C023 archives, less 22 FLAC files that
+    cannot be decoded; 61 cases'
 room_info:
   dimensions: 'yes'
   volume: partial
@@ -21,10 +33,17 @@ room_info:
   images: 'no'
   reference_acoustics: 'no'
   conditions: partial
+  where: the per-case xlsx sheets (room category, condition, shape, L, W, H, volume, source and receiver positions per file)
+    and the PRAIRE web page (format codes, case list and notes)
 license:
   spdx: MIT
   note: The page licenses the data under MIT (Copyright 2023 TU Budapest) but also says results are provided 'as
     is' for academic purposes (re-evaluation); the MIT terms themselves set no such limit.
+defects:
+- what: 'A noise burst 10-15 dB above the decaying tail (0.8-1.4 s after the sound in the classrooms, about 5 s in the
+    church) holds the decay curve up, so T30 reads 1.7-2.4 times that of the room''s other positions (C021-02: 3.10 s
+    against 1.48 s; C033-02: 10.4-10.6 s against 7.19 s).'
+  files: '(C003-05-LR|C015-05-WXYZ|C020-06-WXYZ|C021-02-WXYZ|C033-02-LR|C033-02-WXYZ)\.flac$'
 homepage: https://last.hit.bme.hu/en/praire
 web_check:
   checked: '2026-10-14'

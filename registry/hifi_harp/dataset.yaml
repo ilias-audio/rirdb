@@ -3,21 +3,53 @@ id: hifi_harp
 name: HiFi-HARP (FOA release)
 year: 2025
 type: simulated
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "hf", "records": ["whojavumusic/hifi_harp@main"], "exclude": [".gitattributes"]}
+adapter: {name: wav_tree, params: {glob: FOA_*/ssd_datasets/shivam/datasets/HARP_V3_FOA/FOA_*/*.wav, pattern: '/(?P<room>FOA_(?:train|valid))/(?P<room_2>\d+)\.wav$', roles: {4: [W, Y, Z, X]}, capture_format: foa_ambix, sh_norm: N3D, orientation_known: false}}
+capture_formats:
+- foa_ambix
+space_type: virtual
+defects:
+- what: 'The channels are in ACN order but N3D-normalised, not SN3D as "AmbiX" in the paper implies (X, Y and Z are 4.8
+    dB higher than in SN3D), and the vertical axis is on the second channel (ACN 1, labelled Y), with the horizontal plane
+    on the third and fourth: the scenes'' y-up frame was encoded as if z were up. Decode with N3D and swap the axes before
+    rendering; the omni channel W is unaffected.'
+- what: 'Every file''s omni channel W carries one and the same waveform, locked to the file start: it starts about
+    20-40 ms in, decays with a T30 of about 0.6-0.8 s in every band, and is missing from Y, Z and X. Where the direct
+    sound is strong (about two thirds of the files) it lies 25-35 dB below the peak and lengthens the mid-band T30 from
+    about 0.1-0.2 s to 0.3-0.5 s; where the direct sound is weak it is almost as loud as the peak and makes up most of
+    the IR (rt_mid 0.7-1.5 s, DRR -8 to -13 dB).'
 content: Over 100,000 simulated 7th-order Ambisonic RIRs (FDTD below 900 Hz, ray tracing above) in about 2,000 furnished
   3D-FRONT rooms. Hugging Face hosts 4-channel FOA WAVs at 16 kHz and a 7th-order validation set.
 fs_hz:
 - 16000
 expected:
-  n_irs: 100000
-  n_rooms: 2000
+  n_irs: 49298
+  n_rooms: null
+  note: 'The hosted FOA release: 48,784 training + 514 validation IRs (4 channels, 16 kHz). The files carry no scene id,
+    so each is its own space; the paper''s 100,000+ RIRs in about 2,000 3D-FRONT rooms (5 sources x 10 receivers per room)
+    are the 7th-order set, of which only a 5,015-IR validation set in 441 scenes is hosted, as WavPack (not read).'
 room_info:
   images: 'no'
   conditions: 'no'
+  dimensions: 'no'
+  volume: 'no'
+  geometry: 'no'
+  materials: 'no'
+  positions: 'no'
+  reference_acoustics: 'no'
+  where: 'README.md (FOA release: 4 channels, 16 kHz, FDTD below 900 Hz and ray tracing above, 3D-FRONT scenes); Saini and
+    Peissig, arXiv 2510.21257 (receiver at 1.5 m, 64 microphones on a 42 cm Fliege-Maier sphere encoded to 7th order "AmbiX
+    ACN", RT60 under 1.2 s, rooms of about 30 to 200 m2); no per-file scene, position or material is published'
 license:
   spdx: CC-BY-4.0
   note: CC BY 4.0 is stated only on the Hugging Face card. The GitHub repo has no licence file, and the CC BY-NC-ND
     4.0 on arXiv covers the paper, not the data.
+notes: "Decay times, EDT, DRR and C50 are read on W, so they mostly describe the waveform that all files share (known
+  defect), not the simulated rooms. The paper's RT60 of mostly 0.2-0.8 s compares with RIRDB's broadband T30 (p10-p90
+  0.43-0.88 s), which includes that waveform."
 homepage: https://huggingface.co/datasets/whojavumusic/hifi_harp
 web_check:
   checked: '2026-10-14'

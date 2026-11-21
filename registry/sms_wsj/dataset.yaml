@@ -3,25 +3,47 @@ id: sms_wsj
 name: SMS-WSJ RIRs
 year: 2019
 type: simulated
-status: catalogued
+status: active   # onboarded by scripts/onboard; reviewed on 16-17 Nov 2026 (tier B review, reports/onboarding/notes.tsv)
+access: open
+wave: 3
+source: {"kind": "zenodo", "records": ["3517889"], "urls": ["https://zenodo.org/records/3517889/files/sms_wsj.tar.gz.partaa?download=1", "https://zenodo.org/records/3517889/files/sms_wsj.tar.gz.partab?download=1", "https://zenodo.org/records/3517889/files/sms_wsj.tar.gz.partac?download=1", "https://zenodo.org/records/3517889/files/sms_wsj.tar.gz.partad?download=1", "https://zenodo.org/records/3517889/files/sms_wsj.tar.gz.partae?download=1"], "include": ["sms_wsj.tar.gz.parta?"]}
+adapter: {name: sms_wsj_json, params: {}}
+capture_formats:
+- array_raw
+space_type: virtual
+ir_kinds:
+- room
+cap: 1
 content: Simulated 6-microphone circular-array RIRs for 35,875 random shoebox rooms (about 8x6x3 m, T60 0.2-0.5
   s, 4 source positions each), made with a port of Habets' RIR generator at 8 kHz.
 fs_hz:
 - 8000
 expected:
-  n_irs: 861000
+  n_irs: 143500
   n_rooms: 35875
+  note: 'Zenodo 3517889: 35,875 examples (train_si284 33,561, cv_dev93 982, test_eval92 1,332, as in the paper), each its
+    own simulated shoebox room with 4 source positions and a 6-microphone circular array (radius 10 cm), one 6-channel WAV
+    per source (8 kHz, 1.024 s, not normalised). RIRDB counts one IR per source, the array as one 6-channel IR: 143,500
+    IRs (861,000 single-microphone responses). The SMS-WSJ mixtures use sources 0 and 1 of each room; sources 2 and 3 are
+    published and indexed as well.'
 room_info:
   dimensions: 'yes'
-  volume: 'no'
+  volume: 'yes'
   geometry: partial
   materials: 'no'
   positions: 'yes'
   images: 'no'
-  reference_acoustics: partial
+  reference_acoustics: 'yes'
   conditions: 'no'
+  where: 'scenarios.json (in the download; per example: room_dimensions, sound_decay_time = the T60 given to the generator,
+    source_position for 4 sources, sensor_position for the 6 microphones); github.com/fgnt/sms_wsj (sms_wsj/database/create_rirs.py:
+    8 kHz, 2^13 taps, c = 343 m/s, rirgen; sms_wsj/reverb/scenario.py: the geometry); arXiv 1910.13934 (the simulation)'
 license:
   spdx: CC-BY-4.0
+notes: "The T60 in each room's label is the value given to the generator, which sets the wall reflection from Sabine's
+  formula. An image-source room with uniform walls then decays a little more slowly the longer its T60: RIRDB's rt_mid
+  reads a median 1.11 times the label (0.93 at 0.2-0.25 s, 1.19 at 0.45-0.5 s). An image-source calculation of the
+  same rooms gives the same values (rt_mid over calculated T30: median 1.01, p10-p90 0.95-1.09)."
 homepage: https://zenodo.org/records/3517889
 doi: 10.5281/zenodo.3517889
 web_check:

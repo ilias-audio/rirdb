@@ -1,0 +1,11 @@
+relpath	url	size	algo	checksum	provider_version	resolved_at	extract_to
+fold05.zip	https://zenodo.org/api/records/4139416/files/fold05.zip/content	1125355040	md5	1576353dc0c1adb7a7727704e20d526f	zenodo:4139416	2026-11-20T11:22:52Z	fold05
+fold01.zip	https://zenodo.org/api/records/4139416/files/fold01.zip/content	1135728180	md5	95c681f435f3466600e0e086be1402db	zenodo:4139416	2026-11-20T11:22:52Z	fold01
+fold04.zip	https://zenodo.org/api/records/4139416/files/fold04.zip/content	1118035690	md5	f5af6d7c94f61bb83a20dfd0c220a92b	zenodo:4139416	2026-11-20T11:22:52Z	fold04
+fold07.zip	https://zenodo.org/api/records/4139416/files/fold07.zip/content	1135084674	md5	d2c719f7e1d8e8785d4bb7a230c4e261	zenodo:4139416	2026-11-20T11:22:52Z	fold07
+fold03.zip	https://zenodo.org/api/records/4139416/files/fold03.zip/content	1134950318	md5	9510ff6a6902a5ee9c6d3fc2df374c0d	zenodo:4139416	2026-11-20T11:22:52Z	fold03
+fold02.zip	https://zenodo.org/api/records/4139416/files/fold02.zip/content	1121660354	md5	798903b8823bc3c86099c57d396af609	zenodo:4139416	2026-11-20T11:22:52Z	fold02
+fold08.zip	https://zenodo.org/api/records/4139416/files/fold08.zip/content	1119441361	md5	57b9aa2496924df992898db9a8abca5c	zenodo:4139416	2026-11-20T11:22:52Z	fold08
+fold09.zip	https://zenodo.org/api/records/4139416/files/fold09.zip/content	1131309818	md5	c9a7392c8cf25d704970f194e0b4c304	zenodo:4139416	2026-11-20T11:22:52Z	fold09
+fold10.zip	https://zenodo.org/api/records/4139416/files/fold10.zip/content	1130191507	md5	8315721176ed8ce778cf5003649e051b	zenodo:4139416	2026-11-20T11:22:52Z	fold10
+fold06.zip	https://zenodo.org/api/records/4139416/files/fold06.zip/content	1118968383	md5	a9677d8848286184a53a40da23f35e0a	zenodo:4139416	2026-11-20T11:22:52Z	fold06

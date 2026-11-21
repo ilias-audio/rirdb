@@ -216,6 +216,7 @@ def analyze(
     n_shards: int = typer.Option(1),
     workers: int = typer.Option(0, help="Processes (0: SLURM_CPUS_PER_TASK or 4)."),
     full: bool = typer.Option(False, help="Analyse all records, not only subsample_v1."),
+    sampled: bool = typer.Option(False, help="Analyse the IRs the release table holds (tables/<id>/index.parquet, sampled)."),
     limit: int = typer.Option(0, help="Only the first N records of the shard (smoke tests)."),
 ) -> None:
     """Analyse one shard of a dataset (metrics parquet + feature h5)."""
@@ -228,7 +229,7 @@ def analyze(
     else:
         s, n = int(shard), n_shards
     w = workers or int(os.environ.get("SLURM_CPUS_PER_TASK", 4))
-    out = analyze_shard(dataset_id, s, n, w, full=full, limit=limit or None)
+    out = analyze_shard(dataset_id, s, n, w, full=full, limit=limit or None, sampled=sampled)
     console.print(f"wrote {out}")
 
 
